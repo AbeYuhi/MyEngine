@@ -1,0 +1,76 @@
+#include "WinApp.h"
+
+WinApp* WinApp::GetInstance() {
+	static WinApp instance;
+	return &instance;
+}
+
+LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+	switch (msg){
+		//ウィンドウが破棄されたとき
+	case WM_DESTROY:
+		//OSにアプリ終了を伝える
+		PostQuitMessage(0);
+		return 0;
+	}
+
+	//標準のメッセージ処理を行う
+	return DefWindowProc(hwnd, msg, wparam, lparam);
+}
+
+const wchar_t WinApp::className[] = L"MyEngine";
+void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t windowWidth, int32_t windowHeight) {
+
+	//メンバ変数の初期化
+	windowStyle_ = windowStyle;
+
+
+	WNDCLASS wc{};
+	//ウィンドウプロシージャ
+	wc.lpfnWndProc = WindowProc;
+	//ウィンドウクラス名
+	wc.lpszClassName = className;
+	//インスタンスハンドル
+	wc.hInstance = GetModuleHandle(nullptr);
+	//カーソル
+	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	//ウィンドウクラスを登録
+	RegisterClass(&wc);
+
+	//ウィンドウサイズを表す構造体にクライアント領域を入れる
+	RECT wrc = {0, 0, kWindowWidth, kWindowHeight};
+	//クライアント領域を元に実際のサイズにwrcを変更してもらう
+	AdjustWindowRect(&wrc, windowStyle_, false);
+
+	hwnd_ = CreateWindow(
+		wc.lpszClassName,
+		title,
+		windowStyle_,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		wrc.right - wrc.left,
+		wrc.bottom - wrc.top,
+		nullptr,
+		nullptr,
+		wc.hInstance,
+		nullptr
+	);
+
+	//ウィンドウを表示する
+	ShowWindow(hwnd_, SW_SHOW);
+}
+
+bool WinApp::ProcessMessage() {
+	MSG msg;
+
+	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	if (msg.message == WM_QUIT) {
+		return true;
+	}
+
+	return false;
+}
