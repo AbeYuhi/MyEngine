@@ -19,6 +19,8 @@ public: //メンバ関数
 
 	void CreateGameWindow(const wchar_t* title = L"MyEngine", UINT windowStyle = WS_OVERLAPPEDWINDOW, int32_t windowWidth = kWindowWidth, int32_t windowHeight = kWindowHeight);
 
+	void DiscardingWindow();
+
 	bool ProcessMessage();
 
 	inline HWND GetHWND() { return hwnd_; }
@@ -30,4 +32,5 @@ private: //メンバ関数
 private: //メンバ変数
 	HWND hwnd_;
 	UINT windowStyle_;
+	WNDCLASS wc_;
 };

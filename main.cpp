@@ -1,6 +1,10 @@
+#include "Debug/DebugLog.h"
+#include "SafeDelete/SafeDelete.h"
 #include "WinApp/WinApp.h"
 #include "DirectXCommon/DirectXCommon.h"
-#include "Debug/DebugLog.h"
+#include "Object/Triangle.h"
+#include "Scene/GameScene.h"
+
 
 //エントリーポイント
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
@@ -16,6 +20,13 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	directXCommon = DirectXCommon::GetInstance();
 	directXCommon->Initialize();
 
+	//オブジェクトの初期化
+	Triangle::StaticInitialize();
+
+	//ゲームシーンの初期化
+	GameScene* gameScene = new GameScene();
+	gameScene->Initialize();
+
 	//メインループ
 	while (true) {
 		if (winApp->ProcessMessage()) {
@@ -24,14 +35,25 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 
 		///更新処理
 
+		//ゲームシーンの更新
+		gameScene->Update();
 
 		///描画処理
 		//画面初期化
 		directXCommon->PreDraw();
 		
+		//ゲームシーンの描画
+		gameScene->Draw();
+
 		//描画終了
 		directXCommon->PostDraw();
 	}
+	
+	//ゲームシーンのDelete
+	SafeDelete(gameScene);
+
+	//ゲームウィンドウの破棄
+	winApp->DiscardingWindow();
 
 	return 0;
 }

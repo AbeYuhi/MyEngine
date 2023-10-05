@@ -24,18 +24,16 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t wi
 	//メンバ変数の初期化
 	windowStyle_ = windowStyle;
 
-
-	WNDCLASS wc{};
 	//ウィンドウプロシージャ
-	wc.lpfnWndProc = WindowProc;
+	wc_.lpfnWndProc = WindowProc;
 	//ウィンドウクラス名
-	wc.lpszClassName = className;
+	wc_.lpszClassName = className;
 	//インスタンスハンドル
-	wc.hInstance = GetModuleHandle(nullptr);
+	wc_.hInstance = GetModuleHandle(nullptr);
 	//カーソル
-	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wc_.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	//ウィンドウクラスを登録
-	RegisterClass(&wc);
+	RegisterClass(&wc_);
 
 	//ウィンドウサイズを表す構造体にクライアント領域を入れる
 	RECT wrc = {0, 0, kWindowWidth, kWindowHeight};
@@ -43,7 +41,7 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t wi
 	AdjustWindowRect(&wrc, windowStyle_, false);
 
 	hwnd_ = CreateWindow(
-		wc.lpszClassName,
+		wc_.lpszClassName,
 		title,
 		windowStyle_,
 		CW_USEDEFAULT,
@@ -52,12 +50,17 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t wi
 		wrc.bottom - wrc.top,
 		nullptr,
 		nullptr,
-		wc.hInstance,
+		wc_.hInstance,
 		nullptr
 	);
 
 	//ウィンドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);
+}
+
+void WinApp::DiscardingWindow() {
+	//ウィンドウクラスの登録解除
+	UnregisterClass(wc_.lpszClassName, wc_.hInstance);
 }
 
 bool WinApp::ProcessMessage() {

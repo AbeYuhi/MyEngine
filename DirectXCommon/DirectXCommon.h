@@ -6,6 +6,8 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <dxgi1_6.h>
+#include <dxgidebug.h>
+#include <dxcapi.h>
 #include <cassert>
 
 using namespace Microsoft::WRL;
@@ -31,11 +33,26 @@ public: //メンバ関数
 	/// </summary>
 	void PostDraw();
 
+	/// <summary>
+	/// 画面のクリア
+	/// </summary>
+	void ClearRenderTarget();
+
+	/// <summary>
+	/// 解放チェック
+	/// </summary>
+	void ReleaseCheck();
+
+	/// <summary>
+	/// Dxcのコンパイルシェーダー
+	/// </summary>
+	IDxcBlob* CompilerShader(const std::wstring& filePath, const wchar_t* profile);
+
 public: //ゲッターセッター
 
-	inline ID3D12Device* GetDevice() { device_.Get(); }
+	inline ID3D12Device* GetDevice() { return device_.Get(); }
 
-	inline ID3D12CommandList* GetCommandList() { commandList_.Get(); }
+	inline ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
 
 private: //メンバ関数
 	DirectXCommon() = default;
@@ -47,7 +64,11 @@ private: //メンバ関数
 
 	void InitializeSwapChain();
 
-	void InitializeRenderTargetView();
+	void CreateRenderTargetView();
+
+	void CreateFence();
+
+	void InitializeDXC();
 
 private: //メンバ変数
 	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;
@@ -58,4 +79,9 @@ private: //メンバ変数
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
+	ComPtr<ID3D12Fence> fence_ = nullptr;
+	ComPtr<IDxcUtils> dxcUtils_ = nullptr;
+	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
+	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
+	uint64_t fenceValue_ = 0;
 };

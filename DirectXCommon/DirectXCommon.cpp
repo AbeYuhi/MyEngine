@@ -1,6 +1,8 @@
 #include "DirectXCommon.h"
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "dxcompiler.lib")
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;
@@ -18,28 +20,67 @@ void DirectXCommon::Initialize() {
 	//スワップチェーンの初期化
 	InitializeSwapChain();
 
-	//RTVの初期化
-	InitializeRenderTargetView();
+	//RTVの生成
+	CreateRenderTargetView();
+
+	//フェンスの生成
+	CreateFence();
+	
+	//DXCの初期化
+	InitializeDXC();
+
 
 }
 
 void DirectXCommon::PreDraw() {
 	//バックバッファの取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
-
-	//バックバッファのハンドルのしゅとく
+	
+	//バックバッファのハンドルの取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), backBufferIndex,
 		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
-	//描画先のRTVの設定
+	//TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER barrier{};
+	//今回のバリアの種類
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = backBuffers[backBufferIndex].Get();
+	//遷移前のResourceState
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+	//遷移後のResoruceState
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//TransitionBarrierを張る
+	commandList_->ResourceBarrier(1, &barrier);
+
+	//RTVの設定
 	commandList_->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
-	//指定した色で画面のクリア
-	float clearColor[] = {0.1f, 0.25f, 0.5f, 1.0f};
-	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	//画面のクリア
+	ClearRenderTarget();
+
 }
 
 void DirectXCommon::PostDraw() {
+	//バックバッファの取得
+	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
+
+	//バックバッファのハンドルの取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), backBufferIndex,
+		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+
+	//Barrierの状態遷移
+	//TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER barrier{};
+	//今回のバリアの種類
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = backBuffers[backBufferIndex].Get();
+	//遷移前のResourceState
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//遷移後のResoruceState
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+	//TransitionBarrierを張る
+	commandList_->ResourceBarrier(1, &barrier);
 
 	//コマンドリストを閉じる
 	LRESULT hr = commandList_->Close();
@@ -49,11 +90,106 @@ void DirectXCommon::PostDraw() {
 	commandQueue_->ExecuteCommandLists(1, commandLists);
 	//GPUとOSに画面の交換を行わせる
 	swapChain_->Present(1, 0);
+
+	///同期処理
+	//Fenceの値を更新
+	fenceValue_++;
+	//GPUがここまでたどり着いたら、Fenceの値を更新した値に代入するようにSignalを送る
+	commandQueue_->Signal(fence_.Get(), fenceValue_);
+	//Fenceの値がSignal値にになったかを確認
+	if (fence_->GetCompletedValue() < fenceValue_) {
+		//イベントの生成
+		HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+		assert(fenceEvent != nullptr);
+		//指定したSignalにたどり着いてないので待つようにイベントを設定
+		fence_->SetEventOnCompletion(fenceValue_, fenceEvent);
+		//イベントを待つ
+		WaitForSingleObject(fenceEvent, INFINITE);
+	}
+
 	//次のフレーム用のコマンドリストの準備
 	hr = commandAllocator_->Reset();
 	assert(SUCCEEDED(hr));
 	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(hr));
+}
+
+void DirectXCommon::ReleaseCheck() {
+	//リソースリークチェック
+	ComPtr<IDXGIDebug1> debug;
+	if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
+		debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+		debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
+		debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
+	}
+}
+
+IDxcBlob* DirectXCommon::CompilerShader(const std::wstring& filePath, const wchar_t* profile) {
+	//これからシェーダーをコンパイルする旨をログに出す
+	Log(ConvertString(std::format(L"Begin CompileShader, Path:{}, profile:{}\n", filePath, profile)));
+	//hlslファイルを読む
+	IDxcBlobEncoding* shaderSource = nullptr;
+	HRESULT hr = dxcUtils_->LoadFile(filePath.c_str(), nullptr, &shaderSource);
+	//読めなかったら止める
+	assert(SUCCEEDED(hr));
+	//読み込んだファイルの内容を設定
+	DxcBuffer shaderSourceBuffer;
+	shaderSourceBuffer.Ptr = shaderSource->GetBufferPointer();
+	shaderSourceBuffer.Size = shaderSource->GetBufferSize();
+	shaderSourceBuffer.Encoding = DXC_CP_UTF8;
+
+	//コンパイル
+	LPCWSTR arguments[] = {
+		filePath.c_str(),
+		L"-E", L"main",
+		L"-T", profile,
+		L"-Zi", L"-Qembed_debug",
+		L"-Od",
+		L"-Zpr"
+	};
+	//実際にShaderのコンパイルをする
+	ComPtr<IDxcResult> shaderResult = nullptr;
+	hr = dxcCompiler_->Compile(
+		&shaderSourceBuffer,
+		arguments,
+		_countof(arguments),
+		includeHandler_.Get(),
+		IID_PPV_ARGS(&shaderResult));
+	//コンパイルエラーチェック
+	assert(SUCCEEDED(hr));
+
+	//警告・エラーが出たら停止
+	ComPtr<IDxcBlobUtf8> shaderError = nullptr;
+	shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
+	if (shaderError != nullptr && shaderError->GetStringLength() != 0) {
+		Log(shaderError->GetStringPointer());
+		//警告・エラーダメ絶対
+		assert(false);
+	}
+
+	//コンパイル結果から実行用のバイナリ部分を取得
+	IDxcBlob* shaderBlob = nullptr;
+	hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
+	assert(SUCCEEDED(hr));
+	//成功したログを出す
+	Log(ConvertString(std::format(L"Compile Succeeded, Path:{}, profile:{}\n", filePath, profile)));
+
+	//実行用のバイナリを返却
+	return shaderBlob;
+}
+
+void DirectXCommon::ClearRenderTarget() {
+	//バックバッファの取得
+	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
+
+	//バックバッファのハンドルの取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), backBufferIndex,
+		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+
+	//指定した色で画面のクリア
+	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
+	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 }
 
 void DirectXCommon::InitializeDxgiDevice() {
@@ -174,7 +310,7 @@ void DirectXCommon::InitializeSwapChain() {
 	assert(SUCCEEDED(hr));
 }
 
-void DirectXCommon::InitializeRenderTargetView() {
+void DirectXCommon::CreateRenderTargetView() {
 	//ディスクリプターヒープの生成
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescriptorHeapDesc{};
 	rtvDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -205,4 +341,22 @@ void DirectXCommon::InitializeRenderTargetView() {
 		//RTVの生成
 		device_->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
 	}
+}
+
+void DirectXCommon::CreateFence() {
+	//初期値0でFenceの生成
+	fenceValue_ = 0;
+	LRESULT hr = device_->CreateFence(fenceValue_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
+	assert(SUCCEEDED(hr));
+}
+
+void DirectXCommon::InitializeDXC() {
+	LRESULT hr = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils_));
+	assert(SUCCEEDED(hr));
+	hr = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler_));
+	assert(SUCCEEDED(hr));
+
+	//現時点ではincludeはしないが、includeに対応するための設定を行っておく
+	hr = dxcUtils_->CreateDefaultIncludeHandler(&includeHandler_);
+	assert(SUCCEEDED(hr));
 }
