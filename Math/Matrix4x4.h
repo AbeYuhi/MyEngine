@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector3.h"
+#include "Transform.h"
 #include <cmath>
 #include <cassert>
 #include <cmath>
@@ -76,6 +77,8 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 Matrix4x4 MakeScaleMatrix(const Vector3& scale);
 
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+
+Matrix4x4 MakeAffineMatrix(const WorldTransform& transform);
 
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 

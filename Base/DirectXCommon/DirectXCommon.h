@@ -1,6 +1,6 @@
 #pragma once
 #include "../WinApp/WinApp.h"
-#include "../Debug/DebugLog.h"
+#include "../../Debug/DebugLog.h"
 #include <WRL/client.h>
 #include <format>
 #include <d3d12.h>
@@ -37,11 +37,6 @@ public: //メンバ関数
 	/// 画面のクリア
 	/// </summary>
 	void ClearRenderTarget();
-
-	/// <summary>
-	/// 解放チェック
-	/// </summary>
-	void ReleaseCheck();
 
 	/// <summary>
 	/// Dxcのコンパイルシェーダー

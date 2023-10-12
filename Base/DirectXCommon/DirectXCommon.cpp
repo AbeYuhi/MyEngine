@@ -29,7 +29,6 @@ void DirectXCommon::Initialize() {
 	//DXCの初期化
 	InitializeDXC();
 
-
 }
 
 void DirectXCommon::PreDraw() {
@@ -112,16 +111,6 @@ void DirectXCommon::PostDraw() {
 	assert(SUCCEEDED(hr));
 	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(hr));
-}
-
-void DirectXCommon::ReleaseCheck() {
-	//リソースリークチェック
-	ComPtr<IDXGIDebug1> debug;
-	if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
-		debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-		debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
-		debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
-	}
 }
 
 IDxcBlob* DirectXCommon::CompilerShader(const std::wstring& filePath, const wchar_t* profile) {

@@ -339,6 +339,14 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 	return Multiply(scaleMatrix, Multiply(rotateXYZMatrix, translateMatrix));
 }
 
+Matrix4x4 MakeAffineMatrix(const WorldTransform& transform) {
+	Matrix4x4 scaleMatrix = MakeScaleMatrix(transform.scale);
+	Matrix4x4 rotateXYZMatrix = MakeRotateMatrix(transform.rotate);
+	Matrix4x4 translateMatrix = MakeTranslateMatrix(transform.translate);
+
+	return Multiply(scaleMatrix, Multiply(rotateXYZMatrix, translateMatrix));
+}
+
 Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip) {
 	Matrix4x4 matrix = { 0 };
 

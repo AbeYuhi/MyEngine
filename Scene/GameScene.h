@@ -1,7 +1,8 @@
 #pragma once
-#include "../WinApp/WinApp.h"
-#include "../DirectXCommon/DirectXCommon.h"
+#include "../Base/WinApp/WinApp.h"
+#include "../Base/DirectXCommon/DirectXCommon.h"
 #include "../Object/Triangle.h"
+#include "../Debug/DebugCamera.h"
 
 class GameScene {
 public:
@@ -18,6 +19,8 @@ private:
 	//基本機能
 	WinApp* winApp_;
 	DirectXCommon* directXCommon_;
+	//デバッグカメラ
+	std::unique_ptr<DebugCamera> debugCamera_;
 
-	Triangle* triangle_;
+	std::unique_ptr<Triangle> triangle_;
 };

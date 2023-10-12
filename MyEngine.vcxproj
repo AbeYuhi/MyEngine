@@ -96,8 +96,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Base\CreateResource\CreateResource.cpp" />
+    <ClCompile Include="Base\DirectXCommon\DirectXCommon.cpp" />
+    <ClCompile Include="Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="Debug\DebugCamera.cpp" />
     <ClCompile Include="Debug\DebugLog.cpp" />
-    <ClCompile Include="DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
@@ -105,20 +108,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Math\Vector3_Math.cpp" />
     <ClCompile Include="Object\Triangle.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
-    <ClCompile Include="WinApp\WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Base\CreateResource\CreateResource.h" />
+    <ClInclude Include="Base\DirectXCommon\DirectXCommon.h" />
+    <ClInclude Include="Base\SafeDelete\SafeDelete.h" />
+    <ClInclude Include="Base\WinApp\WinApp.h" />
+    <ClInclude Include="Debug\DebugCamera.h" />
     <ClInclude Include="Debug\DebugLog.h" />
-    <ClInclude Include="DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="Math\Matrix4x4.h" />
+    <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector3_Math.hpp" />
     <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="Object\Triangle.h" />
-    <ClInclude Include="SafeDelete\SafeDelete.h" />
     <ClInclude Include="Scene\GameScene.h" />
-    <ClInclude Include="WinApp\WinApp.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">

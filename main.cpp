@@ -1,7 +1,7 @@
 #include "Debug/DebugLog.h"
-#include "SafeDelete/SafeDelete.h"
-#include "WinApp/WinApp.h"
-#include "DirectXCommon/DirectXCommon.h"
+#include "Base/SafeDelete/SafeDelete.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 #include "Object/Triangle.h"
 #include "Scene/GameScene.h"
 
@@ -51,7 +51,6 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	
 	//ゲームシーンのDelete
 	SafeDelete(gameScene);
-
 	//ゲームウィンドウの破棄
 	winApp->DiscardingWindow();
 

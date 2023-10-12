@@ -64,6 +64,13 @@ void Triangle::PostDraw() {
 	sCommandList_ = nullptr;
 }
 
+std::unique_ptr<Triangle> Triangle::Create() {
+	std::unique_ptr<Triangle> triangle = std::make_unique<Triangle>();
+	triangle->Initialize();
+
+	return triangle;
+}
+
 void Triangle::CreateRootSignature() {
 	//DirectXCommonの取得
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
@@ -71,6 +78,18 @@ void Triangle::CreateRootSignature() {
 	//RootSignature生成
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
 	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+	//RootParameter作成。
+	D3D12_ROOT_PARAMETER rootParameters[2] = {};
+	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParameters[0].Descriptor.ShaderRegister = 0;
+	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+	rootParameters[1].Descriptor.ShaderRegister = 0;
+	descriptionRootSignature.pParameters = rootParameters;
+	descriptionRootSignature.NumParameters = _countof(rootParameters);
+
 	//シリアライズしてバイナリする
 	ComPtr<ID3DBlob> signatureBlob = nullptr;
 	ComPtr<ID3DBlob> errorBlob = nullptr;
@@ -140,7 +159,11 @@ void Triangle::CreatePSO() {
 void Triangle::Initialize() {
 
 	//VertexResourceの生成
-	CreateVertexResource();
+	vertexResource_ = CreateBufferResource(sizeof(Vector4) * kVertexNumber);
+	//MaterialResourceの生成
+	materialResource_ = CreateBufferResource(sizeof(Vector4));
+	//wvpResourceの生成
+	wvpResource_ = CreateBufferResource(sizeof(Matrix4x4));
 
 	//リソースの先頭のアドレスを使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -156,34 +179,42 @@ void Triangle::Initialize() {
 	vertexData[1] = {0.0f, 0.5f, 0.0f, 1.0f};
 	//右下
 	vertexData[2] = {0.5f, -0.5f, 0.0f, 1.0f};
+
+	//Materialデータの記入
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	//色の書き込み
+	*materialData_ = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	//wvpデータの記入
+	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
+	*wvpData_ = MakeIdentity4x4();
+
+	//トランスフォームの初期化
+	transform_.scale = { 1.0f, 1.0f, 1.0f };
+	transform_.rotate = { 0.0f, 0.0f, 0.0f };
+	transform_.translate = { 0.0f, 0.0f, 0.0f };
+
 }
 
 void Triangle::Update() {
+	transform_.rotate.y += 0.03f;
 
+	//ワールドMatrixの更新
+	worldMatrix_ = MakeAffineMatrix(transform_);
 }
 
-void Triangle::Draw() {
+void Triangle::Draw(Matrix4x4 viewProjectionMatrix) {
+
+	//カメラ移動によるwvpの変化
+	Matrix4x4 wvpMatrix = Multiply(worldMatrix_, viewProjectionMatrix);
+	*wvpData_ = wvpMatrix;
+
 	//VBVの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	//マテリアルCBufferの場所を設定
+	sCommandList_->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	//wvpCBufferの場所を設定
+	sCommandList_->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
 	//描画
 	sCommandList_->DrawInstanced(kVertexNumber, 1, 0, 0);
-}
-
-void Triangle::CreateVertexResource() {
-	//頂点リソース用のヒープの設定
-	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
-	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//頂点リソースの設定
-	D3D12_RESOURCE_DESC vertexResourceDesc{};
-	//バックバッファリソース
-	vertexResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	vertexResourceDesc.Width = sizeof(Vector4) * kVertexNumber; //リソースのサイズ
-	vertexResourceDesc.Height = 1;
-	vertexResourceDesc.DepthOrArraySize = 1;
-	vertexResourceDesc.MipLevels = 1;
-	vertexResourceDesc.SampleDesc.Count = 1;
-	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	//実際に生成
-	LRESULT hr = DirectXCommon::GetInstance()->GetDevice()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &vertexResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertexResource_));
-	assert(SUCCEEDED(hr));
 }
