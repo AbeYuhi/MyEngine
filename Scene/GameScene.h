@@ -1,6 +1,7 @@
 #pragma once
 #include "../Base/WinApp/WinApp.h"
 #include "../Base/DirectXCommon/DirectXCommon.h"
+#include "../Manager/ImGuiManager.h"
 #include "../Object/Triangle.h"
 #include "../Debug/DebugCamera.h"
 

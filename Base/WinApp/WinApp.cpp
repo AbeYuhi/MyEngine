@@ -1,4 +1,8 @@
 #include "WinApp.h"
+#include "../../External/imgui/imgui.h"
+#include "../../External/imgui/imgui_impl_dx12.h"
+#include "../../External/imgui/imgui_impl_win32.h"
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 WinApp* WinApp::GetInstance() {
 	static WinApp instance;
@@ -6,6 +10,9 @@ WinApp* WinApp::GetInstance() {
 }
 
 LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
+		return true;
+	}
 	switch (msg){
 		//ウィンドウが破棄されたとき
 	case WM_DESTROY:

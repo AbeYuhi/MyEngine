@@ -23,6 +23,8 @@ void GameScene::Update() {
 	debugCamera_->Update();
 
 	triangle_->Update();
+
+	ImGui::ShowDemoWindow();
 }
 
 void GameScene::Draw() {

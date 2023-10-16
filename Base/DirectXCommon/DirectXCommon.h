@@ -41,13 +41,30 @@ public: //メンバ関数
 	/// <summary>
 	/// Dxcのコンパイルシェーダー
 	/// </summary>
-	IDxcBlob* CompilerShader(const std::wstring& filePath, const wchar_t* profile);
+	ComPtr<IDxcBlob> CompilerShader(const std::wstring& filePath, const wchar_t* profile);
+
+	/// <summary>
+	/// ディスクリプターヒープの生成関数
+	/// </summary>
+	/// <param name="heapType"></param>
+	/// <param name="numDescriptors"></param>
+	/// <param name="shaderVisible"></param>
+	/// <returns></returns>
+	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
 
 public: //ゲッターセッター
 
 	inline ID3D12Device* GetDevice() { return device_.Get(); }
 
 	inline ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
+
+	inline IDXGISwapChain4* GetSwapShain() { return swapChain_.Get(); }
+
+	inline ID3D12DescriptorHeap* GetRtvDescriptorHeap() { return rtvDescriptorHeap_.Get(); }
+
+	inline D3D12_RENDER_TARGET_VIEW_DESC GetRtvDesc() { return rtvDesc_; }
+
+	inline ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); }
 
 private: //メンバ関数
 	DirectXCommon() = default;
@@ -61,6 +78,8 @@ private: //メンバ関数
 
 	void CreateRenderTargetView();
 
+	void CreateShaderResourceView();
+
 	void CreateFence();
 
 	void InitializeDXC();
@@ -73,6 +92,8 @@ private: //メンバ変数
 	ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
+	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
+	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 	ComPtr<ID3D12Fence> fence_ = nullptr;
 	ComPtr<IDxcUtils> dxcUtils_ = nullptr;

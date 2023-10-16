@@ -23,6 +23,9 @@ void DirectXCommon::Initialize() {
 	//RTVの生成
 	CreateRenderTargetView();
 
+	//SRVの生成
+	CreateShaderResourceView();
+
 	//フェンスの生成
 	CreateFence();
 	
@@ -113,7 +116,7 @@ void DirectXCommon::PostDraw() {
 	assert(SUCCEEDED(hr));
 }
 
-IDxcBlob* DirectXCommon::CompilerShader(const std::wstring& filePath, const wchar_t* profile) {
+ComPtr<IDxcBlob> DirectXCommon::CompilerShader(const std::wstring& filePath, const wchar_t* profile) {
 	//これからシェーダーをコンパイルする旨をログに出す
 	Log(ConvertString(std::format(L"Begin CompileShader, Path:{}, profile:{}\n", filePath, profile)));
 	//hlslファイルを読む
@@ -165,6 +168,19 @@ IDxcBlob* DirectXCommon::CompilerShader(const std::wstring& filePath, const wcha
 
 	//実行用のバイナリを返却
 	return shaderBlob;
+}
+
+ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
+	//ディスクリプターヒープの生成
+	ComPtr<ID3D12DescriptorHeap> descriptorHeap = nullptr;
+	D3D12_DESCRIPTOR_HEAP_DESC rtvDescriptorHeapDesc{};
+	rtvDescriptorHeapDesc.Type = heapType;
+	rtvDescriptorHeapDesc.NumDescriptors = numDescriptors;
+	rtvDescriptorHeapDesc.Flags = shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	LRESULT hr = device_->CreateDescriptorHeap(&rtvDescriptorHeapDesc, IID_PPV_ARGS(&descriptorHeap));
+	//ディスクリプターヒープの生成ができなかった場合に落とす
+	assert(SUCCEEDED(hr));
+	return descriptorHeap;
 }
 
 void DirectXCommon::ClearRenderTarget() {
@@ -301,15 +317,14 @@ void DirectXCommon::InitializeSwapChain() {
 
 void DirectXCommon::CreateRenderTargetView() {
 	//ディスクリプターヒープの生成
-	D3D12_DESCRIPTOR_HEAP_DESC rtvDescriptorHeapDesc{};
-	rtvDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	rtvDescriptorHeapDesc.NumDescriptors = 2;
-	LRESULT hr = device_->CreateDescriptorHeap(&rtvDescriptorHeapDesc, IID_PPV_ARGS(&rtvDescriptorHeap_));
-	//ディスクリプターヒープの生成ができなかった場合に落とす
-	assert(SUCCEEDED(hr));
+	rtvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
+
+	//RTVの設定
+	rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
 	DXGI_SWAP_CHAIN_DESC swcDesc{};
-	hr = swapChain_->GetDesc(&swcDesc);
+	HRESULT hr = swapChain_->GetDesc(&swcDesc);
 	assert(SUCCEEDED(hr));
 	backBuffers.resize(swcDesc.BufferCount);
 	for (int i = 0; i < backBuffers.size(); i++) {
@@ -321,15 +336,15 @@ void DirectXCommon::CreateRenderTargetView() {
 		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), i,
 			device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-		
-		//RTVの設定
-		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
-		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
 		//RTVの生成
-		device_->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
+		device_->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc_, rtvHandle);
 	}
+}
+
+void DirectXCommon::CreateShaderResourceView() {
+	//ディスクリプターヒープの生成
+	srvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 128, true);
 }
 
 void DirectXCommon::CreateFence() {

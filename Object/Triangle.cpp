@@ -129,10 +129,10 @@ void Triangle::CreatePSO() {
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
 	//Shaderのコンパイル
-	IDxcBlob* vertexShaderBlob = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.VS.hlsl", L"vs_6_0");
+	ComPtr<IDxcBlob> vertexShaderBlob = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob != nullptr);
 
-	IDxcBlob* pixelShaderBlob = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.PS.hlsl", L"ps_6_0");
+	ComPtr<IDxcBlob> pixelShaderBlob = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob != nullptr);
 
 	//PSOの生成
