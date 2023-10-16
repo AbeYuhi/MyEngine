@@ -1,10 +1,10 @@
 #pragma once
 #include "../WinApp/WinApp.h"
 #include "../../Debug/DebugLog.h"
+#include "../../External/DirectXTex/d3dx12.h"
 #include <WRL/client.h>
 #include <format>
 #include <d3d12.h>
-#include <d3dx12.h>
 #include <dxgi1_6.h>
 #include <dxgidebug.h>
 #include <dxcapi.h>
