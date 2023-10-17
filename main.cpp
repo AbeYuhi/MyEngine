@@ -1,4 +1,4 @@
-#include "Debug/DebugLog.h"
+#include "DebugSytem/DebugLog.h"
 #include "Base/SafeDelete/SafeDelete.h"
 #include "Base/WinApp/WinApp.h"
 #include "Base/DirectXCommon/DirectXCommon.h"

@@ -99,8 +99,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Base\CreateResource\CreateResource.cpp" />
     <ClCompile Include="Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="Base\WinApp\WinApp.cpp" />
-    <ClCompile Include="Debug\DebugCamera.cpp" />
-    <ClCompile Include="Debug\DebugLog.cpp" />
+    <ClCompile Include="DebugSytem\DebugCamera.cpp" />
+    <ClCompile Include="DebugSytem\DebugLog.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />
     <ClCompile Include="External\imgui\imgui_draw.cpp" />
@@ -123,8 +123,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Base\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="Base\SafeDelete\SafeDelete.h" />
     <ClInclude Include="Base\WinApp\WinApp.h" />
-    <ClInclude Include="Debug\DebugCamera.h" />
-    <ClInclude Include="Debug\DebugLog.h" />
+    <ClInclude Include="DebugSytem\DebugCamera.h" />
+    <ClInclude Include="DebugSytem\DebugLog.h" />
     <ClInclude Include="External\imgui\imconfig.h" />
     <ClInclude Include="External\imgui\imgui.h" />
     <ClInclude Include="External\imgui\imgui_impl_dx12.h" />

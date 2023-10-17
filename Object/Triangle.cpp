@@ -248,7 +248,7 @@ void Triangle::Draw(Matrix4x4 viewProjectionMatrix) {
 	//wvpCBufferの場所を設定
 	sCommandList_->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	sCommandList_->SetGraphicsRootDescriptorTable(2, textureManager->textureSrvHandleGPU_[UVCHECKER]);
+	sCommandList_->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(UVCHECKER));
 	//描画
 	sCommandList_->DrawInstanced(kVertexNumber, 1, 0, 0);
 }

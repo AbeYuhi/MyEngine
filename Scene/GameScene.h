@@ -3,7 +3,7 @@
 #include "../Base/DirectXCommon/DirectXCommon.h"
 #include "../Manager/ImGuiManager.h"
 #include "../Object/Triangle.h"
-#include "../Debug/DebugCamera.h"
+#include "../DebugSytem/DebugCamera.h"
 
 class GameScene {
 public:

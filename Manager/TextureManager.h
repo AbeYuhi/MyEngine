@@ -16,6 +16,8 @@ public:
 
 	void Initialize();
 
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandleGPU(UINT textureNum) { return textureSrvHandleGPU_[textureNum]; }
+
 private: //メンバ関数
 
 	void TransferTexture();
@@ -27,7 +29,6 @@ private: //メンバ関数
 	void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 	void CreateShaderResourceView(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, int i);
-
 
 public: //メンバ変数
 
