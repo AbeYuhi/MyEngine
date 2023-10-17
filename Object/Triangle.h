@@ -1,13 +1,15 @@
 #pragma once
 #include <memory>
+#include "../Base/CreateResource/CreateResource.h"
 #include "../Base/DirectXCommon/DirectXCommon.h"
 #include "../Math/Vector2.h"
 #include "../Math/Vector3.h"
 #include "../Math/Vector3_Math.hpp"
 #include "../Math/Vector4.h"
+#include "../Math/VertexData.h"
 #include "../Math/Transform.h"
 #include "../Math/Matrix4x4.h"
-#include "../Base/CreateResource/CreateResource.h"
+#include "../Manager/TextureManager.h"
 
 class Triangle
 {

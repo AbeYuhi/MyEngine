@@ -110,6 +110,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
+    <ClCompile Include="Manager\TextureManager.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
@@ -133,12 +134,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="External\imgui\imstb_textedit.h" />
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="Manager\ImGuiManager.h" />
+    <ClInclude Include="Manager\TextureManager.h" />
     <ClInclude Include="Math\Matrix4x4.h" />
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector3_Math.hpp" />
     <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="Math\VertexData.h" />
     <ClInclude Include="Object\Triangle.h" />
     <ClInclude Include="Scene\GameScene.h" />
   </ItemGroup>
@@ -155,6 +158,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
     <None Include="External\imgui\imgui.vcxproj.filters" />
+    <None Include="Resources\Shaders\Object3d.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="External\imgui\LICENSE.txt" />

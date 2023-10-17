@@ -28,6 +28,9 @@ LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 const wchar_t WinApp::className[] = L"MyEngine";
 void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t windowWidth, int32_t windowHeight) {
 
+	//COMの初期化
+	CoInitializeEx(0, COINIT_MULTITHREADED);
+
 	//メンバ変数の初期化
 	windowStyle_ = windowStyle;
 
@@ -66,6 +69,10 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t wi
 }
 
 void WinApp::DiscardingWindow() {
+
+	//Comの終了処理
+	CoUninitialize();
+
 	//ウィンドウクラスの登録解除
 	UnregisterClass(wc_.lpszClassName, wc_.hInstance);
 }
