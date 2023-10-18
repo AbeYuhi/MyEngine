@@ -31,10 +31,18 @@ public: //メンバ関数
 	void PostDraw();
 
 	/// <summary>
+	/// オブジェクトの解放チェック
+	/// </summary>
+	void ReleaseCheck();
+
+	/// <summary>
 	/// 画面のクリア
 	/// </summary>
 	void ClearRenderTarget();
 
+	/// <summary>
+	/// コマンドのキックから次のコマンドリストの準備
+	/// </summary>
 	void TransferCommandList();
 
 	/// <summary>
@@ -51,6 +59,14 @@ public: //メンバ関数
 	/// <returns></returns>
 	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
 
+	/// <summary>
+	/// 深度情報を収納するためのリソース確保関数
+	/// </summary>
+	/// <param name="width">画像横幅</param>
+	/// <param name="height">画像縦幅</param>
+	/// <returns></returns>
+	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource();
+
 public: //ゲッターセッター
 
 	inline ID3D12Device* GetDevice() { return device_.Get(); }
@@ -61,9 +77,13 @@ public: //ゲッターセッター
 
 	inline ID3D12DescriptorHeap* GetRtvDescriptorHeap() { return rtvDescriptorHeap_.Get(); }
 
+	inline ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); }
+
+	inline ID3D12DescriptorHeap* GetDsvDescriptorHeap() { return dsvDescriptorHeap_.Get(); }
+
 	inline D3D12_RENDER_TARGET_VIEW_DESC GetRtvDesc() { return rtvDesc_; }
 
-	inline ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); }
+	inline D3D12_DEPTH_STENCIL_VIEW_DESC GetDsvDesc() { return dsvDesc_; }
 
 private: //メンバ関数
 	DirectXCommon() = default;
@@ -79,6 +99,8 @@ private: //メンバ関数
 
 	void CreateShaderResourceView();
 
+	void CreateDepthStencilView();
+
 	void CreateFence();
 
 	void InitializeDXC();
@@ -92,11 +114,14 @@ private: //メンバ変数
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
+	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr;
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_;
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc_;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 	ComPtr<ID3D12Fence> fence_ = nullptr;
 	ComPtr<IDxcUtils> dxcUtils_ = nullptr;
 	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
+	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
 	uint64_t fenceValue_ = 0;
 };

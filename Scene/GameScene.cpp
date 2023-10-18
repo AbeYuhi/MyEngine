@@ -15,9 +15,10 @@ void GameScene::Initialize() {
 	debugCamera_ = std::make_unique<DebugCamera>();
 	debugCamera_->Initialize();
 
-	Vector3 trianglePos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
 	triangle_ = Triangle::Create();
-	triangle2_ = Triangle::Create(trianglePos);
+
+	Vector3 triangle2Pos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
+	triangle2_ = Triangle::Create(triangle2Pos);
 }
 
 void GameScene::Update() {

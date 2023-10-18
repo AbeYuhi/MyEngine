@@ -66,9 +66,6 @@ private: //メンバ変数
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	ComPtr<ID3D12Resource> wvpResource_ = nullptr;
-	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
-	//DSV
-	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = nullptr;
 
 	//VertexBufferView
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;

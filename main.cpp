@@ -77,5 +77,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	//ゲームウィンドウの破棄
 	winApp->DiscardingWindow();
 
+	//directXCommon->ReleaseCheck();
+
 	return 0;
 }

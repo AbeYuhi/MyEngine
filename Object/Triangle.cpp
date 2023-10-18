@@ -164,6 +164,12 @@ void Triangle::CreatePSO() {
 	ComPtr<IDxcBlob> pixelShaderBlob = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob != nullptr);
 
+	//DepthStencilStateの設定
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+	depthStencilDesc.DepthEnable = true;
+	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+
 	//PSOの生成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipeLineStateDesc{};
 	graphicsPipeLineStateDesc.pRootSignature = sRootSignature_.Get();
@@ -172,6 +178,8 @@ void Triangle::CreatePSO() {
 	graphicsPipeLineStateDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
 	graphicsPipeLineStateDesc.BlendState = blendDesc;
 	graphicsPipeLineStateDesc.RasterizerState = rasterizerDesc;
+	graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc;
+	graphicsPipeLineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	//書き込むRTVの情報
 	graphicsPipeLineStateDesc.NumRenderTargets = 1;
 	graphicsPipeLineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -186,6 +194,8 @@ void Triangle::CreatePSO() {
 }
 
 void Triangle::Initialize(Vector3 pos[3]) {
+	//dxCommonのインスタンスの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);
@@ -193,8 +203,6 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	materialResource_ = CreateBufferResource(sizeof(Vector4));
 	//wvpResourceの生成
 	wvpResource_ = CreateBufferResource(sizeof(Matrix4x4));
-	//depthStencilResourceの生成
-	depthStencilResource_ = CreateDepthStencilTextureResource();
 
 	//リソースの先頭のアドレスを使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -221,8 +229,6 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	//wvpデータの記入
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 	*wvpData_ = MakeIdentity4x4();
-
-	//dsv
 
 	//トランスフォームの初期化
 	transform_.scale = { 1.0f, 1.0f, 1.0f };
