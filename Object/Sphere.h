@@ -2,6 +2,7 @@
 #include <memory>
 #include "../Base/CreateResource/CreateResource.h"
 #include "../Base/DirectXCommon/DirectXCommon.h"
+#include "../Manager/ImGuiManager.h"
 #include "../Math/Vector2.h"
 #include "../Math/Vector3.h"
 #include "../Math/Vector3_Math.hpp"
@@ -11,7 +12,7 @@
 #include "../Math/Matrix4x4.h"
 #include "../Manager/TextureManager.h"
 
-class Triangle
+class Sphere
 {
 public: //静的メンバ関数
 
@@ -24,7 +25,7 @@ public: //静的メンバ関数
 
 	static void PostDraw();
 
-	static std::unique_ptr<Triangle> Create(Vector3 pos[3] = sDefaultPos);
+	static std::unique_ptr<Sphere> Create();
 
 private: //静的メンバ関数
 
@@ -41,15 +42,14 @@ private: //静的メンバ変数
 	static D3D12_VIEWPORT sViewPort_;
 	static D3D12_RECT sScissorRect_;
 	static ID3D12GraphicsCommandList* sCommandList_;
-	const static UINT kVertexNumber = 3;
-	//初期位置
-	static Vector3 sDefaultPos[3];
+	const static UINT kSubDivision = 512;
+	const static UINT kVertexNumber = kSubDivision * kSubDivision * 6;
 
 public: //メンバ関数
-	Triangle();
-	~Triangle();
+	Sphere();
+	~Sphere();
 
-	void Initialize(Vector3 pos[3]);
+	void Initialize();
 
 	void Update();
 
@@ -57,9 +57,8 @@ public: //メンバ関数
 
 public: //ゲッターセッター
 
-	void SetPosition(Vector4 pos, int index) { vertexData_[index].position = pos; }
-	void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
-	void SetColor(Vector4 color) { *materialData_ = color; }
+	inline void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
+	inline void SetColor(Vector4 color) { *materialData_ = color; }
 
 private: //メンバ変数
 	//オブジェクト情報のResource

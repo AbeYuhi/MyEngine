@@ -116,6 +116,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Math\Vector3_Math.cpp" />
+    <ClCompile Include="Object\Sphere.cpp" />
     <ClCompile Include="Object\Sprite.cpp" />
     <ClCompile Include="Object\Triangle.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
@@ -145,6 +146,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Math\Vector3_Math.hpp" />
     <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="Math\VertexData.h" />
+    <ClInclude Include="Object\Sphere.h" />
     <ClInclude Include="Object\Sprite.h" />
     <ClInclude Include="Object\Triangle.h" />
     <ClInclude Include="Scene\GameScene.h" />

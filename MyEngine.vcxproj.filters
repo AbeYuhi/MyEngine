@@ -132,6 +132,9 @@
     <ClCompile Include="GameObject\Camera\DebugCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Sphere.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object\Triangle.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="GameObject\Camera\SpriteCamera.h">
       <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Sphere.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -52,7 +52,7 @@ public: //メンバ関数
 
 	void Update();
 
-	void Draw(Matrix4x4 viewProjectionMatrix, UINT textureName);
+	void Draw(Matrix4x4 viewProjectionMatrix, UINT textureName = UVCHECKER);
 
 public: //ゲッターセッター
 

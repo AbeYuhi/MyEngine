@@ -41,16 +41,16 @@ void SpriteCamera::Update() {
 
 		Vector3 cameraVelocity = { 0.0f, 0.0f, 0.0f };
 		if (ImGui::IsKeyDown(ImGuiKey_A)) {
-			cameraVelocity.x += -0.2f;
+			cameraVelocity.x += -2;
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_D)) {
-			cameraVelocity.x += 0.2f;
+			cameraVelocity.x += 2;
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_W)) {
-			cameraVelocity.y += 0.2f;
+			cameraVelocity.y += 2;
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_S)) {
-			cameraVelocity.y += -0.2f;
+			cameraVelocity.y += -2;
 		}
 
 		if (ImGui::IsMouseDown(2)) {
