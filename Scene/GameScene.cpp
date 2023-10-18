@@ -15,20 +15,26 @@ void GameScene::Initialize() {
 	debugCamera_ = std::make_unique<DebugCamera>();
 	debugCamera_->Initialize();
 
+	spriteCamera_ = std::make_unique<SpriteCamera>();
+	spriteCamera_->Initialize();
+
 	triangle_ = Triangle::Create();
 
 	Vector3 triangle2Pos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
 	triangle2_ = Triangle::Create(triangle2Pos);
+
+	sprite_ = Sprite::Create({620, 360});
 }
 
 void GameScene::Update() {
 	//カメラの更新
 	debugCamera_->Update();
+	spriteCamera_->Update();
 
 	triangle_->Update();
 	triangle2_->Update();
 
-	ImGui::ShowDemoWindow();
+	sprite_->Update();
 }
 
 void GameScene::Draw() {
@@ -40,5 +46,12 @@ void GameScene::Draw() {
 	triangle2_->Draw(debugCamera_->GetViewProjectionMatrix(), UVCHECKER);
 
 	Triangle::PostDraw();
+
+	//スプライト
+	Sprite::PreDraw(directXCommon_->GetCommandList());
+
+	sprite_->Draw(spriteCamera_->GetViewProjectionMatrix(), UVCHECKER);
+
+	Sprite::PostDraw();
 
 }

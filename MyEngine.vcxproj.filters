@@ -49,6 +49,18 @@
     <Filter Include="ヘッダー ファイル\Manager">
       <UniqueIdentifier>{eb8fe15e-c7fc-4a76-99f8-b667a558d38f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject">
+      <UniqueIdentifier>{9e467294-ff27-4681-b5b1-1b3ee19c70ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject">
+      <UniqueIdentifier>{9c50e8dd-31d7-4f2c-9824-f6fc838b7243}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Camera">
+      <UniqueIdentifier>{34578d30-73df-416a-84c7-021af75d9267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Camera">
+      <UniqueIdentifier>{c6d4a612-b167-42c8-bc4d-80b99c8541a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,8 +123,14 @@
     <ClCompile Include="DebugSytem\DebugLog.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="DebugSytem\DebugCamera.cpp">
-      <Filter>ソース ファイル\Base</Filter>
+    <ClCompile Include="Object\Sprite.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Camera\SpriteCamera.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Camera\DebugCamera.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,8 +206,14 @@
     <ClInclude Include="DebugSytem\DebugLog.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="DebugSytem\DebugCamera.h">
-      <Filter>ヘッダー ファイル\Base</Filter>
+    <ClInclude Include="Object\Sprite.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Camera\DebugCamera.h">
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Camera\SpriteCamera.h">
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

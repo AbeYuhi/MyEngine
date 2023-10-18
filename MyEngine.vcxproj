@@ -99,7 +99,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Base\CreateResource\CreateResource.cpp" />
     <ClCompile Include="Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="Base\WinApp\WinApp.cpp" />
-    <ClCompile Include="DebugSytem\DebugCamera.cpp" />
     <ClCompile Include="DebugSytem\DebugLog.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />
@@ -108,6 +107,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="External\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="External\imgui\imgui_tables.cpp" />
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="GameObject\Camera\DebugCamera.cpp" />
+    <ClCompile Include="GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
     <ClCompile Include="Manager\TextureManager.cpp" />
@@ -115,6 +116,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Math\Vector3_Math.cpp" />
+    <ClCompile Include="Object\Sprite.cpp" />
     <ClCompile Include="Object\Triangle.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
   </ItemGroup>
@@ -123,7 +125,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Base\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="Base\SafeDelete\SafeDelete.h" />
     <ClInclude Include="Base\WinApp\WinApp.h" />
-    <ClInclude Include="DebugSytem\DebugCamera.h" />
     <ClInclude Include="DebugSytem\DebugLog.h" />
     <ClInclude Include="External\imgui\imconfig.h" />
     <ClInclude Include="External\imgui\imgui.h" />
@@ -133,6 +134,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="External\imgui\imstb_rectpack.h" />
     <ClInclude Include="External\imgui\imstb_textedit.h" />
     <ClInclude Include="External\imgui\imstb_truetype.h" />
+    <ClInclude Include="GameObject\Camera\DebugCamera.h" />
+    <ClInclude Include="GameObject\Camera\SpriteCamera.h" />
     <ClInclude Include="Manager\ImGuiManager.h" />
     <ClInclude Include="Manager\TextureManager.h" />
     <ClInclude Include="Math\Matrix4x4.h" />
@@ -142,6 +145,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Math\Vector3_Math.hpp" />
     <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="Math\VertexData.h" />
+    <ClInclude Include="Object\Sprite.h" />
     <ClInclude Include="Object\Triangle.h" />
     <ClInclude Include="Scene\GameScene.h" />
   </ItemGroup>

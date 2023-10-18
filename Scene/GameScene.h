@@ -3,7 +3,9 @@
 #include "../Base/DirectXCommon/DirectXCommon.h"
 #include "../Manager/ImGuiManager.h"
 #include "../Object/Triangle.h"
-#include "../DebugSytem/DebugCamera.h"
+#include "../Object/Sprite.h"
+#include "../GameObject/Camera/DebugCamera.h"
+#include "../GameObject/Camera/SpriteCamera.h"
 
 class GameScene {
 public:
@@ -22,7 +24,11 @@ private:
 	DirectXCommon* directXCommon_;
 	//デバッグカメラ
 	std::unique_ptr<DebugCamera> debugCamera_;
+	//スプライト用カメラ
+	std::unique_ptr<SpriteCamera> spriteCamera_;
 
 	std::unique_ptr<Triangle> triangle_;
 	std::unique_ptr<Triangle> triangle2_;
+
+	std::unique_ptr<Sprite> sprite_;
 };

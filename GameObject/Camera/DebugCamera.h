@@ -1,11 +1,11 @@
 #pragma once
-#include "../Math/Transform.h"
-#include "../Math/Vector2.h"
-#include "../Math/Vector3.h"
-#include "../Math/Vector3_Math.hpp"
-#include "../Math/Matrix4x4.h"
-#include "../Base/WinApp/WinApp.h"
-#include "../Manager/ImGuiManager.h"
+#include "../../Math/Transform.h"
+#include "../../Math/Vector2.h"
+#include "../../Math/Vector3.h"
+#include "../../Math/Vector3_Math.hpp"
+#include "../../Math/Matrix4x4.h"
+#include "../../Base/WinApp/WinApp.h"
+#include "../../Manager/ImGuiManager.h"
 #define M_PI 3.14f
 
 class DebugCamera
@@ -25,6 +25,8 @@ public:
 	inline float GetNearClip() { return nearClip_; }
 	inline float GetFarClip() { return farClip_; }
 	inline float GetFovY() { return fovY_; }
+	inline bool IsMove() { return isMove_; }
+	inline void SetMove(bool isMove) { isMove_ = isMove; }
 
 private:
 	
@@ -36,6 +38,8 @@ private:
 	float nearClip_;
 	float farClip_;
 	float fovY_;
+
+	bool isMove_;
 
 	//マウスの位置
 	ImVec2 mousePos_;

@@ -5,6 +5,7 @@
 #include "Manager/ImGuiManager.h"
 #include "Manager/TextureManager.h"
 #include "Object/Triangle.h"
+#include "Object/Sprite.h"
 #include "Scene/GameScene.h"
 
 //エントリーポイント
@@ -35,6 +36,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 
 	//オブジェクトの初期化
 	Triangle::StaticInitialize();
+	Sprite::StaticInitialize();
 
 	//ゲームシーンの初期化
 	gameScene = new GameScene();

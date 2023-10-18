@@ -1,26 +1,25 @@
-#include "Triangle.h"
+#include "Sprite.h"
 
-Triangle::Triangle()
+Sprite::Sprite()
 {
 }
 
-Triangle::~Triangle()
+Sprite::~Sprite()
 {
 }
 
 /// <summary>
 /// 静的メンバ変数の実体化
 /// </summary>
-ComPtr<ID3D12RootSignature> Triangle::sRootSignature_;
-ComPtr<ID3D12PipelineState> Triangle::sGraphicsPipelineState_;
-D3D12_VIEWPORT Triangle::sViewPort_;
-D3D12_RECT Triangle::sScissorRect_;
-ID3D12GraphicsCommandList* Triangle::sCommandList_ = nullptr;
-Vector3 Triangle::sDefaultPos[3] = {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.5f, 0.0f}, {0.5f, -0.5f, 0.0f}};
+ComPtr<ID3D12RootSignature> Sprite::sRootSignature_;
+ComPtr<ID3D12PipelineState> Sprite::sGraphicsPipelineState_;
+D3D12_VIEWPORT Sprite::sViewPort_;
+D3D12_RECT Sprite::sScissorRect_;
+ID3D12GraphicsCommandList* Sprite::sCommandList_ = nullptr;
 
-void Triangle::StaticInitialize() {
+void Sprite::StaticInitialize() {
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
-	
+
 	//ルートシグネチャーの生成
 	CreateRootSignature();
 
@@ -42,9 +41,9 @@ void Triangle::StaticInitialize() {
 	sScissorRect_.bottom = WinApp::GetInstance()->kWindowHeight;
 }
 
-void Triangle::PreDraw(ID3D12GraphicsCommandList* commandList) {
+void Sprite::PreDraw(ID3D12GraphicsCommandList* commandList) {
 	//1フレーム前にPostDrawが呼ばれていなかったらエラー
-	assert(Triangle::sCommandList_ == nullptr);
+	assert(Sprite::sCommandList_ == nullptr);
 	//コマンドリストのセット
 	sCommandList_ = commandList;
 
@@ -60,19 +59,19 @@ void Triangle::PreDraw(ID3D12GraphicsCommandList* commandList) {
 	sCommandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Triangle::PostDraw() {
+void Sprite::PostDraw() {
 	//コマンドリストを解除
 	sCommandList_ = nullptr;
 }
 
-std::unique_ptr<Triangle> Triangle::Create(Vector3 pos[3]) {
-	std::unique_ptr<Triangle> object = std::make_unique<Triangle>();
-	object->Initialize(pos);
+std::unique_ptr<Sprite> Sprite::Create(Vector2 spriteSize) {
+	std::unique_ptr<Sprite> object = std::make_unique<Sprite>();
+	object->Initialize(spriteSize);
 
 	return object;
 }
 
-void Triangle::CreateRootSignature() {
+void Sprite::CreateRootSignature() {
 	//DirectXCommonの取得
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 
@@ -128,7 +127,7 @@ void Triangle::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void Triangle::CreatePSO() {
+void Sprite::CreatePSO() {
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 
 	//InputLayoutの設定
@@ -193,7 +192,7 @@ void Triangle::CreatePSO() {
 	assert(SUCCEEDED(hr));
 }
 
-void Triangle::Initialize(Vector3 pos[3]) {
+void Sprite::Initialize(Vector2 spriteSize) {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
@@ -211,15 +210,20 @@ void Triangle::Initialize(Vector3 pos[3]) {
 
 	//Resourceにデータを書き込む
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-	//左下
-	vertexData_[0].position = { pos[0].x, pos[0].y, pos[0].z, 1.0f };
-	vertexData_[0].texcoord = {0.0f, 1.0f};
-	//上
-	vertexData_[1].position = { pos[1].x, pos[1].y, pos[1].z, 1.0f};
-	vertexData_[1].texcoord = {0.5f, 0.0f};
-	//右下
-	vertexData_[2].position = { pos[2].x, pos[2].y, pos[2].z, 1.0f};
-	vertexData_[2].texcoord = {1.0f, 1.0f};
+	//1枚目の三角形
+	vertexData_[0].position = { 0.0f, spriteSize.y, 0.0f, 1.0f }; //左下
+	vertexData_[0].texcoord = { 0.0f, 1.0f };
+	vertexData_[1].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
+	vertexData_[1].texcoord = { 0.0f, 0.0f };
+	vertexData_[2].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下
+	vertexData_[2].texcoord = { 1.0f, 1.0f };
+	//2枚目の三角形
+	vertexData_[3].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
+	vertexData_[3].texcoord = { 0.0f, 0.0f };
+	vertexData_[4].position = { spriteSize.x, 0.0f, 0.0f, 1.0f }; //右上
+	vertexData_[4].texcoord = { 1.0f, 0.0f };
+	vertexData_[5].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下
+	vertexData_[5].texcoord = { 1.0f, 1.0f };
 
 	//Materialデータの記入
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
@@ -236,14 +240,17 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	transform_.translate = { 0.0f, 0.0f, 0.0f };
 }
 
-void Triangle::Update() {
-	transform_.rotate.y += 0.03f;
+void Sprite::Update() {
+
+	ImGui::Begin("Sprite");
+	ImGui::SliderFloat2("Pos", &transform_.translate.x, -100.0f, 100.0f);
+	ImGui::End();
 
 	//ワールドMatrixの更新
 	worldMatrix_ = MakeAffineMatrix(transform_);
 }
 
-void Triangle::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
+void Sprite::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 
 	//カメラ移動によるwvpの変化
