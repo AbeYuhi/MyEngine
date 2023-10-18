@@ -35,10 +35,6 @@ void ImGuiManager::End() {
 void ImGuiManager::Draw() {
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
-	//描画用DescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
-	commandList->SetDescriptorHeaps(1, descriptorHeaps);
-
 	//描画コマンドを積む
 	ImGui_ImplDX12_RenderDrawData(GetDrawData(), commandList);
 }

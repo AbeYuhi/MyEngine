@@ -60,6 +60,10 @@ void DirectXCommon::PreDraw() {
 	//画面のクリア
 	ClearRenderTarget();
 
+	//描画用DescriptorHeapの設定
+	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
+	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
+
 }
 
 void DirectXCommon::PostDraw() {
@@ -183,6 +187,41 @@ ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(D3D12_DESCRIPTO
 	return descriptorHeap;
 }
 
+ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource() {
+	//WinAppの取得
+	WinApp* winApp = WinApp::GetInstance();
+
+	D3D12_RESOURCE_DESC resourceDesc{};
+	resourceDesc.Width = winApp->kWindowWidth;
+	resourceDesc.Height = winApp->kWindowHeight;
+	resourceDesc.MipLevels = 1;
+	resourceDesc.DepthOrArraySize = 1;
+	resourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	resourceDesc.SampleDesc.Count = 1;
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+
+	//利用するヒープの設定
+	D3D12_HEAP_PROPERTIES heapProperities{};
+	heapProperities.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+	//深層値のクリア設定
+	D3D12_CLEAR_VALUE depthClearValue{};
+	depthClearValue.DepthStencil.Depth = 1.0f;
+	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	ComPtr<ID3D12Resource> resource = nullptr;
+	HRESULT hr = device_->CreateCommittedResource(
+		&heapProperities,
+		D3D12_HEAP_FLAG_NONE,
+		&resourceDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		&depthClearValue,
+		IID_PPV_ARGS(&resource));
+	assert(SUCCEEDED(hr));
+	return resource;
+}
+
 void DirectXCommon::ClearRenderTarget() {
 	//バックバッファの取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
@@ -195,6 +234,37 @@ void DirectXCommon::ClearRenderTarget() {
 	//指定した色で画面のクリア
 	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
 	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+}
+
+void DirectXCommon::TransferCommandList() {
+	//コマンドリストを閉じる
+	LRESULT hr = commandList_->Close();
+	assert(SUCCEEDED(hr));
+	//GPUにコマンドリストの実行を行わせる
+	ID3D12CommandList* commandLists[] = { commandList_.Get() };
+	commandQueue_->ExecuteCommandLists(1, commandLists);
+
+	///同期処理
+	//Fenceの値を更新
+	fenceValue_++;
+	//GPUがここまでたどり着いたら、Fenceの値を更新した値に代入するようにSignalを送る
+	commandQueue_->Signal(fence_.Get(), fenceValue_);
+	//Fenceの値がSignal値にになったかを確認
+	if (fence_->GetCompletedValue() < fenceValue_) {
+		//イベントの生成
+		HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+		assert(fenceEvent != nullptr);
+		//指定したSignalにたどり着いてないので待つようにイベントを設定
+		fence_->SetEventOnCompletion(fenceValue_, fenceEvent);
+		//イベントを待つ
+		WaitForSingleObject(fenceEvent, INFINITE);
+	}
+
+	//次のフレーム用のコマンドリストの準備
+	hr = commandAllocator_->Reset();
+	assert(SUCCEEDED(hr));
+	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
+	assert(SUCCEEDED(hr));
 }
 
 void DirectXCommon::InitializeDxgiDevice() {

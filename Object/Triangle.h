@@ -24,7 +24,7 @@ public: //静的メンバ関数
 
 	static void PostDraw();
 
-	static std::unique_ptr<Triangle> Create();
+	static std::unique_ptr<Triangle> Create(Vector3 pos[3] = sDefaultPos);
 
 private: //静的メンバ関数
 
@@ -42,16 +42,24 @@ private: //静的メンバ変数
 	static D3D12_RECT sScissorRect_;
 	static ID3D12GraphicsCommandList* sCommandList_;
 	const static UINT kVertexNumber = 3;
+	//初期位置
+	static Vector3 sDefaultPos[3];
 
 public: //メンバ関数
 	Triangle();
 	~Triangle();
 
-	void Initialize();
+	void Initialize(Vector3 pos[3]);
 
 	void Update();
 
-	void Draw(Matrix4x4 viewProjectionMatrix);
+	void Draw(Matrix4x4 viewProjectionMatrix, UINT textureName);
+
+public: //ゲッターセッター
+
+	void SetPosition(Vector4 pos, int index) { vertexData_[index].position = pos; }
+	void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
+	void SetColor(Vector4 color) { *materialData_ = color; }
 
 private: //メンバ変数
 	//VertexResource
@@ -59,12 +67,16 @@ private: //メンバ変数
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	ComPtr<ID3D12Resource> wvpResource_ = nullptr;
 
+	//深度情報
+	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
+
 	//VertexBufferView
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
 
 	//オブジェクトのローカル情報
 	WorldTransform transform_;
 	Matrix4x4 worldMatrix_;
+	VertexData* vertexData_;
 	Vector4* materialData_;
 	Matrix4x4* wvpData_;
 };

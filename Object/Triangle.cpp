@@ -16,6 +16,7 @@ ComPtr<ID3D12PipelineState> Triangle::sGraphicsPipelineState_;
 D3D12_VIEWPORT Triangle::sViewPort_;
 D3D12_RECT Triangle::sScissorRect_;
 ID3D12GraphicsCommandList* Triangle::sCommandList_ = nullptr;
+Vector3 Triangle::sDefaultPos[3] = {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.5f, 0.0f}, {0.5f, -0.5f, 0.0f}};
 
 void Triangle::StaticInitialize() {
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
@@ -46,7 +47,7 @@ void Triangle::PreDraw(ID3D12GraphicsCommandList* commandList) {
 	assert(Triangle::sCommandList_ == nullptr);
 	//コマンドリストのセット
 	sCommandList_ = commandList;
-	
+
 	//ViewPortの設定
 	sCommandList_->RSSetViewports(1, &sViewPort_);
 	//Scirssorの設定
@@ -64,9 +65,9 @@ void Triangle::PostDraw() {
 	sCommandList_ = nullptr;
 }
 
-std::unique_ptr<Triangle> Triangle::Create() {
+std::unique_ptr<Triangle> Triangle::Create(Vector3 pos[3]) {
 	std::unique_ptr<Triangle> triangle = std::make_unique<Triangle>();
-	triangle->Initialize();
+	triangle->Initialize(pos);
 
 	return triangle;
 }
@@ -184,7 +185,7 @@ void Triangle::CreatePSO() {
 	assert(SUCCEEDED(hr));
 }
 
-void Triangle::Initialize() {
+void Triangle::Initialize(Vector3 pos[3]) {
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);
@@ -192,6 +193,8 @@ void Triangle::Initialize() {
 	materialResource_ = CreateBufferResource(sizeof(Vector4));
 	//wvpResourceの生成
 	wvpResource_ = CreateBufferResource(sizeof(Matrix4x4));
+	//depthStencilResourceの生成
+	depthStencilResource_ = DirectXCommon::GetInstance()->CreateDepthStencilTextureResource();
 
 	//リソースの先頭のアドレスを使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -199,22 +202,21 @@ void Triangle::Initialize() {
 	vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
 	//Resourceにデータを書き込む
-	VertexData* vertexData = nullptr;
-	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	//左下
-	vertexData[0].position = {-0.5f, -0.5f, 0.0f, 1.0f};
-	vertexData[0].texcoord = {0.0f, 1.0f};
+	vertexData_[0].position = { pos[0].x, pos[0].y, pos[0].z, 1.0f };
+	vertexData_[0].texcoord = {0.0f, 1.0f};
 	//上
-	vertexData[1].position = {0.0f, 0.5f, 0.0f, 1.0f};
-	vertexData[1].texcoord = {0.5f, 0.0f};
+	vertexData_[1].position = { pos[1].x, pos[1].y, pos[1].z, 1.0f};
+	vertexData_[1].texcoord = {0.5f, 0.0f};
 	//右下
-	vertexData[2].position = {0.5f, -0.5f, 0.0f, 1.0f};
-	vertexData[2].texcoord = {1.0f, 1.0f};
+	vertexData_[2].position = { pos[2].x, pos[2].y, pos[2].z, 1.0f};
+	vertexData_[2].texcoord = {1.0f, 1.0f};
 
 	//Materialデータの記入
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	//色の書き込み
-	*materialData_ = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+	*materialData_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//wvpデータの記入
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
@@ -224,7 +226,6 @@ void Triangle::Initialize() {
 	transform_.scale = { 1.0f, 1.0f, 1.0f };
 	transform_.rotate = { 0.0f, 0.0f, 0.0f };
 	transform_.translate = { 0.0f, 0.0f, 0.0f };
-
 }
 
 void Triangle::Update() {
@@ -234,7 +235,7 @@ void Triangle::Update() {
 	worldMatrix_ = MakeAffineMatrix(transform_);
 }
 
-void Triangle::Draw(Matrix4x4 viewProjectionMatrix) {
+void Triangle::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 
 	//カメラ移動によるwvpの変化
@@ -248,7 +249,7 @@ void Triangle::Draw(Matrix4x4 viewProjectionMatrix) {
 	//wvpCBufferの場所を設定
 	sCommandList_->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	sCommandList_->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(UVCHECKER));
+	sCommandList_->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
 	//描画
 	sCommandList_->DrawInstanced(kVertexNumber, 1, 0, 0);
 }

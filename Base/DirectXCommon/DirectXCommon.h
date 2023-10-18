@@ -16,9 +16,6 @@ class DirectXCommon {
 public: //静的関数
 	static DirectXCommon* GetInstance();
 
-public: //静的変数
-
-
 public: //メンバ関数
 
 	void Initialize();
@@ -38,6 +35,8 @@ public: //メンバ関数
 	/// </summary>
 	void ClearRenderTarget();
 
+	void TransferCommandList();
+
 	/// <summary>
 	/// Dxcのコンパイルシェーダー
 	/// </summary>
@@ -51,6 +50,14 @@ public: //メンバ関数
 	/// <param name="shaderVisible"></param>
 	/// <returns></returns>
 	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
+
+	/// <summary>
+	/// 深度情報を収納するためのリソース確保関数
+	/// </summary>
+	/// <param name="width">画像横幅</param>
+	/// <param name="height">画像縦幅</param>
+	/// <returns></returns>
+	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource();
 
 public: //ゲッターセッター
 

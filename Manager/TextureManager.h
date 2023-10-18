@@ -1,10 +1,14 @@
 #pragma once
+#include <vector>
 #include "../Base/WinApp/WinApp.h"
 #include "../Base/DirectXCommon/DirectXCommon.h"
+#include "../Base/CreateResource/CreateResource.h"
 #include "../External/DirectXTex/DirectXTex.h"
+#include "../External/DirectXTex/d3dx12.h"
 
 enum TextureName {
 	 UVCHECKER,
+	 WHITE,
 	 TEXTURENUM
 };
 
@@ -26,7 +30,8 @@ private: //メンバ関数
 
 	ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
 
-	void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
+	[[nodiscard]]
+	ComPtr<ID3D12Resource> UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 	void CreateShaderResourceView(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, int i);
 

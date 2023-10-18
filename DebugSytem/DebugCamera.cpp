@@ -26,56 +26,59 @@ void DebugCamera::Initialize() {
 }
 
 void DebugCamera::Update() {
-
-	/*ImGui::Begin("CameraManager");
-	ImGui::SliderFloat3("CameraTranslate", &translate_.x, -100.0f, 100.0f);
-	ImGui::SliderFloat3("CameraRotate", &rotate_.x, -2.0f * M_PI, 2.0f * M_PI);
+	ImGui::Begin("CameraManager");
+	ImGui::SliderFloat3("CameraTranslate", &transform_.translate.x, -100.0f, 100.0f);
+	ImGui::SliderFloat3("CameraRotate", &transform_.rotate.x, -2.0f * M_PI, 2.0f * M_PI);
 	ImGui::End();
 
-	Vector3 prePos = translate_;
+	Vector3 prePos = transform_.translate;
 	preMousePos_ = mousePos_;
-	Novice::GetMousePosition(&mousePos_.x, &mousePos_.y);
+	mousePos_ = ImGui::GetMousePos();
 
-	if (Novice::IsPressMouse(1)) {
-		Vector2Int mouseAmount = mousePos_ - preMousePos_;
+	if (ImGui::IsMouseDown(0)) {
+		ImVec2 mouseAmount; 
+		mouseAmount.x = mousePos_.x - preMousePos_.x;
+		mouseAmount.y = mousePos_.y - preMousePos_.y;
 
-		rotate_.x += mouseAmount.y * 0.01f;
-		rotate_.y += mouseAmount.x * 0.01f;
+		transform_.rotate.x += mouseAmount.y * 0.005f;
+		transform_.rotate.y += mouseAmount.x * 0.005f;
 	}
 
 	Vector3 cameraVelocity = { 0.0f, 0.0f, 0.0f };
-	if (keys[DIK_A]) {
+	if (ImGui::IsKeyDown(ImGuiKey_A)) {
 		cameraVelocity.x += -0.2f;
 	}
-	if (keys[DIK_D]) {
+	if (ImGui::IsKeyDown(ImGuiKey_D)) {
 		cameraVelocity.x += 0.2f;
 	}
-	if (keys[DIK_W]) {
+	if (ImGui::IsKeyDown(ImGuiKey_W)) {
 		cameraVelocity.z += 0.2f;
 	}
-	if (keys[DIK_S]) {
+	if (ImGui::IsKeyDown(ImGuiKey_S)) {
 		cameraVelocity.z += -0.2f;
 	}
 
-	if (Novice::IsPressMouse(2)) {
-		Vector2Int mouseAmount = mousePos_ - preMousePos_;
+	if (ImGui::IsMouseDown(2)) {
+		ImVec2 mouseAmount;
+		mouseAmount.x = mousePos_.x - preMousePos_.x;
+		mouseAmount.y = mousePos_.y - preMousePos_.y;
 
-		cameraVelocity.x += -mouseAmount.x * 0.1f;
-		cameraVelocity.y += mouseAmount.y * 0.1f;
+		cameraVelocity.x += -mouseAmount.x * 0.05f;
+		cameraVelocity.y += mouseAmount.y * 0.05f;
 	}
 
-	int wheel = Novice::GetWheel();
+	float wheel = ImGui::GetIO().MouseWheel;
 	if (wheel != 0) {
-		cameraVelocity.z += wheel * 0.01f;
+		cameraVelocity.z += wheel * 0.2f;
 	}
 
-	translate_ += TransformNormal(cameraVelocity, worldMatrix_);
+	transform_.translate += TransformNormal(cameraVelocity, worldMatrix_);
 
-	if (keys[DIK_LSHIFT]) {
-		translate_.y = prePos.y;
+	if (ImGui::IsKeyDown(ImGuiKey_LeftShift)) {
+		transform_.translate.y = prePos.y;
 	}
 
-	worldMatrix_ = MakeAffineMatrix({ 1.0f, 1.0f, 1.0f }, rotate_, translate_);*/
+	worldMatrix_ = MakeAffineMatrix({ 1.0f, 1.0f, 1.0f }, transform_.rotate, transform_.translate);
 
 	viewMatrix_ = Inverse(worldMatrix_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, (float)WinApp::kWindowWidth / (float)WinApp::kWindowHeight, nearClip_, farClip_);

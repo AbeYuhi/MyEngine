@@ -5,6 +5,7 @@
 #include "../Math/Vector3_Math.hpp"
 #include "../Math/Matrix4x4.h"
 #include "../Base/WinApp/WinApp.h"
+#include "../Manager/ImGuiManager.h"
 #define M_PI 3.14f
 
 class DebugCamera
@@ -37,6 +38,6 @@ private:
 	float fovY_;
 
 	//マウスの位置
-	Vector2Int mousePos_;
-	Vector2Int preMousePos_;
+	ImVec2 mousePos_;
+	ImVec2 preMousePos_;
 };

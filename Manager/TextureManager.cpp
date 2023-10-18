@@ -10,15 +10,20 @@ void TextureManager::Initialize() {
 }
 
 void TextureManager::TransferTexture() {
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+
 	//画像の読み込み
 	mipImages_[UVCHECKER] = LoadTexture("uvChecker.png");
+	mipImages_[WHITE] = LoadTexture("whiteTexture2x2.png");
 
 	//Metadata
 	DirectX::TexMetadata metadata[TEXTURENUM] = {};
 	for (int i = 0; i < TEXTURENUM; i++) {
 		metadata[i] = mipImages_[i].GetMetadata();
 		textureResources_[i] = CreateTextureResource(metadata[i]);
-		UploadTextureData(textureResources_[i].Get(), mipImages_[i]);
+		ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(textureResources_[i].Get(), mipImages_[i]);
+
+		dxCommon->TransferCommandList();
 	}
 
 	for (int i = 0; i < TEXTURENUM; i++) {
@@ -66,29 +71,32 @@ ComPtr<ID3D12Resource> TextureManager::CreateTextureResource(const DirectX::TexM
 		&heapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
+		D3D12_RESOURCE_STATE_COPY_DEST,
 		nullptr,
 		IID_PPV_ARGS(&resource));
 	assert(SUCCEEDED(hr));
 	return resource;
 }
 
-void TextureManager::UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages) {
-	//Meta情報を取得
-	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	//全MipMapについて
-	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; mipLevel++) {
-		//各イメージを取得
-		const DirectX::Image* image = mipImages.GetImage(mipLevel, 0, 0);
-		//Textureに転送
-		HRESULT hr = texture->WriteToSubresource(
-			UINT(mipLevel),
-			nullptr,
-			image->pixels,
-			UINT(image->rowPitch),
-			UINT(image->slicePitch));
-		assert(SUCCEEDED(hr));
-	}
+ComPtr<ID3D12Resource> TextureManager::UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages) {
+	//DxCommonの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+
+	std::vector<D3D12_SUBRESOURCE_DATA> subresource;
+	DirectX::PrepareUpload(dxCommon->GetDevice(), mipImages.GetImages(), mipImages.GetImageCount(), mipImages.GetMetadata(), subresource);
+	uint64_t intermediateSize = GetRequiredIntermediateSize(texture, 0, UINT(subresource.size()));
+	ComPtr<ID3D12Resource> intermediateResource = CreateBufferResource(intermediateSize);
+	UpdateSubresources(dxCommon->GetCommandList(), texture, intermediateResource.Get(), 0, 0, UINT(subresource.size()), subresource.data());
+	//Textureへの転送後は利用できるよう、D3D12_RESOURCE_STATE_COPY_DESTからD3D12_RESOURCE_GENERIC_READへResourceStateを変更
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.Transition.pResource = texture;
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+	dxCommon->GetCommandList()->ResourceBarrier(1, &barrier);
+	return intermediateResource;
 }
 
 void TextureManager::CreateShaderResourceView(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, int i) {

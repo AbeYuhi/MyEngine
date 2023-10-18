@@ -24,4 +24,5 @@ private:
 	std::unique_ptr<DebugCamera> debugCamera_;
 
 	std::unique_ptr<Triangle> triangle_;
+	std::unique_ptr<Triangle> triangle2_;
 };
