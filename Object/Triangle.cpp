@@ -194,7 +194,7 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	//wvpResourceの生成
 	wvpResource_ = CreateBufferResource(sizeof(Matrix4x4));
 	//depthStencilResourceの生成
-	depthStencilResource_ = DirectXCommon::GetInstance()->CreateDepthStencilTextureResource();
+	depthStencilResource_ = CreateDepthStencilTextureResource();
 
 	//リソースの先頭のアドレスを使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -221,6 +221,8 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	//wvpデータの記入
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 	*wvpData_ = MakeIdentity4x4();
+
+	//dsv
 
 	//トランスフォームの初期化
 	transform_.scale = { 1.0f, 1.0f, 1.0f };

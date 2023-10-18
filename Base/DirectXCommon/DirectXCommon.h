@@ -51,14 +51,6 @@ public: //メンバ関数
 	/// <returns></returns>
 	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
 
-	/// <summary>
-	/// 深度情報を収納するためのリソース確保関数
-	/// </summary>
-	/// <param name="width">画像横幅</param>
-	/// <param name="height">画像縦幅</param>
-	/// <returns></returns>
-	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource();
-
 public: //ゲッターセッター
 
 	inline ID3D12Device* GetDevice() { return device_.Get(); }

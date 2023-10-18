@@ -187,41 +187,6 @@ ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(D3D12_DESCRIPTO
 	return descriptorHeap;
 }
 
-ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource() {
-	//WinAppの取得
-	WinApp* winApp = WinApp::GetInstance();
-
-	D3D12_RESOURCE_DESC resourceDesc{};
-	resourceDesc.Width = winApp->kWindowWidth;
-	resourceDesc.Height = winApp->kWindowHeight;
-	resourceDesc.MipLevels = 1;
-	resourceDesc.DepthOrArraySize = 1;
-	resourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	resourceDesc.SampleDesc.Count = 1;
-	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
-
-	//利用するヒープの設定
-	D3D12_HEAP_PROPERTIES heapProperities{};
-	heapProperities.Type = D3D12_HEAP_TYPE_DEFAULT;
-
-	//深層値のクリア設定
-	D3D12_CLEAR_VALUE depthClearValue{};
-	depthClearValue.DepthStencil.Depth = 1.0f;
-	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-	ComPtr<ID3D12Resource> resource = nullptr;
-	HRESULT hr = device_->CreateCommittedResource(
-		&heapProperities,
-		D3D12_HEAP_FLAG_NONE,
-		&resourceDesc,
-		D3D12_RESOURCE_STATE_DEPTH_WRITE,
-		&depthClearValue,
-		IID_PPV_ARGS(&resource));
-	assert(SUCCEEDED(hr));
-	return resource;
-}
-
 void DirectXCommon::ClearRenderTarget() {
 	//バックバッファの取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
