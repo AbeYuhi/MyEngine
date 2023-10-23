@@ -221,7 +221,7 @@ void Sphere::Initialize() {
 		//経度の方向に分割
 		for (UINT lonIndex = 0; lonIndex < kSubDivision; lonIndex++) {
 			uint32_t start = (latIndex * kSubDivision + lonIndex) * 6;
-			float lon = lonIndex * kLonEvery;
+			float lon = (lonIndex + kSubDivision / 4.0f) * kLonEvery;
 			//a, b, c, dの場所
 			Vector4 a, b, c, d;
 			a = { std::cos(lat) * std::cos(lon),
@@ -246,15 +246,16 @@ void Sphere::Initialize() {
 
 			//隙間をなくすための処理
 			if (lonIndex == kSubDivision - 1) {
+				lon = kSubDivision / 4.0f * kLonEvery;
 
-				c = { std::cos(lat) * std::cos(0.0f),
+				c = { std::cos(lat) * std::cos(lon),
 				std::sin(lat),
-				std::cos(lat) * std::sin(0.0f),
+				std::cos(lat) * std::sin(lon),
 				1.0f };
 
-				d = { std::cos(lat + kLatEvery) * std::cos(0.0f),
+				d = { std::cos(lat + kLatEvery) * std::cos(lon),
 					std::sin(lat + kLatEvery),
-					std::cos(lat + kLatEvery) * std::sin(0.0f),
+					std::cos(lat + kLatEvery) * std::sin(lon),
 					1.0f };
 			}
 
@@ -301,14 +302,13 @@ void Sphere::Update() {
 	ImGui::SliderFloat3("scale", &transform_.scale.x, -10, 10);
 	ImGui::ColorEdit3("Color", &materialData_->x);
 	ImGui::End();
-
-	//ワールドMatrixの更新
-	worldMatrix_ = MakeAffineMatrix(transform_);
 }
 
 void Sphere::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 
+	//ワールドMatrixの更新
+	worldMatrix_ = MakeAffineMatrix(transform_);
 	//カメラ移動によるwvpの変化
 	*wvpData_ = Multiply(worldMatrix_, viewProjectionMatrix);
 

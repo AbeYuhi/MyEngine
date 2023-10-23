@@ -42,7 +42,7 @@ private: //静的メンバ変数
 	static D3D12_VIEWPORT sViewPort_;
 	static D3D12_RECT sScissorRect_;
 	static ID3D12GraphicsCommandList* sCommandList_;
-	const static UINT kSubDivision = 512;
+	const static UINT kSubDivision = 32;
 	const static UINT kVertexNumber = kSubDivision * kSubDivision * 6;
 
 public: //メンバ関数
@@ -57,6 +57,12 @@ public: //メンバ関数
 
 public: //ゲッターセッター
 
+	inline Vector3 GetPos() { return transform_.translate; }
+	inline void SetPos(Vector3 pos) { transform_.translate = pos; }
+	inline Vector3 GetRotate() { return transform_.rotate; }
+	inline void SetRotate(Vector3 rotate) { transform_.rotate = rotate; }
+	inline Vector3 GetScale() { return transform_.scale; }
+	inline void SetScale(Vector3 scale) { transform_.scale = scale; }
 	inline void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
 	inline void SetColor(Vector4 color) { *materialData_ = color; }
 

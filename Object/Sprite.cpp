@@ -245,14 +245,13 @@ void Sprite::Update() {
 	ImGui::Begin("Sprite");
 	ImGui::SliderFloat2("Pos", &transform_.translate.x, -100.0f, 100.0f);
 	ImGui::End();
-
-	//ワールドMatrixの更新
-	worldMatrix_ = MakeAffineMatrix(transform_);
 }
 
 void Sprite::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 
+	//ワールドMatrixの更新
+	worldMatrix_ = MakeAffineMatrix(transform_);
 	//カメラ移動によるwvpの変化
 	*wvpData_ = Multiply(worldMatrix_, viewProjectionMatrix);
 

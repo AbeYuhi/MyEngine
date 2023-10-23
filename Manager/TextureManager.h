@@ -9,6 +9,7 @@
 enum TextureName {
 	 UVCHECKER,
 	 WHITE,
+	 MONSTERBALL,
 	 TEXTURENUM
 };
 

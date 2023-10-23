@@ -18,7 +18,10 @@ void GameScene::Initialize() {
 	spriteCamera_ = std::make_unique<SpriteCamera>();
 	spriteCamera_->Initialize();
 
+	//スフィア
 	sphere_ = Sphere::Create();
+	sphereTexture_ = UVCHECKER;
+	isUseMonsterBall_ = false;
 
 	/*Vector3 triangle2Pos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
 	triangle2_ = Triangle::Create(triangle2Pos);*/
@@ -31,7 +34,17 @@ void GameScene::Update() {
 	debugCamera_->Update();
 	spriteCamera_->Update();
 
+	ImGui::Begin("Texture");
+	ImGui::Checkbox("useMonsterBall", &isUseMonsterBall_);
+	ImGui::End();
+	if (isUseMonsterBall_) {
+		sphereTexture_ = MONSTERBALL;
+	}
+	else {
+		sphereTexture_ = UVCHECKER;
+	}
 	sphere_->Update();
+	sphere_->SetRotate({ sphere_->GetRotate().x, sphere_->GetRotate().y + 0.03f, sphere_->GetRotate().z });
 
 	sprite_->Update();
 }
@@ -46,7 +59,7 @@ void GameScene::Draw() {
 	//球
 	Sphere::PreDraw(directXCommon_->GetCommandList());
 
-	sphere_->Draw(debugCamera_->GetViewProjectionMatrix());
+	sphere_->Draw(debugCamera_->GetViewProjectionMatrix(), sphereTexture_);
 
 	Sphere::PostDraw();
 

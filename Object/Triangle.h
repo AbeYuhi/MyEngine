@@ -10,6 +10,7 @@
 #include "../Math/Transform.h"
 #include "../Math/Matrix4x4.h"
 #include "../Manager/TextureManager.h"
+#include "../Manager/ImGuiManager.h"
 
 class Triangle
 {
@@ -57,8 +58,14 @@ public: //メンバ関数
 
 public: //ゲッターセッター
 
-	void SetPosition(Vector4 pos, int index) { vertexData_[index].position = pos; }
+	void SetVertexPos(Vector4 pos, int index) { vertexData_[index].position = pos; }
 	void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
+	inline Vector3 GetPos() { return transform_.translate; }
+	inline void SetPos(Vector3 pos) { transform_.translate = pos; }
+	inline Vector3 GetRotate() { return transform_.rotate; }
+	inline void SetRotate(Vector3 rotate) { transform_.rotate = rotate; }
+	inline Vector3 GetScale() { return transform_.scale; }
+	inline void SetScale(Vector3 scale) { transform_.scale = scale; }
 	void SetColor(Vector4 color) { *materialData_ = color; }
 
 private: //メンバ変数

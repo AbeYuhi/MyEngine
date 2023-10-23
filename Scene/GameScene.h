@@ -29,6 +29,8 @@ private:
 	std::unique_ptr<SpriteCamera> spriteCamera_;
 
 	std::unique_ptr<Sphere> sphere_;
+	TextureName sphereTexture_;
+	bool isUseMonsterBall_;
 
 	std::unique_ptr<Sprite> sprite_;
 };

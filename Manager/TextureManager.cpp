@@ -15,6 +15,7 @@ void TextureManager::TransferTexture() {
 	//画像の読み込み
 	mipImages_[UVCHECKER] = LoadTexture("uvChecker.png");
 	mipImages_[WHITE] = LoadTexture("whiteTexture2x2.png");
+	mipImages_[MONSTERBALL] = LoadTexture("monsterBall.png");
 
 	//Metadata
 	DirectX::TexMetadata metadata[TEXTURENUM] = {};
@@ -22,7 +23,7 @@ void TextureManager::TransferTexture() {
 		metadata[i] = mipImages_[i].GetMetadata();
 		textureResources_[i] = CreateTextureResource(metadata[i]);
 		ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(textureResources_[i].Get(), mipImages_[i]);
-
+		
 		dxCommon->TransferCommandList();
 	}
 

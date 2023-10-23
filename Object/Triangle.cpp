@@ -237,15 +237,20 @@ void Triangle::Initialize(Vector3 pos[3]) {
 }
 
 void Triangle::Update() {
-	transform_.rotate.y += 0.03f;
 
-	//ワールドMatrixの更新
-	worldMatrix_ = MakeAffineMatrix(transform_);
+	ImGui::Begin("Triangle");
+	ImGui::SliderFloat3("translate", &transform_.translate.x, -10, 10);
+	ImGui::SliderFloat3("rotate", &transform_.rotate.x, -2.0f * 3.14f, 2.0f * 3.14f);
+	ImGui::SliderFloat3("scale", &transform_.scale.x, -10, 10);
+	ImGui::ColorEdit3("Color", &materialData_->x);
+	ImGui::End();
 }
 
 void Triangle::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 
+	//ワールドMatrixの更新
+	worldMatrix_ = MakeAffineMatrix(transform_);
 	//カメラ移動によるwvpの変化
 	*wvpData_ = Multiply(worldMatrix_, viewProjectionMatrix);
 
