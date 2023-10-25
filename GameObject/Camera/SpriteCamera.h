@@ -18,7 +18,7 @@ public:
 
 	void Update();
 
-	inline WorldTransform GetWorldTransrom() { return transform_; }
+	inline TransformData GetWorldTransrom() { return transform_; }
 	inline Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 	inline Matrix4x4 GetProjectionMatrix() { return projectionMatrix_; }
 	inline Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; }
@@ -27,7 +27,7 @@ public:
 
 private:
 
-	WorldTransform transform_;
+	TransformData transform_;
 	Matrix4x4 worldMatrix_;
 	Matrix4x4 viewMatrix_;
 	Matrix4x4 projectionMatrix_;

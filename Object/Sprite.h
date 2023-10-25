@@ -10,16 +10,13 @@
 #include "../Math/VertexData.h"
 #include "../Math/Transform.h"
 #include "../Math/Matrix4x4.h"
+#include "../Math/Material.h"
 #include "../Manager/TextureManager.h"
+#include "../Manager/GraphicsPipelineManager.h"
 
 class Sprite
 {
 public: //静的メンバ関数
-
-	/// <summary>
-	/// 静的初期化
-	/// </summary>
-	static void StaticInitialize();
 
 	static void PreDraw(ID3D12GraphicsCommandList* commandList);
 
@@ -27,20 +24,7 @@ public: //静的メンバ関数
 
 	static std::unique_ptr<Sprite> Create(Vector2 spriteSize = {640, 360});
 
-private: //静的メンバ関数
-
-	/// <summary>
-	///	ルートシグネチャーの生成
-	/// </summary>
-	static void CreateRootSignature();
-
-	static void CreatePSO();
-
 private: //静的メンバ変数
-	static ComPtr<ID3D12RootSignature> sRootSignature_;
-	static ComPtr<ID3D12PipelineState> sGraphicsPipelineState_;
-	static D3D12_VIEWPORT sViewPort_;
-	static D3D12_RECT sScissorRect_;
 	static ID3D12GraphicsCommandList* sCommandList_;
 	const static UINT kVertexNumber = 6;
 
@@ -68,21 +52,19 @@ public: //ゲッターセッター
 	}
 
 	inline void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
-	inline void SetColor(Vector4 color) { *materialData_ = color; }
+	inline void SetColor(Vector4 color) { materialData_->color = color; }
 
 private: //メンバ変数
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
-	ComPtr<ID3D12Resource> wvpResource_ = nullptr;
+	ComPtr<ID3D12Resource> transformMatrixResource_ = nullptr;
 
 	//VertexBufferView
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
 
 	//オブジェクトのローカル情報
 	WorldTransform transform_;
-	Matrix4x4 worldMatrix_;
 	VertexData* vertexData_;
-	Vector4* materialData_;
-	Matrix4x4* wvpData_;
+	Material* materialData_;
 };

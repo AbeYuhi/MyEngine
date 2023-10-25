@@ -18,6 +18,8 @@ void GameScene::Initialize() {
 	spriteCamera_ = std::make_unique<SpriteCamera>();
 	spriteCamera_->Initialize();
 
+	directionalLight_ = DirectionalLight::Create();
+
 	//スフィア
 	sphere_ = Sphere::Create();
 	sphereTexture_ = UVCHECKER;
@@ -33,6 +35,8 @@ void GameScene::Update() {
 	//カメラの更新
 	debugCamera_->Update();
 	spriteCamera_->Update();
+	//ライトの更新
+	directionalLight_->Update();
 
 	ImGui::Begin("Texture");
 	ImGui::Checkbox("useMonsterBall", &isUseMonsterBall_);
@@ -46,6 +50,9 @@ void GameScene::Update() {
 	sphere_->Update();
 	sphere_->SetRotate({ sphere_->GetRotate().x, sphere_->GetRotate().y + 0.03f, sphere_->GetRotate().z });
 
+	ImGui::Begin("Sprite");
+	ImGui::Checkbox("isDraw", &isDrawSprite_);
+	ImGui::End();
 	sprite_->Update();
 }
 
@@ -66,7 +73,9 @@ void GameScene::Draw() {
 	//スプライト
 	Sprite::PreDraw(directXCommon_->GetCommandList());
 
-	sprite_->Draw(spriteCamera_->GetViewProjectionMatrix());
+	if (isDrawSprite_) {
+		sprite_->Draw(spriteCamera_->GetViewProjectionMatrix());
+	}
 
 	Sprite::PostDraw();
 

@@ -10,10 +10,10 @@ SpriteCamera::~SpriteCamera()
 
 void SpriteCamera::Initialize() {
 
-	transform_.scale = { 1, 1, 1 };
-	transform_.rotate = { 0.0f, 0.0f, 0.0f };
-	transform_.translate = { 0.0f, 0.0f, 0.0f };
-	worldMatrix_ = MakeAffineMatrix(transform_);
+	transform_.scale_ = { 1, 1, 1 };
+	transform_.rotate_ = { 0.0f, 0.0f, 0.0f };
+	transform_.translate_ = { 0.0f, 0.0f, 0.0f };
+	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);
 
 	//マウスの位置
 	mousePos_ = { 0, 0 };
@@ -30,11 +30,11 @@ void SpriteCamera::Update() {
 
 	ImGui::Begin("SpriteCameraManager");
 	ImGui::Checkbox("IsMove", &isMove_);
-	ImGui::SliderFloat3("CameraTranslate", &transform_.translate.x, -100.0f, 100.0f);
+	ImGui::SliderFloat3("CameraTranslate", &transform_.translate_.x, -100.0f, 100.0f);
 	ImGui::End();
 
 	if (isMove_) {
-		Vector3 prePos = transform_.translate;
+		Vector3 prePos = transform_.translate_;
 
 		preMousePos_ = mousePos_;
 		mousePos_ = ImGui::GetMousePos();
@@ -62,10 +62,10 @@ void SpriteCamera::Update() {
 			cameraVelocity.y += mouseAmount.y * 0.05f;
 		}
 
-		transform_.translate += TransformNormal(cameraVelocity, worldMatrix_);
+		transform_.translate_ += TransformNormal(cameraVelocity, worldMatrix_);
 	}
 
-	worldMatrix_ = MakeAffineMatrix(transform_);
+	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);
 
 	viewMatrix_ = Inverse(worldMatrix_);
 	projectionMatrix_ = MakeOrthographicMatrix(0.0f, 0.0f, (float)winApp->kWindowWidth, (float)winApp->kWindowHeight, nearClip_, farClip_);

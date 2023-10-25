@@ -109,10 +109,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="GameObject\Camera\DebugCamera.cpp" />
     <ClCompile Include="GameObject\Camera\SpriteCamera.cpp" />
+    <ClCompile Include="GameObject\Light\DirectionalLight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
     <ClCompile Include="Manager\TextureManager.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
+    <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Math\Vector3_Math.cpp" />
@@ -137,8 +140,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="GameObject\Camera\DebugCamera.h" />
     <ClInclude Include="GameObject\Camera\SpriteCamera.h" />
+    <ClInclude Include="GameObject\Light\DirectionalLight.h" />
+    <ClInclude Include="Manager\GraphicsPipelineManager.h" />
     <ClInclude Include="Manager\ImGuiManager.h" />
     <ClInclude Include="Manager\TextureManager.h" />
+    <ClInclude Include="Math\Material.h" />
     <ClInclude Include="Math\Matrix4x4.h" />
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Math\Vector2.h" />

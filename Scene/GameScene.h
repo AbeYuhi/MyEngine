@@ -7,6 +7,7 @@
 #include "../Object/Sphere.h"
 #include "../GameObject/Camera/DebugCamera.h"
 #include "../GameObject/Camera/SpriteCamera.h"
+#include "../GameObject/Light/DirectionalLight.h"
 
 class GameScene {
 public:
@@ -27,10 +28,13 @@ private:
 	std::unique_ptr<DebugCamera> debugCamera_;
 	//スプライト用カメラ
 	std::unique_ptr<SpriteCamera> spriteCamera_;
+	//平行ライト
+	std::unique_ptr<DirectionalLight> directionalLight_;
 
 	std::unique_ptr<Sphere> sphere_;
 	TextureName sphereTexture_;
 	bool isUseMonsterBall_;
 
 	std::unique_ptr<Sprite> sprite_;
+	bool isDrawSprite_;
 };

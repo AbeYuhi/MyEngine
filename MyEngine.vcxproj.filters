@@ -61,6 +61,12 @@
     <Filter Include="ヘッダー ファイル\GameObject\Camera">
       <UniqueIdentifier>{c6d4a612-b167-42c8-bc4d-80b99c8541a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Light">
+      <UniqueIdentifier>{b8d93977-6457-4a8f-8be8-b382f4ffe7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Light">
+      <UniqueIdentifier>{178f3659-9278-4447-9c50-5740b4666710}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -134,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="Object\Sphere.cpp">
       <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\GraphicsPipelineManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Transform.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Light\DirectionalLight.cpp">
+      <Filter>ソース ファイル\GameObject\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +235,15 @@
     </ClInclude>
     <ClInclude Include="Object\Sphere.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\GraphicsPipelineManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Material.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Light\DirectionalLight.h">
+      <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

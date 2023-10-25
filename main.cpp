@@ -4,6 +4,7 @@
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Manager/ImGuiManager.h"
 #include "Manager/TextureManager.h"
+#include "Manager/GraphicsPipelineManager.h"
 #include "Object/Triangle.h"
 #include "Object/Sprite.h"
 #include "Object/Sphere.h"
@@ -16,6 +17,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	DirectXCommon* directXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
 	TextureManager* textureManager = nullptr;
+	GraphicsPipelineManager* graphicsPipelineManager = nullptr;
 	GameScene* gameScene = nullptr;
 
 	//ゲームウィンドウの作成
@@ -35,10 +37,8 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	textureManager = TextureManager::GetInstance();
 	textureManager->Initialize();
 
-	//オブジェクトの初期化
-	Triangle::StaticInitialize();
-	Sprite::StaticInitialize();
-	Sphere::StaticInitialize();
+	graphicsPipelineManager = GraphicsPipelineManager::GetInstance();
+	graphicsPipelineManager->Initialize();
 
 	//ゲームシーンの初期化
 	gameScene = new GameScene();
