@@ -71,4 +71,5 @@ private: //メンバ変数
 	VertexData* vertexData_;
 	uint32_t* indexData_;
 	Material* materialData_;
+	TransformData uvTransform_;
 };

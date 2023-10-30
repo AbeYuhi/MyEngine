@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Manager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
     <ClCompile Include="Manager\TextureManager.cpp" />
+    <ClCompile Include="Math\Matrix3x3.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
@@ -145,6 +146,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Manager\ImGuiManager.h" />
     <ClInclude Include="Manager\TextureManager.h" />
     <ClInclude Include="Math\Material.h" />
+    <ClInclude Include="Math\Matrix3x3.h" />
     <ClInclude Include="Math\Matrix4x4.h" />
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Math\Vector2.h" />

@@ -83,6 +83,7 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	//色の書き込み
 	materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_->enableLightint = false;
+	materialData_->uvTransform = MakeIdentity4x4();
 
 	//wvpデータの記入
 	transformMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transform_.matrix_));

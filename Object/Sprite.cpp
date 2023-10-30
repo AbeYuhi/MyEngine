@@ -94,6 +94,7 @@ void Sprite::Initialize(Vector2 spriteSize) {
 	//色の書き込み
 	materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_->enableLightint = false;
+	materialData_->uvTransform = MakeIdentity4x4();
 
 	//wvpデータの記入
 	transformMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transform_.matrix_));
@@ -103,12 +104,19 @@ void Sprite::Initialize(Vector2 spriteSize) {
 	transform_.data_.scale_ = { 1.0f, 1.0f, 1.0f };
 	transform_.data_.rotate_ = { 0.0f, 0.0f, 0.0f };
 	transform_.data_.translate_ = { 0.0f, 0.0f, 0.0f };
+
+	uvTransform_.scale_ = {1.0f, 1.0f, 1.0f};
+	uvTransform_.rotate_ = {0.0f, 0.0f, 0.0f};
+	uvTransform_.translate_ = {0.0f, 0.0f, 0.0f};
 }
 
 void Sprite::Update() {
 
 	ImGui::Begin("Sprite");
 	ImGui::SliderFloat2("Pos", &transform_.data_.translate_.x, -100.0f, 100.0f);
+	ImGui::DragFloat2("UVTransform", &uvTransform_.translate_.x, 0.01f, -10.0f, 10.0f);
+	ImGui::DragFloat2("UVScale", &uvTransform_.scale_.x, 0.01f, -10.0f, 10.0f);
+	ImGui::SliderAngle("UVRotate", &uvTransform_.rotate_.z);
 	ImGui::End();
 }
 
@@ -119,6 +127,8 @@ void Sprite::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 	transform_.UpdateWorld();
 	//カメラ移動によるwvpの変化
 	transform_.UpdateWVP(viewProjectionMatrix);
+
+	materialData_->uvTransform = MakeAffineMatrix(uvTransform_.scale_, uvTransform_.rotate_, uvTransform_.translate_);
 
 	//VBVの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vertexBufferView_);
