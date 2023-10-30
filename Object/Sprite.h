@@ -26,7 +26,8 @@ public: //静的メンバ関数
 
 private: //静的メンバ変数
 	static ID3D12GraphicsCommandList* sCommandList_;
-	const static UINT kVertexNumber = 6;
+	const static UINT kVertexNumber = 4;
+	const static UINT kIndexNumber = 6;
 
 public: //メンバ関数
 	Sprite();
@@ -40,31 +41,34 @@ public: //メンバ関数
 
 public: //ゲッターセッター
 
-	inline void SetSize(Vector2 spriteSize) {
-		//1枚目の三角形
-		vertexData_[0].position = { 0.0f, spriteSize.y, 0.0f, 1.0f }; //左下
-		vertexData_[1].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
-		vertexData_[2].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下
-		//2枚目の三角形
-		vertexData_[3].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
-		vertexData_[4].position = { spriteSize.x, 0.0f, 0.0f, 1.0f }; //右上
-		vertexData_[5].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下; }
-	}
+	//inline void SetSize(Vector2 spriteSize) {
+	//	//1枚目の三角形
+	//	vertexData_[0].position = { 0.0f, spriteSize.y, 0.0f, 1.0f }; //左下
+	//	vertexData_[1].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
+	//	vertexData_[2].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下
+	//	//2枚目の三角形
+	//	vertexData_[3].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
+	//	vertexData_[4].position = { spriteSize.x, 0.0f, 0.0f, 1.0f }; //右上
+	//	vertexData_[5].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下; }
+	//}
 
-	inline void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
+	//inline void SetTexCoord(Vector2 texcoord, int index) { vertexData_[index].texcoord = texcoord; }
 	inline void SetColor(Vector4 color) { materialData_->color = color; }
 
 private: //メンバ変数
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
+	ComPtr<ID3D12Resource> indexResource_ = nullptr;
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	ComPtr<ID3D12Resource> transformMatrixResource_ = nullptr;
 
 	//VertexBufferView
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
+	D3D12_INDEX_BUFFER_VIEW indexBufferView_;
 
 	//オブジェクトのローカル情報
 	WorldTransform transform_;
 	VertexData* vertexData_;
+	uint32_t* indexData_;
 	Material* materialData_;
 };

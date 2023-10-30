@@ -52,6 +52,9 @@ void Sprite::Initialize(Vector2 spriteSize) {
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);
+	//IndexResourceの生成
+	indexResource_ = CreateBufferResource(sizeof(uint32_t) * kIndexNumber);
+
 	//MaterialResourceの生成
 	materialResource_ = CreateBufferResource(sizeof(Material));
 	//wvpResourceの生成
@@ -74,16 +77,17 @@ void Sprite::Initialize(Vector2 spriteSize) {
 	vertexData_[2].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下
 	vertexData_[2].texcoord = { 1.0f, 1.0f };
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
-	//2枚目の三角形
-	vertexData_[3].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
-	vertexData_[3].texcoord = { 0.0f, 0.0f };
+	vertexData_[3].position = { spriteSize.x, 0.0f, 0.0f, 1.0f }; //右上
+	vertexData_[3].texcoord = { 1.0f, 0.0f };
 	vertexData_[3].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[4].position = { spriteSize.x, 0.0f, 0.0f, 1.0f }; //右上
-	vertexData_[4].texcoord = { 1.0f, 0.0f };
-	vertexData_[4].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[5].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下
-	vertexData_[5].texcoord = { 1.0f, 1.0f };
-	vertexData_[5].normal = { 0.0f, 0.0f, -1.0f };
+
+	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+	indexBufferView_.SizeInBytes = sizeof(uint32_t) * kIndexNumber;
+	indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+
+	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
+	indexData_[0] = 0;	indexData_[1] = 1;	indexData_[2] = 2;
+	indexData_[3] = 1;	indexData_[4] = 3;	indexData_[5] = 2;
 
 	//Materialデータの記入
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
@@ -118,6 +122,7 @@ void Sprite::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 
 	//VBVの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	sCommandList_->IASetIndexBuffer(&indexBufferView_);
 	//マテリアルCBufferの場所を設定
 	sCommandList_->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//wvpCBufferの場所を設定
@@ -125,5 +130,5 @@ void Sprite::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 	sCommandList_->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
 	//描画
-	sCommandList_->DrawInstanced(kVertexNumber, 1, 0, 0);
+	sCommandList_->DrawIndexedInstanced(kIndexNumber, 1, 0, 0, 0);
 }
