@@ -26,8 +26,6 @@ void Triangle::Initialize(Vector3 pos[3]) {
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);
-	//MaterialDataDataResourceの生成
-	materialResource_ = CreateBufferResource(sizeof(Material));
 
 	//リソースの先頭のアドレスを使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -48,13 +46,6 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	vertexData_[2].position = { pos[2].x, pos[2].y, pos[2].z, 1.0f};
 	vertexData_[2].texcoord = {1.0f, 1.0f};
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
-
-	//Materialデータの記入
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
-	//色の書き込み
-	material_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	material_->enableLightint = false;
-	material_->uvTransform = MakeIdentity4x4();
 }
 
 void Triangle::Draw(WorldTransform& transform, UINT textureName) {

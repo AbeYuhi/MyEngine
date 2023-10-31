@@ -15,6 +15,7 @@
 #include "../Data/MaterialData.h"
 #include "../Data/ModelData.h"
 #include "../Data/Material.h"
+#include "../Data/MaterialInfo.h"
 #include "../Manager/TextureManager.h"
 #include "../Manager/GraphicsPipelineManager.h"
 

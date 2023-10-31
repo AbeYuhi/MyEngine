@@ -11,6 +11,7 @@
 #include "../Data/VertexData.h"
 #include "../Data/Transform.h"
 #include "../Data/Material.h"
+#include "../Data/MaterialInfo.h"
 #include "../Manager/TextureManager.h"
 #include "../Manager/GraphicsPipelineManager.h"
 
@@ -41,7 +42,6 @@ private: //メンバ変数
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
 
 	//オブジェクトのローカル情報
-	TransformData uvTransform_;
 	VertexData* vertexData_;
 	Material* material_;
 };

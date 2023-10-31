@@ -162,6 +162,12 @@
     <ClCompile Include="Data\Transform.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
+    <ClCompile Include="Data\MaterialInfo.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Material.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object\Triangle.h">
@@ -271,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="DebugSytem\ReleseCheck.h">
       <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\MaterialInfo.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

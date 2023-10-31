@@ -38,3 +38,9 @@ void ImGuiManager::Draw() {
 	//描画コマンドを積む
 	ImGui_ImplDX12_RenderDrawData(GetDrawData(), commandList);
 }
+
+void ImGuiManager::ReleseProcess() {
+	ImGui_ImplDX12_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+}

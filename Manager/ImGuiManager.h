@@ -19,6 +19,8 @@ public:
 
 	void Draw();
 
+	void ReleseProcess();
+
 private:
 	ImGuiManager() = default;
 	~ImGuiManager() = default;

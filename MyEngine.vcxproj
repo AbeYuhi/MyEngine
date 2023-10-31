@@ -99,6 +99,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Base\CreateResource\CreateResource.cpp" />
     <ClCompile Include="Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="Data\Material.cpp" />
+    <ClCompile Include="Data\MaterialInfo.cpp" />
     <ClCompile Include="Data\Transform.cpp" />
     <ClCompile Include="DebugSytem\DebugLog.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
@@ -133,6 +135,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Base\WinApp\WinApp.h" />
     <ClInclude Include="Data\Material.h" />
     <ClInclude Include="Data\MaterialData.h" />
+    <ClInclude Include="Data\MaterialInfo.h" />
     <ClInclude Include="Data\ModelData.h" />
     <ClInclude Include="Data\Transform.h" />
     <ClInclude Include="Data\VertexData.h" />

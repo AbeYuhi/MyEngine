@@ -8,4 +8,6 @@ struct Material {
 	int32_t enableLightint;
 	float padding[3];
 	Matrix4x4 uvTransform;
+
+	void Initialize();
 };

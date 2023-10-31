@@ -78,10 +78,12 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 		//描画終了
 		directXCommon->PostDraw();
 	}
-	
+
 	//ゲームシーンのDelete
 	SafeDelete(gameScene);
 	//ゲームウィンドウの破棄
 	winApp->DiscardingWindow();
+	//ImGuiの解放処理
+	imGuiManager->ReleseProcess();
 	return 0;
 }
