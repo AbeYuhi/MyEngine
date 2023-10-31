@@ -31,11 +31,6 @@ public: //メンバ関数
 	void PostDraw();
 
 	/// <summary>
-	/// オブジェクトの解放チェック
-	/// </summary>
-	void ReleaseCheck();
-
-	/// <summary>
 	/// 画面のクリア
 	/// </summary>
 	void ClearRenderTarget();

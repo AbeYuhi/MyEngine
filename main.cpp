@@ -1,4 +1,5 @@
 #include "DebugSytem/DebugLog.h"
+#include "DebugSytem/ReleseCheck.h"
 #include "Base/SafeDelete/SafeDelete.h"
 #include "Base/WinApp/WinApp.h"
 #include "Base/DirectXCommon/DirectXCommon.h"
@@ -12,6 +13,8 @@
 
 //エントリーポイント
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
+	//リソースリークチェック
+	static D3DResoruceLeakCheaker resourceLeakCheker{};
 	//汎用機能
 	WinApp* winApp = nullptr;
 	DirectXCommon* directXCommon = nullptr;
@@ -19,7 +22,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	TextureManager* textureManager = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager = nullptr;
 	GameScene* gameScene = nullptr;
-
+	
 	//ゲームウィンドウの作成
 	winApp = WinApp::GetInstance();
 	winApp->CreateGameWindow();
@@ -80,8 +83,5 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	SafeDelete(gameScene);
 	//ゲームウィンドウの破棄
 	winApp->DiscardingWindow();
-
-	//directXCommon->ReleaseCheck();
-
 	return 0;
 }

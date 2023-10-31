@@ -137,6 +137,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Data\Transform.h" />
     <ClInclude Include="Data\VertexData.h" />
     <ClInclude Include="DebugSytem\DebugLog.h" />
+    <ClInclude Include="DebugSytem\ReleseCheck.h" />
     <ClInclude Include="External\imgui\imconfig.h" />
     <ClInclude Include="External\imgui\imgui.h" />
     <ClInclude Include="External\imgui\imgui_impl_dx12.h" />
