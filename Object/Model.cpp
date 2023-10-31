@@ -37,7 +37,7 @@ void Model::Initialize(const std::string filename) {
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 
-	//MaterialDataデータの記入
+	//Materialデータの記入
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
 	//色の書き込み
 	material_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);

@@ -49,7 +49,7 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	vertexData_[2].texcoord = {1.0f, 1.0f};
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
 
-	//MaterialDataDataデータの記入
+	//Materialデータの記入
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
 	//色の書き込み
 	material_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
