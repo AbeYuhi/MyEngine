@@ -5,6 +5,7 @@
 #include "../Object/Triangle.h"
 #include "../Object/Sprite.h"
 #include "../Object/Sphere.h"
+#include "../Object/Model.h"
 #include "../GameObject/Camera/DebugCamera.h"
 #include "../GameObject/Camera/SpriteCamera.h"
 #include "../GameObject/Light/DirectionalLight.h"
@@ -32,9 +33,10 @@ private:
 	std::unique_ptr<DirectionalLight> directionalLight_;
 
 	std::unique_ptr<Sphere> sphere_;
-	TextureName sphereTexture_;
-	bool isUseMonsterBall_;
 
 	std::unique_ptr<Sprite> sprite_;
-	bool isDrawSprite_;
+
+	std::unique_ptr<Model> model_;
+	WorldTransform modelTransformData_;
+	WorldTransform modelTransformData2_;
 };

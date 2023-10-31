@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Math/Transform.h"
+#include "../../Data/Transform.h"
 #include "../../Math/Vector2.h"
 #include "../../Math/Vector3.h"
 #include "../../Math/Vector3_Math.hpp"
@@ -22,6 +22,7 @@ public:
 	inline Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 	inline Matrix4x4 GetProjectionMatrix() { return projectionMatrix_; }
 	inline Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; }
+	inline const Matrix4x4* GetViewProjectionMatrixPointer() { return &viewProjectionMatrix_; }
 	inline float GetNearClip() { return nearClip_; }
 	inline float GetFarClip() { return farClip_; }
 	inline float GetFovY() { return fovY_; }

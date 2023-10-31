@@ -22,13 +22,15 @@ void GameScene::Initialize() {
 
 	//スフィア
 	sphere_ = Sphere::Create();
-	sphereTexture_ = UVCHECKER;
-	isUseMonsterBall_ = false;
 
 	/*Vector3 triangle2Pos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
 	triangle2_ = Triangle::Create(triangle2Pos);*/
 
 	sprite_ = Sprite::Create({620, 360});
+
+	model_ = Model::Create("axis");
+	modelTransformData_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
+	modelTransformData2_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
 }
 
 void GameScene::Update() {
@@ -38,45 +40,34 @@ void GameScene::Update() {
 	//ライトの更新
 	directionalLight_->Update();
 
-	ImGui::Begin("Texture");
-	ImGui::Checkbox("useMonsterBall", &isUseMonsterBall_);
+	
+	ImGui::Begin("modelPos");
+	ImGui::SliderFloat3("translate", &modelTransformData_.data_.translate_.x, -10, 10);
+	ImGui::SliderFloat3("rotate", &modelTransformData_.data_.rotate_.x, -2.0f * 3.14f, 2.0f * 3.14f);
+	ImGui::SliderFloat3("scale", &modelTransformData_.data_.scale_.x, -10, 10);
 	ImGui::End();
-	if (isUseMonsterBall_) {
-		sphereTexture_ = MONSTERBALL;
-	}
-	else {
-		sphereTexture_ = UVCHECKER;
-	}
-	sphere_->Update();
-	sphere_->SetRotate({ sphere_->GetRotate().x, sphere_->GetRotate().y + 0.03f, sphere_->GetRotate().z });
 
-	ImGui::Begin("Sprite");
-	ImGui::Checkbox("isDraw", &isDrawSprite_);
+	ImGui::Begin("modelPos2");
+	ImGui::SliderFloat3("translate", &modelTransformData2_.data_.translate_.x, -10, 10);
+	ImGui::SliderFloat3("rotate", &modelTransformData2_.data_.rotate_.x, -2.0f * 3.14f, 2.0f * 3.14f);
+	ImGui::SliderFloat3("scale", &modelTransformData2_.data_.scale_.x, -10, 10);
 	ImGui::End();
-	sprite_->Update();
+
+	modelTransformData_.UpdateWorld();
+	modelTransformData2_.UpdateWorld();
 }
 
 void GameScene::Draw() {
 
 	//三角形
-	Triangle::PreDraw(directXCommon_->GetCommandList());
-
-	Triangle::PostDraw();
 
 	//球
-	Sphere::PreDraw(directXCommon_->GetCommandList());
-
-	sphere_->Draw(debugCamera_->GetViewProjectionMatrix(), sphereTexture_);
-
-	Sphere::PostDraw();
+	//sphere_->Draw(debugCamera_->GetViewProjectionMatrix(), UVCHECKER);
 
 	//スプライト
-	Sprite::PreDraw(directXCommon_->GetCommandList());
+	//sprite_->Draw(spriteCamera_->GetViewProjectionMatrix());
 
-	if (isDrawSprite_) {
-		sprite_->Draw(spriteCamera_->GetViewProjectionMatrix());
-	}
-
-	Sprite::PostDraw();
+	model_->Draw(modelTransformData_);
+	model_->Draw(modelTransformData2_);
 
 }

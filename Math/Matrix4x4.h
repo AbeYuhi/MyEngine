@@ -32,7 +32,7 @@ Matrix4x4 Subtract(Matrix4x4 matrix1, Matrix4x4 matrix2);
 /// <param name="matrix1">行列1</param>
 /// <param name="matrix2">行列2</param>
 /// <returns></returns>
-Matrix4x4 Multiply(Matrix4x4 matrix1, Matrix4x4 matrix2);
+Matrix4x4 Multiply(const Matrix4x4 matrix1, const Matrix4x4 matrix2);
 
 /// <summary>
 /// 4x4行列の行列式

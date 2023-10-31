@@ -25,7 +25,7 @@ Matrix4x4 Subtract(Matrix4x4 matrix1, Matrix4x4 matrix2) {
 	return matrix;
 }
 
-Matrix4x4 Multiply(Matrix4x4 matrix1, Matrix4x4 matrix2) {
+Matrix4x4 Multiply(const Matrix4x4 matrix1, const Matrix4x4 matrix2) {
 	Matrix4x4 matrix = {};
 	
 	matrix.m[0][0] = matrix1.m[0][0] * matrix2.m[0][0] + matrix1.m[0][1] * matrix2.m[1][0] + matrix1.m[0][2] * matrix2.m[2][0] + matrix1.m[0][3] * matrix2.m[3][0];

@@ -28,7 +28,7 @@ void TextureManager::TransferTexture() {
 	}
 
 	for (int i = 0; i < TEXTURENUM; i++) {
-		CreateShaderResourceView(textureResources_[i].Get(), mipImages_[i], i);
+		CreateShaderResourceView(textureResources_[i].Get(), mipImages_[i], textureSrvHandleCPU_[i], textureSrvHandleGPU_[i], i);
 	}
 }
 
@@ -100,7 +100,7 @@ ComPtr<ID3D12Resource> TextureManager::UploadTextureData(ID3D12Resource* texture
 	return intermediateResource;
 }
 
-void TextureManager::CreateShaderResourceView(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, int i) {
+void TextureManager::CreateShaderResourceView(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, D3D12_CPU_DESCRIPTOR_HANDLE& textureSrvHandleCPU, D3D12_GPU_DESCRIPTOR_HANDLE& textureSrvHandleGPU, int i) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	//Meta情報を取得
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
@@ -112,13 +112,13 @@ void TextureManager::CreateShaderResourceView(ID3D12Resource* texture, const Dir
 	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
 	//SRVを作成するDescriptorの場所を決める
-	textureSrvHandleCPU_[i] = dxCommon->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-	textureSrvHandleGPU_[i] = dxCommon->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
+	textureSrvHandleCPU = dxCommon->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	textureSrvHandleGPU = dxCommon->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
 	//先頭はImGuiが使っているのでその次を使う
 	for (int j = 0; j < i + 1; j++) {
-		textureSrvHandleCPU_[i].ptr += dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-		textureSrvHandleGPU_[i].ptr += dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		textureSrvHandleCPU.ptr += dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		textureSrvHandleGPU.ptr += dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	}
 	//SRVの生成
-	dxCommon->GetDevice()->CreateShaderResourceView(texture, &srvDesc, textureSrvHandleCPU_[i]);
+	dxCommon->GetDevice()->CreateShaderResourceView(texture, &srvDesc, textureSrvHandleCPU);
 }

@@ -21,7 +21,7 @@ void DirectionalLight::Initialize() {
 	//transformationMatrixResourceの生成
 	directionalLightResource_ = CreateBufferResource(sizeof(DirectionalLightData));
 
-	//Materialデータの記入
+	//MaterialDataデータの記入
 	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
 	//色の書き込み
 	directionalLightData_->color = { 1.0f, 1.0f, 1.0f, 1.0f };

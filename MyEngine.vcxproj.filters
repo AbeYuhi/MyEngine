@@ -67,6 +67,12 @@
     <Filter Include="ソース ファイル\GameObject\Light">
       <UniqueIdentifier>{178f3659-9278-4447-9c50-5740b4666710}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Data">
+      <UniqueIdentifier>{cde3745c-bca7-49b5-a395-b3e3ec46a049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Data">
+      <UniqueIdentifier>{20ff61cf-a40c-4a01-bff8-4231c0acd3cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,14 +150,17 @@
     <ClCompile Include="Manager\GraphicsPipelineManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Transform.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject\Light\DirectionalLight.cpp">
       <Filter>ソース ファイル\GameObject\Light</Filter>
     </ClCompile>
     <ClCompile Include="Math\Matrix3x3.cpp">
       <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Model.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Transform.cpp">
+      <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +197,6 @@
     <ClInclude Include="Base\CreateResource\CreateResource.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Transform.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
-    </ClInclude>
     <ClInclude Include="External\imgui\imconfig.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -221,9 +227,6 @@
     <ClInclude Include="Manager\TextureManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Math\VertexData.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
-    </ClInclude>
     <ClInclude Include="DebugSytem\DebugLog.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
@@ -242,14 +245,29 @@
     <ClInclude Include="Manager\GraphicsPipelineManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Material.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Light\DirectionalLight.h">
       <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
     <ClInclude Include="Math\Matrix3x3.h">
       <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Model.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Transform.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\VertexData.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\MaterialData.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Material.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ModelData.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

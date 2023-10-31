@@ -23,10 +23,6 @@ public:
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandleGPU(UINT textureNum) { return textureSrvHandleGPU_[textureNum]; }
 
-private: //メンバ関数
-
-	void TransferTexture();
-
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
 
 	ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
@@ -34,7 +30,11 @@ private: //メンバ関数
 	[[nodiscard]]
 	ComPtr<ID3D12Resource> UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
-	void CreateShaderResourceView(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, int i);
+	void CreateShaderResourceView(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, D3D12_CPU_DESCRIPTOR_HANDLE& textureSrvHandleCPU, D3D12_GPU_DESCRIPTOR_HANDLE& textureSrvHandleGPU, int i);
+
+private: //メンバ関数
+
+	void TransferTexture();
 
 public: //メンバ変数
 

@@ -11,34 +11,7 @@ Triangle::~Triangle()
 /// <summary>
 /// 静的メンバ変数の実体化
 /// </summary>
-ID3D12GraphicsCommandList* Triangle::sCommandList_ = nullptr;
 Vector3 Triangle::sDefaultPos[3] = {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.5f, 0.0f}, {0.5f, -0.5f, 0.0f}};
-
-void Triangle::PreDraw(ID3D12GraphicsCommandList* commandList) {
-	//1フレーム前にPostDrawが呼ばれていなかったらエラー
-	assert(Triangle::sCommandList_ == nullptr);
-	//コマンドリストのセット
-	sCommandList_ = commandList;
-
-	//PSOManagerの取得
-	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
-
-	//ViewPortの設定
-	sCommandList_->RSSetViewports(1, psoManager->GetViewPort());
-	//Scirssorの設定
-	sCommandList_->RSSetScissorRects(1, psoManager->GetScissorRect());
-	//パイプラインステートの設定
-	sCommandList_->SetPipelineState(psoManager->GetPSO());
-	//ルートシグネチャの設定
-	sCommandList_->SetGraphicsRootSignature(psoManager->GetRootSignature());
-	//プリミティブ形状を設定
-	sCommandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
-void Triangle::PostDraw() {
-	//コマンドリストを解除
-	sCommandList_ = nullptr;
-}
 
 std::unique_ptr<Triangle> Triangle::Create(Vector3 pos[3]) {
 	std::unique_ptr<Triangle> object = std::make_unique<Triangle>();
@@ -53,10 +26,8 @@ void Triangle::Initialize(Vector3 pos[3]) {
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);
-	//MaterialResourceの生成
+	//MaterialDataDataResourceの生成
 	materialResource_ = CreateBufferResource(sizeof(Material));
-	//wvpResourceの生成
-	transformMatrixResource_ = CreateBufferResource(sizeof(TransformMatrix));
 
 	//リソースの先頭のアドレスを使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -78,49 +49,37 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	vertexData_[2].texcoord = {1.0f, 1.0f};
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
 
-	//Materialデータの記入
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	//MaterialDataDataデータの記入
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
 	//色の書き込み
-	materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	materialData_->enableLightint = false;
-	materialData_->uvTransform = MakeIdentity4x4();
-
-	//wvpデータの記入
-	transformMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transform_.matrix_));
-	transform_.matrix_->World_ = MakeIdentity4x4();
-
-	//トランスフォームの初期化
-	transform_.data_.scale_ = { 1.0f, 1.0f, 1.0f };
-	transform_.data_.rotate_ = { 0.0f, 0.0f, 0.0f };
-	transform_.data_.translate_ = { 0.0f, 0.0f, 0.0f };
+	material_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	material_->enableLightint = false;
+	material_->uvTransform = MakeIdentity4x4();
 }
 
-void Triangle::Update() {
-
-	ImGui::Begin("Triangle");
-	ImGui::SliderFloat3("translate", &transform_.data_.translate_.x, -10, 10);
-	ImGui::SliderFloat3("rotate", &transform_.data_.rotate_.x, -2.0f * 3.14f, 2.0f * 3.14f);
-	ImGui::SliderFloat3("scale", &transform_.data_.scale_.x, -10, 10);
-	ImGui::ColorEdit3("Color", &materialData_->color.x);
-	ImGui::End();
-}
-
-void Triangle::Draw(Matrix4x4 viewProjectionMatrix, UINT textureName) {
+void Triangle::Draw(WorldTransform& transform, UINT textureName) {
 	TextureManager* textureManager = TextureManager::GetInstance();
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 
-	//ワールドMatrixの更新
-	transform_.UpdateWorld();
-	//カメラ移動によるwvpの変化
-	transform_.UpdateWVP(viewProjectionMatrix);
-
+	//ViewPortの設定
+	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
+	//Scirssorの設定
+	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
+	//パイプラインステートの設定
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
+	//ルートシグネチャの設定
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
+	//プリミティブ形状を設定
+	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//VBVの設定
-	sCommandList_->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	//マテリアルCBufferの場所を設定
-	sCommandList_->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	//wvpCBufferの場所を設定
-	sCommandList_->SetGraphicsRootConstantBufferView(1, transformMatrixResource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transform.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	sCommandList_->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
 	//描画
-	sCommandList_->DrawInstanced(kVertexNumber, 1, 0, 0);
+	dxCommon->GetCommandList()->DrawInstanced(kVertexNumber, 1, 0, 0);
 }
