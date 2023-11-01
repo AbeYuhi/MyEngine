@@ -10,6 +10,7 @@ ConstantBuffer<MaterialData> gMaterialData : register(b0);
 
 struct DirectionalLightData
 {
+    int32_t lightingType;
     float32_t4 color;
     float32_t3 direction;
     float intensity;
@@ -29,9 +30,21 @@ PixelShaderOutput main(VertexShaderOutput input)
     float32_t4 textureColor = gTexture.Sample(gSampler, transformUV.xy);
     if (gMaterialData.enableLighting != 0)
     {
-        float NdotL = dot(normalize(input.normal), -gDirectionalLightData.direction);
-        float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
-        output.color = gMaterialData.color * textureColor * gDirectionalLightData.color * cos * gDirectionalLightData.intensity;
+        if (gDirectionalLightData.lightingType == 0)
+        {
+            output.color = gMaterialData.color * textureColor;
+        }
+        else if (gDirectionalLightData.lightingType == 1)
+        {
+            float cos = saturate(dot(normalize(input.normal), -gDirectionalLightData.direction));
+            output.color = gMaterialData.color * textureColor * gDirectionalLightData.color * cos * gDirectionalLightData.intensity;
+        }
+        else if (gDirectionalLightData.lightingType == 2)
+        {
+            float NdotL = dot(normalize(input.normal), -gDirectionalLightData.direction);
+            float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
+            output.color = gMaterialData.color * textureColor * gDirectionalLightData.color * cos * gDirectionalLightData.intensity;
+        }
     }
     else
     {

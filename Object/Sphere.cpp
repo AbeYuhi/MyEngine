@@ -21,8 +21,6 @@ void Sphere::Initialize() {
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);
-	//MaterialDataResourceの生成
-	materialResource_ = CreateBufferResource(sizeof(Material));
 
 	//リソースの先頭のアドレスを使う
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -105,26 +103,12 @@ void Sphere::Initialize() {
 			vertexData_[start + 5].normal = { vertexData_[start + 5].position.x, vertexData_[start + 5].position.y, vertexData_[start + 5].position.z };
 		}
 	}
-
-	//Materialデータの記入
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
-	//色の書き込み
-	material_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	material_->enableLightint = true;
-	material_->uvTransform = MakeIdentity4x4();
-
-	uvTransform_.scale_ = { 1.0f, 1.0f, 1.0f };
-	uvTransform_.rotate_ = { 0.0f, 0.0f, 0.0f };
-	uvTransform_.translate_ = { 0.0f, 0.0f, 0.0f };
 }
 
-void Sphere::Draw(WorldTransform& transform, UINT textureName) {
+void Sphere::Draw(RenderItem& renderItem, UINT textureName) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
-
-	//uvTransform
-	material_->uvTransform = MakeAffineMatrix(uvTransform_.scale_, uvTransform_.rotate_, uvTransform_.translate_);
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
@@ -139,9 +123,9 @@ void Sphere::Draw(WorldTransform& transform, UINT textureName) {
 	//VBVの設定
 	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	//マテリアルCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
 	//wvpCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transform.resource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
 	//描画

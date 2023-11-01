@@ -11,6 +11,8 @@
 #include "../../Manager/GraphicsPipelineManager.h"
 
 struct DirectionalLightData {
+	int32_t type;
+	float padding[3];
 	Vector4 color;
 	Vector3 direction;
 	float intensity;

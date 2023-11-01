@@ -12,6 +12,9 @@ void WorldTransform::Initialize(const Matrix4x4* viewProjectionMatrix) {
 
 	data_.Initialize();
 	viewProjectionMatrix_ = viewProjectionMatrix;
+
+	worldMatrix_ = MakeAffineMatrix(data_.scale_, data_.rotate_, data_.translate_);
+	TransferMatrix();
 }
 
 void WorldTransform::CreateResource() {

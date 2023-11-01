@@ -12,6 +12,7 @@
 #include "../Data/Transform.h"
 #include "../Data/Material.h"
 #include "../Data/MaterialInfo.h"
+#include "../Data/RenderItem.h"
 #include "../Manager/TextureManager.h"
 #include "../Manager/GraphicsPipelineManager.h"
 
@@ -30,13 +31,12 @@ public: //メンバ関数
 
 	void Initialize(Vector2 spriteSize);
 
-	void Draw(WorldTransform& transform, UINT textureName = UVCHECKER);
+	void Draw(RenderItem& renderItem, UINT textureName = UVCHECKER);
 
 private: //メンバ変数
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
 	ComPtr<ID3D12Resource> indexResource_ = nullptr;
-	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 
 	//VertexBufferView
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
@@ -45,6 +45,4 @@ private: //メンバ変数
 	//オブジェクトのローカル情報
 	VertexData* vertexData_;
 	uint32_t* indexData_;
-	Material* material_;
-	TransformData uvTransform_;
 };

@@ -20,17 +20,13 @@ void GameScene::Initialize() {
 
 	directionalLight_ = DirectionalLight::Create();
 
-	//スフィア
-	sphere_ = Sphere::Create();
-
 	/*Vector3 triangle2Pos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
 	triangle2_ = Triangle::Create(triangle2Pos);*/
 
-	sprite_ = Sprite::Create({620, 360});
+	//sprite_ = Sprite::Create({620, 360});
 
-	model_ = Model::Create("axis");
-	modelTransformData_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
-	modelTransformData2_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
+	model_ = Model::Create("suzanne");
+	modelRenderInfo_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
 }
 
 void GameScene::Update() {
@@ -40,34 +36,27 @@ void GameScene::Update() {
 	//ライトの更新
 	directionalLight_->Update();
 
-	
-	ImGui::Begin("modelPos");
-	ImGui::SliderFloat3("translate", &modelTransformData_.data_.translate_.x, -10, 10);
-	ImGui::SliderFloat3("rotate", &modelTransformData_.data_.rotate_.x, -2.0f * 3.14f, 2.0f * 3.14f);
-	ImGui::SliderFloat3("scale", &modelTransformData_.data_.scale_.x, -10, 10);
+	ImGui::Begin("modelRenderInfo");
+	ImGui::SliderFloat3("translate", &modelRenderInfo_.worldTransform_.data_.translate_.x, -10, 10);
+	ImGui::SliderFloat3("rotate", &modelRenderInfo_.worldTransform_.data_.rotate_.x, -2.0f * 3.14f, 2.0f * 3.14f);
+	ImGui::SliderFloat3("scale", &modelRenderInfo_.worldTransform_.data_.scale_.x, -10, 10);
+	ImGui::DragFloat2("UVTransform", &modelRenderInfo_.materialInfo_.uvTransform_.translate_.x, 0.01f, -10.0f, 10.0f);
+	ImGui::DragFloat2("UVScale", &modelRenderInfo_.materialInfo_.uvTransform_.scale_.x, 0.01f, -10.0f, 10.0f);
+	ImGui::SliderAngle("UVRotate", &modelRenderInfo_.materialInfo_.uvTransform_.rotate_.z);
+	if (ImGui::Button("IsLighting")) {
+		bool isLighting = modelRenderInfo_.materialInfo_.material_->enableLightint;
+		modelRenderInfo_.materialInfo_.material_->enableLightint = !isLighting;
+	}
 	ImGui::End();
 
-	ImGui::Begin("modelPos2");
-	ImGui::SliderFloat3("translate", &modelTransformData2_.data_.translate_.x, -10, 10);
-	ImGui::SliderFloat3("rotate", &modelTransformData2_.data_.rotate_.x, -2.0f * 3.14f, 2.0f * 3.14f);
-	ImGui::SliderFloat3("scale", &modelTransformData2_.data_.scale_.x, -10, 10);
-	ImGui::End();
-
-	modelTransformData_.UpdateWorld();
-	modelTransformData2_.UpdateWorld();
+	modelRenderInfo_.Update();
 }
 
 void GameScene::Draw() {
 
-	//三角形
+	//sphere_->Draw(sphereRenderInfo_, UVCHECKER);
 
-	//球
-	//sphere_->Draw(debugCamera_->GetViewProjectionMatrix(), UVCHECKER);
+	//sprite_->Draw(spriteRenderInfo_);
 
-	//スプライト
-	//sprite_->Draw(spriteCamera_->GetViewProjectionMatrix());
-
-	model_->Draw(modelTransformData_);
-	model_->Draw(modelTransformData2_);
-
+	model_->Draw(modelRenderInfo_);
 }

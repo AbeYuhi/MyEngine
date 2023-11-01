@@ -11,6 +11,7 @@
 #include "../Data/Transform.h"
 #include "../Data/Material.h"
 #include "../Data/MaterialInfo.h"
+#include "../Data/RenderItem.h"
 #include "../Manager/TextureManager.h"
 #include "../Manager/ImGuiManager.h"
 #include "../Manager/GraphicsPipelineManager.h"
@@ -31,7 +32,7 @@ public: //メンバ関数
 
 	void Initialize(Vector3 pos[3]);
 
-	void Draw(WorldTransform& transform, UINT textureName = UVCHECKER);
+	void Draw(RenderItem& renderItem, UINT textureName = UVCHECKER);
 
 public: //ゲッターセッター
 

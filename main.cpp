@@ -81,9 +81,9 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 
 	//ゲームシーンのDelete
 	SafeDelete(gameScene);
-	//ゲームウィンドウの破棄
-	winApp->DiscardingWindow();
 	//ImGuiの解放処理
 	imGuiManager->ReleseProcess();
+	//ゲームウィンドウの破棄
+	winApp->DiscardingWindow();
 	return 0;
 }

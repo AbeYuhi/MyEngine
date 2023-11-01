@@ -12,13 +12,18 @@ struct MaterialInfo {
 	TransformData uvTransform_;
 	//マテリアル情報
 	Material* material_;
-	//MTLファイルの情報
-	MaterialData materialData_;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize();
+
+	/// <summary>
+	/// アフィン変換
+	/// </summary>
+	void UpdateMatrix();
+
+private:
 	/// <summary>
 	/// リソースの生成
 	/// </summary>
@@ -28,9 +33,4 @@ struct MaterialInfo {
 	/// MAPの実行
 	/// </summary>
 	void RunMap();
-
-	/// <summary>
-	/// アフィン変換
-	/// </summary>
-	void UpdateMatrix();
 };

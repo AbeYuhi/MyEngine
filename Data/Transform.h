@@ -37,6 +37,17 @@ struct WorldTransform {
 	void Initialize(const Matrix4x4* viewProjectionMatrix);
 
 	/// <summary>
+	/// 更新
+	/// </summary>
+	void UpdateWorld();
+
+	/// <summary>
+	/// 転送
+	/// </summary>
+	void TransferMatrix();
+
+private:
+	/// <summary>
 	/// リソースの生成
 	/// </summary>
 	void CreateResource();
@@ -45,11 +56,4 @@ struct WorldTransform {
 	/// MAPの実行
 	/// </summary>
 	void RunMap();
-
-	/// <summary>
-	/// 
-	/// </summary>
-	void UpdateWorld();
-
-	void TransferMatrix();
 };

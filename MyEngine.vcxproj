@@ -137,6 +137,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Data\MaterialData.h" />
     <ClInclude Include="Data\MaterialInfo.h" />
     <ClInclude Include="Data\ModelData.h" />
+    <ClInclude Include="Data\RenderItem.h" />
     <ClInclude Include="Data\Transform.h" />
     <ClInclude Include="Data\VertexData.h" />
     <ClInclude Include="DebugSytem\DebugLog.h" />

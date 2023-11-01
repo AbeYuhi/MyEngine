@@ -24,6 +24,7 @@ void DirectionalLight::Initialize() {
 	//MaterialDataデータの記入
 	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
 	//色の書き込み
+	directionalLightData_->type = 2;
 	directionalLightData_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
 	directionalLightData_->direction = { 0.0f, -1.0f, 0.0f };
 	directionalLightData_->intensity = 1.0f;
@@ -31,6 +32,8 @@ void DirectionalLight::Initialize() {
 
 void DirectionalLight::Update() {
 	ImGui::Begin("DirectionalLight");
+	const char* modes[] = {"NONE", "LAMBERT", "HALFLAMBERT"};
+	ImGui::Combo("LightingMode", &directionalLightData_->type, modes, IM_ARRAYSIZE(modes));
 	ImGui::ColorEdit3("color", &directionalLightData_->color.x);
 	ImGui::SliderFloat3("direction", &directionalLightData_->direction.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("intensity", &directionalLightData_->intensity, 0.0f, 1.0f);

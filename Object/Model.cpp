@@ -25,8 +25,6 @@ void Model::Initialize(const std::string filename) {
 
 	//VertexResourceを作る
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
-	//MaterialDataResourceの生成
-	materialResource_ = CreateBufferResource(sizeof(Material));
 	
 	//頂点バッファビューを作成
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
@@ -36,27 +34,13 @@ void Model::Initialize(const std::string filename) {
 	//頂点リソースにデータを書き込む
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
-
-	//Materialデータの記入
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
-	//色の書き込み
-	material_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	material_->enableLightint = true;
-	material_->uvTransform = MakeIdentity4x4();
-
-	uvTransform_.scale_ = { 1.0f, 1.0f, 1.0f };
-	uvTransform_.rotate_ = { 0.0f, 0.0f, 0.0f };
-	uvTransform_.translate_ = { 0.0f, 0.0f, 0.0f };
 }
 
-void Model::Draw(WorldTransform& transform) {
+void Model::Draw(RenderItem& renderItem) {
 	//シングルトーンの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
-
-	//uvTransform
-	material_->uvTransform = MakeAffineMatrix(uvTransform_.scale_, uvTransform_.rotate_, uvTransform_.translate_);
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
@@ -71,9 +55,9 @@ void Model::Draw(WorldTransform& transform) {
 	//VBVの設定
 	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	//マテリアルCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
 	//wvpCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transform.resource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU_);
 	//描画
@@ -144,17 +128,22 @@ void Model::LoadObjFile(const std::string& filename) {
 			TextureManager* textureManager = TextureManager::GetInstance();
 			DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
-			mipImages_ = textureManager->LoadTexture(modelData_.material.textureFilePath);
+			if (!modelData_.material.textureFilePath.empty()) {
+				mipImages_ = textureManager->LoadTexture(modelData_.material.textureFilePath);
 
-			//Metadata
-			DirectX::TexMetadata metadata = {};
-			metadata = mipImages_.GetMetadata();
-			textureResources_ = textureManager->CreateTextureResource(metadata);
-			ComPtr<ID3D12Resource> intermediateResource = textureManager->UploadTextureData(textureResources_.Get(), mipImages_);
+				//Metadata
+				DirectX::TexMetadata metadata = {};
+				metadata = mipImages_.GetMetadata();
+				textureResources_ = textureManager->CreateTextureResource(metadata);
+				ComPtr<ID3D12Resource> intermediateResource = textureManager->UploadTextureData(textureResources_.Get(), mipImages_);
 
-			dxCommon->TransferCommandList();
+				dxCommon->TransferCommandList();
 
-			textureManager->CreateShaderResourceView(textureResources_.Get(), mipImages_, textureSrvHandleCPU_, textureSrvHandleGPU_, (TextureName::TEXTURENUM - 1) + sModelNum_);
+				textureManager->CreateShaderResourceView(textureResources_.Get(), mipImages_, textureSrvHandleCPU_, textureSrvHandleGPU_, (TextureName::TEXTURENUM - 1) + sModelNum_);
+			}
+			else {
+				textureSrvHandleGPU_ = textureManager->GetTextureHandleGPU(WHITE);
+			}
 		}
 	}
 }

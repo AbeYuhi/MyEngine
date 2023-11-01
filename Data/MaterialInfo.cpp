@@ -6,6 +6,8 @@ void MaterialInfo::Initialize() {
 
 	material_->Initialize();
 	uvTransform_.Initialize();
+
+	UpdateMatrix();
 }
 
 void MaterialInfo::CreateResource() {
