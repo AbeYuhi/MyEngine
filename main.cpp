@@ -6,6 +6,7 @@
 #include "Manager/ImGuiManager.h"
 #include "Manager/TextureManager.h"
 #include "Manager/GraphicsPipelineManager.h"
+#include "Manager/InputManager.h"
 #include "Object/Triangle.h"
 #include "Object/Sprite.h"
 #include "Object/Sphere.h"
@@ -18,6 +19,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	//汎用機能
 	WinApp* winApp = nullptr;
 	DirectXCommon* directXCommon = nullptr;
+	InputManager* inputManager = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
 	TextureManager* textureManager = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager = nullptr;
@@ -32,6 +34,10 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	directXCommon->Initialize();
 
 #pragma region 汎用機能
+	//入力処理マネージャーの初期化
+	inputManager = InputManager::GetInstance();
+	inputManager->Initialize();
+
 	//ImGuiマネージャーの初期化
 	imGuiManager = ImGuiManager::GetInstance();
 	imGuiManager->Initialize();
@@ -56,25 +62,22 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 		}
 
 		///更新処理
+		//入力受付
+		inputManager->Update();
 		//ImGuiの受付開始
 		imGuiManager->Begin();
-
 		//ゲームシーンの更新
 		gameScene->Update();
-
 		//ImGuiの受付終了
 		imGuiManager->End();
 
 		///描画処理
 		//画面初期化
 		directXCommon->PreDraw();
-		
 		//ゲームシーンの描画
 		gameScene->Draw();
-
 		//ImGuiの描画
 		imGuiManager->Draw();
-
 		//描画終了
 		directXCommon->PostDraw();
 	}

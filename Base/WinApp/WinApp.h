@@ -24,6 +24,7 @@ public: //メンバ関数
 	bool ProcessMessage();
 
 	inline HWND GetHWND() { return hwnd_; }
+	inline WNDCLASS GetWNDCLASS() { return wc_; }
 
 private: //メンバ関数
 	WinApp() = default;

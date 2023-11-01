@@ -11,6 +11,7 @@ void GameScene::Initialize() {
 	//基本機能の初期化
 	winApp_ = WinApp::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
+	input_ = InputManager::GetInstance();
 
 	debugCamera_ = std::make_unique<DebugCamera>();
 	debugCamera_->Initialize();
@@ -25,7 +26,7 @@ void GameScene::Initialize() {
 
 	//sprite_ = Sprite::Create({620, 360});
 
-	model_ = Model::Create("suzanne");
+	model_ = Model::Create("bunny");
 	modelRenderInfo_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
 }
 
@@ -49,14 +50,24 @@ void GameScene::Update() {
 	}
 	ImGui::End();
 
+	if (input_->IsPushKey(DIK_W)) {
+		modelRenderInfo_.worldTransform_.data_.translate_.y += 0.01f;
+	}
+	if (input_->IsPushKey(DIK_S)) {
+		modelRenderInfo_.worldTransform_.data_.translate_.y -= 0.01f;
+	}
+	if (input_->IsPushKey(DIK_A)) {
+		modelRenderInfo_.worldTransform_.data_.translate_.x -= 0.01f;
+	}
+	if (input_->IsPushKey(DIK_D)) {
+		modelRenderInfo_.worldTransform_.data_.translate_.x += 0.01f;
+	}
+
 	modelRenderInfo_.Update();
 }
 
 void GameScene::Draw() {
 
-	//sphere_->Draw(sphereRenderInfo_, UVCHECKER);
-
-	//sprite_->Draw(spriteRenderInfo_);
-
 	model_->Draw(modelRenderInfo_);
+
 }

@@ -2,6 +2,7 @@
 #include "../Base/WinApp/WinApp.h"
 #include "../Base/DirectXCommon/DirectXCommon.h"
 #include "../Manager/ImGuiManager.h"
+#include "../Manager/InputManager.h"
 #include "../Object/Triangle.h"
 #include "../Object/Sprite.h"
 #include "../Object/Sphere.h"
@@ -25,6 +26,7 @@ private:
 	//基本機能
 	WinApp* winApp_;
 	DirectXCommon* directXCommon_;
+	InputManager* input_;
 	//デバッグカメラ
 	std::unique_ptr<DebugCamera> debugCamera_;
 	//スプライト用カメラ
