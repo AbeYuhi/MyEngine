@@ -24,7 +24,8 @@ void GameScene::Initialize() {
 	/*Vector3 triangle2Pos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
 	triangle2_ = Triangle::Create(triangle2Pos);*/
 
-	//sprite_ = Sprite::Create({620, 360});
+	sprite_ = Sprite::Create({620, 360});
+	spriteInfo_.Initialize(spriteCamera_->GetViewProjectionMatrixPointer());
 
 	model_ = Model::Create("bunny");
 	modelRenderInfo_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
@@ -50,24 +51,17 @@ void GameScene::Update() {
 	}
 	ImGui::End();
 
-	if (input_->IsPushKey(DIK_W)) {
-		modelRenderInfo_.worldTransform_.data_.translate_.y += 0.01f;
-	}
-	if (input_->IsPushKey(DIK_S)) {
-		modelRenderInfo_.worldTransform_.data_.translate_.y -= 0.01f;
-	}
-	if (input_->IsPushKey(DIK_A)) {
-		modelRenderInfo_.worldTransform_.data_.translate_.x -= 0.01f;
-	}
-	if (input_->IsPushKey(DIK_D)) {
-		modelRenderInfo_.worldTransform_.data_.translate_.x += 0.01f;
+	if (input_->IsMousePush(0)) {
+		spriteInfo_.worldTransform_.data_.translate_ += {input_->GetMouseMovement().x, input_->GetMouseMovement().y, 0 };
 	}
 
+	spriteInfo_.Update();
 	modelRenderInfo_.Update();
 }
 
 void GameScene::Draw() {
 
+	sprite_->Draw(spriteInfo_);
 	model_->Draw(modelRenderInfo_);
 
 }
