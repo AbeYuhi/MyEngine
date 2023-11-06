@@ -1,6 +1,7 @@
 #include "InputManager.h"
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
+#pragma comment (lib, "xinput.lib")
 
 InputManager* InputManager::GetInstance() {
 	static InputManager instance;
@@ -57,4 +58,18 @@ void InputManager::Update() {
 	if (GetCursorPos(&screenCursorPos) && ScreenToClient(WinApp::GetInstance()->GetHWND(), &screenCursorPos)) {
 		clientMousePos_ = { static_cast<float>(screenCursorPos.x), static_cast<float>(screenCursorPos.y) };
 	}
+
+	//コントローラーの接続確認
+	DWORD dwResult;
+	ZeroMemory(&preGamePadState_, sizeof(XINPUT_STATE));
+	memcpy(&preGamePadState_, &gamePadState_, sizeof(gamePadState_));
+	ZeroMemory(&gamePadState_, sizeof(XINPUT_STATE));
+	dwResult = XInputGetState(0, &gamePadState_);
+
+	/*if (dwResult == ERROR_SUCCESS) {
+
+	}
+	else {
+		
+	}*/
 }

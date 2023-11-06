@@ -171,6 +171,9 @@
     <ClCompile Include="Manager\InputManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\Light\SpotLight.cpp">
+      <Filter>ソース ファイル\GameObject\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object\Triangle.h">
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="Manager\InputManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Light\SpotLight.h">
+      <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

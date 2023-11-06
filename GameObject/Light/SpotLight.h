@@ -10,22 +10,19 @@
 #include "../../Manager/ImGuiManager.h"
 #include "../../Manager/GraphicsPipelineManager.h"
 
-struct DirectionalLightData {
-	int32_t type;
-	float padding[3];
-	Vector4 color;
-	Vector3 direction;
-	float intensity;
+struct SpotLightData {
+	Vector3 position;
+	Vector3 rotate;
 };
 
-class DirectionalLight {
+class SpotLight {
 public: //静的メンバ関数
-	static std::unique_ptr<DirectionalLight> Create();
+	static std::unique_ptr<SpotLight> Create();
 	static int sLightNum_;
 
 public: //メンバ関数
-	DirectionalLight();
-	~DirectionalLight();
+	SpotLight();
+	~SpotLight();
 
 	void Initialize();
 
@@ -37,6 +34,6 @@ private: //メンバ変数
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;
 
-	DirectionalLightData* directionalLightData_;
+	SpotLightData* directionalLightData_;
 	int lightNum_;
 };
