@@ -9,6 +9,7 @@
 #include <dxgidebug.h>
 #include <dxcapi.h>
 #include <cassert>
+#include <chrono>
 
 using namespace Microsoft::WRL;
 
@@ -100,6 +101,10 @@ private: //メンバ関数
 
 	void InitializeDXC();
 
+	void InitializeFixFPS();
+
+	void UpdateFixFPS();
+
 private: //メンバ変数
 	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;
 	ComPtr<ID3D12Device> device_ = nullptr;
@@ -119,4 +124,5 @@ private: //メンバ変数
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
 	uint64_t fenceValue_ = 0;
+	std::chrono::steady_clock::time_point reference_;
 };

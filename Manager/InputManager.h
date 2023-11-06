@@ -171,7 +171,7 @@ public: //メンバ関数
 
 private: //メンバ関数
 	InputManager() = default;
-	~InputManager() = default;
+	~InputManager() { SetVibration(0, 0); }
 private: //メンバ変数
 	ComPtr<IDirectInput8> directInput_;
 	ComPtr<IDirectInputDevice8> keyboard_;

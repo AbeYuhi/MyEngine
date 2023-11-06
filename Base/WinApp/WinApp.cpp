@@ -2,6 +2,8 @@
 #include "../../External/imgui/imgui.h"
 #include "../../External/imgui/imgui_impl_dx12.h"
 #include "../../External/imgui/imgui_impl_win32.h"
+#pragma comment(lib, "winmm.lib")
+
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 WinApp* WinApp::GetInstance() {
@@ -30,6 +32,9 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t wi
 
 	//COMの初期化
 	CoInitializeEx(0, COINIT_MULTITHREADED);
+
+	//システムタイマーの分解能を上げる
+	timeBeginPeriod(1);
 
 	//メンバ変数の初期化
 	windowStyle_ = windowStyle;

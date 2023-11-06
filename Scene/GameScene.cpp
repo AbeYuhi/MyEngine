@@ -52,7 +52,15 @@ void GameScene::Update() {
 	}
 	ImGui::End();
 	
-	input_->SetVibration(0, 0);
+	modelRenderInfo_.worldTransform_.data_.translate_.x += input_->GetGamePadLStick().x * 0.3f;
+	modelRenderInfo_.worldTransform_.data_.translate_.y += input_->GetGamePadLStick().y * 0.3f;
+
+	if (input_->IsPushGamePadLTrigger()) {
+		input_->SetVibration(30000, 40000);
+	}
+	else {
+		input_->SetVibration(0, 0);
+	}
 
 	modelRenderInfo_.Update();
 }
