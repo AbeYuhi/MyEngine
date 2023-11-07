@@ -28,6 +28,12 @@ PixelShaderOutput main(VertexShaderOutput input)
     PixelShaderOutput output;
     float4 transformUV = mul(float32_t4(input.texcoord, 0.0f, 1.0f), gMaterialData.uvTransform);
     float32_t4 textureColor = gTexture.Sample(gSampler, transformUV.xy);
+ 
+    if (textureColor.a == 0.0f)
+    {
+        discard;
+    }
+    
     if (gMaterialData.enableLighting != 0)
     {
         if (gDirectionalLightData.lightingType == 0)
@@ -37,18 +43,26 @@ PixelShaderOutput main(VertexShaderOutput input)
         else if (gDirectionalLightData.lightingType == 1)
         {
             float cos = saturate(dot(normalize(input.normal), -gDirectionalLightData.direction));
-            output.color = gMaterialData.color * textureColor * gDirectionalLightData.color * cos * gDirectionalLightData.intensity;
+            output.color.rgb = gMaterialData.color.rgb * textureColor.rgb * gDirectionalLightData.color.rgb * cos * gDirectionalLightData.intensity;
+            output.color.a = gMaterialData.color.a * textureColor.a;
         }
         else if (gDirectionalLightData.lightingType == 2)
         {
             float NdotL = dot(normalize(input.normal), -gDirectionalLightData.direction);
             float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
-            output.color = gMaterialData.color * textureColor * gDirectionalLightData.color * cos * gDirectionalLightData.intensity;
+            output.color.rgb = gMaterialData.color.rgb * textureColor.rgb * gDirectionalLightData.color.rgb * cos * gDirectionalLightData.intensity;
+            output.color.a = gMaterialData.color.a * textureColor.a;
         }
     }
     else
     {
         output.color = gMaterialData.color * textureColor;
     }
+    
+    //if (output.color.a == 0.0)
+    //{
+    //    discard;
+    //}
+    
     return output;
 }

@@ -16,6 +16,7 @@ void TextureManager::TransferTexture() {
 	mipImages_[UVCHECKER] = LoadTexture("uvChecker.png");
 	mipImages_[WHITE] = LoadTexture("whiteTexture2x2.png");
 	mipImages_[MONSTERBALL] = LoadTexture("monsterBall.png");
+	mipImages_[FENCE] = LoadTexture("fence.png");
 
 	//Metadata
 	DirectX::TexMetadata metadata[TEXTURENUM] = {};

@@ -7,6 +7,8 @@ GraphicsPipelineManager* GraphicsPipelineManager::GetInstance() {
 
 void GraphicsPipelineManager::Initialize() {
 
+	blendMode_ = BlendMode::kBlendModeNone;
+
 	CreateGraphicsPipelineManager();
 
 }
@@ -116,9 +118,67 @@ void GraphicsPipelineManager::CreatePSO() {
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
 	//BlendStateの設定
-	D3D12_BLEND_DESC blendDesc{};
-	//すべての色要素を書き込む
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	D3D12_BLEND_DESC blendDesc[BlendMode::kCountOfBlendMode] = {0};
+	for (int blendMode = 0; blendMode < BlendMode::kCountOfBlendMode; blendMode++) {
+		switch (blendMode)
+		{
+		case BlendMode::kBlendModeNone:
+			blendDesc[blendMode].RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			break;
+		case BlendMode::kBlendModeNormal:
+			blendDesc[blendMode].RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc[blendMode].RenderTarget[0].BlendEnable = TRUE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blendDesc[blendMode].RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+			blendDesc[blendMode].RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+			break;
+		case BlendMode::kBlendModeAdd:
+			blendDesc[blendMode].RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc[blendMode].RenderTarget[0].BlendEnable = TRUE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blendDesc[blendMode].RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+			break;
+		case BlendMode::kBlendModeSubtract:
+			blendDesc[blendMode].RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc[blendMode].RenderTarget[0].BlendEnable = TRUE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blendDesc[blendMode].RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+			blendDesc[blendMode].RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+			break;
+		case BlendMode::kBlendModeMultily:
+			blendDesc[blendMode].RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc[blendMode].RenderTarget[0].BlendEnable = TRUE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+			blendDesc[blendMode].RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+			blendDesc[blendMode].RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+			break;
+		case BlendMode::kBlendModeScreen:
+			blendDesc[blendMode].RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc[blendMode].RenderTarget[0].BlendEnable = TRUE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlend = D3D12_BLEND_INV_SRC_COLOR;
+			blendDesc[blendMode].RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+			blendDesc[blendMode].RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc[blendMode].RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+			break;
+		default:
+			break;
+		}
+	}
 
 	//RasiterzerStatesの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -141,24 +201,27 @@ void GraphicsPipelineManager::CreatePSO() {
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
 	//PSOの生成
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipeLineStateDesc{};
-	graphicsPipeLineStateDesc.pRootSignature = rootSignature_.Get();
-	graphicsPipeLineStateDesc.InputLayout = inputLayoutDesc;
-	graphicsPipeLineStateDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	graphicsPipeLineStateDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	graphicsPipeLineStateDesc.BlendState = blendDesc;
-	graphicsPipeLineStateDesc.RasterizerState = rasterizerDesc;
-	graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc;
-	graphicsPipeLineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	//書き込むRTVの情報
-	graphicsPipeLineStateDesc.NumRenderTargets = 1;
-	graphicsPipeLineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	//利用する形状タイプ
-	graphicsPipeLineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	//どのように画面に色を打ち込むのかの設定
-	graphicsPipeLineStateDesc.SampleDesc.Count = 1;
-	graphicsPipeLineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	//実際に生成
-	LRESULT hr = directXCommon->GetDevice()->CreateGraphicsPipelineState(&graphicsPipeLineStateDesc, IID_PPV_ARGS(graphicsPipelineState_.GetAddressOf()));
-	assert(SUCCEEDED(hr));
+	for (int blendMode = 0; blendMode < BlendMode::kCountOfBlendMode; blendMode++) {
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipeLineStateDesc{};
+		graphicsPipeLineStateDesc = { 0 };
+		graphicsPipeLineStateDesc.pRootSignature = rootSignature_.Get();
+		graphicsPipeLineStateDesc.InputLayout = inputLayoutDesc;
+		graphicsPipeLineStateDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
+		graphicsPipeLineStateDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+		graphicsPipeLineStateDesc.BlendState = blendDesc[blendMode];
+		graphicsPipeLineStateDesc.RasterizerState = rasterizerDesc;
+		graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc;
+		graphicsPipeLineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		//書き込むRTVの情報
+		graphicsPipeLineStateDesc.NumRenderTargets = 1;
+		graphicsPipeLineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		//利用する形状タイプ
+		graphicsPipeLineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		//どのように画面に色を打ち込むのかの設定
+		graphicsPipeLineStateDesc.SampleDesc.Count = 1;
+		graphicsPipeLineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		//実際に生成
+		LRESULT hr = directXCommon->GetDevice()->CreateGraphicsPipelineState(&graphicsPipeLineStateDesc, IID_PPV_ARGS(graphicsPipelineState_[blendMode].GetAddressOf()));
+		assert(SUCCEEDED(hr));
+	}
 }

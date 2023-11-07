@@ -48,8 +48,8 @@ void GameCamera::Update() {
 	}
 
 	if (input->IsControllerConnected()) {
-		transform_.rotate_.y += input->GetGamePadRStick().x * 0.05f;
-		transform_.rotate_.x += input->GetGamePadRStick().y * -0.05f;
+		transform_.rotate_.y += input->GetGamePadRStick().x * 0.005f;
+		transform_.rotate_.x += input->GetGamePadRStick().y * -0.005f;
 
 		velocity.x = input->GetGamePadLStick().x * 0.5f;
 		velocity.z = input->GetGamePadLStick().y * 0.5f;

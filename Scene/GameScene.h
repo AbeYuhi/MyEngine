@@ -39,11 +39,12 @@ private:
 	std::unique_ptr<SpriteCamera> spriteCamera_;
 	//平行ライト
 	std::unique_ptr<DirectionalLight> directionalLight_;
+	//ブレンドモード
+	int blendMode_;
 
 	std::unique_ptr<Sprite> sprite_;
 	RenderItem spriteInfo_;
 
 	std::unique_ptr<Model> model_;
 	RenderItem modelRenderInfo_;
-	RenderItem modelRenderInfo2_;
 };
