@@ -13,28 +13,60 @@ void GameScene::Initialize() {
 	directXCommon_ = DirectXCommon::GetInstance();
 	input_ = InputManager::GetInstance();
 
+	//画面に表示する際のVPmatrix
+	viewProjectionMatrix_ = MakeIdentity4x4();
+	//インゲームカメラ
+	gameCamera_ = std::make_unique<GameCamera>();
+	gameCamera_->Initialize();
+	//デバッグカメラ
 	debugCamera_ = std::make_unique<DebugCamera>();
 	debugCamera_->Initialize();
-
+#ifdef _DEBUG
+	isDebugCamera_ = true;
+#else
+	isDebugCamera_ = false;
+#endif // _DEBUG
+	//スプライト専用カメラ
 	spriteCamera_ = std::make_unique<SpriteCamera>();
 	spriteCamera_->Initialize();
 
+	//平行光源
 	directionalLight_ = DirectionalLight::Create();
 
 	/*Vector3 triangle2Pos[3] = { {-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.5f, -0.5f, -0.5f} };
 	triangle2_ = Triangle::Create(triangle2Pos);*/
 
+	//スプライトの生成
 	sprite_ = Sprite::Create({620, 360});
 	spriteInfo_.Initialize(spriteCamera_->GetViewProjectionMatrixPointer());
 
+	//モデルの生成
 	model_ = Model::Create("YudukiYukari");
-	modelRenderInfo_.Initialize(debugCamera_->GetViewProjectionMatrixPointer());
+	modelRenderInfo_.Initialize(&viewProjectionMatrix_);
 	modelRenderInfo_.worldTransform_.data_.translate_.z = 100;
+
+	modelRenderInfo2_.Initialize(&viewProjectionMatrix_);
+	modelRenderInfo2_.worldTransform_.data_.translate_.x = 50;
+	modelRenderInfo2_.worldTransform_.data_.translate_.z = 100;
 }
 
 void GameScene::Update() {
 	//カメラの更新
-	debugCamera_->Update();
+#ifdef _DEBUG
+	ImGui::Begin("Debug");
+	ImGui::Checkbox("UseDebugCamera", &isDebugCamera_);
+	ImGui::End();
+#endif // _DEBUG
+	if (isDebugCamera_) {
+		debugCamera_->Update();
+		viewProjectionMatrix_ = debugCamera_->GetViewProjectionMatrix();
+	}
+	else {
+		gameCamera_->Update();
+		viewProjectionMatrix_ = gameCamera_->GetViewProjectionMatrix();
+	}
+
+	//スプライトカメラの更新
 	spriteCamera_->Update();
 	//ライトの更新
 	directionalLight_->Update();
@@ -51,9 +83,6 @@ void GameScene::Update() {
 		modelRenderInfo_.materialInfo_.material_->enableLightint = !isLighting;
 	}
 	ImGui::End();
-	
-	modelRenderInfo_.worldTransform_.data_.translate_.x += input_->GetGamePadLStick().x * 0.3f;
-	modelRenderInfo_.worldTransform_.data_.translate_.y += input_->GetGamePadLStick().y * 0.3f;
 
 	if (input_->IsPushGamePadLTrigger()) {
 		input_->SetVibration(30000, 40000);
@@ -62,11 +91,14 @@ void GameScene::Update() {
 		input_->SetVibration(0, 0);
 	}
 
+	spriteInfo_.Update();
 	modelRenderInfo_.Update();
+	modelRenderInfo2_.Update();
 }
 
 void GameScene::Draw() {
 
 	model_->Draw(modelRenderInfo_);
+	model_->Draw(modelRenderInfo2_);
 
 }

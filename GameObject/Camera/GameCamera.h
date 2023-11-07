@@ -6,13 +6,14 @@
 #include "Math/Matrix4x4.h"
 #include "Base/WinApp/WinApp.h"
 #include "Manager/ImGuiManager.h"
+#include "Manager/InputManager.h"
 #define M_PI 3.14f
 
-class SpriteCamera
+class GameCamera
 {
 public:
-	SpriteCamera();
-	~SpriteCamera();
+	GameCamera();
+	~GameCamera();
 
 	void Initialize();
 
@@ -25,6 +26,7 @@ public:
 	inline const Matrix4x4* GetViewProjectionMatrixPointer() { return &viewProjectionMatrix_; }
 	inline float GetNearClip() { return nearClip_; }
 	inline float GetFarClip() { return farClip_; }
+	inline float GetFovY() { return fovY_; }
 
 private:
 
@@ -35,7 +37,7 @@ private:
 	Matrix4x4 viewProjectionMatrix_;
 	float nearClip_;
 	float farClip_;
-	bool isMove_;
+	float fovY_;
 
 	//マウスの位置
 	ImVec2 mousePos_;

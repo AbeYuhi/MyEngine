@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-#include "../Base/WinApp/WinApp.h"
-#include "../Base/DirectXCommon/DirectXCommon.h"
-#include "../Base/CreateResource/CreateResource.h"
-#include "../External/DirectXTex/DirectXTex.h"
-#include "../External/DirectXTex/d3dx12.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Base/CreateResource/CreateResource.h"
+#include "External/DirectXTex/DirectXTex.h"
+#include "External/DirectXTex/d3dx12.h"
 
 enum TextureName {
 	 UVCHECKER,

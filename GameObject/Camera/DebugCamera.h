@@ -1,11 +1,12 @@
 #pragma once
-#include "../../Data/Transform.h"
-#include "../../Math/Vector2.h"
-#include "../../Math/Vector3.h"
-#include "../../Math/Vector3_Math.hpp"
-#include "../../Math/Matrix4x4.h"
-#include "../../Base/WinApp/WinApp.h"
-#include "../../Manager/ImGuiManager.h"
+#include "Data/Transform.h"
+#include "Math/Vector2.h"
+#include "Math/Vector3.h"
+#include "Math/Vector3_Math.hpp"
+#include "Math/Matrix4x4.h"
+#include "Base/WinApp/WinApp.h"
+#include "Manager/ImGuiManager.h"
+#include "Manager/InputManager.h"
 #define M_PI 3.14f
 
 class DebugCamera

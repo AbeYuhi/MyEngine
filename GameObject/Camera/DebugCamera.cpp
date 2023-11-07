@@ -27,6 +27,8 @@ void DebugCamera::Initialize() {
 }
 
 void DebugCamera::Update() {
+	InputManager* input = InputManager::GetInstance();
+
 	ImGui::Begin("CameraManager");
 	ImGui::Checkbox("IsMoveCamera", &isMove_);
 	ImGui::SliderFloat3("CameraTranslate", &transform_.translate_.x, -100.0f, 100.0f);
@@ -38,7 +40,7 @@ void DebugCamera::Update() {
 	mousePos_ = ImGui::GetMousePos();
 
 	if (isMove_) {
-		if (ImGui::IsMouseDown(0)) {
+		if (input->IsMousePush(0)) {
 			ImVec2 mouseAmount;
 			mouseAmount.x = mousePos_.x - preMousePos_.x;
 			mouseAmount.y = mousePos_.y - preMousePos_.y;
@@ -48,20 +50,20 @@ void DebugCamera::Update() {
 		}
 
 		Vector3 cameraVelocity = { 0.0f, 0.0f, 0.0f };
-		if (ImGui::IsKeyDown(ImGuiKey_A)) {
+		if (input->IsPushKey(DIK_A)) {
 			cameraVelocity.x += -0.2f;
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_D)) {
+		if (input->IsPushKey(DIK_D)) {
 			cameraVelocity.x += 0.2f;
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_W)) {
+		if (input->IsPushKey(DIK_W)) {
 			cameraVelocity.z += 0.2f;
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_S)) {
+		if (input->IsPushKey(DIK_S)) {
 			cameraVelocity.z += -0.2f;
 		}
 
-		if (ImGui::IsMouseDown(2)) {
+		if (input->IsMousePush(2)) {
 			ImVec2 mouseAmount;
 			mouseAmount.x = mousePos_.x - preMousePos_.x;
 			mouseAmount.y = mousePos_.y - preMousePos_.y;
@@ -77,7 +79,7 @@ void DebugCamera::Update() {
 
 		transform_.translate_ += TransformNormal(cameraVelocity, worldMatrix_);
 
-		if (ImGui::IsKeyDown(ImGuiKey_LeftShift)) {
+		if (input->IsPushKey(DIK_LSHIFT)) {
 			transform_.translate_.y = prePos.y;
 		}
 	}

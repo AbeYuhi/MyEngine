@@ -1,8 +1,8 @@
 #pragma once
-#include "../Math/Vector3.h"
-#include "../Math/Matrix4x4.h"
-#include "../Base/DirectXCommon/DirectXCommon.h"
-#include "../Base/CreateResource/CreateResource.h"
+#include "Math/Vector3.h"
+#include "Math/Matrix4x4.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Base/CreateResource/CreateResource.h"
 
 struct TransformMatrix {
 	Matrix4x4 WVP_;

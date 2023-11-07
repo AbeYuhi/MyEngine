@@ -52,7 +52,7 @@ void InputManager::Update() {
 	//マウスの入力状態を取得
 	memcpy(&preMouseState_, &mouseState_, sizeof(mouseState_));
 	mouse_->GetDeviceState(sizeof(mouseState_), &mouseState_);
-
+	
 	preClientMousePos_ = clientMousePos_;
 	POINT screenCursorPos;
 	if (GetCursorPos(&screenCursorPos) && ScreenToClient(WinApp::GetInstance()->GetHWND(), &screenCursorPos)) {
@@ -66,10 +66,10 @@ void InputManager::Update() {
 	ZeroMemory(&gamePadState_, sizeof(XINPUT_STATE));
 	dwResult = XInputGetState(0, &gamePadState_);
 
-	/*if (dwResult == ERROR_SUCCESS) {
-
+	if (dwResult == ERROR_SUCCESS) {
+		isConnection_ = true;
 	}
 	else {
-		
-	}*/
+		isConnection_ = false;
+	}
 }

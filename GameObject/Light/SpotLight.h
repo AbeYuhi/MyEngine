@@ -1,14 +1,14 @@
 #pragma once
-#include "../../Math/Vector2.h"
-#include "../../Math/Vector3.h"
-#include "../../Math/Vector3_Math.hpp"
-#include "../../Math/Vector4.h"
-#include "../../Math/Matrix4x4.h"
-#include "../../Base/WinApp/WinApp.h"
-#include "../../Base/DirectXCommon/DirectXCommon.h"
-#include "../../Manager/TextureManager.h"
-#include "../../Manager/ImGuiManager.h"
-#include "../../Manager/GraphicsPipelineManager.h"
+#include "Math/Vector2.h"
+#include "Math/Vector3.h"
+#include "Math/Vector3_Math.hpp"
+#include "Math/Vector4.h"
+#include "Math/Matrix4x4.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Manager/TextureManager.h"
+#include "Manager/ImGuiManager.h"
+#include "Manager/GraphicsPipelineManager.h"
 
 struct SpotLightData {
 	Vector3 position;

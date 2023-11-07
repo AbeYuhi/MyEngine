@@ -1,5 +1,5 @@
 #pragma once
-#include "../Base/DirectXCommon/DirectXCommon.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 
 struct D3DResoruceLeakCheaker {
 	~D3DResoruceLeakCheaker() {

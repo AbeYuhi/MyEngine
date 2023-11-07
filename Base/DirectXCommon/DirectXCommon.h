@@ -1,7 +1,7 @@
 #pragma once
-#include "../WinApp/WinApp.h"
-#include "../../DebugSytem/DebugLog.h"
-#include "../../External/DirectXTex/d3dx12.h"
+#include "Base/WinApp/WinApp.h"
+#include "DebugSytem/DebugLog.h"
+#include "External/DirectXTex/d3dx12.h"
 #include <WRL/client.h>
 #include <format>
 #include <d3d12.h>

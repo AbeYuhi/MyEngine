@@ -1,6 +1,6 @@
 #pragma once
-#include "../Base/WinApp/WinApp.h"
-#include "../Base/DirectXCommon/DirectXCommon.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 
 class GraphicsPipelineManager {
 public: //静的関数

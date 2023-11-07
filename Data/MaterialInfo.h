@@ -1,6 +1,6 @@
 #pragma once
-#include "../Base/DirectXCommon/DirectXCommon.h"
-#include "../Base/CreateResource/CreateResource.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Base/CreateResource/CreateResource.h"
 #include "Transform.h"
 #include "Material.h"
 #include "MaterialData.h"

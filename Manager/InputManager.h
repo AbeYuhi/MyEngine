@@ -3,9 +3,9 @@
 #include <dinput.h>
 #include <WRL/client.h>
 #include <xinput.h>
-#include "../Base/WinApp/WinApp.h"
-#include "../Base/DirectXCommon/DirectXCommon.h"
-#include "../Math/Vector2.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Math/Vector2.h"
 
 using namespace Microsoft::WRL;
 
@@ -71,7 +71,7 @@ public: //メンバ関数
 		return clientMousePos_;
 	}
 	inline Vector2 GetMouseMovement() {
-		return clientMousePos_ - preClientMousePos_;
+		return {(float)mouseState_.lX, (float)mouseState_.lY};
 	}
 
 	//コントローラー
@@ -113,26 +113,42 @@ public: //メンバ関数
 		}
 		return false;
 	}
-	//右トリガー
+
+	/// <summary>
+	/// 右トリガーに入力がある間反応
+	/// </summary>
+	/// <returns></returns>
 	inline WORD IsPushGamePadRTrigger() {
 		if (gamePadState_.Gamepad.bRightTrigger) {
 			return true;
 		}
 		return false;
 	}
+	/// <summary>
+	/// 右トリガーにトリガーしたときに反応
+	/// </summary>
+	/// <returns></returns>
 	inline WORD IsTriggerGamePadRTrigger() {
 		if (gamePadState_.Gamepad.bRightTrigger && !preGamePadState_.Gamepad.bRightTrigger) {
 			return true;
 		}
 		return false;
 	}
+	/// <summary>
+	/// 右トリガーに入力がなくなったときに反応
+	/// </summary>
+	/// <returns></returns>
 	inline WORD IsReleaseGamePadRTrigger() {
 		if (!gamePadState_.Gamepad.bRightTrigger && preGamePadState_.Gamepad.bRightTrigger) {
 			return true;
 		}
 		return false;
 	}
-	//スティック
+
+	/// <summary>
+	/// 左スティックの入力値(-1～1)の間で出力
+	/// </summary>
+	/// <returns></returns>
 	inline Vector2 GetGamePadLStick() {
 		Vector2 sThumb = { (float)gamePadState_.Gamepad.sThumbLX, (float)gamePadState_.Gamepad.sThumbLY };
 		sThumb.x /= SHRT_MAX;
@@ -145,6 +161,10 @@ public: //メンバ関数
 		}
 		return sThumb;
 	}
+	/// <summary>
+	/// 右スティックの入力値(-1～1)の間で出力
+	/// </summary>
+	/// <returns></returns>
 	inline Vector2 GetGamePadRStick() {
 		Vector2 sThumb = { (float)gamePadState_.Gamepad.sThumbRX, (float)gamePadState_.Gamepad.sThumbRY };
 		sThumb.x /= SHRT_MAX;
@@ -168,6 +188,13 @@ public: //メンバ関数
 		gamePadVibration_.wRightMotorSpeed = rightVib;
 		XInputSetState(0, &gamePadVibration_);
 	}
+	/// <summary>
+	/// コントローラーが接続できているかの関数
+	/// </summary>
+	/// <returns></returns>
+	inline bool IsControllerConnected() {
+		return isConnection_;
+	}
 
 private: //メンバ関数
 	InputManager() = default;
@@ -189,4 +216,5 @@ private: //メンバ変数
 	XINPUT_STATE gamePadState_;
 	XINPUT_STATE preGamePadState_;
 	XINPUT_VIBRATION gamePadVibration_;
+	bool isConnection_;
 };

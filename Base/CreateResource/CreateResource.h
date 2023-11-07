@@ -1,6 +1,6 @@
 #pragma once
-#include "../WinApp/WinApp.h"
-#include "../DirectXCommon/DirectXCommon.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 
 /// <summary>
 /// 頂点のメモリ確保

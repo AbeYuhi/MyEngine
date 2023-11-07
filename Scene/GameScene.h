@@ -1,15 +1,16 @@
 #pragma once
-#include "../Base/WinApp/WinApp.h"
-#include "../Base/DirectXCommon/DirectXCommon.h"
-#include "../Manager/ImGuiManager.h"
-#include "../Manager/InputManager.h"
-#include "../Object/Triangle.h"
-#include "../Object/Sprite.h"
-#include "../Object/Sphere.h"
-#include "../Object/Model.h"
-#include "../GameObject/Camera/DebugCamera.h"
-#include "../GameObject/Camera/SpriteCamera.h"
-#include "../GameObject/Light/DirectionalLight.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Manager/ImGuiManager.h"
+#include "Manager/InputManager.h"
+#include "Object/Triangle.h"
+#include "Object/Sprite.h"
+#include "Object/Sphere.h"
+#include "Object/Model.h"
+#include "GameObject/Camera/GameCamera.h"
+#include "GameObject/Camera/DebugCamera.h"
+#include "GameObject/Camera/SpriteCamera.h"
+#include "GameObject/Light/DirectionalLight.h"
 
 class GameScene {
 public:
@@ -27,8 +28,13 @@ private:
 	WinApp* winApp_;
 	DirectXCommon* directXCommon_;
 	InputManager* input_;
+	//ゲームカメラ
+	Matrix4x4 viewProjectionMatrix_;
+	//ゲームカメラ
+	std::unique_ptr<GameCamera> gameCamera_;
 	//デバッグカメラ
 	std::unique_ptr<DebugCamera> debugCamera_;
+	bool isDebugCamera_;
 	//スプライト用カメラ
 	std::unique_ptr<SpriteCamera> spriteCamera_;
 	//平行ライト
@@ -39,4 +45,5 @@ private:
 
 	std::unique_ptr<Model> model_;
 	RenderItem modelRenderInfo_;
+	RenderItem modelRenderInfo2_;
 };
