@@ -11,6 +11,7 @@ enum TextureName {
 	 WHITE,
 	 MONSTERBALL,
 	 FENCE,
+	 TEST,
 	 TEXTURENUM
 };
 

@@ -37,7 +37,7 @@ void GameScene::Initialize() {
 	triangle2_ = Triangle::Create(triangle2Pos);*/
 
 	//スプライトの生成
-	sprite_ = Sprite::Create({620, 360});
+	sprite_ = Sprite::Create({990, 360});
 	spriteInfo_.Initialize(spriteCamera_->GetViewProjectionMatrixPointer());
 
 	//モデルの生成
@@ -105,7 +105,7 @@ void GameScene::Update() {
 
 void GameScene::Draw() {
 
-	//sprite_->Draw(spriteInfo_, FENCE);
+	sprite_->Draw(spriteInfo_, FENCE);
 	model_->Draw(modelRenderInfo_);
 
 }
