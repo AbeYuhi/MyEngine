@@ -2,6 +2,7 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+#include <map>
 #include "Base/CreateResource/CreateResource.h"
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Manager/ImGuiManager.h"
@@ -17,6 +18,7 @@
 #include "Data/Material.h"
 #include "Data/MaterialInfo.h"
 #include "Data/RenderItem.h"
+#include "Data/TextureData.h"
 #include "Manager/TextureManager.h"
 #include "Manager/GraphicsPipelineManager.h"
 
@@ -27,7 +29,6 @@ public: //静的メンバ関数
 	static std::unique_ptr<Model> Create(const std::string filename);
 
 private: //静的メンバ変数
-	static UINT sModelNum_;
 
 public: //メンバ関数
 	Model();
@@ -50,10 +51,7 @@ private: //メンバ変数
 	ModelData modelData_;
 
 	//テクスチャデータ
-	DirectX::ScratchImage mipImages_;
-	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU_;
-	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU_;
-	ComPtr<ID3D12Resource> textureResources_;
+	std::string textureName_;
 
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;

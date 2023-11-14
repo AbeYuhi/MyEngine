@@ -48,7 +48,7 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
 }
 
-void Triangle::Draw(RenderItem& renderItem, UINT textureName) {
+void Triangle::Draw(RenderItem& renderItem, std::string textureName) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();

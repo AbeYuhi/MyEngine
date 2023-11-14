@@ -1,23 +1,17 @@
 #include "InGameScene.h"
 
-GameScene::GameScene() {
+InGameScene::InGameScene() {
 
 }
 
-GameScene::~GameScene() {
+InGameScene::~InGameScene() {
 }
 
-void GameScene::Initialize() {
-	//基本機能の初期化
-	winApp_ = WinApp::GetInstance();
-	directXCommon_ = DirectXCommon::GetInstance();
-	input_ = InputManager::GetInstance();
+void InGameScene::Initialize() {
+	sceneNo_ = INGAME;
 
-#ifdef _DEBUG
-	isDebugCamera_ = true;
-#else
-	isDebugCamera_ = false;
-#endif // _DEBUG
+	//デバックモード中ならdebugカメラを有効に
+	isDebugCamera_ = debugMode_;
 
 	//画面に表示する際のVPmatrix
 	viewProjectionMatrix_ = MakeIdentity4x4();
@@ -39,11 +33,11 @@ void GameScene::Initialize() {
 	blendMode_ = kBlendModeNone;
 
 	//ゲームオブジェクト
-	plane_ = Plane::Create();
-	planeInfo_.Initialize(&viewProjectionMatrix_);
+	testParticle_ = std::make_unique<TestParticle>(&viewProjectionMatrix_, 10);
+	testParticle_->Initialize();
 }
 
-void GameScene::Update() {
+void InGameScene::Update() {
 	//カメラの更新
 	ImGui::Begin("Debug");
 	ImGui::Checkbox("UseDebugCamera", &isDebugCamera_);
@@ -63,25 +57,15 @@ void GameScene::Update() {
 	//ライトの更新
 	directionalLight_->Update();
 
-	ImGui::Begin("plane");
-	ImGui::SliderFloat3("translate", &planeInfo_.worldTransform_.data_.translate_.x, -10, 10);
-	ImGui::SliderFloat3("rotate", &planeInfo_.worldTransform_.data_.rotate_.x, -2.0f * 3.14f, 2.0f * 3.14f);
-	ImGui::SliderFloat3("scale", &planeInfo_.worldTransform_.data_.scale_.x, -10, 10);
-	ImGui::DragFloat2("UVTransform", &planeInfo_.materialInfo_.uvTransform_.translate_.x, 0.01f, -10.0f, 10.0f);
-	ImGui::DragFloat2("UVScale", &planeInfo_.materialInfo_.uvTransform_.scale_.x, 0.01f, -10.0f, 10.0f);
-	ImGui::SliderAngle("UVRotate", &planeInfo_.materialInfo_.uvTransform_.rotate_.z);
-	ImGui::ColorEdit4("Color", &planeInfo_.materialInfo_.material_->color.x);
-	ImGui::End();
+	testParticle_->Update();
 
 	ImGui::Begin("BlendMode");
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen"};
 	ImGui::Combo("blendMode", &blendMode_, modes, IM_ARRAYSIZE(modes));
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(static_cast<BlendMode>(blendMode_));
 	ImGui::End();
-
-	planeInfo_.Update();
 }
 
-void GameScene::Draw() {
-	plane_->Draw(planeInfo_);
+void InGameScene::Draw() {
+	testParticle_->Draw();
 }

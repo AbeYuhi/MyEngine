@@ -3,25 +3,29 @@
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Manager/ImGuiManager.h"
 #include "Manager/InputManager.h"
+#include "Manager/ParticleManager.h"
 #include "Object/Triangle.h"
 #include "Object/Sprite.h"
+#include "Object/Plane.h"
 #include "Object/Sphere.h"
 #include "Object/Model.h"
 #include "GameObject/Camera/GameCamera.h"
 #include "GameObject/Camera/DebugCamera.h"
 #include "GameObject/Camera/SpriteCamera.h"
 #include "GameObject/Light/DirectionalLight.h"
+#include "GameObject/Particle/testParticle.h"
+#include "Scene/IScene.h"
 
-class GameScene {
+class InGameScene : public IScene {
 public:
-	GameScene();
-	~GameScene();
+	InGameScene();
+	~InGameScene();
 
-	void Initialize();
+	void Initialize() override;
 
-	void Update();
+	void Update() override;
 
-	void Draw();
+	void Draw() override;
 
 private:
 	//基本機能
@@ -42,9 +46,6 @@ private:
 	//ブレンドモード
 	int blendMode_;
 
-	std::unique_ptr<Sprite> sprite_;
-	RenderItem spriteInfo_;
-
-	std::unique_ptr<Model> model_;
-	RenderItem modelRenderInfo_;
+	//描画モデル
+	std::unique_ptr<TestParticle> testParticle_;
 };

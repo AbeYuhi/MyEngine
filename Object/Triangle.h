@@ -32,7 +32,7 @@ public: //メンバ関数
 
 	void Initialize(Vector3 pos[3]);
 
-	void Draw(RenderItem& renderItem, UINT textureName = UVCHECKER);
+	void Draw(RenderItem& renderItem, std::string textureName = "uvChecker.png");
 
 public: //ゲッターセッター
 

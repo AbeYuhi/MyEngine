@@ -1,0 +1,31 @@
+#include "testParticle.h"
+
+
+TestParticle::TestParticle(){}
+TestParticle::TestParticle(const Matrix4x4* viewProjectionMatrix, int maxParticleCount) : ParticleManager(viewProjectionMatrix, maxParticleCount){}
+
+void TestParticle::Initialize() {
+	//基本機能の初期化
+	ParticleManager::Initialize();
+
+	//パーティクルの初期化
+	plane_ = Plane::Create();
+	plane_->Initialize();
+}
+
+void TestParticle::Update() {
+
+	int index = 0;
+	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end();) {
+		ParticleInfo* particle = &(*itParticle);
+		index++;
+		particle->isAlive_ = true;
+	}
+
+	//パーティクルの更新
+	ParticleManager::Update();
+}
+
+void TestParticle::Draw() {
+	plane_->Draw(worldTransformResource_.Get(), materialInfo_, kMaxParticleCount_, srvHadnelGPU_);
+}

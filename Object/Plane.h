@@ -16,22 +16,24 @@
 #include "Manager/TextureManager.h"
 #include "Manager/GraphicsPipelineManager.h"
 
-class Sprite
+class Plane
 {
 public: //静的メンバ関数
-	static std::unique_ptr<Sprite> Create(Vector2 spriteSize = {640, 360});
+	static std::unique_ptr<Plane> Create();
 
 private: //静的メンバ変数
 	const static UINT kVertexNumber = 4;
 	const static UINT kIndexNumber = 6;
 
 public: //メンバ関数
-	Sprite();
-	~Sprite();
+	Plane();
+	~Plane();
 
-	void Initialize(Vector2 spriteSize);
+	void Initialize();
 
 	void Draw(RenderItem& renderItem, std::string textureName = "uvChecker.png");
+	
+	void Draw(ID3D12Resource* transformResource, ParticleMaterialInfo& materialInfo, size_t numInstance, D3D12_GPU_DESCRIPTOR_HANDLE srvHadnelGPU, std::string textureName = "uvChecker.png");
 
 private: //メンバ変数
 	//オブジェクト情報のResource

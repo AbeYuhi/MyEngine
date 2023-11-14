@@ -11,3 +11,10 @@ struct Material {
 
 	void Initialize();
 };
+
+struct ParticleMaterial {
+	Vector4 color;
+	Matrix4x4 uvTransform;
+
+	void Initialize();
+};

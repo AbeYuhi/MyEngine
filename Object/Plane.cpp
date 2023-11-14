@@ -1,21 +1,21 @@
-#include "Sprite.h"
+#include "Plane.h"
 
-Sprite::Sprite()
+Plane::Plane()
 {
 }
 
-Sprite::~Sprite()
+Plane::~Plane()
 {
 }
 
-std::unique_ptr<Sprite> Sprite::Create(Vector2 spriteSize) {
-	std::unique_ptr<Sprite> object = std::make_unique<Sprite>();
-	object->Initialize(spriteSize);
+std::unique_ptr<Plane> Plane::Create() {
+	std::unique_ptr<Plane> object = std::make_unique<Plane>();
+	object->Initialize();
 
 	return object;
 }
 
-void Sprite::Initialize(Vector2 spriteSize) {
+void Plane::Initialize() {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
@@ -32,16 +32,16 @@ void Sprite::Initialize(Vector2 spriteSize) {
 	//Resourceにデータを書き込む
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	//1枚目の三角形
-	vertexData_[0].position = { 0.0f, spriteSize.y, 0.0f, 1.0f }; //左下
+	vertexData_[0].position = { -1.0f, -1.0f, 0.0f, 1.0f }; //左下
 	vertexData_[0].texcoord = { 0.0f, 1.0f };
 	vertexData_[0].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[1].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
+	vertexData_[1].position = { -1.0f, 1.0f, 0.0f, 1.0f }; //左上
 	vertexData_[1].texcoord = { 0.0f, 0.0f };
 	vertexData_[1].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[2].position = { spriteSize.x, spriteSize.y, 0.0f, 1.0f }; //右下
+	vertexData_[2].position = { 1.0f, -1.0f, 0.0f, 1.0f }; //右下
 	vertexData_[2].texcoord = { 1.0f, 1.0f };
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[3].position = { spriteSize.x, 0.0f, 0.0f, 1.0f }; //右上
+	vertexData_[3].position = { 1.0f, 1.0f, 0.0f, 1.0f }; //右上
 	vertexData_[3].texcoord = { 1.0f, 0.0f };
 	vertexData_[3].normal = { 0.0f, 0.0f, -1.0f };
 
@@ -54,7 +54,7 @@ void Sprite::Initialize(Vector2 spriteSize) {
 	indexData_[3] = 1;	indexData_[4] = 3;	indexData_[5] = 2;
 }
 
-void Sprite::Draw(RenderItem& renderItem, std::string textureName) {
+void Plane::Draw(RenderItem& renderItem, std::string textureName) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
@@ -80,4 +80,33 @@ void Sprite::Draw(RenderItem& renderItem, std::string textureName) {
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
 	//描画
 	dxCommon->GetCommandList()->DrawIndexedInstanced(kIndexNumber, 1, 0, 0, 0);
+}
+
+void Plane::Draw(ID3D12Resource* transformResource, ParticleMaterialInfo& materialInfo, size_t numInstance, D3D12_GPU_DESCRIPTOR_HANDLE srvHadnelGPU, std::string textureName) {
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	TextureManager* textureManager = TextureManager::GetInstance();
+	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+
+	//ViewPortの設定
+	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
+	//Scirssorの設定
+	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
+	//パイプラインステートの設定
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(PipelineState::kParticle));
+	//ルートシグネチャの設定
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(PipelineState::kParticle));
+	//プリミティブ形状を設定
+	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//VBVの設定
+	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	dxCommon->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
+	//マテリアルCBufferの場所を設定
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialInfo.resource_->GetGPUVirtualAddress());
+	//wvpCBufferの場所を設定
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformResource->GetGPUVirtualAddress());
+	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvHadnelGPU);
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
+	//描画
+	dxCommon->GetCommandList()->DrawIndexedInstanced(kIndexNumber, (UINT)numInstance, 0, 0, 0);
 }

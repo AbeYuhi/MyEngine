@@ -19,6 +19,15 @@ enum BlendMode{
 	kCountOfBlendMode,
 };
 
+enum PipelineState {
+	//通常用
+	kDefault,
+	//パーティクル用
+	kParticle,
+	//パイプラインステートの数
+	kCountOfPipelineState
+};
+
 class GraphicsPipelineManager {
 public: //静的関数
 	static GraphicsPipelineManager* GetInstance();
@@ -29,8 +38,8 @@ public: //メンバ関数
 
 public: //ゲッターセッター
 
-	inline ID3D12RootSignature* GetRootSignature() { return rootSignature_.Get(); }
-	inline ID3D12PipelineState* GetPSO() { return graphicsPipelineState_[blendMode_].Get(); }
+	inline ID3D12RootSignature* GetRootSignature(PipelineState shaderPack = kDefault) { return rootSignature_[shaderPack].Get(); }
+	inline ID3D12PipelineState* GetPSO(PipelineState shaderPack = kDefault) { return graphicsPipelineState_[shaderPack][blendMode_].Get(); }
 	inline D3D12_VIEWPORT* GetViewPort() { return &viewPort_; }
 	inline D3D12_RECT* GetScissorRect() { return &scissorRect_; }
 	inline void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
@@ -52,8 +61,8 @@ private:
 	void CreatePSO();
 
 private: //メンバ変数
-	ComPtr<ID3D12RootSignature> rootSignature_;
-	ComPtr<ID3D12PipelineState> graphicsPipelineState_[BlendMode::kCountOfBlendMode];
+	ComPtr<ID3D12RootSignature> rootSignature_[kCountOfPipelineState];
+	ComPtr<ID3D12PipelineState> graphicsPipelineState_[kCountOfPipelineState][BlendMode::kCountOfBlendMode];
 	D3D12_VIEWPORT viewPort_;
 	D3D12_RECT scissorRect_;
 	BlendMode blendMode_;

@@ -21,3 +21,25 @@ void MaterialInfo::RunMap() {
 void MaterialInfo::UpdateMatrix() {
 	material_->uvTransform = MakeAffineMatrix(uvTransform_.scale_, uvTransform_.rotate_, uvTransform_.translate_);
 }
+
+void ParticleMaterialInfo::Initialize() {
+	CreateResource();
+	RunMap();
+
+	material_->Initialize();
+	uvTransform_.Initialize();
+
+	UpdateMatrix();
+}
+
+void ParticleMaterialInfo::CreateResource() {
+	resource_ = CreateBufferResource(sizeof(ParticleMaterial));
+}
+
+void ParticleMaterialInfo::RunMap() {
+	resource_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
+}
+
+void ParticleMaterialInfo::UpdateMatrix() {
+	material_->uvTransform = MakeAffineMatrix(uvTransform_.scale_, uvTransform_.rotate_, uvTransform_.translate_);
+}

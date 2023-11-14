@@ -105,7 +105,7 @@ void Sphere::Initialize() {
 	}
 }
 
-void Sphere::Draw(RenderItem& renderItem, UINT textureName) {
+void Sphere::Draw(RenderItem& renderItem, std::string textureName) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();

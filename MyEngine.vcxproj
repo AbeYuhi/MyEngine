@@ -103,6 +103,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Base\WinApp\WinApp.cpp" />
     <ClCompile Include="Data\Material.cpp" />
     <ClCompile Include="Data\MaterialInfo.cpp" />
+    <ClCompile Include="Data\TextureData.cpp" />
     <ClCompile Include="Data\Transform.cpp" />
     <ClCompile Include="DebugSytem\DebugLog.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
@@ -117,10 +118,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="GameObject\Light\DirectionalLight.cpp" />
     <ClCompile Include="GameObject\Light\SpotLight.cpp" />
+    <ClCompile Include="GameObject\Particle\testParticle.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager\GameManager.cpp" />
     <ClCompile Include="Manager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
     <ClCompile Include="Manager\InputManager.cpp" />
+    <ClCompile Include="Manager\ParticleManager.cpp" />
     <ClCompile Include="Manager\TextureManager.cpp" />
     <ClCompile Include="Math\Matrix3x3.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
@@ -128,10 +132,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Math\Vector3_Math.cpp" />
     <ClCompile Include="Object\Model.cpp" />
+    <ClCompile Include="Object\Plane.cpp" />
     <ClCompile Include="Object\Sphere.cpp" />
     <ClCompile Include="Object\Sprite.cpp" />
     <ClCompile Include="Object\Triangle.cpp" />
-    <ClCompile Include="Scene\GameScene.cpp" />
+    <ClCompile Include="Scene\GameClearScene.cpp" />
+    <ClCompile Include="Scene\GameOverScene.cpp" />
+    <ClCompile Include="Scene\InGameScene.cpp" />
+    <ClCompile Include="Scene\IScene.cpp" />
+    <ClCompile Include="Scene\MenuScene.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\CreateResource\CreateResource.h" />
@@ -143,6 +153,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Data\MaterialInfo.h" />
     <ClInclude Include="Data\ModelData.h" />
     <ClInclude Include="Data\RenderItem.h" />
+    <ClInclude Include="Data\TextureData.h" />
     <ClInclude Include="Data\Transform.h" />
     <ClInclude Include="Data\VertexData.h" />
     <ClInclude Include="DebugSytem\DebugLog.h" />
@@ -160,9 +171,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GameObject\Camera\SpriteCamera.h" />
     <ClInclude Include="GameObject\Light\DirectionalLight.h" />
     <ClInclude Include="GameObject\Light\SpotLight.h" />
+    <ClInclude Include="GameObject\Particle\testParticle.h" />
+    <ClInclude Include="Manager\GameManager.h" />
     <ClInclude Include="Manager\GraphicsPipelineManager.h" />
     <ClInclude Include="Manager\ImGuiManager.h" />
     <ClInclude Include="Manager\InputManager.h" />
+    <ClInclude Include="Manager\ParticleManager.h" />
     <ClInclude Include="Manager\TextureManager.h" />
     <ClInclude Include="Math\Matrix3x3.h" />
     <ClInclude Include="Math\Matrix4x4.h" />
@@ -171,10 +185,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Math\Vector3_Math.hpp" />
     <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="Object\Model.h" />
+    <ClInclude Include="Object\Plane.h" />
     <ClInclude Include="Object\Sphere.h" />
     <ClInclude Include="Object\Sprite.h" />
     <ClInclude Include="Object\Triangle.h" />
-    <ClInclude Include="Scene\GameScene.h" />
+    <ClInclude Include="Scene\GameClearScene.h" />
+    <ClInclude Include="Scene\GameOverScene.h" />
+    <ClInclude Include="Scene\InGameScene.h" />
+    <ClInclude Include="Scene\IScene.h" />
+    <ClInclude Include="Scene\MenuScene.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">
@@ -185,11 +205,23 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
     <None Include="External\imgui\imgui.vcxproj.filters" />
     <None Include="Resources\Shaders\Object3d.hlsli" />
+    <None Include="Resources\Shaders\Particle.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="External\imgui\LICENSE.txt" />

@@ -34,3 +34,33 @@ private:
 	/// </summary>
 	void RunMap();
 };
+
+struct ParticleMaterialInfo {
+	//Resource
+	ComPtr<ID3D12Resource> resource_ = nullptr;
+	//UVtransform
+	TransformData uvTransform_;
+	//マテリアル情報
+	ParticleMaterial* material_;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
+	/// アフィン変換
+	/// </summary>
+	void UpdateMatrix();
+
+private:
+	/// <summary>
+	/// リソースの生成
+	/// </summary>
+	void CreateResource();
+
+	/// <summary>
+	/// MAPの実行
+	/// </summary>
+	void RunMap();
+};

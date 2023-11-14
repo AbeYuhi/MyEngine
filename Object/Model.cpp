@@ -3,13 +3,7 @@
 Model::Model(){}
 Model::~Model() {}
 
-/// <summary>
-/// 静的メンバ変数の実体化
-/// </summary>
-UINT Model::sModelNum_ = 0;
-
 std::unique_ptr<Model> Model::Create(const std::string filename) {
-	sModelNum_++;
 	std::unique_ptr<Model> object = std::make_unique<Model>();
 	object->Initialize(filename);
 
@@ -59,7 +53,7 @@ void Model::Draw(RenderItem& renderItem) {
 	//wvpCBufferの場所を設定
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU_);
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName_));
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
@@ -129,20 +123,10 @@ void Model::LoadObjFile(const std::string& filename) {
 			DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 			if (!modelData_.material.textureFilePath.empty()) {
-				mipImages_ = textureManager->LoadTexture(modelData_.material.textureFilePath);
-
-				//Metadata
-				DirectX::TexMetadata metadata = {};
-				metadata = mipImages_.GetMetadata();
-				textureResources_ = textureManager->CreateTextureResource(metadata);
-				ComPtr<ID3D12Resource> intermediateResource = textureManager->UploadTextureData(textureResources_.Get(), mipImages_);
-
-				dxCommon->TransferCommandList();
-
-				textureManager->CreateShaderResourceView(textureResources_.Get(), mipImages_, textureSrvHandleCPU_, textureSrvHandleGPU_, (TextureName::TEXTURENUM - 1) + sModelNum_);
+				textureManager->Load(textureName_, modelData_.material.textureFilePath);
 			}
 			else {
-				textureSrvHandleGPU_ = textureManager->GetTextureHandleGPU(WHITE);
+				textureName_ = "whiteTexture2x2.png";
 			}
 		}
 	}
@@ -164,6 +148,7 @@ void Model::LoadMaterialDataTemplateFile(const std::string& folderPath, const st
 			s >> textureFilename;
 			//連結してファイルパスにする
 			modelData_.material.textureFilePath = folderPath + "/" + textureFilename;
+			textureName_ = textureFilename;
 		}
 	}
 }

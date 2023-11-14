@@ -73,6 +73,18 @@
     <Filter Include="ソース ファイル\Data">
       <UniqueIdentifier>{20ff61cf-a40c-4a01-bff8-4231c0acd3cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\Object3d">
+      <UniqueIdentifier>{c928defd-6c07-44bd-b604-c5367735e895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Particle">
+      <UniqueIdentifier>{fefb3b31-089d-4233-9f3f-b99f34c61803}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Particle">
+      <UniqueIdentifier>{b467e3b3-b7c0-4cdd-a04d-1d4e6373c3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Particle">
+      <UniqueIdentifier>{2e2c54c7-360c-4c30-a80a-7ed514a1cd14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -92,9 +104,6 @@
     </ClCompile>
     <ClCompile Include="Math\Matrix4x4.cpp">
       <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\GameScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Base\DirectXCommon\DirectXCommon.cpp">
       <Filter>ソース ファイル\Base</Filter>
@@ -177,6 +186,39 @@
     <ClCompile Include="GameObject\Camera\GameCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Plane.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\ParticleManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Particle\testParticle.cpp">
+      <Filter>ソース ファイル\GameObject\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\TextureData.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\InGameScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\IScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameOverScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameClearScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\MenuScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\GameManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object\Triangle.h">
@@ -197,7 +239,7 @@
     <ClInclude Include="Math\Vector4.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\GameScene.h">
+    <ClInclude Include="Scene\InGameScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Base\DirectXCommon\DirectXCommon.h">
@@ -302,13 +344,49 @@
     <ClInclude Include="GameObject\Camera\GameCamera.h">
       <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Plane.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\ParticleManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Particle\testParticle.h">
+      <Filter>ヘッダー ファイル\GameObject\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\TextureData.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\IScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameOverScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameClearScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\MenuScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\GameManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\Object3d</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\Object3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
+      <Filter>Shader\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
+      <Filter>Shader\Particle</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,7 +397,10 @@
       <Filter>imgui</Filter>
     </None>
     <None Include="Resources\Shaders\Object3d.hlsli">
-      <Filter>Shader</Filter>
+      <Filter>Shader\Object3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\Particle.hlsli">
+      <Filter>Shader\Particle</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

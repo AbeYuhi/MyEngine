@@ -81,6 +81,10 @@ public: //ゲッターセッター
 
 	inline D3D12_DEPTH_STENCIL_VIEW_DESC GetDsvDesc() { return dsvDesc_; }
 
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(int index);
+
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(int index);
+
 private: //メンバ関数
 	DirectXCommon() = default;
 	~DirectXCommon() = default;
@@ -93,6 +97,11 @@ private: //メンバ関数
 
 	void CreateRenderTargetView();
 
+	/// <summary>
+	/// 0 : ImGuiManager
+	/// 1～100 : Texture
+	/// 101～150 : Particle
+	/// </summary>
 	void CreateShaderResourceView();
 
 	void CreateDepthStencilView();
