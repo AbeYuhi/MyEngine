@@ -82,7 +82,7 @@ void Plane::Draw(RenderItem& renderItem, std::string textureName) {
 	dxCommon->GetCommandList()->DrawIndexedInstanced(kIndexNumber, 1, 0, 0, 0);
 }
 
-void Plane::Draw(ID3D12Resource* transformResource, ParticleMaterialInfo& materialInfo, size_t numInstance, D3D12_GPU_DESCRIPTOR_HANDLE srvHadnelGPU, std::string textureName) {
+void Plane::Draw(ParticleMaterialInfo& materialInfo, size_t numInstance, D3D12_GPU_DESCRIPTOR_HANDLE srvHadnelGPU, std::string textureName) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
@@ -102,8 +102,6 @@ void Plane::Draw(ID3D12Resource* transformResource, ParticleMaterialInfo& materi
 	dxCommon->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
 	//マテリアルCBufferの場所を設定
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialInfo.resource_->GetGPUVirtualAddress());
-	//wvpCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformResource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvHadnelGPU);
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));

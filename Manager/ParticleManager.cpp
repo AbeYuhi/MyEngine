@@ -32,7 +32,6 @@ void ParticleManager::Initialize() {
 	for (int index = 0; index < kMaxParticleCount_; index++) {
 		ParticleInfo particle{};
 		particle.srtData_.Initialize();
-		particle.srtData_.translate_ = { index * 0.1f, index * 0.1f, index * 0.1f };
 		particle.velocity_ = { 0, 0, 0 };
 		particles_.push_back(particle);
 	}

@@ -11,6 +11,13 @@ void TestParticle::Initialize() {
 	//パーティクルの初期化
 	plane_ = Plane::Create();
 	plane_->Initialize();
+
+	int index = 0;
+	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
+		ParticleInfo* particle = &(*itParticle);
+		index++;
+		particle->srtData_.translate_ = { 0.1f * index, 0, 100 };
+	}
 }
 
 void TestParticle::Update() {
@@ -20,5 +27,5 @@ void TestParticle::Update() {
 }
 
 void TestParticle::Draw() {
-	plane_->Draw(worldTransformResource_.Get(), materialInfo_, kMaxParticleCount_, srvHadnelGPU_);
+	plane_->Draw(materialInfo_, kMaxParticleCount_, srvHadnelGPU_);
 }

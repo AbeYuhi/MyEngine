@@ -33,7 +33,7 @@ public: //メンバ関数
 
 	void Draw(RenderItem& renderItem, std::string textureName = "uvChecker.png");
 	
-	void Draw(ID3D12Resource* transformResource, ParticleMaterialInfo& materialInfo, size_t numInstance, D3D12_GPU_DESCRIPTOR_HANDLE srvHadnelGPU, std::string textureName = "uvChecker.png");
+	void Draw(ParticleMaterialInfo& materialInfo, size_t numInstance, D3D12_GPU_DESCRIPTOR_HANDLE srvHadnelGPU, std::string textureName = "uvChecker.png");
 
 private: //メンバ変数
 	//オブジェクト情報のResource
