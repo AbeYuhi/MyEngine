@@ -4,7 +4,6 @@
 struct ParticleInfo {
 	TransformData srtData_;
 	Vector3 velocity_;
-	bool isAlive_;
 };
 
 class ParticleManager

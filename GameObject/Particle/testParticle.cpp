@@ -15,13 +15,6 @@ void TestParticle::Initialize() {
 
 void TestParticle::Update() {
 
-	int index = 0;
-	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end();) {
-		ParticleInfo* particle = &(*itParticle);
-		index++;
-		particle->isAlive_ = true;
-	}
-
 	//パーティクルの更新
 	ParticleManager::Update();
 }

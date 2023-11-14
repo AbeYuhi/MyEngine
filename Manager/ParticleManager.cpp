@@ -34,41 +34,30 @@ void ParticleManager::Initialize() {
 		particle.srtData_.Initialize();
 		particle.srtData_.translate_ = { index * 0.1f, index * 0.1f, index * 0.1f };
 		particle.velocity_ = { 0, 0, 0 };
-		particle.isAlive_ = false;
 		particles_.push_back(particle);
 	}
 }
 
 void ParticleManager::Update() {
-	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end();) {
+	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
 		particle->srtData_.translate_ += particle->velocity_;
-
-		if (!particle->isAlive_) {
-			itParticle = particles_.erase(itParticle);
-		}
-		else {
-			itParticle++;
-		}
 	}
 
 	int index = 0;
-	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end();) {
+	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
 		index++;
-		if (particle->isAlive_) {
-			Matrix4x4 worldMatrix = MakeAffineMatrix(particle->srtData_.scale_, particle->srtData_.rotate_, particle->srtData_.translate_);
-			Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, *viewProjectionMatrix_);
 
-			worldTransformData_[index].WVP_ = worldViewProjectionMatrix;
-			worldTransformData_[index].World_ = worldMatrix;
-		}
+		Matrix4x4 worldMatrix = MakeAffineMatrix(particle->srtData_.scale_, particle->srtData_.rotate_, particle->srtData_.translate_);
+		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, *viewProjectionMatrix_);
+
+		worldTransformData_[index].WVP_ = worldViewProjectionMatrix;
+		worldTransformData_[index].World_ = worldMatrix;
 	}
 }
 
-void ParticleManager::Draw() {
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvHadnelGPU_);
-}
+void ParticleManager::Draw() {}
 
 void ParticleManager::CreateSRV() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
