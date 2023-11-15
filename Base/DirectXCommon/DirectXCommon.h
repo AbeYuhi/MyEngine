@@ -37,6 +37,11 @@ public: //メンバ関数
 	void ClearRenderTarget();
 
 	/// <summary>
+	/// 深度バッファのクリア
+	/// </summary>
+	void ClearDepthStencilBuffer();
+
+	/// <summary>
 	/// コマンドのキックから次のコマンドリストの準備
 	/// </summary>
 	void TransferCommandList();

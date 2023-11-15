@@ -10,6 +10,11 @@ InGameScene::~InGameScene() {
 void InGameScene::Initialize() {
 	sceneNo_ = INGAME;
 
+	//基本機能
+	winApp_ = WinApp::GetInstance();
+	directXCommon_ = DirectXCommon::GetInstance();
+	input_ = InputManager::GetInstance();;
+
 	//デバックモード中ならdebugカメラを有効に
 	isDebugCamera_ = debugMode_;
 
@@ -32,9 +37,24 @@ void InGameScene::Initialize() {
 	//ブレンドモード
 	blendMode_ = kBlendModeNone;
 
+	//画像読み込み
+	monsterBallHandle_ = TextureManager::Load("monsterBall.png");
+	fenceHandle_ = TextureManager::Load("fence.png");
+
 	//ゲームオブジェクト
 	testParticle_ = std::make_unique<TestParticle>(&viewProjectionMatrix_, 10);
 	testParticle_->Initialize();
+
+	groundModel_ = Model::Create("terrain");
+	groundModelInfo_.Initialize(&viewProjectionMatrix_);
+	groundModelInfo_.materialInfo_.material_->enableLightint = true;
+
+	monsterBall_ = Sphere::Create();
+	monsterBallInfo_.Initialize(&viewProjectionMatrix_);
+	monsterBallInfo_.materialInfo_.material_->enableLightint = true;
+
+	sprite_ = Sprite::Create({ 1280, 720 });
+	spriteInfo_.Initialize(spriteCamera_->GetViewProjectionMatrixPointer());
 }
 
 void InGameScene::Update() {
@@ -64,8 +84,35 @@ void InGameScene::Update() {
 	ImGui::Combo("blendMode", &blendMode_, modes, IM_ARRAYSIZE(modes));
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(static_cast<BlendMode>(blendMode_));
 	ImGui::End();
+
+	groundModelInfo_.Update();
+	monsterBallInfo_.Update();
+	spriteInfo_.Update();
 }
 
 void InGameScene::Draw() {
-	testParticle_->Draw();
+	//ライティングの描画
+	directionalLight_->Draw();
+
+	///背景スプライトの描画開始
+
+	//sprite_->Draw(spriteInfo_, uvCheckerHandle_);
+
+	///背景スプライト描画終了
+	//深度バッファのクリア
+	directXCommon_->ClearDepthStencilBuffer();
+
+	///前面スプライトの描画開始
+
+
+
+	///前面スプライトの描画終了
+
+	///オブジェクトの描画開始
+
+	//testParticle_->Draw();
+	//monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
+	groundModel_->Draw(groundModelInfo_);
+
+	///オブジェクトの描画終了
 }

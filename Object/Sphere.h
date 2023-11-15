@@ -32,7 +32,7 @@ public: //メンバ関数
 
 	void Initialize();
 
-	void Draw(RenderItem& renderItem, std::string textureName = "uvChecker.png");
+	void Draw(RenderItem& renderItem, uint32_t textureHandle);
 
 private: //メンバ変数
 	//オブジェクト情報のResource

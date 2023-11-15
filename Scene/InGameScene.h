@@ -46,6 +46,19 @@ private:
 	//ブレンドモード
 	int blendMode_;
 
+	//テクスチャハンドル
+	uint32_t monsterBallHandle_;
+	uint32_t fenceHandle_;
+
 	//描画モデル
 	std::unique_ptr<TestParticle> testParticle_;
+
+	std::unique_ptr<Model> groundModel_;
+	RenderItem groundModelInfo_;
+
+	std::unique_ptr<Sphere> monsterBall_;
+	RenderItem monsterBallInfo_;
+
+	std::unique_ptr<Sprite> sprite_;
+	RenderItem spriteInfo_;
 };

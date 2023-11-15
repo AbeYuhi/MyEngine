@@ -13,6 +13,7 @@
 #include "Data/Material.h"
 #include "Data/MaterialInfo.h"
 #include "Data/RenderItem.h"
+#include "Data/ParticleDrawInfo.h"
 #include "Manager/TextureManager.h"
 #include "Manager/GraphicsPipelineManager.h"
 
@@ -31,9 +32,9 @@ public: //メンバ関数
 
 	void Initialize();
 
-	void Draw(RenderItem& renderItem, std::string textureName = "uvChecker.png");
+	void Draw(RenderItem& renderItem, uint32_t textureHandle = 0);
 	
-	void Draw(ParticleMaterialInfo& materialInfo, size_t numInstance, D3D12_GPU_DESCRIPTOR_HANDLE srvHadnelGPU, std::string textureName = "uvChecker.png");
+	void Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle = 0);
 
 private: //メンバ変数
 	//オブジェクト情報のResource

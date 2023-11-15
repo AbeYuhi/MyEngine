@@ -64,17 +64,13 @@ void DebugCamera::Update() {
 		}
 
 		if (input->IsMousePush(2)) {
-			ImVec2 mouseAmount;
-			mouseAmount.x = mousePos_.x - preMousePos_.x;
-			mouseAmount.y = mousePos_.y - preMousePos_.y;
-
-			cameraVelocity.x += -mouseAmount.x * 0.05f;
-			cameraVelocity.y += mouseAmount.y * 0.05f;
+			cameraVelocity.x -= input->GetMouseMovement().x * 0.01f;
+			cameraVelocity.y += input->GetMouseMovement().y * 0.01f;
 		}
 
-		float wheel = ImGui::GetIO().MouseWheel;
+		float wheel = input->GetMouseWheelDelta();
 		if (wheel != 0) {
-			cameraVelocity.z += wheel * 0.2f;
+			cameraVelocity.z += wheel * 0.02f;
 		}
 
 		transform_.translate_ += TransformNormal(cameraVelocity, worldMatrix_);

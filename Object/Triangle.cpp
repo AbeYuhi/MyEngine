@@ -48,7 +48,7 @@ void Triangle::Initialize(Vector3 pos[3]) {
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
 }
 
-void Triangle::Draw(RenderItem& renderItem, std::string textureName) {
+void Triangle::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
@@ -70,7 +70,7 @@ void Triangle::Draw(RenderItem& renderItem, std::string textureName) {
 	//wvpCBufferの場所を設定
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(kVertexNumber, 1, 0, 0);
 }

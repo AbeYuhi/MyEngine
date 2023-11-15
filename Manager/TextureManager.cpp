@@ -10,29 +10,32 @@ TextureManager* TextureManager::GetInstance() {
 /// </summary>
 UINT TextureManager::sTextureNum_ = 0;
 
-void TextureManager::Initialize() {
-	LoadTextures();
+uint32_t TextureManager::Load(const std::string& textureName) {
+	return GetInstance()->LoadInternal(textureName, textureName);
 }
 
-void TextureManager::LoadTextures() {
-	Load("uvChecker.png", "uvChecker.png");
-	Load("whiteTexture2x2.png", "whiteTexture2x2.png");
-	Load("monsterBall.png", "monsterBall.png");
-	Load("fence.png", "fence.png");
-	Load("testPing.png", "testPing.png");
+uint32_t TextureManager::Load(const std::string& textureName, const std::string& filePath) {
+	return GetInstance()->LoadInternal(textureName, filePath);
 }
 
-void TextureManager::Load(const std::string& textureName, const std::string& filePath) {
+uint32_t TextureManager::LoadInternal(const std::string& textureName, const std::string& filePath) {
 	if (textureDatas_.find(textureName) == textureDatas_.end()) {
 		sTextureNum_++;
 		if (sTextureNum_ > kMaxTextureNum_) {
 			Log(ConvertString(std::format(L"テクスチャの最大読み込み枚数は100枚です\n")));
 			assert(false);
 		}
+
+		//テクスチャを読み込む
 		TransferTexture(textureName, filePath);
+
+		//テクスチャの総数から一つ引く
+		textureHandles_[sTextureNum_ - 1] = textureName;
+		return sTextureNum_ - 1;
 	}
 	else {
 		Log(ConvertString(std::format(L"読み込み済みのテクスチャです\n")));
+		return textureDatas_[textureName].textureHandleIndex;
 	}
 }
 
@@ -51,6 +54,9 @@ void TextureManager::TransferTexture(const std::string& textureName, const std::
 	dxCommon->TransferCommandList();
 
 	CreateShaderResourceView(textureName);
+
+	//テクスチャの総数から一つ引く
+	textureDatas_[textureName].textureHandleIndex = sTextureNum_ - 1;
 }
 
 DirectX::ScratchImage TextureManager::LoadTexture(const std::string&filePath) {

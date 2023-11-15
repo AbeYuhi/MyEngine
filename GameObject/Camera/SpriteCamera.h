@@ -6,6 +6,7 @@
 #include "Math/Matrix4x4.h"
 #include "Base/WinApp/WinApp.h"
 #include "Manager/ImGuiManager.h"
+#include "Manager/InputManager.h"
 #define M_PI 3.14f
 
 class SpriteCamera

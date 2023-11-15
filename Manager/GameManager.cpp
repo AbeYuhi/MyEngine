@@ -26,9 +26,9 @@ void GameManager::Initialize() {
 	imGuiManager_ = ImGuiManager::GetInstance();
 	imGuiManager_->Initialize();
 
-	//テクスチャマネージャーの初期化
-	textureManager_ = TextureManager::GetInstance();
-	textureManager_->Initialize();
+	//汎用テクスチャの読み込み
+	IScene::uvCheckerHandle_ = TextureManager::Load("uvChecker.png");
+	IScene::whiteTextureHandle_ = TextureManager::Load("whiteTexture2x2.png");
 
 	graphicsPipelineManager_ = GraphicsPipelineManager::GetInstance();
 	graphicsPipelineManager_->Initialize();

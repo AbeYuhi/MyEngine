@@ -17,6 +17,14 @@ struct DirectionalLightData
 };
 ConstantBuffer<DirectionalLightData> gDirectionalLightData : register(b1);
 
+struct PointLightData
+{
+    float32_t4 color;
+    float32_t3 position;
+    float intensity;
+};
+ConstantBuffer<PointLightData> gPointLightData : register(b2);
+
 struct PixelShaderOutput
 {
     float32_t4 color : SV_TARGET0;
@@ -28,11 +36,9 @@ PixelShaderOutput main(VertexShaderOutput input)
     PixelShaderOutput output;
     float4 transformUV = mul(float32_t4(input.texcoord, 0.0f, 1.0f), gMaterialData.uvTransform);
     float32_t4 textureColor = gTexture.Sample(gSampler, transformUV.xy);
- 
-    if (textureColor.a == 0.0f)
-    {
-        discard;
-    }
+    
+    //ポイントライトの入射光
+    //float32_t3 pointLightDirection = normalize(input.position - gPointLightData.position);
     
     if (gMaterialData.enableLighting != 0)
     {
@@ -59,10 +65,10 @@ PixelShaderOutput main(VertexShaderOutput input)
         output.color = gMaterialData.color * textureColor;
     }
     
-    //if (output.color.a == 0.0)
-    //{
-    //    discard;
-    //}
+    if (output.color.a == 0.0)
+    {
+        discard;
+    }
     
     return output;
 }

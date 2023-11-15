@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="GameObject\Camera\GameCamera.cpp" />
     <ClCompile Include="GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="GameObject\Light\DirectionalLight.cpp" />
+    <ClCompile Include="GameObject\Light\PointLight.cpp" />
     <ClCompile Include="GameObject\Light\SpotLight.cpp" />
     <ClCompile Include="GameObject\Particle\testParticle.cpp" />
     <ClCompile Include="main.cpp" />
@@ -152,7 +153,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Data\MaterialData.h" />
     <ClInclude Include="Data\MaterialInfo.h" />
     <ClInclude Include="Data\ModelData.h" />
+    <ClInclude Include="Data\ParticleDrawInfo.h" />
     <ClInclude Include="Data\RenderItem.h" />
+    <ClInclude Include="Data\ResourceHandles.h" />
     <ClInclude Include="Data\TextureData.h" />
     <ClInclude Include="Data\Transform.h" />
     <ClInclude Include="Data\VertexData.h" />
@@ -170,6 +173,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GameObject\Camera\GameCamera.h" />
     <ClInclude Include="GameObject\Camera\SpriteCamera.h" />
     <ClInclude Include="GameObject\Light\DirectionalLight.h" />
+    <ClInclude Include="GameObject\Light\PointLight.h" />
     <ClInclude Include="GameObject\Light\SpotLight.h" />
     <ClInclude Include="GameObject\Particle\testParticle.h" />
     <ClInclude Include="Manager\GameManager.h" />

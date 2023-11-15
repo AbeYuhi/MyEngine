@@ -27,7 +27,6 @@ void DirectionalLight::Initialize() {
 	//MaterialDataデータの記入
 	directionalLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
 	//色の書き込み
-
 	directionalLightData_->type = 2;
 	directionalLightData_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
 	directionalLightData_->direction = { 0.0f, -1.0f, 0.0f };
@@ -50,7 +49,13 @@ void DirectionalLight::Update() {
 	if (std::isnan(directionalLightData_->direction.x)) {
 		directionalLightData_->direction = { 0.0f, -1.0f, 0.0f };
 	}
+}
 
+void DirectionalLight::Draw() {
+	//ViewPortの設定
+	DirectXCommon::GetInstance()->GetCommandList()->RSSetViewports(1, GraphicsPipelineManager::GetInstance()->GetViewPort());
+	//Scirssorの設定
+	DirectXCommon::GetInstance()->GetCommandList()->RSSetScissorRects(1, GraphicsPipelineManager::GetInstance()->GetScissorRect());
 	//パイプラインステートの設定
 	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(GraphicsPipelineManager::GetInstance()->GetPSO());
 	//ルートシグネチャの設定

@@ -19,6 +19,7 @@
 #include "Data/MaterialInfo.h"
 #include "Data/RenderItem.h"
 #include "Data/TextureData.h"
+#include "Data/ParticleDrawInfo.h"
 #include "Manager/TextureManager.h"
 #include "Manager/GraphicsPipelineManager.h"
 
@@ -38,6 +39,8 @@ public: //メンバ関数
 
 	void Draw(RenderItem& renderItem);
 
+	void Draw(ParticleDrawInfo drawInfo);
+
 public: //ゲッターセッター
 
 	//void SetColor(Vector4 color) { materialData_->color = color; }
@@ -52,6 +55,7 @@ private: //メンバ変数
 
 	//テクスチャデータ
 	std::string textureName_;
+	uint32_t textureHandle_;
 
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;

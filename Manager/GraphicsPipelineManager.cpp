@@ -47,6 +47,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
+		default:
 #pragma region 通常のシェーダー
 		{
 			//DescriptorRangeの設定
@@ -61,7 +62,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
 			//RootParameter作成。
-			D3D12_ROOT_PARAMETER rootParameters[4] = {};
+			D3D12_ROOT_PARAMETER rootParameters[5] = {};
 			rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[0].Descriptor.ShaderRegister = 0;
@@ -75,6 +76,9 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[3].Descriptor.ShaderRegister = 1;
+			rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[4].Descriptor.ShaderRegister = 2;
 			descriptionRootSignature.pParameters = rootParameters;
 			descriptionRootSignature.NumParameters = _countof(rootParameters);
 
@@ -166,22 +170,55 @@ void GraphicsPipelineManager::CreatePSO() {
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 
 	//InputLayoutの設定
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[1].SemanticName = "TEXCOORD";
-	inputElementDescs[1].SemanticIndex = 0;
-	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[2].SemanticName = "NORMAL";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = _countof(inputElementDescs);
+	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc[PipelineState::kCountOfPipelineState] = {};
+	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
+		switch (shaderPack)
+		{
+		case PipelineState::kDefault:
+		default:
+#pragma region 通常のシェーダー
+		{
+			D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+			inputElementDescs[0].SemanticName = "POSITION";
+			inputElementDescs[0].SemanticIndex = 0;
+			inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[1].SemanticName = "TEXCOORD";
+			inputElementDescs[1].SemanticIndex = 0;
+			inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+			inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[2].SemanticName = "NORMAL";
+			inputElementDescs[2].SemanticIndex = 0;
+			inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
+			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
+		}
+#pragma endregion
+		break;
+		case PipelineState::kParticle:
+#pragma region パーティクルシェーダー
+		{
+			D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+			inputElementDescs[0].SemanticName = "POSITION";
+			inputElementDescs[0].SemanticIndex = 0;
+			inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[1].SemanticName = "TEXCOORD";
+			inputElementDescs[1].SemanticIndex = 0;
+			inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+			inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[2].SemanticName = "NORMAL";
+			inputElementDescs[2].SemanticIndex = 0;
+			inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
+			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
+		}
+#pragma endregion
+		break;
+		}
+	}
 
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc[BlendMode::kCountOfBlendMode] = {0};
@@ -260,6 +297,7 @@ void GraphicsPipelineManager::CreatePSO() {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
+		default:
 			//頂点シェーダー
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.VS.hlsl", L"vs_6_0");
 			assert(vertexShaderBlob != nullptr);
@@ -274,16 +312,27 @@ void GraphicsPipelineManager::CreatePSO() {
 			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Particle.PS.hlsl", L"ps_6_0");
 			assert(pixelShaderBlob != nullptr);
 			break;
-		default:
-			break;
 		}
 	}
 
 	//DepthStencilStateの設定
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	depthStencilDesc.DepthEnable = true;
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc[PipelineState::kCountOfPipelineState] = {};
+	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
+		switch (shaderPack)
+		{
+		case PipelineState::kDefault:
+		default:
+			depthStencilDesc[shaderPack].DepthEnable = true;
+			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+			depthStencilDesc[shaderPack].DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+			break;
+		case PipelineState::kParticle:
+			depthStencilDesc[shaderPack].DepthEnable = true;
+			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+			depthStencilDesc[shaderPack].DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+			break;
+		}
+	}
 
 	//PSOの生成
 	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
@@ -291,12 +340,12 @@ void GraphicsPipelineManager::CreatePSO() {
 			D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipeLineStateDesc{};
 			graphicsPipeLineStateDesc = { 0 };
 			graphicsPipeLineStateDesc.pRootSignature = rootSignature_[shaderPack].Get();
-			graphicsPipeLineStateDesc.InputLayout = inputLayoutDesc;
+			graphicsPipeLineStateDesc.InputLayout = inputLayoutDesc[shaderPack];
 			graphicsPipeLineStateDesc.VS = { vertexShaderBlob[shaderPack]->GetBufferPointer(), vertexShaderBlob[shaderPack]->GetBufferSize() };
 			graphicsPipeLineStateDesc.PS = { pixelShaderBlob[shaderPack]->GetBufferPointer(), pixelShaderBlob[shaderPack]->GetBufferSize() };
 			graphicsPipeLineStateDesc.BlendState = blendDesc[blendMode];
 			graphicsPipeLineStateDesc.RasterizerState = rasterizerDesc;
-			graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc;
+			graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc[shaderPack];
 			graphicsPipeLineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 			//書き込むRTVの情報
 			graphicsPipeLineStateDesc.NumRenderTargets = 1;

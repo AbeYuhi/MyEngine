@@ -105,7 +105,7 @@ void Sphere::Initialize() {
 	}
 }
 
-void Sphere::Draw(RenderItem& renderItem, std::string textureName) {
+void Sphere::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
@@ -127,7 +127,7 @@ void Sphere::Draw(RenderItem& renderItem, std::string textureName) {
 	//wvpCBufferの場所を設定
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName));
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(kVertexNumber, 1, 0, 0);
 }

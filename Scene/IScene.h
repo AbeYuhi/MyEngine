@@ -1,4 +1,5 @@
 #pragma once
+#include "Manager/TextureManager.h"
 
 enum GameScene {
 	TITLE, INGAME, MENU, GAMEOVER, GAMECLEAR, SCENENUM
@@ -17,6 +18,10 @@ public:
 	virtual void Draw() = 0;
 
 	inline int GetSceneNo() { return sceneNo_; }
+
+	//画像ハンドル
+	static uint32_t uvCheckerHandle_;
+	static uint32_t whiteTextureHandle_;
 
 protected:
 	static int debugMode_;

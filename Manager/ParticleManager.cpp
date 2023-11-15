@@ -1,6 +1,5 @@
 #include "ParticleManager.h"
 
-ParticleManager::ParticleManager() : kMaxParticleCount_(0){}
 ParticleManager::ParticleManager(const Matrix4x4* viewProjectionMatrix, int maxParticleCount) : viewProjectionMatrix_(viewProjectionMatrix), kMaxParticleCount_(maxParticleCount){}
 ParticleManager::~ParticleManager(){}
 
@@ -35,6 +34,9 @@ void ParticleManager::Initialize() {
 		particle.velocity_ = { 0, 0, 0 };
 		particles_.push_back(particle);
 	}
+
+	//描画に必要なもの
+	drawInfo_.Initialize(&srvHandle_, &materialInfo_, &kMaxParticleCount_);
 }
 
 void ParticleManager::Update() {
@@ -46,13 +48,13 @@ void ParticleManager::Update() {
 	int index = 0;
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
-		index++;
 
 		Matrix4x4 worldMatrix = MakeAffineMatrix(particle->srtData_.scale_, particle->srtData_.rotate_, particle->srtData_.translate_);
 		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, *viewProjectionMatrix_);
 
 		worldTransformData_[index].WVP_ = worldViewProjectionMatrix;
 		worldTransformData_[index].World_ = worldMatrix;
+		index++;
 	}
 }
 
@@ -69,7 +71,7 @@ void ParticleManager::CreateSRV() {
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	srvDesc.Buffer.NumElements = kMaxParticleCount_;
 	srvDesc.Buffer.StructureByteStride = sizeof(TransformMatrix);
-	srvHandleCPU_ = dxCommon->GetCPUDescriptorHandle(100 + particleCount_);
-	srvHadnelGPU_ = dxCommon->GetGPUDescriptorHandle(100 + particleCount_);
-	dxCommon->GetDevice()->CreateShaderResourceView(worldTransformResource_.Get(), &srvDesc, srvHandleCPU_);
+	srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(100 + particleCount_);
+	srvHandle_.GPUHandle = dxCommon->GetGPUDescriptorHandle(100 + particleCount_);
+	dxCommon->GetDevice()->CreateShaderResourceView(worldTransformResource_.Get(), &srvDesc, srvHandle_.CPUHandle);
 }

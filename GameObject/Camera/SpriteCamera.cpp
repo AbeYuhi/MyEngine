@@ -34,26 +34,23 @@ void SpriteCamera::Update() {
 	ImGui::End();
 
 	if (isMove_) {
-		Vector3 prePos = transform_.translate_;
-
-		preMousePos_ = mousePos_;
-		mousePos_ = ImGui::GetMousePos();
+		InputManager* input = InputManager::GetInstance();
 
 		Vector3 cameraVelocity = { 0.0f, 0.0f, 0.0f };
-		if (ImGui::IsKeyDown(ImGuiKey_A)) {
+		if (input->IsPushKey(DIK_A)) {
 			cameraVelocity.x += -2;
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_D)) {
+		if (input->IsPushKey(DIK_D)) {
 			cameraVelocity.x += 2;
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_W)) {
-			cameraVelocity.y += 2;
-		}
-		if (ImGui::IsKeyDown(ImGuiKey_S)) {
+		if (input->IsPushKey(DIK_W)) {
 			cameraVelocity.y += -2;
 		}
+		if (input->IsPushKey(DIK_S)) {
+			cameraVelocity.y += 2;
+		}
 
-		if (ImGui::IsMouseDown(2)) {
+		if (input->IsMousePush(2)) {
 			ImVec2 mouseAmount;
 			mouseAmount.x = mousePos_.x - preMousePos_.x;
 			mouseAmount.y = mousePos_.y - preMousePos_.y;

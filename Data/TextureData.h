@@ -10,4 +10,5 @@ struct TextureData {
 	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU;
 	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU;
 	ComPtr<ID3D12Resource> textureResource;
+	uint32_t textureHandleIndex;
 };

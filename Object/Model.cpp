@@ -53,9 +53,36 @@ void Model::Draw(RenderItem& renderItem) {
 	//wvpCBufferの場所を設定
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureName_));
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle_));
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+}
+
+void Model::Draw(ParticleDrawInfo drawInfo) {
+	//シングルトーンの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	TextureManager* textureManager = TextureManager::GetInstance();
+	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+
+	//ViewPortの設定
+	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
+	//Scirssorの設定
+	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
+	//パイプラインステートの設定
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(PipelineState::kParticle));
+	//ルートシグネチャの設定
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(PipelineState::kParticle));
+	//プリミティブ形状を設定
+	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//VBVの設定
+	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	//マテリアルCBufferの場所を設定
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, drawInfo.materialInfo_->resource_->GetGPUVirtualAddress());
+	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, drawInfo.srvHandle_->GPUHandle);
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle_));
+	//描画
+	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
 }
 
 void Model::LoadObjFile(const std::string& filename) {
@@ -119,14 +146,13 @@ void Model::LoadObjFile(const std::string& filename) {
 			std::string materialFilename;
 			s >> materialFilename;
 			LoadMaterialDataTemplateFile(filename, materialFilename);
-			TextureManager* textureManager = TextureManager::GetInstance();
 			DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 			if (!modelData_.material.textureFilePath.empty()) {
-				textureManager->Load(textureName_, modelData_.material.textureFilePath);
+				textureHandle_ = TextureManager::Load(textureName_, modelData_.material.textureFilePath);
 			}
 			else {
-				textureName_ = "whiteTexture2x2.png";
+				textureHandle_ = TextureManager::Load("whiteTexture2x2.png");
 			}
 		}
 	}

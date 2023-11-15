@@ -70,7 +70,6 @@ void DirectXCommon::PreDraw() {
 	//描画用DescriptorHeapの設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
 	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
-
 }
 
 void DirectXCommon::PostDraw() {
@@ -248,6 +247,11 @@ void DirectXCommon::ClearRenderTarget() {
 	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
 	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
+	//深度バッファのクリア
+	ClearDepthStencilBuffer();
+}
+
+void DirectXCommon::ClearDepthStencilBuffer() {
 	//指定した深度で画面をクリア
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
 	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
