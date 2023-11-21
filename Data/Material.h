@@ -6,8 +6,11 @@
 struct Material {
 	Vector4 color;
 	int32_t enableLightint;
-	float padding[3];
+	int32_t isSpecularReflection;
+	float padding[2];
 	Matrix4x4 uvTransform;
+	float shininess;
+	Vector3 shininessColor;
 
 	void Initialize();
 };

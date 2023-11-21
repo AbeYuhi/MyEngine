@@ -115,6 +115,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="GameObject\Camera\DebugCamera.cpp" />
     <ClCompile Include="GameObject\Camera\GameCamera.cpp" />
+    <ClCompile Include="GameObject\Camera\MainCamera.cpp" />
     <ClCompile Include="GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="GameObject\Light\DirectionalLight.cpp" />
     <ClCompile Include="GameObject\Light\PointLight.cpp" />
@@ -149,6 +150,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Base\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="Base\SafeDelete\SafeDelete.h" />
     <ClInclude Include="Base\WinApp\WinApp.h" />
+    <ClInclude Include="Data\CameraForGPU.h" />
     <ClInclude Include="Data\Material.h" />
     <ClInclude Include="Data\MaterialData.h" />
     <ClInclude Include="Data\MaterialInfo.h" />
@@ -171,6 +173,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="GameObject\Camera\DebugCamera.h" />
     <ClInclude Include="GameObject\Camera\GameCamera.h" />
+    <ClInclude Include="GameObject\Camera\MainCamera.h" />
     <ClInclude Include="GameObject\Camera\SpriteCamera.h" />
     <ClInclude Include="GameObject\Light\DirectionalLight.h" />
     <ClInclude Include="GameObject\Light\PointLight.h" />
@@ -221,7 +224,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
     <None Include="External\imgui\imgui.vcxproj.filters" />
-    <None Include="Resources\Shaders\Object3d.hlsli" />
+    <None Include="Resources\Shaders\Object3d.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="Resources\Shaders\Particle.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

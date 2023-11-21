@@ -222,6 +222,9 @@
     <ClCompile Include="GameObject\Light\PointLight.cpp">
       <Filter>ソース ファイル\GameObject\Light</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\Camera\MainCamera.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object\Triangle.h">
@@ -385,6 +388,12 @@
     </ClInclude>
     <ClInclude Include="Data\ParticleDrawInfo.h">
       <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\CameraForGPU.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Camera\MainCamera.h">
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

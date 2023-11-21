@@ -64,6 +64,7 @@ void DirectXCommon::PreDraw() {
 	//RTVの設定
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
 	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+
 	//画面のクリア
 	ClearRenderTarget();
 

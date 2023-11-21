@@ -9,6 +9,7 @@
 #include <dxgidebug.h>
 #include <dxcapi.h>
 #include <cassert>
+#include <compare>
 #include <chrono>
 
 using namespace Microsoft::WRL;

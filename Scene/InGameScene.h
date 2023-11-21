@@ -9,10 +9,12 @@
 #include "Object/Plane.h"
 #include "Object/Sphere.h"
 #include "Object/Model.h"
+#include "GameObject/Camera/MainCamera.h"
 #include "GameObject/Camera/GameCamera.h"
 #include "GameObject/Camera/DebugCamera.h"
 #include "GameObject/Camera/SpriteCamera.h"
 #include "GameObject/Light/DirectionalLight.h"
+#include "GameObject/Light/PointLight.h"
 #include "GameObject/Particle/testParticle.h"
 #include "Scene/IScene.h"
 
@@ -33,7 +35,7 @@ private:
 	DirectXCommon* directXCommon_;
 	InputManager* input_;
 	//ゲームカメラ
-	Matrix4x4 viewProjectionMatrix_;
+	MainCamera mainCamera_;
 	//ゲームカメラ
 	std::unique_ptr<GameCamera> gameCamera_;
 	//デバッグカメラ
@@ -43,6 +45,8 @@ private:
 	std::unique_ptr<SpriteCamera> spriteCamera_;
 	//平行ライト
 	std::unique_ptr<DirectionalLight> directionalLight_;
+	//ポイントライト
+	std::unique_ptr<PointLight> pointLight_;
 	//ブレンドモード
 	int blendMode_;
 

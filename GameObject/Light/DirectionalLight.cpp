@@ -52,14 +52,10 @@ void DirectionalLight::Update() {
 }
 
 void DirectionalLight::Draw() {
-	//ViewPortの設定
-	DirectXCommon::GetInstance()->GetCommandList()->RSSetViewports(1, GraphicsPipelineManager::GetInstance()->GetViewPort());
-	//Scirssorの設定
-	DirectXCommon::GetInstance()->GetCommandList()->RSSetScissorRects(1, GraphicsPipelineManager::GetInstance()->GetScissorRect());
 	//パイプラインステートの設定
-	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(GraphicsPipelineManager::GetInstance()->GetPSO());
+	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(GraphicsPipelineManager::GetInstance()->GetPSO(kDefault));
 	//ルートシグネチャの設定
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(GraphicsPipelineManager::GetInstance()->GetRootSignature());
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(GraphicsPipelineManager::GetInstance()->GetRootSignature(kDefault));
 	//ライトの設定をコマンドリストに積む
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(4, directionalLightResource_->GetGPUVirtualAddress());
 }

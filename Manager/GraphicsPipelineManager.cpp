@@ -62,7 +62,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
 			//RootParameter作成。
-			D3D12_ROOT_PARAMETER rootParameters[5] = {};
+			D3D12_ROOT_PARAMETER rootParameters[6] = {};
 			rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[0].Descriptor.ShaderRegister = 0;
@@ -79,6 +79,9 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[4].Descriptor.ShaderRegister = 2;
+			rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[5].Descriptor.ShaderRegister = 3;
 			descriptionRootSignature.pParameters = rootParameters;
 			descriptionRootSignature.NumParameters = _countof(rootParameters);
 
@@ -102,7 +105,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 				assert(false);
 			}
 			//バイナリをもとに生成
-			hr = directXCommon->GetDevice()->CreateRootSignature(0, signatureBlob[shaderPack]->GetBufferPointer(), signatureBlob[shaderPack]->GetBufferSize(), IID_PPV_ARGS(rootSignature_[shaderPack].GetAddressOf()));
+			hr = directXCommon->GetDevice()->CreateRootSignature(0, signatureBlob[shaderPack]->GetBufferPointer(), signatureBlob[shaderPack]->GetBufferSize(), IID_PPV_ARGS(&rootSignature_[shaderPack]));
 			assert(SUCCEEDED(hr));
 		}
 #pragma endregion
@@ -157,7 +160,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 				assert(false);
 			}
 			//バイナリをもとに生成
-			hr = directXCommon->GetDevice()->CreateRootSignature(0, signatureBlob[shaderPack]->GetBufferPointer(), signatureBlob[shaderPack]->GetBufferSize(), IID_PPV_ARGS(rootSignature_[shaderPack].GetAddressOf()));
+			hr = directXCommon->GetDevice()->CreateRootSignature(0, signatureBlob[shaderPack]->GetBufferPointer(), signatureBlob[shaderPack]->GetBufferSize(), IID_PPV_ARGS(&rootSignature_[shaderPack]));
 			assert(SUCCEEDED(hr));
 		}
 #pragma endregion
@@ -170,55 +173,22 @@ void GraphicsPipelineManager::CreatePSO() {
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 
 	//InputLayoutの設定
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc[PipelineState::kCountOfPipelineState] = {};
-	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
-		switch (shaderPack)
-		{
-		case PipelineState::kDefault:
-		default:
-#pragma region 通常のシェーダー
-		{
-			D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
-			inputElementDescs[0].SemanticName = "POSITION";
-			inputElementDescs[0].SemanticIndex = 0;
-			inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[1].SemanticName = "TEXCOORD";
-			inputElementDescs[1].SemanticIndex = 0;
-			inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-			inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[2].SemanticName = "NORMAL";
-			inputElementDescs[2].SemanticIndex = 0;
-			inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
-			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
-		}
-#pragma endregion
-		break;
-		case PipelineState::kParticle:
-#pragma region パーティクルシェーダー
-		{
-			D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
-			inputElementDescs[0].SemanticName = "POSITION";
-			inputElementDescs[0].SemanticIndex = 0;
-			inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[1].SemanticName = "TEXCOORD";
-			inputElementDescs[1].SemanticIndex = 0;
-			inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-			inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[2].SemanticName = "NORMAL";
-			inputElementDescs[2].SemanticIndex = 0;
-			inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
-			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
-		}
-#pragma endregion
-		break;
-		}
-	}
+	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	inputElementDescs[0].SemanticName = "POSITION";
+	inputElementDescs[0].SemanticIndex = 0;
+	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElementDescs[1].SemanticName = "TEXCOORD";
+	inputElementDescs[1].SemanticIndex = 0;
+	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElementDescs[2].SemanticName = "NORMAL";
+	inputElementDescs[2].SemanticIndex = 0;
+	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputLayoutDesc.pInputElementDescs = inputElementDescs;
+	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
 	//BlendStateの設定
 	D3D12_BLEND_DESC blendDesc[BlendMode::kCountOfBlendMode] = {0};
@@ -291,8 +261,8 @@ void GraphicsPipelineManager::CreatePSO() {
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
 	//Shaderのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob[PipelineState::kCountOfPipelineState]{};
-	ComPtr<IDxcBlob> pixelShaderBlob[PipelineState::kCountOfPipelineState]{};
+	ComPtr<IDxcBlob> vertexShaderBlob[PipelineState::kCountOfPipelineState]{0};
+	ComPtr<IDxcBlob> pixelShaderBlob[PipelineState::kCountOfPipelineState]{0};
 	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
 		switch (shaderPack)
 		{
@@ -300,52 +270,38 @@ void GraphicsPipelineManager::CreatePSO() {
 		default:
 			//頂点シェーダー
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.VS.hlsl", L"vs_6_0");
-			assert(vertexShaderBlob != nullptr);
+			assert(vertexShaderBlob[shaderPack] != nullptr);
 			//ピクセルシェーダー
 			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.PS.hlsl", L"ps_6_0");
-			assert(pixelShaderBlob != nullptr);
+			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 		case PipelineState::kParticle:
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Particle.VS.hlsl", L"vs_6_0");
-			assert(vertexShaderBlob != nullptr);
+			assert(vertexShaderBlob[shaderPack] != nullptr);
 			//ピクセルシェーダー
 			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Particle.PS.hlsl", L"ps_6_0");
-			assert(pixelShaderBlob != nullptr);
+			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 		}
 	}
 
 	//DepthStencilStateの設定
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc[PipelineState::kCountOfPipelineState] = {};
-	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
-		switch (shaderPack)
-		{
-		case PipelineState::kDefault:
-		default:
-			depthStencilDesc[shaderPack].DepthEnable = true;
-			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-			depthStencilDesc[shaderPack].DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-			break;
-		case PipelineState::kParticle:
-			depthStencilDesc[shaderPack].DepthEnable = true;
-			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-			depthStencilDesc[shaderPack].DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-			break;
-		}
-	}
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+	depthStencilDesc.DepthEnable = true;
+	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
 	//PSOの生成
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipeLineStateDesc{};
 	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
 		for (int blendMode = 0; blendMode < BlendMode::kCountOfBlendMode; blendMode++) {
-			D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipeLineStateDesc{};
-			graphicsPipeLineStateDesc = { 0 };
 			graphicsPipeLineStateDesc.pRootSignature = rootSignature_[shaderPack].Get();
-			graphicsPipeLineStateDesc.InputLayout = inputLayoutDesc[shaderPack];
+			graphicsPipeLineStateDesc.InputLayout = inputLayoutDesc;
 			graphicsPipeLineStateDesc.VS = { vertexShaderBlob[shaderPack]->GetBufferPointer(), vertexShaderBlob[shaderPack]->GetBufferSize() };
 			graphicsPipeLineStateDesc.PS = { pixelShaderBlob[shaderPack]->GetBufferPointer(), pixelShaderBlob[shaderPack]->GetBufferSize() };
 			graphicsPipeLineStateDesc.BlendState = blendDesc[blendMode];
 			graphicsPipeLineStateDesc.RasterizerState = rasterizerDesc;
-			graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc[shaderPack];
+			graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc;
 			graphicsPipeLineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 			//書き込むRTVの情報
 			graphicsPipeLineStateDesc.NumRenderTargets = 1;
@@ -353,10 +309,10 @@ void GraphicsPipelineManager::CreatePSO() {
 			//利用する形状タイプ
 			graphicsPipeLineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 			//どのように画面に色を打ち込むのかの設定
-			graphicsPipeLineStateDesc.SampleDesc.Count = 1;
+			graphicsPipeLineStateDesc.SampleDesc.Count = 1;	
 			graphicsPipeLineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 			//実際に生成
-			LRESULT hr = directXCommon->GetDevice()->CreateGraphicsPipelineState(&graphicsPipeLineStateDesc, IID_PPV_ARGS(graphicsPipelineState_[shaderPack][blendMode].GetAddressOf()));
+			LRESULT hr = directXCommon->GetDevice()->CreateGraphicsPipelineState(&graphicsPipeLineStateDesc, IID_PPV_ARGS(&graphicsPipelineState_[shaderPack][blendMode]));
 			assert(SUCCEEDED(hr));
 		}
 	}

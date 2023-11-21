@@ -11,9 +11,13 @@
 #include "Manager/GraphicsPipelineManager.h"
 
 struct PointLightData {
+	int32_t type;
+	float padding[3];
 	Vector4 color;
 	Vector3 position;
 	float intensity;
+	float radius;
+	float decay;
 };
 
 class PointLight {
@@ -28,6 +32,8 @@ public: //メンバ関数
 	void Initialize();
 
 	void Update();
+
+	void Draw();
 
 public: //ゲッターセッター
 

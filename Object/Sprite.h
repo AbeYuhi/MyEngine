@@ -20,7 +20,18 @@
 class Sprite
 {
 public: //静的メンバ関数
-	static std::unique_ptr<Sprite> Create(Vector2 spriteSize = {640, 360});
+
+	/// <summary>
+	/// スプライトの生成
+	/// </summary>
+	/// <param name="spriteSize">スプライトのサイズ</param>
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	/// <param name="anchorPoint">スプライトの基準点</param>
+	/// <param name="baseUVPos">Texcoordの基準点(0～1)</param>
+	/// <param name="isFlipX">横に反転するか</param>
+	/// <param name="isFlipY">縦に反転するか</param>
+	/// <returns></returns>
+	static std::unique_ptr<Sprite> Create(Vector2 spriteSize = { 640, 360 }, uint32_t textureHandle = 0, Vector2 anchorPoint = { 0, 0 }, Vector2 baseUVPos = {0, 0}, bool isFlipX = false, bool isFlipY = false);
 
 private: //静的メンバ変数
 	const static UINT kVertexNumber = 4;
@@ -30,11 +41,22 @@ public: //メンバ関数
 	Sprite();
 	~Sprite();
 
-	void Initialize(Vector2 spriteSize);
+	void Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anchorPoint, Vector2 baseUVPos, bool isFlipX, bool isFlipY);
 
-	void Draw(RenderItem& renderItem, uint32_t textureHandle = 0);
+	void TransferVertices();
 
-	void Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle = 0);
+	void Draw(RenderItem& renderItem);
+
+	void Draw(ParticleDrawInfo drawInfo);
+
+public: //ゲッターセッター
+
+	void SetTextureHandle(uint32_t textureHandle);
+	void SetSize(Vector2 size);
+	void SetAnchorPoint(Vector2 anchorPoint);
+	void SetBaseUvPos(Vector2 baseUvPos);
+	void SetIsFlipX(bool isFlip);
+	void SetIsFlipY(bool isFlip);
 
 private: //メンバ変数
 	//オブジェクト情報のResource
@@ -48,4 +70,10 @@ private: //メンバ変数
 	//オブジェクトのローカル情報
 	VertexData* vertexData_;
 	uint32_t* indexData_;
+	uint32_t textureHandle_;
+	Vector2 size_;
+	Vector2 anchorPoint_;
+	Vector2 baseUvPos_;
+	bool isFlipX_;
+	bool isFlipY_;
 };

@@ -9,6 +9,8 @@ InGameScene::~InGameScene() {
 
 void InGameScene::Initialize() {
 	sceneNo_ = INGAME;
+	DirectionalLight::sLightNum_ = 0;
+	PointLight::sLightNum_ = 0;
 
 	//基本機能
 	winApp_ = WinApp::GetInstance();
@@ -19,7 +21,7 @@ void InGameScene::Initialize() {
 	isDebugCamera_ = debugMode_;
 
 	//画面に表示する際のVPmatrix
-	viewProjectionMatrix_ = MakeIdentity4x4();
+	mainCamera_.Initialize();
 	//インゲームカメラ
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->Initialize();
@@ -34,6 +36,9 @@ void InGameScene::Initialize() {
 	//平行光源
 	directionalLight_ = DirectionalLight::Create();
 
+	//ポイント光源
+	pointLight_ = PointLight::Create();
+
 	//ブレンドモード
 	blendMode_ = kBlendModeNone;
 
@@ -42,18 +47,18 @@ void InGameScene::Initialize() {
 	fenceHandle_ = TextureManager::Load("fence.png");
 
 	//ゲームオブジェクト
-	testParticle_ = std::make_unique<TestParticle>(&viewProjectionMatrix_, 10);
+	testParticle_ = std::make_unique<TestParticle>(mainCamera_.GetPViewProjectionMatrix(), 10);
 	testParticle_->Initialize();
 
 	groundModel_ = Model::Create("terrain");
-	groundModelInfo_.Initialize(&viewProjectionMatrix_);
+	groundModelInfo_.Initialize(mainCamera_.GetPViewProjectionMatrix());
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
 	monsterBall_ = Sphere::Create();
-	monsterBallInfo_.Initialize(&viewProjectionMatrix_);
+	monsterBallInfo_.Initialize(mainCamera_.GetPViewProjectionMatrix());
 	monsterBallInfo_.materialInfo_.material_->enableLightint = true;
 
-	sprite_ = Sprite::Create({ 1280, 720 });
+	sprite_ = Sprite::Create({ 1280, 720 }, uvCheckerHandle_);
 	spriteInfo_.Initialize(spriteCamera_->GetViewProjectionMatrixPointer());
 }
 
@@ -62,22 +67,49 @@ void InGameScene::Update() {
 	ImGui::Begin("Debug");
 	ImGui::Checkbox("UseDebugCamera", &isDebugCamera_);
 	ImGui::End();
-
+	
 	if (isDebugCamera_) {
 		debugCamera_->Update();
-		viewProjectionMatrix_ = debugCamera_->GetViewProjectionMatrix();
+		mainCamera_.Update(debugCamera_->GetViewProjectionMatrix(), debugCamera_->GetWorldTransrom().translate_);
 	}
 	else {
 		gameCamera_->Update();
-		viewProjectionMatrix_ = gameCamera_->GetViewProjectionMatrix();
+		mainCamera_.Update(gameCamera_->GetViewProjectionMatrix(), gameCamera_->GetWorldTransrom().translate_);
 	}
 
 	//スプライトカメラの更新
 	spriteCamera_->Update();
 	//ライトの更新
 	directionalLight_->Update();
+	pointLight_->Update();
 
+	//パーティクルの更新
 	testParticle_->Update();
+
+	ImGui::BeginTabBar("RenderItemInfo");
+	if (ImGui::BeginTabItem("monsterBall")) {
+		ImGui::SliderFloat3("pos", &monsterBallInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &monsterBallInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &monsterBallInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::SliderFloat("shininess", &monsterBallInfo_.materialInfo_.material_->shininess, 0, 100);
+		bool a = false;
+		if (ImGui::Checkbox("isSpecularReflection", &a)) {
+			monsterBallInfo_.materialInfo_.material_->isSpecularReflection = !monsterBallInfo_.materialInfo_.material_->isSpecularReflection;
+		}
+		ImGui::EndTabItem();
+	}
+	if (ImGui::BeginTabItem("groundModel")) {
+		ImGui::SliderFloat3("pos", &groundModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &groundModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &groundModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::SliderFloat("shininess", &groundModelInfo_.materialInfo_.material_->shininess, 0, 100);
+		bool b = false;
+		if (ImGui::Checkbox("isSpecularReflection", &b)) {
+			groundModelInfo_.materialInfo_.material_->isSpecularReflection = !groundModelInfo_.materialInfo_.material_->isSpecularReflection;
+		}
+		ImGui::EndTabItem();
+	}
+	ImGui::EndTabBar();
 
 	ImGui::Begin("BlendMode");
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen"};
@@ -91,12 +123,15 @@ void InGameScene::Update() {
 }
 
 void InGameScene::Draw() {
-	//ライティングの描画
+	//カメラの転送
+	mainCamera_.Draw();
+	//ライティングの転送
 	directionalLight_->Draw();
+	pointLight_->Draw();
 
 	///背景スプライトの描画開始
 
-	//sprite_->Draw(spriteInfo_, uvCheckerHandle_);
+	//sprite_->Draw(spriteInfo_);
 
 	///背景スプライト描画終了
 	//深度バッファのクリア
@@ -111,7 +146,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//testParticle_->Draw();
-	//monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
+	monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
 	groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
