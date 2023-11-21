@@ -42,7 +42,7 @@ void PointLight::Update() {
 	ImGui::SliderFloat3("position", &pointLightData_->position.x, -10, 10);
 	ImGui::SliderFloat("intensity", &pointLightData_->intensity, 0.0f, 1.0f);
 	ImGui::SliderFloat("radius", &pointLightData_->radius, 0, 100);
-	ImGui::SliderFloat("decay", &pointLightData_->decay, 0, 100);
+	ImGui::SliderFloat("decay", &pointLightData_->decay, 0, 10);
 	ImGui::End();
 }
 

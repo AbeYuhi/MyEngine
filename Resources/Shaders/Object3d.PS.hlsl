@@ -117,7 +117,7 @@ PixelShaderOutput main(VertexShaderOutput input)
             float specularPow = pow(saturate(NDotH), gMaterialData.shininess);
             //逆二乗
             float32_t distance = length(gPointLightData.position - input.worldPosition);
-            float32_t factor = 1.0f / (distance * distance);
+            float32_t factor = pow(-distance / gPointLightData.radius + 1.0f, gPointLightData.decay);
             //拡散反射
             float32_t3 diffuse = gMaterialData.color.rgb * textureColor.rgb * gPointLightData.color.rgb * cos * gPointLightData.intensity * factor;
             //鏡面反射

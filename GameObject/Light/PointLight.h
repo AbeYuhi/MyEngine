@@ -18,6 +18,7 @@ struct PointLightData {
 	float intensity;
 	float radius;
 	float decay;
+	float padding2[2];
 };
 
 class PointLight {
