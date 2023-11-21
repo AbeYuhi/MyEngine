@@ -31,11 +31,25 @@ struct PointLightData
     int32_t lightingType;
     float32_t4 color;
     float32_t3 position;
-    float intensity;
-    float radius;
-    float decay;
+    float32_t intensity;
+    float32_t radius;
+    float32_t decay;
 };
 ConstantBuffer<PointLightData> gPointLightData : register(b3);
+
+struct SpotLightData
+{
+    int32_t lightingType;
+    float32_t4 color;
+    float32_t3 position;
+    float32_t intensity;
+    float32_t3 direction;
+    float32_t distance;
+    float32_t decay;
+    float32_t cosAngle;
+    float32_t falloffStart;
+};
+ConstantBuffer<SpotLightData> gSpotLightData : register(b4);
 
 struct PixelShaderOutput
 {
@@ -53,7 +67,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     if (gMaterialData.enableLighting != 0)
     {
         //平行光源
-        if (gDirectionalLightData.lightingType == 0 && gPointLightData.lightingType == 0)
+        if (gDirectionalLightData.lightingType == 0 && gPointLightData.lightingType == 0 && gSpotLightData.lightingType == 0)
         {
             output.color = gMaterialData.color * textureColor;
         }
@@ -132,6 +146,50 @@ PixelShaderOutput main(VertexShaderOutput input)
                 output.color.rgb += diffuse;
             }
                     
+            output.color.a = gMaterialData.color.a * textureColor.a;
+        }
+        
+        //スポットライト
+        if (gSpotLightData.lightingType == 1 || gSpotLightData.lightingType == 2)
+        {
+            float cos;
+            float32_t3 directionOnSurface = normalize(input.worldPosition - gSpotLightData.position);
+            if (gSpotLightData.lightingType == 1)
+            {
+                cos = saturate(dot(normalize(input.normal), -directionOnSurface));
+            }
+            else if (gSpotLightData.lightingType == 2)
+            {
+                float NdotL = dot(normalize(input.normal), -directionOnSurface);
+                cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
+            }
+            //カメラへの方向を算出
+            float32_t3 toEye = normalize(gCamera.worldPosition - input.worldPosition);
+            //内積
+            float32_t3 halfVector = normalize(-directionOnSurface + toEye);
+            float NDotH = dot(normalize(input.normal), halfVector);
+            //反射強度
+            float specularPow = pow(saturate(NDotH), gMaterialData.shininess);
+            //falloff
+            float32_t cosAngle = dot(directionOnSurface, gSpotLightData.direction);
+            float32_t falloffFactor = saturate((cosAngle - gSpotLightData.cosAngle) / (gSpotLightData.falloffStart - gSpotLightData.cosAngle));
+            //逆二乗
+            float32_t distance = length(gSpotLightData.position - input.worldPosition);
+            float32_t attenuationFactor = pow(-distance / gSpotLightData.distance + 1.0f, gSpotLightData.decay);
+            //拡散反射
+            float32_t3 diffuse = gMaterialData.color.rgb * textureColor.rgb * gSpotLightData.color.rgb * cos * gSpotLightData.intensity * attenuationFactor * falloffFactor;
+            //鏡面反射
+            float32_t3 specular = gSpotLightData.color.rgb * gSpotLightData.intensity * specularPow * gMaterialData.shininessColor * attenuationFactor * falloffFactor;
+            
+            if (gMaterialData.isSpecularReflection)
+            {
+                output.color.rgb += diffuse + specular;
+            }
+            else
+            {
+                output.color.rgb += diffuse;
+            }
+            
             output.color.a = gMaterialData.color.a * textureColor.a;
         }
     }

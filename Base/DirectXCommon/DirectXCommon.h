@@ -107,6 +107,9 @@ private: //メンバ関数
 	/// 0 : ImGuiManager
 	/// 1～100 : Texture
 	/// 101～150 : Particle
+	/// 151 : DirectionalLight 
+	/// 152 : PointLight
+	/// 153 : SpotLight
 	/// </summary>
 	void CreateShaderResourceView();
 

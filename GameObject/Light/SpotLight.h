@@ -1,4 +1,5 @@
 #pragma once
+#include <numbers>
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
 #include "Math/Vector3_Math.hpp"
@@ -10,9 +11,19 @@
 #include "Manager/ImGuiManager.h"
 #include "Manager/GraphicsPipelineManager.h"
 
-struct SpotLightData {
+struct SpotLightData
+{
+	int32_t lightingType;
+	float padding[3];
+	Vector4 color;
 	Vector3 position;
-	Vector3 rotate;
+	float intensity;
+	Vector3 direction;
+	float distance;
+	float decay;
+	float cosAngle;
+	float falloffStart;
+	float padding2;
 };
 
 class SpotLight {
@@ -28,12 +39,14 @@ public: //メンバ関数
 
 	void Update();
 
+	void Draw();
+
 public: //ゲッターセッター
 
 private: //メンバ変数
 	//オブジェクト情報のResource
-	ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;
+	ComPtr<ID3D12Resource> spotLightResource_ = nullptr;
 
-	SpotLightData* directionalLightData_;
+	SpotLightData* spotLightData_;
 	int lightNum_;
 };

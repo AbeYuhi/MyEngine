@@ -7,6 +7,7 @@
 struct TransformMatrix {
 	Matrix4x4 WVP_;
 	Matrix4x4 World_;
+	Matrix4x4 WorldInverseTranspose_;
 };
 
 struct TransformData{

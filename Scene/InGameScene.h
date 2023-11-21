@@ -15,6 +15,7 @@
 #include "GameObject/Camera/SpriteCamera.h"
 #include "GameObject/Light/DirectionalLight.h"
 #include "GameObject/Light/PointLight.h"
+#include "GameObject/Light/SpotLight.h"
 #include "GameObject/Particle/testParticle.h"
 #include "Scene/IScene.h"
 
@@ -47,6 +48,9 @@ private:
 	std::unique_ptr<DirectionalLight> directionalLight_;
 	//ポイントライト
 	std::unique_ptr<PointLight> pointLight_;
+	//スポットライト
+	std::unique_ptr<SpotLight> spotLight_;
+
 	//ブレンドモード
 	int blendMode_;
 

@@ -39,6 +39,9 @@ void InGameScene::Initialize() {
 	//ポイント光源
 	pointLight_ = PointLight::Create();
 
+	//スポット光源
+	spotLight_ = SpotLight::Create();
+
 	//ブレンドモード
 	blendMode_ = kBlendModeNone;
 
@@ -82,6 +85,7 @@ void InGameScene::Update() {
 	//ライトの更新
 	directionalLight_->Update();
 	pointLight_->Update();
+	spotLight_->Update();
 
 	//パーティクルの更新
 	testParticle_->Update();
@@ -128,6 +132,7 @@ void InGameScene::Draw() {
 	//ライティングの転送
 	directionalLight_->Draw();
 	pointLight_->Draw();
+	spotLight_->Draw();
 
 	///背景スプライトの描画開始
 
