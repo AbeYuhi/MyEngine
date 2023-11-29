@@ -25,28 +25,3 @@ struct SpotLightData
 	float falloffStart;
 	float padding2;
 };
-
-class SpotLight {
-public: //静的メンバ関数
-	static std::unique_ptr<SpotLight> Create();
-	static int sLightNum_;
-
-public: //メンバ関数
-	SpotLight();
-	~SpotLight();
-
-	void Initialize();
-
-	void Update();
-
-	void Draw();
-
-public: //ゲッターセッター
-
-private: //メンバ変数
-	//オブジェクト情報のResource
-	ComPtr<ID3D12Resource> spotLightResource_ = nullptr;
-
-	SpotLightData* spotLightData_;
-	int lightNum_;
-};

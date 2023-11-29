@@ -7,10 +7,12 @@ InGameScene::InGameScene() {
 InGameScene::~InGameScene() {
 }
 
+void InGameScene::Finalize() {
+	testParticle1_.reset();
+}
+
 void InGameScene::Initialize() {
 	sceneNo_ = INGAME;
-	DirectionalLight::sLightNum_ = 0;
-	PointLight::sLightNum_ = 0;
 
 	//基本機能
 	winApp_ = WinApp::GetInstance();
@@ -35,13 +37,8 @@ void InGameScene::Initialize() {
 	spriteCamera_->Initialize();
 
 	//平行光源
-	directionalLight_ = DirectionalLight::Create();
-
-	//ポイント光源
-	pointLight_ = PointLight::Create();
-
-	//スポット光源
-	spotLight_ = SpotLight::Create();
+	lightObj_ = std::make_unique<LightObject>();
+	lightObj_->Initialize();
 
 	//ブレンドモード
 	blendMode_ = kBlendModeNone;
@@ -51,8 +48,8 @@ void InGameScene::Initialize() {
 	fenceHandle_ = TextureManager::Load("fence.png");
 
 	//ゲームオブジェクト
-	testParticle_ = std::make_unique<TestParticle>(mainCamera_.GetPViewProjectionMatrix(), 10);
-	testParticle_->Initialize();
+	testParticle1_ = std::make_unique<TestParticle>(mainCamera_.GetPViewProjectionMatrix(), 10);
+	testParticle1_->Initialize();
 
 	groundModel_ = Model::Create("terrain");
 	groundModelInfo_.Initialize(mainCamera_.GetPViewProjectionMatrix());
@@ -87,12 +84,10 @@ void InGameScene::Update() {
 	//スプライトカメラの更新
 	spriteCamera_->Update();
 	//ライトの更新
-	directionalLight_->Update();
-	pointLight_->Update();
-	spotLight_->Update();
+	lightObj_->Update();
 
 	//パーティクルの更新
-	testParticle_->Update();
+	//testParticle1_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("monsterBall")) {
@@ -125,8 +120,18 @@ void InGameScene::Update() {
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(static_cast<BlendMode>(blendMode_));
 	ImGui::End();
 
-	if (input_->IsTriggerKey(DIK_SPACE)) {
-		audioManager_->SoundPlayWave(soundHandle_);
+	if (input_->IsTriggerKey(DIK_SPACE) && !input_->IsPushKey(DIK_LSHIFT)) {
+		if (!audioManager_->IsSoundPlaying(soundHandle_)) {
+			audioManager_->SoundPlayWave(soundHandle_, true);
+		}
+	}
+
+	if (input_->IsPushKey(DIK_SPACE) && input_->IsPushKey(DIK_LSHIFT)) {
+		audioManager_->StopLoopWave(soundHandle_);
+	}
+
+	if (input_->IsPushKey(DIK_UPARROW)) {
+		audioManager_->SetVolume(soundHandle_, 0.5f);
 	}
 
 	groundModelInfo_.Update();
@@ -138,9 +143,7 @@ void InGameScene::Draw() {
 	//カメラの転送
 	mainCamera_.Draw();
 	//ライティングの転送
-	directionalLight_->Draw();
-	pointLight_->Draw();
-	spotLight_->Draw();
+	lightObj_->Draw();
 
 	///背景スプライトの描画開始
 

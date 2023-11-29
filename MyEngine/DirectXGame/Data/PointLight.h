@@ -20,28 +20,3 @@ struct PointLightData {
 	float decay;
 	float padding2[2];
 };
-
-class PointLight {
-public: //静的メンバ関数
-	static std::unique_ptr<PointLight> Create();
-	static int sLightNum_;
-
-public: //メンバ関数
-	PointLight();
-	~PointLight();
-
-	void Initialize();
-
-	void Update();
-
-	void Draw();
-
-public: //ゲッターセッター
-
-private: //メンバ変数
-	//オブジェクト情報のResource
-	ComPtr<ID3D12Resource> pointLightResource_ = nullptr;
-
-	PointLightData* pointLightData_;
-	int lightNum_;
-};

@@ -48,4 +48,10 @@ private:
 	std::unique_ptr<IScene> sceneArr_[GameScene::SCENENUM];
 	int sceneNo_;
 	int preSceneNo_;
+
+	//FPSの計測
+	double deltaTime_;
+	double fps_;
+	int frameCount_;
+	double totalTime_;
 };

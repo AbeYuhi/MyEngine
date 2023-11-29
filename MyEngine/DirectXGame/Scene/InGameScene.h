@@ -14,9 +14,7 @@
 #include "DirectXGame/GameObject/Camera/GameCamera.h"
 #include "DirectXGame/GameObject/Camera/DebugCamera.h"
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
-#include "DirectXGame/GameObject/Light/DirectionalLight.h"
-#include "DirectXGame/GameObject/Light/PointLight.h"
-#include "DirectXGame/GameObject/Light/SpotLight.h"
+#include "DirectXGame/GameObject/Light/LightObject.h"
 #include "DirectXGame/GameObject/Particle/testParticle.h"
 #include "DirectXGame/Scene/IScene.h"
 
@@ -30,6 +28,8 @@ public:
 	void Update() override;
 
 	void Draw() override;
+
+	void Finalize() override;
 
 private:
 	//基本機能
@@ -46,12 +46,8 @@ private:
 	bool isDebugCamera_;
 	//スプライト用カメラ
 	std::unique_ptr<SpriteCamera> spriteCamera_;
-	//平行ライト
-	std::unique_ptr<DirectionalLight> directionalLight_;
-	//ポイントライト
-	std::unique_ptr<PointLight> pointLight_;
-	//スポットライト
-	std::unique_ptr<SpotLight> spotLight_;
+	//ライト
+	std::unique_ptr<LightObject> lightObj_;
 
 	//ブレンドモード
 	int blendMode_;
@@ -61,7 +57,7 @@ private:
 	uint32_t fenceHandle_;
 
 	//描画モデル
-	std::unique_ptr<TestParticle> testParticle_;
+	std::unique_ptr<TestParticle> testParticle1_;
 
 	std::unique_ptr<Model> groundModel_;
 	RenderItem groundModelInfo_;

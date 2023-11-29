@@ -159,9 +159,6 @@
     <ClCompile Include="DirectXGame\Manager\GraphicsPipelineManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Light\DirectionalLight.cpp">
-      <Filter>ソース ファイル\GameObject\Light</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Math\Matrix3x3.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
@@ -179,9 +176,6 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Manager\InputManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Light\SpotLight.cpp">
-      <Filter>ソース ファイル\GameObject\Light</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\GameObject\Camera\GameCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
@@ -219,13 +213,13 @@
     <ClCompile Include="DirectXGame\Manager\GameManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Light\PointLight.cpp">
-      <Filter>ソース ファイル\GameObject\Light</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\GameObject\Camera\MainCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Manager\AudioManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -311,7 +305,7 @@
     <ClInclude Include="DirectXGame\Manager\GraphicsPipelineManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Light\DirectionalLight.h">
+    <ClInclude Include="DirectXGame\Data\DirectionalLight.h">
       <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Math\Matrix3x3.h">
@@ -347,7 +341,7 @@
     <ClInclude Include="DirectXGame\Manager\InputManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Light\SpotLight.h">
+    <ClInclude Include="DirectXGame\Data\SpotLight.h">
       <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Camera\GameCamera.h">
@@ -383,7 +377,7 @@
     <ClInclude Include="DirectXGame\Manager\GameManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Light\PointLight.h">
+    <ClInclude Include="DirectXGame\Data\PointLight.h">
       <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\ResourceHandles.h">
@@ -401,20 +395,9 @@
     <ClInclude Include="DirectXGame\Manager\AudioManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Object3d.PS.hlsl">
-      <Filter>Shader\Object3d</Filter>
-    </FxCompile>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Object3d.VS.hlsl">
-      <Filter>Shader\Object3d</Filter>
-    </FxCompile>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Particle.PS.hlsl">
-      <Filter>Shader\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Particle.VS.hlsl">
-      <Filter>Shader\Particle</Filter>
-    </FxCompile>
+    <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj">
@@ -423,16 +406,30 @@
     <None Include="External\imgui\imgui.vcxproj.filters">
       <Filter>imgui</Filter>
     </None>
-    <None Include="DirectXGame\Resources\Shaders\Object3d.hlsli">
-      <Filter>Shader\Object3d</Filter>
-    </None>
-    <None Include="DirectXGame\Resources\Shaders\Particle.hlsli">
+    <None Include="Resources\Shaders\Particle.hlsli">
       <Filter>Shader\Particle</Filter>
+    </None>
+    <None Include="Resources\Shaders\Object3d.hlsli">
+      <Filter>Shader\Object3d</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="External\imgui\LICENSE.txt">
       <Filter>imgui</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
+      <Filter>Shader\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
+      <Filter>Shader\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">
+      <Filter>Shader\Object3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
+      <Filter>Shader\Object3d</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

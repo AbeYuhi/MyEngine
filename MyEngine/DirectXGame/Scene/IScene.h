@@ -17,6 +17,8 @@ public:
 
 	virtual void Draw() = 0;
 
+	virtual void Finalize() = 0;
+
 	inline int GetSceneNo() { return sceneNo_; }
 
 	//画像ハンドル

@@ -4,6 +4,10 @@ TitleScene::TitleScene() {}
 
 TitleScene::~TitleScene() {}
 
+void TitleScene::Finalize() {
+
+}
+
 void TitleScene::Initialize() {
 	sceneNo_ = TITLE;
 

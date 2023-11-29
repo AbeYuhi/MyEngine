@@ -7,9 +7,6 @@ AudioManager* AudioManager::GetInstance() {
 }
 
 void AudioManager::Initialize() {
-	WinApp* winApp = WinApp::GetInstance();
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	
 	HRESULT hr = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	assert(SUCCEEDED(hr));
 	hr = xAudio2_->CreateMasteringVoice(&masterVoice_);
@@ -20,6 +17,10 @@ void AudioManager::Initialize() {
 
 void AudioManager::Finalize() {
 	xAudio2_.Reset();
+
+	for (int index = 0; index < textureNum; index++) {
+		SoundUnload(index);
+	}
 }
 
 uint32_t AudioManager::SoundLoadWave(const std::string filename) {
@@ -44,7 +45,7 @@ uint32_t AudioManager::SoundLoadWave(const std::string filename) {
 	}
 	FormatChunk format = {};
 	file.read((char*)&format, sizeof(ChunkHeader));
-	if (strncmp(format.chunk.id, "fmt", 4) != 0) {
+	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
 		assert(0);
 	}
 	//本体の読み込み
@@ -64,8 +65,8 @@ uint32_t AudioManager::SoundLoadWave(const std::string filename) {
 		assert(0);
 	}
 	//Dataチャンクのデータ部の読み込み
-	std::unique_ptr<char> pBuffer = std::make_unique<char>(data.size);
-	file.read(pBuffer.get(), data.size);
+	char* pBuffer = new char[data.size];
+	file.read(pBuffer, data.size);
 
 	//Waveファイルを閉じる
 	file.close();
@@ -73,28 +74,56 @@ uint32_t AudioManager::SoundLoadWave(const std::string filename) {
 	//returnするための音声データ
 	SoundData soundData = {};
 	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer.get());
+	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
 	soundData.bufferSize = data.size;
 
-	soundDates_.push_back(soundData);
-	soundHandles_[index] = &soundDates_[index];
+	soundDatas_[index] = soundData;
 	return index;
 }
 
-void AudioManager::SoundPlayWave(const uint32_t index) {
+void AudioManager::SoundPlayWave(const uint32_t index, const float soundVolume, bool isLoop) {
 	HRESULT hr;
 
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
-	hr = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundHandles_[index]->wfex);
+	hr = xAudio2_->CreateSourceVoice(&soundDatas_[index].pSourceVoice, &soundDatas_[index].wfex);
 	assert(SUCCEEDED(hr));
 
 	//再生する波形データの設定
-	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundHandles_[index]->pBuffer;
-	buf.AudioBytes = soundHandles_[index]->bufferSize;
-	buf.Flags = XAUDIO2_END_OF_STREAM;
+	soundDatas_[index].buf = {};
+	soundDatas_[index].buf.pAudioData = soundDatas_[index].pBuffer;
+	soundDatas_[index].buf.AudioBytes = soundDatas_[index].bufferSize;
+	soundDatas_[index].buf.Flags = XAUDIO2_END_OF_STREAM;
+
+	if (isLoop) {
+		soundDatas_[index].buf.LoopCount = XAUDIO2_LOOP_INFINITE;
+	}
 
 	//波形データの再生
-	hr = pSourceVoice->SubmitSourceBuffer(&buf);
-	hr = pSourceVoice->Start();
+	hr = soundDatas_[index].pSourceVoice->SubmitSourceBuffer(&soundDatas_[index].buf);
+	hr = soundDatas_[index].pSourceVoice->Start();
+	soundDatas_[index].pSourceVoice->SetVolume(soundVolume);
+}
+
+void AudioManager::StopLoopWave(const uint32_t index) {
+	if (soundDatas_[index].pSourceVoice) {
+		soundDatas_[index].pSourceVoice->Stop();
+		soundDatas_[index].pSourceVoice->FlushSourceBuffers();
+	}
+}
+
+bool AudioManager::IsSoundPlaying(const uint32_t index) {
+	if (soundDatas_[index].pSourceVoice) {
+		XAUDIO2_VOICE_STATE voiceState;
+		soundDatas_[index].pSourceVoice->GetState(&voiceState);
+		return voiceState.BuffersQueued > 0;
+	}
+	return false;
+}
+
+
+void AudioManager::SoundUnload(const uint32_t index) {
+	delete[] soundDatas_[index].pBuffer;
+
+	soundDatas_[index].pBuffer = 0;
+	soundDatas_[index].bufferSize = 0;
+	soundDatas_[index].wfex = {};
 }

@@ -121,10 +121,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Camera\GameCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\MainCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\SpriteCamera.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Light\DirectionalLight.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Light\PointLight.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Light\SpotLight.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\testParticle.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DirectXGame\Manager\AudioManager.cpp" />
     <ClCompile Include="DirectXGame\Manager\GameManager.cpp" />
@@ -180,9 +178,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\GameObject\Camera\GameCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\MainCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\SpriteCamera.h" />
-    <ClInclude Include="DirectXGame\GameObject\Light\DirectionalLight.h" />
-    <ClInclude Include="DirectXGame\GameObject\Light\PointLight.h" />
-    <ClInclude Include="DirectXGame\GameObject\Light\SpotLight.h" />
+    <ClInclude Include="DirectXGame\Data\DirectionalLight.h" />
+    <ClInclude Include="DirectXGame\Data\PointLight.h" />
+    <ClInclude Include="DirectXGame\Data\SpotLight.h" />
     <ClInclude Include="DirectXGame\GameObject\Particle\testParticle.h" />
     <ClInclude Include="DirectXGame\Manager\AudioManager.h" />
     <ClInclude Include="DirectXGame\Manager\GameManager.h" />
@@ -208,33 +206,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Scene\IScene.h" />
     <ClInclude Include="DirectXGame\Scene\MenuScene.h" />
     <ClInclude Include="DirectXGame\Scene\TitleScene.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Object3d.PS.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Object3d.VS.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Particle.PS.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="DirectXGame\Resources\Shaders\Particle.VS.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
+    <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
     <None Include="External\imgui\imgui.vcxproj.filters" />
-    <None Include="DirectXGame\Resources\Shaders\Object3d.hlsli">
+    <None Include="Resources\Shaders\Object3d.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="DirectXGame\Resources\Shaders\Particle.hlsli">
+    <None Include="Resources\Shaders\Particle.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
@@ -246,6 +227,24 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\Object3d.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Particle.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

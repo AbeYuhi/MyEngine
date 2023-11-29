@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include "DirectXGame/Data/RenderItem.h"
 #include "DirectXGame/Data/ResourceHandles.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
@@ -13,6 +14,8 @@ class ParticleManager
 private:
 	//現在のパーティクルの生成数
 	static int particleCount_;
+	static const int particleMaxCount_ = 50;
+	static std::map<int, bool> isDrawing_;
 
 public: //メンバ関数
 	ParticleManager(const Matrix4x4* viewProjectionMatrix, int maxParticleCount);
@@ -24,6 +27,8 @@ public: //メンバ関数
 
 	virtual void Draw();
 
+	void UnloadParticle();
+
 private: //メンバ関数
 
 	void CreateSRV();
@@ -33,6 +38,7 @@ protected: //メンバ変数
 	const int kMaxParticleCount_;
 	//リソース
 	ComPtr<ID3D12Resource> worldTransformResource_;
+	int index_;
 	//Resourceハンドル
 	ResourceHandles srvHandle_;
 	//データ

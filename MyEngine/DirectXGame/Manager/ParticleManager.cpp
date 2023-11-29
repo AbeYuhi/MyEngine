@@ -1,9 +1,13 @@
 #include "ParticleManager.h"
 
 ParticleManager::ParticleManager(const Matrix4x4* viewProjectionMatrix, int maxParticleCount) : viewProjectionMatrix_(viewProjectionMatrix), kMaxParticleCount_(maxParticleCount){}
-ParticleManager::~ParticleManager(){}
+
+ParticleManager::~ParticleManager(){
+	UnloadParticle();
+}
 
 int ParticleManager::particleCount_ = 0;
+std::map<int, bool> ParticleManager::isDrawing_;
 void ParticleManager::Initialize() {
 	particleCount_++;
 	if (particleCount_ > 50) {
@@ -60,6 +64,12 @@ void ParticleManager::Update() {
 
 void ParticleManager::Draw() {}
 
+void ParticleManager::UnloadParticle() {
+	particleCount_--;
+	isDrawing_[index_] = false;
+	worldTransformResource_.Reset();
+}
+
 void ParticleManager::CreateSRV() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
@@ -71,7 +81,17 @@ void ParticleManager::CreateSRV() {
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	srvDesc.Buffer.NumElements = kMaxParticleCount_;
 	srvDesc.Buffer.StructureByteStride = sizeof(TransformMatrix);
-	srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(100 + particleCount_);
-	srvHandle_.GPUHandle = dxCommon->GetGPUDescriptorHandle(100 + particleCount_);
+	for (int i = 0; i < particleMaxCount_; i++) {
+		if (!isDrawing_[i]) {
+			srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(101 + i);
+			srvHandle_.GPUHandle = dxCommon->GetGPUDescriptorHandle(101 + i);
+			isDrawing_[i] = true;
+			index_ = i;
+			break;
+		}
+		if (i == 49) {
+			assert(false);
+		}
+	}
 	dxCommon->GetDevice()->CreateShaderResourceView(worldTransformResource_.Get(), &srvDesc, srvHandle_.CPUHandle);
 }

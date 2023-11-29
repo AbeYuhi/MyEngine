@@ -17,28 +17,3 @@ struct DirectionalLightData {
 	Vector3 direction;
 	float intensity;
 };
-
-class DirectionalLight {
-public: //静的メンバ関数
-	static std::unique_ptr<DirectionalLight> Create();
-	static int sLightNum_;
-
-public: //メンバ関数
-	DirectionalLight();
-	~DirectionalLight();
-
-	void Initialize();
-
-	void Update();
-
-	void Draw();
-
-public: //ゲッターセッター
-
-private: //メンバ変数
-	//オブジェクト情報のResource
-	ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;
-
-	DirectionalLightData* directionalLightData_;
-	int lightNum_;
-};

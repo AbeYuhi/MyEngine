@@ -3,6 +3,10 @@
 GameClearScene::GameClearScene() {}
 GameClearScene::~GameClearScene() {}
 
+void GameClearScene::Finalize() {
+	
+}
+
 void GameClearScene::Initialize() {
 	GAMECLEAR;
 

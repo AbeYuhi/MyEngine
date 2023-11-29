@@ -30,6 +30,8 @@ void Sprite::Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anch
 	isFlipY_ = isFlipY;
 	//非表示か
 	isInvisible_ = false;
+	//テクスチャ
+	textureHandle_ = textureHandle;
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);

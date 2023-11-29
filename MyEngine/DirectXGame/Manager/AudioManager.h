@@ -27,6 +27,10 @@ struct SoundData {
 	BYTE* pBuffer;
 	//バッファのサイズ
 	unsigned int bufferSize;
+	//再生時のボイス
+	IXAudio2SourceVoice* pSourceVoice;
+	//バッファ
+	XAUDIO2_BUFFER buf;
 };
 
 class AudioManager
@@ -40,7 +44,20 @@ public:
 
 	uint32_t SoundLoadWave(const std::string filename);
 
-	void SoundPlayWave(const uint32_t index);
+	void SoundPlayWave(const uint32_t index, const float soundVolume = 1.0f, bool isLoop = false);
+
+	void StopLoopWave(const uint32_t index);
+
+	bool IsSoundPlaying(const uint32_t index);
+
+	void SoundUnload(const uint32_t index);
+
+	//ゲッターセッター
+	inline void SetVolume(const uint32_t index, const float soundVolume) {
+		if (soundDatas_[index].pSourceVoice) {
+			soundDatas_[index].pSourceVoice->SetVolume(soundVolume);
+		}
+	}
 
 private: //メンバ関数
 
@@ -50,7 +67,6 @@ private:
 
 	ComPtr<IXAudio2> xAudio2_;
 	IXAudio2MasteringVoice* masterVoice_;
-	std::vector<SoundData> soundDates_;
-	std::map<uint32_t, SoundData*> soundHandles_;
+	std::map<uint32_t, SoundData> soundDatas_;
 	int textureNum;
 };

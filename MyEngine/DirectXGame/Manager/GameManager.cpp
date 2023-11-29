@@ -39,6 +39,12 @@ void GameManager::Initialize() {
 
 #pragma endregion
 
+	//FPS計測の初期化
+	deltaTime_ = 0.0;
+	fps_ = 0.0;
+	frameCount_ = 0;
+	totalTime_ = 0.0;
+
 	//ゲームシーンの生成
 	sceneArr_[TITLE] = std::make_unique<TitleScene>();
 	sceneArr_[INGAME] = std::make_unique<InGameScene>();
@@ -62,11 +68,17 @@ int GameManager::Run() {
 			break;
 		}
 
+		//フレームの開始時刻を取得
+		auto frameStart = std::chrono::high_resolution_clock::now();
 		///更新処理
 		//入力受付
 		inputManager_->Update();
 		//ImGuiの受付開始
 		imGuiManager_->Begin();
+		//現在のFPS値
+		ImGui::Begin("FPS");
+		ImGui::Text("fps : %lf", fps_);
+		ImGui::End();
 		//ゲームシーンの更新
 		preSceneNo_ = sceneNo_;
 		sceneNo_ = sceneArr_[sceneNo_]->GetSceneNo();
@@ -75,6 +87,7 @@ int GameManager::Run() {
 		ImGui::Combo("gameScene", &sceneNo_, modes, IM_ARRAYSIZE(modes));
 		ImGui::End();
 		if (preSceneNo_ != sceneNo_) {
+			sceneArr_[preSceneNo_]->Finalize();
 			sceneArr_[sceneNo_]->Initialize();
 		}
 		sceneArr_[sceneNo_]->Update();
@@ -90,6 +103,22 @@ int GameManager::Run() {
 		imGuiManager_->Draw();
 		//描画終了
 		directXCommon_->PostDraw();
+
+		// フレーム終了時刻を取得
+		auto frameEnd = std::chrono::high_resolution_clock::now();
+
+		// フレームごとの時間を計算
+		std::chrono::duration<double> frameDuration = frameEnd - frameStart;
+		deltaTime_ = frameDuration.count();
+
+		//FPSの更新
+		totalTime_ += deltaTime_;
+		frameCount_++;
+		if (totalTime_ > 1.0f) {
+			fps_ = frameCount_ / totalTime_;
+			frameCount_ = 0;
+			totalTime_ = 0;
+		}
 	}
 
 	//音声データの解放
