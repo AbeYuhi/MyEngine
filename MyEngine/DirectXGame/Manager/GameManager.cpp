@@ -45,15 +45,28 @@ void GameManager::Initialize() {
 	frameCount_ = 0;
 	totalTime_ = 0.0;
 
-	//ゲームシーンの生成
-	sceneArr_[TITLE] = std::make_unique<TitleScene>();
-	sceneArr_[INGAME] = std::make_unique<InGameScene>();
-	sceneArr_[MENU] = std::make_unique<MenuScene>();
-	sceneArr_[GAMEOVER] = std::make_unique<GameOverScene>();
-	sceneArr_[GAMECLEAR] = std::make_unique<GameClearScene>();
 	//初期ゲームシーンの設定
 	sceneNo_ = INGAME;
 	//初期ゲームシーンの初期化
+	switch (sceneNo_)
+	{
+	case TITLE:
+		sceneArr_[sceneNo_] = std::make_unique<TitleScene>();
+		break;
+	case INGAME:
+	default:
+		sceneArr_[sceneNo_] = std::make_unique<InGameScene>();
+		break;
+	case MENU:
+		sceneArr_[sceneNo_] = std::make_unique<MenuScene>();
+		break;
+	case GAMEOVER:
+		sceneArr_[sceneNo_] = std::make_unique<GameOverScene>();
+		break;
+	case GAMECLEAR:
+		sceneArr_[sceneNo_] = std::make_unique<GameClearScene>();
+		break;
+	}
 	sceneArr_[sceneNo_]->Initialize();
 }
 
@@ -88,6 +101,26 @@ int GameManager::Run() {
 		ImGui::End();
 		if (preSceneNo_ != sceneNo_) {
 			sceneArr_[preSceneNo_]->Finalize();
+			sceneArr_[preSceneNo_].reset();
+			switch (sceneNo_)
+			{
+			case TITLE:
+				sceneArr_[sceneNo_] = std::make_unique<TitleScene>();
+				break;
+			case INGAME:
+			default:
+				sceneArr_[sceneNo_] = std::make_unique<InGameScene>();
+				break;
+			case MENU:
+				sceneArr_[sceneNo_] = std::make_unique<MenuScene>();
+				break;
+			case GAMEOVER:
+				sceneArr_[sceneNo_] = std::make_unique<GameOverScene>();
+				break;
+			case GAMECLEAR:
+				sceneArr_[sceneNo_] = std::make_unique<GameClearScene>();
+				break;
+			}
 			sceneArr_[sceneNo_]->Initialize();
 		}
 		sceneArr_[sceneNo_]->Update();

@@ -5,11 +5,10 @@ InGameScene::InGameScene() {
 }
 
 InGameScene::~InGameScene() {
+
 }
 
-void InGameScene::Finalize() {
-	testParticle1_.reset();
-}
+void InGameScene::Finalize() {}
 
 void InGameScene::Initialize() {
 	sceneNo_ = INGAME;
