@@ -85,6 +85,12 @@
     <Filter Include="ソース ファイル\GameObject\Particle">
       <UniqueIdentifier>{2e2c54c7-360c-4c30-a80a-7ed514a1cd14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Debug">
+      <UniqueIdentifier>{83f63f37-8633-4f70-b582-f401963a5b28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Debug">
+      <UniqueIdentifier>{aab891f3-9145-4a22-b559-f78bc1296561}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -109,9 +115,6 @@
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Base\WinApp\WinApp.cpp">
-      <Filter>ソース ファイル\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Base\CreateResource\CreateResource.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -140,9 +143,6 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Manager\TextureManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp">
-      <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Object\Sprite.cpp">
       <Filter>ソース ファイル\Object</Filter>
@@ -222,6 +222,15 @@
     <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp">
       <Filter>ソース ファイル\GameObject\Light</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Base\CreateResource\CreateResource.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\DebugSytem\GlobalVariables.cpp">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Object\Triangle.h">
@@ -249,9 +258,6 @@
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Base\WinApp\WinApp.h">
-      <Filter>ヘッダー ファイル\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Base\SafeDelete\SafeDelete.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h">
@@ -286,9 +292,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Manager\TextureManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\DebugSytem\DebugLog.h">
-      <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Object\Sprite.h">
       <Filter>ヘッダー ファイル\Object</Filter>
@@ -325,9 +328,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\ModelData.h">
       <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\DebugSytem\ReleseCheck.h">
-      <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\MaterialInfo.h">
       <Filter>ヘッダー ファイル\Data</Filter>
@@ -397,6 +397,18 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h">
       <Filter>ヘッダー ファイル\GameObject\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\DebugSytem\DebugLog.h">
+      <Filter>ヘッダー ファイル\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Base\SafeDelete\SafeDelete.h">
+      <Filter>ヘッダー ファイル\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\DebugSytem\ReleseCheck.h">
+      <Filter>ヘッダー ファイル\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\DebugSytem\GlobalVariables.h">
+      <Filter>ヘッダー ファイル\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,7 @@ void ParticleManager::Initialize() {
 	}
 
 	//リソースの作成
-	worldTransformResource_ = CreateBufferResource(sizeof(TransformMatrix) * kMaxParticleCount_);
+	worldTransformResource_ = CreateBufferResource(sizeof(ParticleTransformMatrix) * kMaxParticleCount_);
 
 	//書き込むためのアドレスの取得
 	worldTransformResource_->Map(0, nullptr, reinterpret_cast<void**>(&worldTransformData_));
@@ -87,7 +87,7 @@ void ParticleManager::CreateSRV() {
 	srvDesc.Buffer.FirstElement = 0;
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	srvDesc.Buffer.NumElements = kMaxParticleCount_;
-	srvDesc.Buffer.StructureByteStride = sizeof(TransformMatrix);
+	srvDesc.Buffer.StructureByteStride = sizeof(ParticleTransformMatrix);
 	for (int i = 0; i < particleMaxCount_; i++) {
 		if (!isDrawing_[i]) {
 			srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(1001 + i);

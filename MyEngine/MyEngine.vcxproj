@@ -110,6 +110,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Data\TextureData.cpp" />
     <ClCompile Include="DirectXGame\Data\Transform.cpp" />
     <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp" />
+    <ClCompile Include="DirectXGame\DebugSytem\GlobalVariables.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />
     <ClCompile Include="External\imgui\imgui_draw.cpp" />
@@ -165,6 +166,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Data\Transform.h" />
     <ClInclude Include="DirectXGame\Data\VertexData.h" />
     <ClInclude Include="DirectXGame\DebugSytem\DebugLog.h" />
+    <ClInclude Include="DirectXGame\DebugSytem\GlobalVariables.h" />
     <ClInclude Include="DirectXGame\DebugSytem\ReleseCheck.h" />
     <ClInclude Include="External\imgui\imconfig.h" />
     <ClInclude Include="External\imgui\imgui.h" />

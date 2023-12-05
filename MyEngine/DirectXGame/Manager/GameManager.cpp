@@ -26,6 +26,10 @@ void GameManager::Initialize() {
 	imGuiManager_ = ImGuiManager::GetInstance();
 	imGuiManager_->Initialize();
 
+	//JSONの読み書き
+	globalVariables_ = GlobalVariables::GetInstance();
+	globalVariables_->LoadFiles();
+
 	//汎用テクスチャの読み込み
 	IScene::uvCheckerHandle_ = TextureManager::Load("uvChecker.png");
 	IScene::whiteTextureHandle_ = TextureManager::Load("whiteTexture2x2.png");
@@ -88,6 +92,8 @@ int GameManager::Run() {
 		inputManager_->Update();
 		//ImGuiの受付開始
 		imGuiManager_->Begin();
+		//グローバル変数の更新
+		globalVariables_->Updates();
 		//現在のFPS値
 		ImGui::Begin("FPS");
 		ImGui::Text("fps : %lf", fps_);

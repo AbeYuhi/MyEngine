@@ -43,7 +43,7 @@ protected: //メンバ変数
 	//Resourceハンドル
 	ResourceHandles srvHandle_;
 	//データ
-	TransformMatrix* worldTransformData_;
+	ParticleTransformMatrix* worldTransformData_;
 	ParticleMaterialInfo materialInfo_;
 	std::list<ParticleInfo> particles_;
 	//描画の際に必要なパーティクルデータ

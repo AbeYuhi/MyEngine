@@ -8,6 +8,7 @@
 #include "DirectXGame/Scene/GameClearScene.h"
 #include "DirectXGame/DebugSytem/DebugLog.h"
 #include "DirectXGame/DebugSytem/ReleseCheck.h"
+#include "DirectXGame/DebugSytem/GlobalVariables.h"
 #include "DirectXGame/Base/SafeDelete/SafeDelete.h"
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
@@ -41,7 +42,7 @@ private:
 	TextureManager* textureManager_ = nullptr;
 	AudioManager* audioManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
-	GameManager* gameManager_ = nullptr;
+	GlobalVariables* globalVariables_ = nullptr;
 
 	//ゲームシーン
 	std::unique_ptr<IScene> sceneArr_[GameScene::SCENENUM];

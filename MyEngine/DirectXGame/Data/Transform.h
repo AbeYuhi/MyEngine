@@ -10,6 +10,11 @@ struct TransformMatrix {
 	Matrix4x4 WorldInverseTranspose_;
 };
 
+struct ParticleTransformMatrix {
+	Matrix4x4 WVP_;
+	Matrix4x4 World_;
+};
+
 struct TransformData{
 	Vector3 scale_;
 	Vector3 rotate_;
