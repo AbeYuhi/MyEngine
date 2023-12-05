@@ -220,7 +220,7 @@
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
+      <Filter>ソース ファイル\GameObject\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -305,9 +305,6 @@
     <ClInclude Include="DirectXGame\Manager\GraphicsPipelineManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Data\DirectionalLight.h">
-      <Filter>ヘッダー ファイル\GameObject\Light</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Math\Matrix3x3.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
@@ -340,9 +337,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Manager\InputManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Data\SpotLight.h">
-      <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Camera\GameCamera.h">
       <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
@@ -377,9 +371,6 @@
     <ClInclude Include="DirectXGame\Manager\GameManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Data\PointLight.h">
-      <Filter>ヘッダー ファイル\GameObject\Light</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Data\ResourceHandles.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
@@ -395,8 +386,17 @@
     <ClInclude Include="DirectXGame\Manager\AudioManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Data\DirectionalLight.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\PointLight.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\SpotLight.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h">
-      <Filter>ヘッダー ファイル\Manager</Filter>
+      <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

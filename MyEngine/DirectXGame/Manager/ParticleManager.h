@@ -3,6 +3,7 @@
 #include "DirectXGame/Data/RenderItem.h"
 #include "DirectXGame/Data/ResourceHandles.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
+#include "DirectXGame/Manager/GraphicsPipelineManager.h"
 
 struct ParticleInfo {
 	TransformData srtData_;
@@ -14,7 +15,7 @@ class ParticleManager
 private:
 	//現在のパーティクルの生成数
 	static int particleCount_;
-	static const int particleMaxCount_ = 50;
+	static const int particleMaxCount_ = 500;
 	static std::map<int, bool> isDrawing_;
 
 public: //メンバ関数

@@ -16,7 +16,6 @@
 #include "DirectXGame/Manager/AudioManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 #include "DirectXGame/Manager/InputManager.h"
-#include "DirectXGame/Manager/GameManager.h"
 #include "DirectXGame/Object/Triangle.h"
 #include "DirectXGame/Object/Sprite.h"
 #include "DirectXGame/Object/Sphere.h"

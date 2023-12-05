@@ -40,7 +40,7 @@ void InGameScene::Initialize() {
 	lightObj_->Initialize();
 
 	//ブレンドモード
-	blendMode_ = kBlendModeNone;
+	blendMode_ = kBlendModeNormal;
 
 	//画像読み込み
 	monsterBallHandle_ = TextureManager::Load("monsterBall.png");
@@ -86,7 +86,7 @@ void InGameScene::Update() {
 	lightObj_->Update();
 
 	//パーティクルの更新
-	//testParticle1_->Update();
+	testParticle1_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("monsterBall")) {
@@ -160,9 +160,9 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	//testParticle_->Draw();
-	monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
-	groundModel_->Draw(groundModelInfo_);
+	testParticle1_->Draw();
+	//monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
+	//groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
 }

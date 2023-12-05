@@ -9,13 +9,16 @@ void TestParticle::Initialize() {
 
 	//パーティクルの初期化
 	plane_ = Plane::Create();
-	//model_ = Model::Create("bunny");
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 
 	int index = 0;
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
+
+		particle->srtData_.translate_ = { 0.1f * index, 0, 100 };
+		//particle->velocity_ = { 0, 1.0f, 0 };
+
 		index++;
 	}
 }
@@ -25,7 +28,6 @@ void TestParticle::Update() {
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
 
-		particle->srtData_.rotate_.y += 0.05f;
 	}
 
 	//パーティクルの更新
@@ -34,5 +36,4 @@ void TestParticle::Update() {
 
 void TestParticle::Draw() {
 	plane_->Draw(drawInfo_, textureHandle_);
-	model_->Draw(drawInfo_);
 }

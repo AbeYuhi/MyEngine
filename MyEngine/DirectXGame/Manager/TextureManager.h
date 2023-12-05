@@ -13,7 +13,7 @@ class TextureManager
 public:
 	//インスタンスの取得
 	static TextureManager* GetInstance();
-	static const UINT kMaxTextureNum_ = 100;
+	static const UINT kMaxTextureNum_ = 1000;
 	static UINT sTextureNum_;
 
 	static uint32_t Load(const std::string& textureName);

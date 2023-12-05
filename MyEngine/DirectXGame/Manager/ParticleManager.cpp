@@ -10,8 +10,8 @@ int ParticleManager::particleCount_ = 0;
 std::map<int, bool> ParticleManager::isDrawing_;
 void ParticleManager::Initialize() {
 	particleCount_++;
-	if (particleCount_ > 50) {
-		Log(ConvertString(std::format(L"50個以上パーティクルは生成できません\n")));
+	if (particleCount_ > 500) {
+		Log(ConvertString(std::format(L"500個以上パーティクルは生成できません\n")));
 		assert(false);
 	}
 
@@ -46,7 +46,8 @@ void ParticleManager::Initialize() {
 void ParticleManager::Update() {
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
-		particle->srtData_.translate_ += particle->velocity_;
+		const float kDeltaTime = 1.0f / 60.0f;
+		particle->srtData_.translate_ += particle->velocity_ * kDeltaTime;
 	}
 
 	int index = 0;
@@ -59,10 +60,16 @@ void ParticleManager::Update() {
 		worldTransformData_[index].WVP_ = worldViewProjectionMatrix;
 		worldTransformData_[index].World_ = worldMatrix;
 		index++;
+
+		if (index >= kMaxParticleCount_) {
+			break;
+		}
 	}
 }
 
-void ParticleManager::Draw() {}
+void ParticleManager::Draw() {
+
+}
 
 void ParticleManager::UnloadParticle() {
 	particleCount_--;
@@ -83,13 +90,13 @@ void ParticleManager::CreateSRV() {
 	srvDesc.Buffer.StructureByteStride = sizeof(TransformMatrix);
 	for (int i = 0; i < particleMaxCount_; i++) {
 		if (!isDrawing_[i]) {
-			srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(101 + i);
-			srvHandle_.GPUHandle = dxCommon->GetGPUDescriptorHandle(101 + i);
+			srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(1001 + i);
+			srvHandle_.GPUHandle = dxCommon->GetGPUDescriptorHandle(1001 + i);
 			isDrawing_[i] = true;
 			index_ = i;
 			break;
 		}
-		if (i == 49) {
+		if (i == particleMaxCount_ - 1) {
 			assert(false);
 		}
 	}

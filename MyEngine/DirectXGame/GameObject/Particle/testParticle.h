@@ -19,6 +19,4 @@ public:
 private:
 	std::unique_ptr<Plane> plane_;
 	uint32_t textureHandle_;
-
-	std::unique_ptr<Model> model_;
 };

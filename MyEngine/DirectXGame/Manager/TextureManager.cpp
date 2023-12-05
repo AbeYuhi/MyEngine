@@ -22,7 +22,7 @@ uint32_t TextureManager::LoadInternal(const std::string& textureName, const std:
 	if (textureDatas_.find(textureName) == textureDatas_.end()) {
 		sTextureNum_++;
 		if (sTextureNum_ > kMaxTextureNum_) {
-			Log(ConvertString(std::format(L"テクスチャの最大読み込み枚数は100枚です\n")));
+			Log(ConvertString(std::format(L"テクスチャの最大読み込み枚数は1000枚です\n")));
 			assert(false);
 		}
 
