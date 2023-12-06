@@ -6,24 +6,28 @@ ParticleManager::~ParticleManager(){
 	UnloadParticle();
 }
 
-int ParticleManager::particleCount_ = 0;
+int ParticleManager::sEmittersCount_ = 0;
 std::map<int, bool> ParticleManager::isDrawing_;
 void ParticleManager::Initialize() {
-	particleCount_++;
-	if (particleCount_ > 500) {
+	//インスタンスの取得
+	randomManager_ = RandomManager::GetInstance();
+	//現在生成されているパーティクル数をインクリメント
+	sEmittersCount_++;
+	if (sEmittersCount_ > 500) {
 		Log(ConvertString(std::format(L"500個以上パーティクルは生成できません\n")));
 		assert(false);
 	}
 
 	//リソースの作成
-	worldTransformResource_ = CreateBufferResource(sizeof(ParticleTransformMatrix) * kMaxParticleCount_);
+	worldTransformResource_ = CreateBufferResource(sizeof(ParticleForGPU) * kMaxParticleCount_);
 
 	//書き込むためのアドレスの取得
-	worldTransformResource_->Map(0, nullptr, reinterpret_cast<void**>(&worldTransformData_));
+	worldTransformResource_->Map(0, nullptr, reinterpret_cast<void**>(&particleData_));
 	//単位行列の書き込み
-	for (int index = 0; index < kMaxParticleCount_; index++) {
-		worldTransformData_[index].WVP_ = MakeIdentity4x4();
-		worldTransformData_[index].World_ = MakeIdentity4x4();
+	for (int index = 0; index < 10; index++) {
+		particleData_[index].WVP_ = MakeIdentity4x4();
+		particleData_[index].World_ = MakeIdentity4x4();
+		particleData_[index].color_ = { 1.0f, 1.0f, 1.0f, 0.0f };
 	}
 
 	materialInfo_.Initialize();
@@ -31,40 +35,36 @@ void ParticleManager::Initialize() {
 	//SRVの生成
 	CreateSRV();
 
-	//初期化
-	for (int index = 0; index < kMaxParticleCount_; index++) {
-		ParticleInfo particle{};
-		particle.srtData_.Initialize();
-		particle.velocity_ = { 0, 0, 0 };
-		particles_.push_back(particle);
-	}
+	//エミッターの初期化
+	emitterInfo_.pos = { 0, 0, 0 };
+	emitterInfo_.size = { 0, 0, 0 };
 
 	//描画に必要なもの
-	drawInfo_.Initialize(&srvHandle_, &materialInfo_, &kMaxParticleCount_);
+	drawInfo_.Initialize(&srvHandle_, &materialInfo_, &particleCount_);
 }
 
 void ParticleManager::Update() {
-	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
-		ParticleInfo* particle = &(*itParticle);
-		const float kDeltaTime = 1.0f / 60.0f;
-		particle->srtData_.translate_ += particle->velocity_ * kDeltaTime;
-	}
-
+	//転送データの書き込み
 	int index = 0;
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
 
-		Matrix4x4 worldMatrix = MakeAffineMatrix(particle->srtData_.scale_, particle->srtData_.rotate_, particle->srtData_.translate_);
+		Matrix4x4 worldMatrix = MakeAffineMatrix(particle->srtData.scale_, particle->srtData.rotate_, particle->srtData.translate_);
 		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, *viewProjectionMatrix_);
 
-		worldTransformData_[index].WVP_ = worldViewProjectionMatrix;
-		worldTransformData_[index].World_ = worldMatrix;
+		particleData_[index].WVP_ = worldViewProjectionMatrix;
+		particleData_[index].World_ = worldMatrix;
+		particleData_[index].color_ = particle->color;
 		index++;
 
 		if (index >= kMaxParticleCount_) {
-			break;
+			particleCount_ = kMaxParticleCount_;
+			return;
 		}
 	}
+
+	//現在のパーティクルの粒子数
+	particleCount_ = (int)particles_.size();
 }
 
 void ParticleManager::Draw() {
@@ -87,8 +87,8 @@ void ParticleManager::CreateSRV() {
 	srvDesc.Buffer.FirstElement = 0;
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	srvDesc.Buffer.NumElements = kMaxParticleCount_;
-	srvDesc.Buffer.StructureByteStride = sizeof(ParticleTransformMatrix);
-	for (int i = 0; i < particleMaxCount_; i++) {
+	srvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
+	for (int i = 0; i < kEmittersMaxCount_; i++) {
 		if (!isDrawing_[i]) {
 			srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(1001 + i);
 			srvHandle_.GPUHandle = dxCommon->GetGPUDescriptorHandle(1001 + i);
@@ -96,7 +96,7 @@ void ParticleManager::CreateSRV() {
 			index_ = i;
 			break;
 		}
-		if (i == particleMaxCount_ - 1) {
+		if (i == kEmittersMaxCount_ - 1) {
 			assert(false);
 		}
 	}

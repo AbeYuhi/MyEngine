@@ -16,6 +16,7 @@
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/AudioManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
+#include "DirectXGame/Manager/RandomManager.h"
 #include "DirectXGame/Manager/InputManager.h"
 #include "DirectXGame/Object/Triangle.h"
 #include "DirectXGame/Object/Sprite.h"
@@ -41,6 +42,7 @@ private:
 	ImGuiManager* imGuiManager_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
 	AudioManager* audioManager_ = nullptr;
+	RandomManager* randomManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	GlobalVariables* globalVariables_ = nullptr;
 

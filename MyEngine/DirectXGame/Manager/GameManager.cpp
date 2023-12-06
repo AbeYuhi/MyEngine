@@ -38,6 +38,10 @@ void GameManager::Initialize() {
 	audioManager_ = AudioManager::GetInstance();
 	audioManager_->Initialize();
 
+	//RandomManagerの初期化
+	randomManager_ = RandomManager::GetInstance();
+	randomManager_->Initialize();
+
 	graphicsPipelineManager_ = GraphicsPipelineManager::GetInstance();
 	graphicsPipelineManager_->Initialize();
 

@@ -18,6 +18,7 @@ void InGameScene::Initialize() {
 	directXCommon_ = DirectXCommon::GetInstance();
 	input_ = InputManager::GetInstance();;
 	audioManager_ = AudioManager::GetInstance();
+	randomManager_ = RandomManager::GetInstance();
 
 	//デバックモード中ならdebugカメラを有効に
 	isDebugCamera_ = debugMode_;
@@ -47,7 +48,7 @@ void InGameScene::Initialize() {
 	fenceHandle_ = TextureManager::Load("fence.png");
 
 	//ゲームオブジェクト
-	testParticle1_ = std::make_unique<TestParticle>(mainCamera_.GetPViewProjectionMatrix(), 10);
+	testParticle1_ = std::make_unique<TestParticle>(mainCamera_.GetPViewProjectionMatrix(), 100);
 	testParticle1_->Initialize();
 
 	groundModel_ = Model::Create("terrain");
@@ -160,9 +161,14 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	testParticle1_->Draw();
-	//monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
+	monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
 	//groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
+
+	///パーティクルの描画
+
+	testParticle1_->Draw();
+
+	///パーティクルの描画終了
 }

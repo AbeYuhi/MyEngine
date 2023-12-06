@@ -283,10 +283,23 @@ void GraphicsPipelineManager::CreatePSO() {
 	}
 
 	//DepthStencilStateの設定
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	depthStencilDesc.DepthEnable = true;
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc[PipelineState::kCountOfPipelineState]{};
+	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
+		switch (shaderPack)
+		{
+		case PipelineState::kDefault:
+		default:
+			depthStencilDesc[shaderPack].DepthEnable = true;
+			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+			depthStencilDesc[shaderPack].DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+			break;
+		case PipelineState::kParticle:
+			depthStencilDesc[shaderPack].DepthEnable = true;
+			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+			depthStencilDesc[shaderPack].DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+			break;
+		}
+	}
 
 	//PSOの生成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipeLineStateDesc{};
@@ -298,7 +311,7 @@ void GraphicsPipelineManager::CreatePSO() {
 			graphicsPipeLineStateDesc.PS = { pixelShaderBlob[shaderPack]->GetBufferPointer(), pixelShaderBlob[shaderPack]->GetBufferSize() };
 			graphicsPipeLineStateDesc.BlendState = blendDesc[blendMode];
 			graphicsPipeLineStateDesc.RasterizerState = rasterizerDesc;
-			graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc;
+			graphicsPipeLineStateDesc.DepthStencilState = depthStencilDesc[shaderPack];
 			graphicsPipeLineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 			//書き込むRTVの情報
 			graphicsPipeLineStateDesc.NumRenderTargets = 1;

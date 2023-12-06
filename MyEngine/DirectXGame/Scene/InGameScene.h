@@ -5,6 +5,7 @@
 #include "DirectXGame/Manager/InputManager.h"
 #include "DirectXGame/Manager/AudioManager.h"
 #include "DirectXGame/Manager/ParticleManager.h"
+#include "DirectXGame/Manager/RandomManager.h"
 #include "DirectXGame/Object/Triangle.h"
 #include "DirectXGame/Object/Sprite.h"
 #include "DirectXGame/Object/Plane.h"
@@ -37,6 +38,7 @@ private:
 	DirectXCommon* directXCommon_;
 	InputManager* input_;
 	AudioManager* audioManager_;
+	RandomManager* randomManager_;
 	//使用しているカメラ
 	MainCamera mainCamera_;
 	//ゲームカメラ

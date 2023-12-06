@@ -16,7 +16,11 @@ public:
 
 	void Draw() override;
 
+	ParticleInfo MakeNewParticle() override;
+
 private:
 	std::unique_ptr<Plane> plane_;
 	uint32_t textureHandle_;
+
+	int popCoolDown_;
 };

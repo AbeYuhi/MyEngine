@@ -148,6 +148,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Scene\IScene.cpp" />
     <ClCompile Include="DirectXGame\Scene\MenuScene.cpp" />
     <ClCompile Include="DirectXGame\Scene\TitleScene.cpp" />
+    <ClCompile Include="DirectXGame\Manager\RandomManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h" />
@@ -160,6 +161,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Data\MaterialInfo.h" />
     <ClInclude Include="DirectXGame\Data\ModelData.h" />
     <ClInclude Include="DirectXGame\Data\ParticleDrawInfo.h" />
+    <ClInclude Include="DirectXGame\Data\ParticleForGPU.h" />
     <ClInclude Include="DirectXGame\Data\RenderItem.h" />
     <ClInclude Include="DirectXGame\Data\ResourceHandles.h" />
     <ClInclude Include="DirectXGame\Data\TextureData.h" />
@@ -209,6 +211,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Scene\MenuScene.h" />
     <ClInclude Include="DirectXGame\Scene\TitleScene.h" />
     <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h" />
+    <ClInclude Include="DirectXGame\Manager\RandomManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
