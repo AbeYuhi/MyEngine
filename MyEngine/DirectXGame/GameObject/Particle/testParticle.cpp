@@ -1,7 +1,7 @@
 #include "testParticle.h"
 
 
-TestParticle::TestParticle(const Matrix4x4* viewProjectionMatrix, int maxParticleCount) : ParticleManager(viewProjectionMatrix, maxParticleCount){}
+TestParticle::TestParticle(int maxParticleCount) : ParticleManager(maxParticleCount){}
 
 void TestParticle::Initialize() {
 	//基本機能の初期化
@@ -15,26 +15,20 @@ void TestParticle::Initialize() {
 	textureHandle_ = TextureManager::Load("circle.png");
 
 	//エミッター情報
-	emitterInfo_.size = {2, 2, 2};
+	emitter_.transform.scale_ = {2, 2, 2};
+	emitter_.count = 5;
+	emitter_.frequency = 0.5;
 
 	//パーティクルの生成
-	for (int index = 0; index < 10; index++) {
+	/*for (int index = 0; index < 10; index++) {
 		particles_.push_back(MakeNewParticle());
-	}
+	}*/
 }
 
 void TestParticle::Update() {
 
-	if (popCoolDown_ <= 0) {
-		particles_.push_back(MakeNewParticle());
-		popCoolDown_ = 10;
-	}
-	else {
-		popCoolDown_--;
-	}
-
 	ImGui::Begin("EmitterPos");
-	ImGui::SliderFloat3("pos", &emitterInfo_.pos.x, -10, 10);
+	ImGui::SliderFloat3("pos", &emitter_.transform.translate_.x, -10, 10);
 	ImGui::End();
 
 	//パーティクルの更新
@@ -46,9 +40,8 @@ void TestParticle::Update() {
 			continue;
 		}
 
-		const float kDeltaTime = 1.0f / 60.0f;
-		particle->srtData.translate_ += particle->velocity * kDeltaTime;
-		particle->currenttime += kDeltaTime;
+		particle->srtData.translate_ += particle->velocity * kDeltaTime_;
+		particle->currenttime += kDeltaTime_;
 		particle->color.w = 1.0f - (particle->currenttime / particle->lifeTime);
 
 		itParticle++;
@@ -60,18 +53,20 @@ void TestParticle::Update() {
 
 void TestParticle::Draw() {
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(kBlendModeAdd);
+
 	plane_->Draw(drawInfo_, textureHandle_);
-	GraphicsPipelineManager::GetInstance()->SetBlendMode(kBlendModeNormal);
+
+	GraphicsPipelineManager::GetInstance()->SetBlendMode(preBlendMode_);
 }
 
 ParticleInfo TestParticle::MakeNewParticle() {
 	ParticleInfo particle{};
 	particle.srtData.Initialize();
 	particle.srtData.translate_ = { 
-		randomManager_->GetRandomNumber(-emitterInfo_.size.x / 2.0f, emitterInfo_.size.x / 2.0f),
-		randomManager_->GetRandomNumber(-emitterInfo_.size.y / 2.0f, emitterInfo_.size.y / 2.0f),
-		randomManager_->GetRandomNumber(-emitterInfo_.size.z / 2.0f, emitterInfo_.size.z / 2.0f) };
-	particle.srtData.translate_ += emitterInfo_.pos;
+		randomManager_->GetRandomNumber(-emitter_.transform.scale_.x / 2.0f, emitter_.transform.scale_.x / 2.0f),
+		randomManager_->GetRandomNumber(-emitter_.transform.scale_.y / 2.0f, emitter_.transform.scale_.y / 2.0f),
+		randomManager_->GetRandomNumber(-emitter_.transform.scale_.z / 2.0f, emitter_.transform.scale_.z / 2.0f) };
+	particle.srtData.translate_ += emitter_.transform.translate_;
 	particle.velocity = { randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f) };
 	particle.color = { randomManager_->GetRandomNumber(0.0f, 1.0f), randomManager_->GetRandomNumber(0.0f, 1.0f), randomManager_->GetRandomNumber(0.0f, 1.0f), 1.0f };
 	particle.lifeTime = randomManager_->GetRandomNumber(1.0f, 3.0f);

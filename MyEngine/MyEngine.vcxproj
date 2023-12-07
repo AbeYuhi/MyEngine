@@ -119,7 +119,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="External\imgui\imgui_tables.cpp" />
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\DebugCamera.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Camera\GameCamera.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Camera\InGameCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\MainCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\testParticle.cpp" />
@@ -149,6 +149,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Scene\MenuScene.cpp" />
     <ClCompile Include="DirectXGame\Scene\TitleScene.cpp" />
     <ClCompile Include="DirectXGame\Manager\RandomManager.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Camera\TitleCamera.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Camera\Base3DCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h" />
@@ -179,7 +181,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="External\imgui\imstb_textedit.h" />
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\DebugCamera.h" />
-    <ClInclude Include="DirectXGame\GameObject\Camera\GameCamera.h" />
+    <ClInclude Include="DirectXGame\GameObject\Camera\InGameCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\MainCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\SpriteCamera.h" />
     <ClInclude Include="DirectXGame\Data\DirectionalLight.h" />
@@ -212,6 +214,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Scene\TitleScene.h" />
     <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h" />
     <ClInclude Include="DirectXGame\Manager\RandomManager.h" />
+    <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h" />
+    <ClInclude Include="DirectXGame\GameObject\Camera\Base3DCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

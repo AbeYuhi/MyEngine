@@ -43,6 +43,7 @@ public: //ゲッターセッター
 	inline D3D12_VIEWPORT* GetViewPort() { return &viewPort_; }
 	inline D3D12_RECT* GetScissorRect() { return &scissorRect_; }
 	inline void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
+	inline BlendMode GetBlendMode() { return blendMode_; }
 
 private:
 	GraphicsPipelineManager() = default;

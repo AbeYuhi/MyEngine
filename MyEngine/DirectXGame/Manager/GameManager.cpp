@@ -45,6 +45,10 @@ void GameManager::Initialize() {
 	graphicsPipelineManager_ = GraphicsPipelineManager::GetInstance();
 	graphicsPipelineManager_->Initialize();
 
+	//メインカメラの初期化
+	mainCamera_ = MainCamera::GetInstance();
+	mainCamera_->Initialize();
+
 #pragma endregion
 
 	//FPS計測の初期化

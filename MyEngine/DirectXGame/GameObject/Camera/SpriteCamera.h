@@ -12,8 +12,7 @@
 class SpriteCamera
 {
 public:
-	SpriteCamera();
-	~SpriteCamera();
+	static SpriteCamera* GetInstance();
 
 	void Initialize();
 
@@ -23,11 +22,13 @@ public:
 	inline Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 	inline Matrix4x4 GetProjectionMatrix() { return projectionMatrix_; }
 	inline Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; }
-	inline const Matrix4x4* GetViewProjectionMatrixPointer() { return &viewProjectionMatrix_; }
+	inline const Matrix4x4* GetPViewProjectionMatrix() { return &viewProjectionMatrix_; }
 	inline float GetNearClip() { return nearClip_; }
 	inline float GetFarClip() { return farClip_; }
 
 private:
+	SpriteCamera() = default;
+	~SpriteCamera() = default;
 
 	TransformData transform_;
 	Matrix4x4 worldMatrix_;

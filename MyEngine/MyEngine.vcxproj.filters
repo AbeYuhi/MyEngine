@@ -177,7 +177,7 @@
     <ClCompile Include="DirectXGame\Manager\InputManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Camera\GameCamera.cpp">
+    <ClCompile Include="DirectXGame\GameObject\Camera\InGameCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Object\Plane.cpp">
@@ -233,6 +233,12 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Manager\RandomManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Camera\TitleCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Camera\Base3DCamera.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,7 +347,7 @@
     <ClInclude Include="DirectXGame\Manager\InputManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Camera\GameCamera.h">
+    <ClInclude Include="DirectXGame\GameObject\Camera\InGameCamera.h">
       <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Object\Plane.h">
@@ -418,6 +424,12 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\ParticleForGPU.h">
       <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Camera\Base3DCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

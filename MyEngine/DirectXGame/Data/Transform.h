@@ -35,7 +35,7 @@ struct WorldTransform {
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(const Matrix4x4* viewProjectionMatrix);
+	void Initialize(bool isSprite);
 
 	/// <summary>
 	/// 更新

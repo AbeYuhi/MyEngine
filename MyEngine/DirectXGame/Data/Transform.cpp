@@ -1,4 +1,6 @@
 #include "Transform.h"
+#include "DirectXGame/GameObject/Camera/MainCamera.h"
+#include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 
 void TransformData::Initialize(){
 	scale_ = { 1.0f, 1.0f, 1.0f };
@@ -6,12 +8,18 @@ void TransformData::Initialize(){
 	translate_ = { 0.0f, 0.0f, 0.0f };
 }
 
-void WorldTransform::Initialize(const Matrix4x4* viewProjectionMatrix) {
+void WorldTransform::Initialize(bool isSprite) {
 	CreateResource();
 	RunMap();
 
 	data_.Initialize();
-	viewProjectionMatrix_ = viewProjectionMatrix;
+
+	if (isSprite) {
+		viewProjectionMatrix_ = SpriteCamera::GetInstance()->GetPViewProjectionMatrix();
+	}
+	else {
+		viewProjectionMatrix_ = MainCamera::GetInstance()->GetPViewProjectionMatrix();
+	}
 
 	UpdateWorld();
 }

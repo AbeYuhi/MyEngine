@@ -12,7 +12,7 @@
 #include "DirectXGame/Object/Sphere.h"
 #include "DirectXGame/Object/Model.h"
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
-#include "DirectXGame/GameObject/Camera/GameCamera.h"
+#include "DirectXGame/GameObject/Camera/InGameCamera.h"
 #include "DirectXGame/GameObject/Camera/DebugCamera.h"
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 #include "DirectXGame/GameObject/Light/LightObject.h"
@@ -39,15 +39,13 @@ private:
 	InputManager* input_;
 	AudioManager* audioManager_;
 	RandomManager* randomManager_;
-	//使用しているカメラ
-	MainCamera mainCamera_;
+	MainCamera* mainCamera_;
+	SpriteCamera* spriteCamera_;
 	//ゲームカメラ
-	std::unique_ptr<GameCamera> gameCamera_;
+	std::unique_ptr<InGameCamera> gameCamera_;
 	//デバッグカメラ
 	std::unique_ptr<DebugCamera> debugCamera_;
 	bool isDebugCamera_;
-	//スプライト用カメラ
-	std::unique_ptr<SpriteCamera> spriteCamera_;
 	//ライト
 	std::unique_ptr<LightObject> lightObj_;
 
@@ -57,6 +55,8 @@ private:
 	//テクスチャハンドル
 	uint32_t monsterBallHandle_;
 	uint32_t fenceHandle_;
+
+	Vector2 windowPos_;
 
 	//描画モデル
 	std::unique_ptr<TestParticle> testParticle1_;

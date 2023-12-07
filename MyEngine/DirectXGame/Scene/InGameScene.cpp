@@ -19,21 +19,20 @@ void InGameScene::Initialize() {
 	input_ = InputManager::GetInstance();;
 	audioManager_ = AudioManager::GetInstance();
 	randomManager_ = RandomManager::GetInstance();
+	mainCamera_ = MainCamera::GetInstance();
+	spriteCamera_ = SpriteCamera::GetInstance();
 
 	//デバックモード中ならdebugカメラを有効に
 	isDebugCamera_ = debugMode_;
 
-	//画面に表示する際のVPmatrix
-	mainCamera_.Initialize();
 	//インゲームカメラ
-	gameCamera_ = std::make_unique<GameCamera>();
+	gameCamera_ = std::make_unique<InGameCamera>();
 	gameCamera_->Initialize();
 	//デバッグカメラ
 	debugCamera_ = std::make_unique<DebugCamera>();
 	debugCamera_->Initialize();
 
-	//スプライト専用カメラ
-	spriteCamera_ = std::make_unique<SpriteCamera>();
+	//スプライトカメラの初期化
 	spriteCamera_->Initialize();
 
 	//平行光源
@@ -48,22 +47,21 @@ void InGameScene::Initialize() {
 	fenceHandle_ = TextureManager::Load("fence.png");
 
 	//ゲームオブジェクト
-	testParticle1_ = std::make_unique<TestParticle>(mainCamera_.GetPViewProjectionMatrix(), 100);
+	testParticle1_ = std::make_unique<TestParticle>(100);
 	testParticle1_->Initialize();
 
 	groundModel_ = Model::Create("terrain");
-	groundModelInfo_.Initialize(mainCamera_.GetPViewProjectionMatrix());
+	groundModelInfo_.Initialize(false);
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
 	monsterBall_ = Sphere::Create();
-	monsterBallInfo_.Initialize(mainCamera_.GetPViewProjectionMatrix());
+	monsterBallInfo_.Initialize(false);
 	monsterBallInfo_.materialInfo_.material_->enableLightint = true;
 
 	sprite_ = Sprite::Create({ 1280, 720 }, uvCheckerHandle_);
-	spriteInfo_.Initialize(spriteCamera_->GetViewProjectionMatrixPointer());
+	spriteInfo_.Initialize(true);
 
-	//サウンド
-	soundHandle_ = audioManager_->SoundLoadWave("Alarm01.wav");
+	windowPos_ = { 0, 100 };
 }
 
 void InGameScene::Update() {
@@ -74,11 +72,11 @@ void InGameScene::Update() {
 	
 	if (isDebugCamera_) {
 		debugCamera_->Update();
-		mainCamera_.Update(debugCamera_->GetViewProjectionMatrix(), debugCamera_->GetWorldTransrom().translate_);
+		mainCamera_->Update(debugCamera_->GetWorldMatrix(), debugCamera_->GetProjectionMatrix());
 	}
 	else {
 		gameCamera_->Update();
-		mainCamera_.Update(gameCamera_->GetViewProjectionMatrix(), gameCamera_->GetWorldTransrom().translate_);
+		mainCamera_->Update(gameCamera_->GetWorldMatrix(), gameCamera_->GetProjectionMatrix());
 	}
 
 	//スプライトカメラの更新
@@ -120,19 +118,7 @@ void InGameScene::Update() {
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(static_cast<BlendMode>(blendMode_));
 	ImGui::End();
 
-	if (input_->IsTriggerKey(DIK_SPACE) && !input_->IsPushKey(DIK_LSHIFT)) {
-		if (!audioManager_->IsSoundPlaying(soundHandle_)) {
-			audioManager_->SoundPlayWave(soundHandle_, true);
-		}
-	}
-
-	if (input_->IsPushKey(DIK_SPACE) && input_->IsPushKey(DIK_LSHIFT)) {
-		audioManager_->StopLoopWave(soundHandle_);
-	}
-
-	if (input_->IsPushKey(DIK_UPARROW)) {
-		audioManager_->SetVolume(soundHandle_, 0.5f);
-	}
+	
 
 	groundModelInfo_.Update();
 	monsterBallInfo_.Update();
@@ -141,7 +127,7 @@ void InGameScene::Update() {
 
 void InGameScene::Draw() {
 	//カメラの転送
-	mainCamera_.Draw();
+	mainCamera_->Draw();
 	//ライティングの転送
 	lightObj_->Draw();
 

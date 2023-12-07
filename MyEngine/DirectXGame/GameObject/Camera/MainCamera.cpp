@@ -1,5 +1,10 @@
 #include "MainCamera.h"
 
+MainCamera* MainCamera::GetInstance() {
+	static MainCamera instance;
+	return &instance;
+}
+
 void MainCamera::Initialize() {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
@@ -14,9 +19,12 @@ void MainCamera::Initialize() {
 	cameraData_->worldPosition = {0};
 }
 
-void MainCamera::Update(Matrix4x4 viewProjectionMatrix, Vector3 cameraWorldPos) {
-	viewProjectionMatrix_ = viewProjectionMatrix;
-	cameraData_->worldPosition = cameraWorldPos;
+void MainCamera::Update(Matrix4x4 worldMatrix, Matrix4x4 projectionMatrix) {
+	worldMatrix_ = worldMatrix;
+	viewMatrix_ = Inverse(worldMatrix_);
+	projectionMatrix_ = projectionMatrix;
+	viewProjectionMatrix_ = Multiply(viewMatrix_, projectionMatrix_);
+	cameraData_->worldPosition = { worldMatrix.m[3][0], worldMatrix.m[3][1], worldMatrix.m[3][2] };
 }
 
 void MainCamera::Draw() {

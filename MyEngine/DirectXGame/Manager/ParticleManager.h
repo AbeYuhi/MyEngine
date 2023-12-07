@@ -1,12 +1,15 @@
 #pragma once
 #include <map>
 #include <format>
+#include <numbers>
 #include "DirectXGame/Data/RenderItem.h"
 #include "DirectXGame/Data/ResourceHandles.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
 #include "DirectXGame/Data/ParticleForGPU.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 #include "DirectXGame/Manager/RandomManager.h"
+#include "DirectXGame/GameObject/Camera/SpriteCamera.h"
+#include "DirectXGame/GameObject/Camera/MainCamera.h"
 
 struct ParticleInfo {
 	TransformData srtData;
@@ -16,9 +19,11 @@ struct ParticleInfo {
 	float currenttime;
 };
 
-struct EmitterInfo {
-	Vector3 pos;
-	Vector3 size;
+struct Emitter {
+	TransformData transform;
+	int count; //発生数
+	float frequency;
+	float frequencyTime;
 };
 
 class ParticleManager
@@ -30,7 +35,7 @@ private:
 	static std::map<int, bool> isDrawing_;
 
 public: //メンバ関数
-	ParticleManager(const Matrix4x4* viewProjectionMatrix, int maxParticleCount);
+	ParticleManager(int maxParticleCount);
 	~ParticleManager();
 
 	virtual void Initialize();
@@ -41,11 +46,19 @@ public: //メンバ関数
 
 	virtual ParticleInfo MakeNewParticle() = 0;
 
+	void PopParticle();
+
 	void UnloadParticle();
 
 private: //メンバ関数
 
 	void CreateSRV();
+	std::list<ParticleInfo> Emission();
+
+public: //ゲッターセッター
+
+	inline bool GetIsPopParticle() { return isPopParticle_; }
+	inline void SetIsPopParticle(bool isPopParticle) { isPopParticle_ = isPopParticle; }
 
 protected: //メンバ変数
 	//乱数マネージャー
@@ -54,19 +67,30 @@ protected: //メンバ変数
 	const int kMaxParticleCount_;
 	//現在のパーティクルの粒子数
 	int particleCount_;
+	//ブレンドモード
+	BlendMode preBlendMode_;
+
 	//リソース
 	ComPtr<ID3D12Resource> worldTransformResource_;
 	int index_;
 	//Resourceハンドル
 	ResourceHandles srvHandle_;
 	//エミッターの情報
-	EmitterInfo emitterInfo_;
+	Emitter emitter_;
 	//データ
 	ParticleForGPU* particleData_;
 	ParticleMaterialInfo materialInfo_;
 	std::list<ParticleInfo> particles_;
+	//スプライトのパーティクルかどうか
+	bool isSpriteParticle_;
 	//描画の際に必要なパーティクルデータ
 	ParticleDrawInfo drawInfo_;
 	//ViewProjectionMatrix
 	const Matrix4x4* viewProjectionMatrix_ = nullptr;
+
+	//パーティクルを発生させるか
+	bool isPopParticle_;
+
+	//時間
+	const float kDeltaTime_ = 1.0f / 60.0f;
 };

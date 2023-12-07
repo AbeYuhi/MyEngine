@@ -1,11 +1,8 @@
 #include "SpriteCamera.h"
 
-SpriteCamera::SpriteCamera()
-{
-}
-
-SpriteCamera::~SpriteCamera()
-{
+SpriteCamera* SpriteCamera::GetInstance() {
+	static SpriteCamera instance;
+	return &instance;
 }
 
 void SpriteCamera::Initialize() {
@@ -27,7 +24,7 @@ void SpriteCamera::Initialize() {
 
 void SpriteCamera::Update() {
 	WinApp* winApp = WinApp::GetInstance();
-
+	
 	ImGui::Begin("SpriteCameraManager");
 	ImGui::Checkbox("IsMove", &isMove_);
 	ImGui::SliderFloat3("CameraTranslate", &transform_.translate_.x, -100.0f, 100.0f);

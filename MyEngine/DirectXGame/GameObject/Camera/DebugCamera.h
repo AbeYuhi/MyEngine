@@ -20,6 +20,7 @@ public:
 	void Update();
 
 	inline TransformData GetWorldTransrom() { return transform_; }
+	inline Matrix4x4 GetWorldMatrix() { return worldMatrix_; }
 	inline Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 	inline Matrix4x4 GetProjectionMatrix() { return projectionMatrix_; }
 	inline Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; }

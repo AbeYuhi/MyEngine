@@ -1,6 +1,6 @@
 #include "ParticleManager.h"
 
-ParticleManager::ParticleManager(const Matrix4x4* viewProjectionMatrix, int maxParticleCount) : viewProjectionMatrix_(viewProjectionMatrix), kMaxParticleCount_(maxParticleCount){}
+ParticleManager::ParticleManager(int maxParticleCount) : kMaxParticleCount_(maxParticleCount){}
 
 ParticleManager::~ParticleManager(){
 	UnloadParticle();
@@ -36,21 +36,54 @@ void ParticleManager::Initialize() {
 	CreateSRV();
 
 	//エミッターの初期化
-	emitterInfo_.pos = { 0, 0, 0 };
-	emitterInfo_.size = { 0, 0, 0 };
+	emitter_.transform.Initialize();
+	emitter_.count = 1;
+	emitter_.frequency = 0.5f;
+	emitter_.frequencyTime = 0.0f;
+
+	//パーティクルがスプライト用かどうか
+	isSpriteParticle_ = false;
+
+	//パーティクルを発生させるか
+	isPopParticle_ = true;
 
 	//描画に必要なもの
 	drawInfo_.Initialize(&srvHandle_, &materialInfo_, &particleCount_);
 }
 
 void ParticleManager::Update() {
+	preBlendMode_ = GraphicsPipelineManager::GetInstance()->GetBlendMode();
+	emitter_.frequencyTime += kDeltaTime_;
+	if (emitter_.frequency <= emitter_.frequencyTime) {
+		if (isPopParticle_) {
+			particles_.splice(particles_.end(), Emission());
+		}
+		emitter_.frequencyTime = 0;
+	}
+
+	//ビルボードの計算
+	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
+	Matrix4x4 billboardMatrix = Multiply(backToFrontMatrix, MainCamera::GetInstance()->GetWorldMatrix());
+	billboardMatrix.m[3][0] = 0.0f;
+	billboardMatrix.m[3][1] = 0.0f;
+	billboardMatrix.m[3][2] = 0.0f;
+
 	//転送データの書き込み
 	int index = 0;
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end(); itParticle++) {
 		ParticleInfo* particle = &(*itParticle);
 
-		Matrix4x4 worldMatrix = MakeAffineMatrix(particle->srtData.scale_, particle->srtData.rotate_, particle->srtData.translate_);
-		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, *viewProjectionMatrix_);
+		//ワールドマトリックスの計算
+		Matrix4x4 worldMatrix = MakeIdentity4x4();
+		Matrix4x4 worldViewProjectionMatrix = MakeIdentity4x4();
+		if (isSpriteParticle_) {
+			worldMatrix = MakeAffineMatrix(particle->srtData.scale_, particle->srtData.rotate_, particle->srtData.translate_);
+			worldViewProjectionMatrix = Multiply(worldMatrix, SpriteCamera::GetInstance()->GetViewProjectionMatrix());
+		}
+		else {
+			worldMatrix = Multiply(MakeScaleMatrix(particle->srtData.scale_), Multiply(billboardMatrix, MakeTranslateMatrix(particle->srtData.translate_)));
+			worldViewProjectionMatrix = Multiply(worldMatrix, MainCamera::GetInstance()->GetViewProjectionMatrix());
+		}
 
 		particleData_[index].WVP_ = worldViewProjectionMatrix;
 		particleData_[index].World_ = worldMatrix;
@@ -69,6 +102,10 @@ void ParticleManager::Update() {
 
 void ParticleManager::Draw() {
 
+}
+
+void ParticleManager::PopParticle() {
+	particles_.push_back(MakeNewParticle());
 }
 
 void ParticleManager::UnloadParticle() {
@@ -101,4 +138,12 @@ void ParticleManager::CreateSRV() {
 		}
 	}
 	dxCommon->GetDevice()->CreateShaderResourceView(worldTransformResource_.Get(), &srvDesc, srvHandle_.CPUHandle);
+}
+
+std::list<ParticleInfo> ParticleManager::Emission() {
+	std::list<ParticleInfo> particles;
+	for (int count = 0; count < emitter_.count; count++) {
+		particles.push_back(MakeNewParticle());
+	}
+	return particles;
 }

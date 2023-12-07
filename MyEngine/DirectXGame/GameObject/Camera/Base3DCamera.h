@@ -7,19 +7,19 @@
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/Manager/ImGuiManager.h"
 #include "DirectXGame/Manager/InputManager.h"
-#define M_PI 3.14f
 
-class GameCamera
+class Base3DCamera
 {
 public:
-	GameCamera();
-	~GameCamera();
+	Base3DCamera();
+	~Base3DCamera();
 
-	void Initialize();
+	virtual void Initialize();
 
-	void Update();
+	virtual void Update();
 
 	inline TransformData GetWorldTransrom() { return transform_; }
+	inline Matrix4x4 GetWorldMatrix() { return worldMatrix_; }
 	inline Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 	inline Matrix4x4 GetProjectionMatrix() { return projectionMatrix_; }
 	inline Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; }
@@ -28,8 +28,7 @@ public:
 	inline float GetFarClip() { return farClip_; }
 	inline float GetFovY() { return fovY_; }
 
-private:
-
+protected:
 	TransformData transform_;
 	Matrix4x4 worldMatrix_;
 	Matrix4x4 viewMatrix_;
@@ -42,4 +41,7 @@ private:
 	//マウスの位置
 	ImVec2 mousePos_;
 	ImVec2 preMousePos_;
+
+	std::string cameraName_;
 };
+

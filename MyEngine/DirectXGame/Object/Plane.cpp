@@ -32,16 +32,16 @@ void Plane::Initialize() {
 	//Resourceにデータを書き込む
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	//1枚目の三角形
-	vertexData_[0].position = { -1.0f, -1.0f, 0.0f, 1.0f }; //左下
+	vertexData_[0].position = { 1.0f, -1.0f, 0.0f, 1.0f }; //左下
 	vertexData_[0].texcoord = { 0.0f, 1.0f };
 	vertexData_[0].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[1].position = { -1.0f, 1.0f, 0.0f, 1.0f }; //左上
+	vertexData_[1].position = { 1.0f, 1.0f, 0.0f, 1.0f }; //左上
 	vertexData_[1].texcoord = { 0.0f, 0.0f };
 	vertexData_[1].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[2].position = { 1.0f, -1.0f, 0.0f, 1.0f }; //右下
+	vertexData_[2].position = { -1.0f, -1.0f, 0.0f, 1.0f }; //右下
 	vertexData_[2].texcoord = { 1.0f, 1.0f };
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[3].position = { 1.0f, 1.0f, 0.0f, 1.0f }; //右上
+	vertexData_[3].position = { -1.0f, 1.0f, 0.0f, 1.0f }; //右上
 	vertexData_[3].texcoord = { 1.0f, 0.0f };
 	vertexData_[3].normal = { 0.0f, 0.0f, -1.0f };
 

@@ -21,6 +21,7 @@
 #include "DirectXGame/Object/Triangle.h"
 #include "DirectXGame/Object/Sprite.h"
 #include "DirectXGame/Object/Sphere.h"
+#include "DirectXGame/GameObject/Camera/MainCamera.h"
 
 class GameManager
 {
@@ -45,6 +46,7 @@ private:
 	RandomManager* randomManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	GlobalVariables* globalVariables_ = nullptr;
+	MainCamera* mainCamera_ = nullptr;
 
 	//ゲームシーン
 	std::unique_ptr<IScene> sceneArr_[GameScene::SCENENUM];

@@ -6,9 +6,9 @@ struct RenderItem {
 	WorldTransform worldTransform_;
 	MaterialInfo materialInfo_;
 
-	void Initialize(const Matrix4x4* viewProjectionMatrix) {
+	void Initialize(bool isSprite) {
 		materialInfo_.Initialize();
-		worldTransform_.Initialize(viewProjectionMatrix);
+		worldTransform_.Initialize(isSprite);
 	}
 
 	void Update() {

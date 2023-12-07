@@ -7,7 +7,7 @@ class TestParticle : public ParticleManager
 {
 public:
 
-	TestParticle(const Matrix4x4* viewProjectionMatrix, int maxParticleCount);
+	TestParticle(int maxParticleCount);
 	~TestParticle() = default;
 
 	void Initialize() override;
@@ -16,11 +16,11 @@ public:
 
 	void Draw() override;
 
+private: //メンバ関数
+
 	ParticleInfo MakeNewParticle() override;
 
 private:
 	std::unique_ptr<Plane> plane_;
 	uint32_t textureHandle_;
-
-	int popCoolDown_;
 };
