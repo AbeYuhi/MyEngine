@@ -2,6 +2,7 @@
 #include <cstdint>
 #include "DirectXGame/Math/Vector4.h"
 #include "DirectXGame/Math/Matrix4x4.h"
+#include "DirectXGame/Math/Math.h"
 
 struct Material {
 	Vector4 color;

@@ -11,6 +11,7 @@
 #include "DirectXGame/Object/Plane.h"
 #include "DirectXGame/Object/Sphere.h"
 #include "DirectXGame/Object/Model.h"
+#include "DirectXGame/Object/WireFrameBox.h"
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
 #include "DirectXGame/GameObject/Camera/InGameCamera.h"
 #include "DirectXGame/GameObject/Camera/DebugCamera.h"
@@ -69,6 +70,9 @@ private:
 
 	std::unique_ptr<Sprite> sprite_;
 	RenderItem spriteInfo_;
+
+	std::unique_ptr<WireFrameBox> wireFrameBox_;
+	RenderItem wireFrameBoxInfo_;
 
 	//サウンド
 	uint32_t soundHandle_;

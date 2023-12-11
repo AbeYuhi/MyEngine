@@ -16,8 +16,19 @@ void TestParticle::Initialize() {
 
 	//エミッター情報
 	emitter_.transform.scale_ = {2, 2, 2};
-	emitter_.count = 5;
+	emitter_.count = 10;
 	emitter_.frequency = 0.5;
+
+	//ブレンドモード
+	blendMode_ = kBlendModeAdd;
+
+	//力を加えるフィールド(強さ)
+	accelerationField_.accelerationField = { 15.0f, 0.0f, 0.0f };
+	accelerationField_.area.min = { -1.0f, -1.0f, -1.0f };
+	accelerationField_.area.max = { 1.0f, 1.0f, 1.0f };
+
+	//力を加えるか
+	isAccelerationField_ = true;
 
 	//パーティクルの生成
 	/*for (int index = 0; index < 10; index++) {
@@ -27,8 +38,16 @@ void TestParticle::Initialize() {
 
 void TestParticle::Update() {
 
-	ImGui::Begin("EmitterPos");
-	ImGui::SliderFloat3("pos", &emitter_.transform.translate_.x, -10, 10);
+	ImGui::Begin("TestParticle");
+	ImGui::SliderFloat3("EmitterPos", &emitter_.transform.translate_.x, -10, 10);
+	ImGui::SliderFloat3("EmitterScale", &emitter_.transform.scale_.x, 0, 10);
+	ImGui::Checkbox("isAccelerationField", &isAccelerationField_);
+
+	int blendMode = blendMode_;
+	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };
+	ImGui::Combo("blendMode", &blendMode, modes, IM_ARRAYSIZE(modes));
+	blendMode_ = static_cast<BlendMode>(blendMode);
+	GraphicsPipelineManager::GetInstance()->SetBlendMode(blendMode_);
 	ImGui::End();
 
 	//パーティクルの更新
@@ -40,6 +59,15 @@ void TestParticle::Update() {
 			continue;
 		}
 
+		//フィールドによる影響の計算
+		if (isAccelerationField_) {
+			if (IsCollision(accelerationField_.area, particle->srtData.translate_)) {
+				particle->velocity += accelerationField_.accelerationField * kDeltaTime_;
+			}
+			particle->srtData.translate_ += particle->velocity * kDeltaTime_;
+		}
+
+		//移動
 		particle->srtData.translate_ += particle->velocity * kDeltaTime_;
 		particle->currenttime += kDeltaTime_;
 		particle->color.w = 1.0f - (particle->currenttime / particle->lifeTime);
@@ -51,8 +79,13 @@ void TestParticle::Update() {
 	ParticleManager::Update();
 }
 
+void TestParticle::EmitterDraw() {
+	emitterObj_->Draw(emitterObjInfo_);
+}
+
 void TestParticle::Draw() {
-	GraphicsPipelineManager::GetInstance()->SetBlendMode(kBlendModeAdd);
+
+	GraphicsPipelineManager::GetInstance()->SetBlendMode(blendMode_);
 
 	plane_->Draw(drawInfo_, textureHandle_);
 

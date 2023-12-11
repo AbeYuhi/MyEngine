@@ -105,10 +105,7 @@
     <ClCompile Include="DirectXGame\Math\Vector3.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Math\Vector3_Math.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Math\Matrix4x4.cpp">
+    <ClCompile Include="DirectXGame\Math\Math.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Base\DirectXCommon\DirectXCommon.cpp">
@@ -158,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Manager\GraphicsPipelineManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Math\Matrix3x3.cpp">
-      <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Object\Model.cpp">
       <Filter>ソース ファイル\Object</Filter>
@@ -234,18 +228,21 @@
     <ClCompile Include="DirectXGame\Manager\RandomManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Camera\TitleCamera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\GameObject\Camera\Base3DCamera.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Camera\TitleCamera.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Object\WireFrameBox.cpp">
+      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Object\Triangle.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Math\Vector3_Math.hpp">
+    <ClInclude Include="DirectXGame\Math\Math.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Math\Vector3.h">
@@ -425,11 +422,20 @@
     <ClInclude Include="DirectXGame\Data\ParticleForGPU.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Camera\Base3DCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h">
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Object\WireFrameBox.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\AccelerationField.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Math\AABB.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

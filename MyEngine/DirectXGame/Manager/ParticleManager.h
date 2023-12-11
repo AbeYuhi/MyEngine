@@ -6,10 +6,12 @@
 #include "DirectXGame/Data/ResourceHandles.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
 #include "DirectXGame/Data/ParticleForGPU.h"
+#include "DirectXGame/Data/AccelerationField.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 #include "DirectXGame/Manager/RandomManager.h"
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
+#include "DirectXGame/Object/WireFrameBox.h"
 
 struct ParticleInfo {
 	TransformData srtData;
@@ -42,6 +44,8 @@ public: //メンバ関数
 
 	virtual void Update();
 
+	virtual void EmitterDraw();
+
 	virtual void Draw();
 
 	virtual ParticleInfo MakeNewParticle() = 0;
@@ -68,6 +72,7 @@ protected: //メンバ変数
 	//現在のパーティクルの粒子数
 	int particleCount_;
 	//ブレンドモード
+	BlendMode blendMode_;
 	BlendMode preBlendMode_;
 
 	//リソース
@@ -77,20 +82,20 @@ protected: //メンバ変数
 	ResourceHandles srvHandle_;
 	//エミッターの情報
 	Emitter emitter_;
+	std::unique_ptr<WireFrameBox> emitterObj_;
+	RenderItem emitterObjInfo_;
 	//データ
 	ParticleForGPU* particleData_;
 	ParticleMaterialInfo materialInfo_;
 	std::list<ParticleInfo> particles_;
+
 	//スプライトのパーティクルかどうか
 	bool isSpriteParticle_;
-	//描画の際に必要なパーティクルデータ
-	ParticleDrawInfo drawInfo_;
-	//ViewProjectionMatrix
-	const Matrix4x4* viewProjectionMatrix_ = nullptr;
-
 	//パーティクルを発生させるか
 	bool isPopParticle_;
-
+	
+	//描画の際に必要なパーティクルデータ
+	ParticleDrawInfo drawInfo_;
 	//時間
 	const float kDeltaTime_ = 1.0f / 60.0f;
 };

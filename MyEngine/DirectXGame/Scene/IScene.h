@@ -26,6 +26,6 @@ public:
 	static uint32_t whiteTextureHandle_;
 
 protected:
-	static int debugMode_;
+	static bool debugMode_;
 	static int sceneNo_;
 };

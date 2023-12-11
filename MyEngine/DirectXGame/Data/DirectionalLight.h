@@ -1,9 +1,9 @@
 #pragma once
 #include "DirectXGame/Math/Vector2.h"
 #include "DirectXGame/Math/Vector3.h"
-#include "DirectXGame/Math/Vector3_Math.hpp"
 #include "DirectXGame/Math/Vector4.h"
 #include "DirectXGame/Math/Matrix4x4.h"
+#include "DirectXGame/Math/Math.h"
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 #include "DirectXGame/Manager/TextureManager.h"

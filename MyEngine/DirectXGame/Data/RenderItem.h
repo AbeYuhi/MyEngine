@@ -6,7 +6,11 @@ struct RenderItem {
 	WorldTransform worldTransform_;
 	MaterialInfo materialInfo_;
 
-	void Initialize(bool isSprite) {
+	/// <summary>
+	/// レンダリング情報の初期化
+	/// </summary>
+	/// <param name="isSprite">Sprite用のレンダリング情報か</param>
+	void Initialize(bool isSprite = false) {
 		materialInfo_.Initialize();
 		worldTransform_.Initialize(isSprite);
 	}

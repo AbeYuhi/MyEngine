@@ -41,11 +41,17 @@ void ParticleManager::Initialize() {
 	emitter_.frequency = 0.5f;
 	emitter_.frequencyTime = 0.0f;
 
+	emitterObj_ = WireFrameBox::Create();
+	emitterObjInfo_.Initialize();
+
 	//パーティクルがスプライト用かどうか
 	isSpriteParticle_ = false;
 
 	//パーティクルを発生させるか
 	isPopParticle_ = true;
+
+	//ブレンドモード
+	blendMode_ = kBlendModeAdd;
 
 	//描画に必要なもの
 	drawInfo_.Initialize(&srvHandle_, &materialInfo_, &particleCount_);
@@ -53,6 +59,12 @@ void ParticleManager::Initialize() {
 
 void ParticleManager::Update() {
 	preBlendMode_ = GraphicsPipelineManager::GetInstance()->GetBlendMode();
+
+	//エミッターの可視化
+	emitterObjInfo_.worldTransform_.data_ = emitter_.transform;
+	emitterObjInfo_.Update();
+
+	//パーティクルの発生
 	emitter_.frequencyTime += kDeltaTime_;
 	if (emitter_.frequency <= emitter_.frequencyTime) {
 		if (isPopParticle_) {
@@ -100,9 +112,9 @@ void ParticleManager::Update() {
 	particleCount_ = (int)particles_.size();
 }
 
-void ParticleManager::Draw() {
+void ParticleManager::EmitterDraw() {}
 
-}
+void ParticleManager::Draw() {}
 
 void ParticleManager::PopParticle() {
 	particles_.push_back(MakeNewParticle());

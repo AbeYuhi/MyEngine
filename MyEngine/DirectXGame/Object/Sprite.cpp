@@ -8,13 +8,13 @@ Sprite::~Sprite()
 {
 }
 
-std::unique_ptr<Sprite> Sprite::Create(Vector2 spriteSize, uint32_t textureHandle, Vector2 anchorPoint, Vector2 baseUVPos, bool isFlipX, bool isFlipY) {
+std::unique_ptr<Sprite> Sprite::Create(Vector2 spriteSize, uint32_t textureHandle, Vector2 anchorPoint, Vector2 baseUVPos, Vector2 texSize, bool isFlipX, bool isFlipY) {
 	std::unique_ptr<Sprite> object = std::make_unique<Sprite>();
-	object->Initialize(spriteSize, textureHandle, anchorPoint, baseUVPos, isFlipX, isFlipY);
+	object->Initialize(spriteSize, textureHandle, anchorPoint, baseUVPos, texSize, isFlipX, isFlipY);
 	return object;
 }
 
-void Sprite::Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anchorPoint, Vector2 baseUVPos, bool isFlipX, bool isFlipY) {
+void Sprite::Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anchorPoint, Vector2 baseUVPos, Vector2 texSize, bool isFlipX, bool isFlipY) {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
@@ -25,6 +25,8 @@ void Sprite::Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anch
 	anchorPoint_ = anchorPoint;
 	//BaseUVPos
 	baseUvPos_ = baseUVPos;
+	//TexSize
+	texSize_ = texSize;
 	//反転
 	isFlipX_ = isFlipX;
 	isFlipY_ = isFlipY;
@@ -92,10 +94,17 @@ void Sprite::TransferVertices() {
 	vertexData_[2].position = { right, bot, 0.0f, 1.0f }; //右下
 	vertexData_[3].position = { right, top, 0.0f, 1.0f }; //右上
 
-	float uvLeft = (0.0f - baseUvPos_.x);
+	D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetTextureDesc(textureHandle_);
+
+	/*float uvLeft = (0.0f - baseUvPos_.x);
 	float uvRight = (1.0f - baseUvPos_.x);
 	float uvTop = (0.0f - baseUvPos_.y);
-	float uvBot = (1.0f - baseUvPos_.y);
+	float uvBot = (1.0f - baseUvPos_.y);*/
+
+	float uvLeft = baseUvPos_.x;
+	float uvRight = baseUvPos_.x + texSize_.x;
+	float uvTop = baseUvPos_.y;
+	float uvBot = baseUvPos_.y + texSize_.y;
 
 	vertexData_[0].texcoord = { uvLeft, uvBot, }; //左下
 	vertexData_[1].texcoord = { uvLeft, uvTop, }; //左上
@@ -120,6 +129,11 @@ void Sprite::SetAnchorPoint(Vector2 anchorPoint) {
 
 void Sprite::SetBaseUvPos(Vector2 baseUvPos) {
 	baseUvPos_ = baseUvPos;
+	TransferVertices();
+}
+
+void Sprite::SetTexSize(Vector2 texSize) {
+	texSize_ = texSize;
 	TransferVertices();
 }
 

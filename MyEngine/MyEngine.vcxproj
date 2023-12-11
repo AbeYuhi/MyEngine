@@ -132,11 +132,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Manager\InputManager.cpp" />
     <ClCompile Include="DirectXGame\Manager\ParticleManager.cpp" />
     <ClCompile Include="DirectXGame\Manager\TextureManager.cpp" />
-    <ClCompile Include="DirectXGame\Math\Matrix3x3.cpp" />
-    <ClCompile Include="DirectXGame\Math\Matrix4x4.cpp" />
     <ClCompile Include="DirectXGame\Math\Vector2.cpp" />
     <ClCompile Include="DirectXGame\Math\Vector3.cpp" />
-    <ClCompile Include="DirectXGame\Math\Vector3_Math.cpp" />
+    <ClCompile Include="DirectXGame\Math\Math.cpp" />
     <ClCompile Include="DirectXGame\Object\Model.cpp" />
     <ClCompile Include="DirectXGame\Object\Plane.cpp" />
     <ClCompile Include="DirectXGame\Object\Sphere.cpp" />
@@ -151,8 +149,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Manager\RandomManager.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\TitleCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\Base3DCamera.cpp" />
+    <ClCompile Include="DirectXGame\Object\WireFrameBox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Math\AABB.h" />
+    <ClInclude Include="DirectXGame\Data\AccelerationField.h" />
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h" />
     <ClInclude Include="DirectXGame\Base\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="DirectXGame\Base\SafeDelete\SafeDelete.h" />
@@ -199,7 +200,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Math\Matrix4x4.h" />
     <ClInclude Include="DirectXGame\Math\Vector2.h" />
     <ClInclude Include="DirectXGame\Math\Vector3.h" />
-    <ClInclude Include="DirectXGame\Math\Vector3_Math.hpp" />
+    <ClInclude Include="DirectXGame\Math\Math.h" />
     <ClInclude Include="DirectXGame\Math\Vector4.h" />
     <ClInclude Include="DirectXGame\Object\Model.h" />
     <ClInclude Include="DirectXGame\Object\Plane.h" />
@@ -216,6 +217,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Manager\RandomManager.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\Base3DCamera.h" />
+    <ClInclude Include="DirectXGame\Object\WireFrameBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

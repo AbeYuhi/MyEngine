@@ -16,23 +16,22 @@
 #include "DirectXGame/Manager/ImGuiManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 
-class Triangle
+class WireFrameBox
 {
 public: //静的メンバ関数
-	static std::unique_ptr<Triangle> Create(Vector3 pos[3] = sDefaultPos);
+	static std::unique_ptr<WireFrameBox> Create();
 
 private: //静的メンバ変数
-	const static UINT kVertexNumber = 3;
-	//初期位置
-	static Vector3 sDefaultPos[3];
+	const static UINT kVertexNumber = 8;
+	const static UINT kIndexNumber = 24;
 
 public: //メンバ関数
-	Triangle();
-	~Triangle();
+	WireFrameBox();
+	~WireFrameBox();
 
-	void Initialize(Vector3 pos[3]);
+	void Initialize();
 
-	void Draw(RenderItem& renderItem, uint32_t textureHandle);
+	void Draw(RenderItem& renderItem);
 
 public: //ゲッターセッター
 
@@ -41,10 +40,14 @@ public: //ゲッターセッター
 private: //メンバ変数
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
+	ComPtr<ID3D12Resource> indexResource_ = nullptr;
 
 	//VertexBufferView
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
+	D3D12_INDEX_BUFFER_VIEW indexBufferView_;
 
 	//オブジェクトのローカル情報
 	VertexData* vertexData_;
+	uint32_t* indexData_;
 };
+

@@ -14,6 +14,8 @@ public:
 
 	void Update() override;
 
+	void EmitterDraw() override;
+
 	void Draw() override;
 
 private: //メンバ関数
@@ -23,4 +25,10 @@ private: //メンバ関数
 private:
 	std::unique_ptr<Plane> plane_;
 	uint32_t textureHandle_;
+
+	//風フィールド
+	AccelerationField accelerationField_;
+
+	//風が吹いているか
+	bool isAccelerationField_;
 };

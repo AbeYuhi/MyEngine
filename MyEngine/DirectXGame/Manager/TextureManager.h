@@ -21,6 +21,8 @@ public:
 	static uint32_t Load(const std::string& textureName, const std::string& filePath);
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandleGPU(uint32_t textureHandle) { return textureDatas_[textureHandles_[textureHandle]].textureSrvHandleGPU; }
+	
+	D3D12_RESOURCE_DESC GetTextureDesc(uint32_t textureHandle) { return textureDatas_[textureHandles_[textureHandle]].textureResource->GetDesc(); }
 
 private: //メンバ関数
 

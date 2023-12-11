@@ -1,5 +1,124 @@
-#include "Matrix4x4.h"
-#include "Vector3_Math.hpp"
+#include "Math.h"
+
+#pragma region Vector3
+Vector3 Add(const Vector3& v1, const Vector3& v2) {
+	Vector3 v3 = {0, 0, 0};
+
+	v3.x = v1.x + v2.x;
+
+	v3.y = v1.y + v2.y;
+	
+	v3.z = v1.z + v2.z;
+
+	return v3;
+}
+
+Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
+	Vector3 v3 = { 0, 0, 0 };
+
+	v3.x = v1.x - v2.x;
+
+	v3.y = v1.y - v2.y;
+
+	v3.z = v1.z - v2.z;
+
+	return v3;
+}
+
+Vector3 Multiply(float scalar, const Vector3& v) {
+	Vector3 v3 = { 0, 0, 0 };
+
+	v3.x = scalar * v.x;
+ 
+	v3.y = scalar * v.y;
+ 
+	v3.z = scalar * v.z;
+
+	return v3;
+}
+
+float Dot(const Vector3& v1, const Vector3& v2) {
+	float dot = 0.0f;
+
+	dot = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+	return dot;
+}
+
+float Length(const Vector3& v) {
+	float length = 0;
+
+	length = sqrtf(powf(v.x, 2) + powf(v.y, 2) + powf(v.z, 2));
+
+	return length;
+}
+
+Vector3 Normalize(const Vector3& v1) {
+	Vector3 v2 = { 0, 0, 0 };
+	float length = Length(v1);
+
+	v2.x = v1.x / length;
+	v2.y = v1.y / length;
+	v2.z = v1.z / length;
+
+	return v2;
+}
+
+Vector3 Cross(const Vector3& v1, const Vector3& v2) {
+	Vector3 v3{};
+	v3.x = v1.y * v2.z - v1.z * v2.y;
+	v3.y = v1.z * v2.x - v1.x * v2.z;
+	v3.z = v1.x * v2.y - v1.y * v2.x;
+
+	return v3;
+}
+
+bool IsFront(const Vector3& v1, const Vector3 obj[3]) {
+
+	Vector3 vecA = obj[1] - obj[0];
+	Vector3 vecB = obj[2] - obj[1];
+
+	Vector3 v2 = Cross(vecA, vecB);
+
+	float dot = Dot(v1, v2);
+
+	if (dot <= 0) {
+		return true;
+	}
+	return false;
+}
+
+Vector3 Project(const Vector3& v1, const Vector3& v2) {
+	float scalar = Dot(v1, Normalize(v2));
+
+	return Multiply(scalar, Normalize(v2));
+}
+
+Vector3 ClosestPoint(const Vector3& point, const Segment& segment) {
+	Vector3 project = Project(Subtract(point, segment.origin), segment.diff);
+	Vector3 cp = segment.origin + project;
+	return cp;
+}
+
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
+	Vector3 result{
+		v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
+		v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
+		v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2]
+	};
+	return result;
+}
+
+Vector3 Perpendicular(const Vector3& v) {
+	if (v.x != 0.0f || v.y != 0.0f) {
+		return{ -v.y, v.x, 0.0f };
+	}
+	return{ 0.0f, -v.z, v.y };
+}
+
+#pragma endregion
+
+#pragma region Matrix4x4
 
 Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2) {
 	return Multiply(num1, num2);
@@ -27,7 +146,7 @@ Matrix4x4 Subtract(Matrix4x4 matrix1, Matrix4x4 matrix2) {
 
 Matrix4x4 Multiply(const Matrix4x4 matrix1, const Matrix4x4 matrix2) {
 	Matrix4x4 matrix = {};
-	
+
 	matrix.m[0][0] = matrix1.m[0][0] * matrix2.m[0][0] + matrix1.m[0][1] * matrix2.m[1][0] + matrix1.m[0][2] * matrix2.m[2][0] + matrix1.m[0][3] * matrix2.m[3][0];
 	matrix.m[0][1] = matrix1.m[0][0] * matrix2.m[0][1] + matrix1.m[0][1] * matrix2.m[1][1] + matrix1.m[0][2] * matrix2.m[2][1] + matrix1.m[0][3] * matrix2.m[3][1];
 	matrix.m[0][2] = matrix1.m[0][0] * matrix2.m[0][2] + matrix1.m[0][1] * matrix2.m[1][2] + matrix1.m[0][2] * matrix2.m[2][2] + matrix1.m[0][3] * matrix2.m[3][2];
@@ -256,13 +375,13 @@ Matrix4x4 MakeRotateXMatrix(float radian) {
 
 	matrix.m[2][1] = std::sin(radian) * -1;
 	matrix.m[2][2] = std::cos(radian);
-	
+
 	return matrix;
 }
 
 Matrix4x4 MakeRotateYMatrix(float radian) {
 	Matrix4x4 matrix = MakeIdentity4x4();
-	
+
 	matrix.m[0][0] = std::cos(radian);
 	matrix.m[0][2] = std::sin(radian) * -1;
 
@@ -296,7 +415,7 @@ Matrix4x4 MakeRotateMatrix(const Vector3& rotate) {
 	return MakeRotateXYZMatrix(rotateXMatrix, rotateYMatrix, rotateZMatrix);
 }
 
-Matrix4x4 MakeTranslateMatrix(const Vector3& translate){
+Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 	Matrix4x4 matrix = MakeIdentity4x4();
 	matrix.m[3][0] = translate.x;
 	matrix.m[3][1] = translate.y;
@@ -322,7 +441,7 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
 	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] + 1.0f * matrix.m[3][1];
 	result.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] + 1.0f * matrix.m[3][2];
-	float w  = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] + 1.0f * matrix.m[3][3];
+	float w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] + 1.0f * matrix.m[3][3];
 	assert(w != 0.0f);
 	result.x /= w;
 	result.y /= w;
@@ -378,4 +497,14 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 	matrix.m[3][2] = minDepth;
 
 	return matrix;
+}
+#pragma endregion
+
+bool IsCollision(const AABB& aabb, const Vector3& point) {
+	if (aabb.min.x <= point.x && aabb.max.x >= point.x &&
+		aabb.min.y <= point.y && aabb.max.y >= point.y &&
+		aabb.min.z <= point.z && aabb.max.z >= point.z) {
+		return true;
+	}
+	return false;
 }
