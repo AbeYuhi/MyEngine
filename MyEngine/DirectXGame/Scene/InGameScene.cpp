@@ -59,7 +59,7 @@ void InGameScene::Initialize() {
 	monsterBallInfo_.materialInfo_.material_->enableLightint = true;
 
 	float hatibunnkatu = 1.0f / 8.0f;
-	sprite_ = Sprite::Create({ 640, 360 }, uvCheckerHandle_, {0.0f, 0.0f}, {0, 0}, {hatibunnkatu, 1});
+	sprite_ = Sprite::Create({ 640, 360 }, uvCheckerHandle_);
 	spriteInfo_.Initialize(true);
 
 	windowPos_ = { 0, 100 };
@@ -123,8 +123,6 @@ void InGameScene::Update() {
 	ImGui::Combo("blendMode", &blendMode_, modes, IM_ARRAYSIZE(modes));
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(static_cast<BlendMode>(blendMode_));
 	ImGui::End();
-
-	
 
 	groundModelInfo_.Update();
 	monsterBallInfo_.Update();

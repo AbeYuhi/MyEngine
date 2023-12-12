@@ -124,6 +124,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\testParticle.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp" />
+    <ClCompile Include="DirectXGame\Base\Framework\Framework.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DirectXGame\Manager\AudioManager.cpp" />
     <ClCompile Include="DirectXGame\Manager\GameManager.cpp" />
@@ -150,6 +151,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Camera\TitleCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\Base3DCamera.cpp" />
     <ClCompile Include="DirectXGame\Object\WireFrameBox.cpp" />
+    <ClCompile Include="DirectXGame\Manager\SceneManager.cpp" />
+    <ClCompile Include="DirectXGame\Scene\SceneFactory\SceneFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\AABB.h" />
@@ -218,6 +221,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\Base3DCamera.h" />
     <ClInclude Include="DirectXGame\Object\WireFrameBox.h" />
+    <ClInclude Include="DirectXGame\Base\Framework\Framework.h" />
+    <ClInclude Include="DirectXGame\Manager\SceneManager.h" />
+    <ClInclude Include="DirectXGame\Scene\SceneFactory\SceneFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

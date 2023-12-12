@@ -6,44 +6,13 @@ GameManager* GameManager::GetInstance() {
 }
 
 void GameManager::Initialize() {
-	//タイトルネーム
-	const wchar_t title[] = L"MyEngine";
-	//基本機能の初期化
-	//ゲームウィンドウの作成
-	winApp_ = WinApp::GetInstance();
-	winApp_->CreateGameWindow(title);
-
-	//DirectXCommonの初期化
-	directXCommon_ = DirectXCommon::GetInstance();
-	directXCommon_->Initialize();
-
-#pragma region 汎用機能
-	//入力処理マネージャーの初期化
-	inputManager_ = InputManager::GetInstance();
-	inputManager_->Initialize();
-
-	//ImGuiマネージャーの初期化
-	imGuiManager_ = ImGuiManager::GetInstance();
-	imGuiManager_->Initialize();
-
-	//JSONの読み書き
-	globalVariables_ = GlobalVariables::GetInstance();
-	globalVariables_->LoadFiles();
+	
+	//汎用機能の初期化
+	Framework::Initialize();
 
 	//汎用テクスチャの読み込み
 	IScene::uvCheckerHandle_ = TextureManager::Load("uvChecker.png");
 	IScene::whiteTextureHandle_ = TextureManager::Load("whiteTexture2x2.png");
-
-	//AudioManagerの初期化
-	audioManager_ = AudioManager::GetInstance();
-	audioManager_->Initialize();
-
-	//RandomManagerの初期化
-	randomManager_ = RandomManager::GetInstance();
-	randomManager_->Initialize();
-
-	graphicsPipelineManager_ = GraphicsPipelineManager::GetInstance();
-	graphicsPipelineManager_->Initialize();
 
 	//メインカメラの初期化
 	mainCamera_ = MainCamera::GetInstance();
@@ -57,34 +26,24 @@ void GameManager::Initialize() {
 	frameCount_ = 0;
 	totalTime_ = 0.0;
 
-	//初期ゲームシーンの設定
-	sceneNo_ = INGAME;
-	//初期ゲームシーンの初期化
-	switch (sceneNo_)
-	{
-	case TITLE:
-		sceneArr_[sceneNo_] = std::make_unique<TitleScene>();
-		break;
-	case INGAME:
-	default:
-		sceneArr_[sceneNo_] = std::make_unique<InGameScene>();
-		break;
-	case MENU:
-		sceneArr_[sceneNo_] = std::make_unique<MenuScene>();
-		break;
-	case GAMEOVER:
-		sceneArr_[sceneNo_] = std::make_unique<GameOverScene>();
-		break;
-	case GAMECLEAR:
-		sceneArr_[sceneNo_] = std::make_unique<GameClearScene>();
-		break;
-	}
-	sceneArr_[sceneNo_]->Initialize();
+	//シーンマネージャーの初期化(初期シーンの設定)
+	sceneManager_ = SceneManager::GetInstance();
+	sceneManager_->Initialize(INGAME);
+
+}
+
+void GameManager::Finalize() {
+
+	//ゲームの終了処理
+
+
+	//フレームワークの終了処理
+	Framework::Finalize();
 }
 
 int GameManager::Run() {
 
-	//初期化
+	//フレームワークの初期化
 	Initialize();
 
 	//メインループ
@@ -106,46 +65,16 @@ int GameManager::Run() {
 		ImGui::Begin("FPS");
 		ImGui::Text("fps : %lf", fps_);
 		ImGui::End();
-		//ゲームシーンの更新
-		preSceneNo_ = sceneNo_;
-		sceneNo_ = sceneArr_[sceneNo_]->GetSceneNo();
-		ImGui::Begin("GameScene");
-		const char* modes[] = { "Title", "InGame", "Menu", "GameOver", "GameClear" };
-		ImGui::Combo("gameScene", &sceneNo_, modes, IM_ARRAYSIZE(modes));
-		ImGui::End();
-		if (preSceneNo_ != sceneNo_) {
-			sceneArr_[preSceneNo_]->Finalize();
-			sceneArr_[preSceneNo_].reset();
-			switch (sceneNo_)
-			{
-			case TITLE:
-				sceneArr_[sceneNo_] = std::make_unique<TitleScene>();
-				break;
-			case INGAME:
-			default:
-				sceneArr_[sceneNo_] = std::make_unique<InGameScene>();
-				break;
-			case MENU:
-				sceneArr_[sceneNo_] = std::make_unique<MenuScene>();
-				break;
-			case GAMEOVER:
-				sceneArr_[sceneNo_] = std::make_unique<GameOverScene>();
-				break;
-			case GAMECLEAR:
-				sceneArr_[sceneNo_] = std::make_unique<GameClearScene>();
-				break;
-			}
-			sceneArr_[sceneNo_]->Initialize();
-		}
-		sceneArr_[sceneNo_]->Update();
+		//シーンの更新
+		sceneManager_->Update();
 		//ImGuiの受付終了
 		imGuiManager_->End();
 
 		///描画処理
 		//画面初期化
 		directXCommon_->PreDraw();
-		//ゲームシーンの描画
-		sceneArr_[sceneNo_]->Draw();
+		//シーンの描画
+		sceneManager_->Draw();
 		//ImGuiの描画
 		imGuiManager_->Draw();
 		//描画終了
@@ -168,11 +97,8 @@ int GameManager::Run() {
 		}
 	}
 
-	//音声データの解放
-	audioManager_->Finalize();
-	//ImGuiの解放処理
-	imGuiManager_->ReleseProcess();
-	//ゲームウィンドウの破棄
-	winApp_->DiscardingWindow();
+	//ゲーム終了処理
+	Finalize();
+
 	return 0;
 }
