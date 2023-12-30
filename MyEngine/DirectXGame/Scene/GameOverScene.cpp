@@ -11,6 +11,8 @@ void GameOverScene::Finalize() {
 void GameOverScene::Initialize() {
 	sceneNo_ = GAMEOVER;
 
+	mainCamera_ = MainCamera::GetInstance();
+	spriteCamera_ = SpriteCamera::GetInstance();
 }
 
 void GameOverScene::Update() {

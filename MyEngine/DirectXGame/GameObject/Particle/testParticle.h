@@ -1,5 +1,6 @@
 #pragma once
 #include "DirectXGame/Manager/ParticleManager.h"
+#include "DirectXGame/Manager/ObjectManager.h"
 #include "DirectXGame/Object/Plane.h"
 #include "DirectXGame/Object/Model.h"
 
@@ -23,7 +24,10 @@ private: //メンバ関数
 	ParticleInfo MakeNewParticle() override;
 
 private:
-	std::unique_ptr<Plane> plane_;
+	//std::unique_ptr<Plane> plane_;
+	Model* particleModel_;
+	Sprite* particleSprite_;
+	SpriteData spriteData_;
 	uint32_t textureHandle_;
 
 	//風フィールド

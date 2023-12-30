@@ -47,6 +47,11 @@ struct WorldTransform {
 	/// </summary>
 	void TransferMatrix();
 
+	/// <summary>
+	/// ワールドポジションの取得
+	/// </summary>
+	Vector3 GetWorldPos();
+
 private:
 	/// <summary>
 	/// リソースの生成

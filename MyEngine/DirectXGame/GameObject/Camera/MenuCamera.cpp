@@ -1,14 +1,14 @@
-#include "TitleCamera.h"
+#include "MenuCamera.h"
 
-TitleCamera::TitleCamera(){}
-TitleCamera::~TitleCamera(){}
+MenuCamera::MenuCamera() {}
+MenuCamera::~MenuCamera() {}
 
-void TitleCamera::Initialize() {
-	
+void MenuCamera::Initialize() {
+
 	//カメラの初期化
 	Base3DCamera::Initialize();
 
-	cameraName_ = "Title";
+	cameraName_ = "Menu";
 
 	//カメラが切り取る範囲
 	nearClip_ = 0.1f;
@@ -16,7 +16,7 @@ void TitleCamera::Initialize() {
 	fovY_ = 0.45f;
 }
 
-void TitleCamera::Update() {
+void MenuCamera::Update() {
 
 
 

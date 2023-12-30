@@ -62,7 +62,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DirectXGame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,7 +86,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DirectXGame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -107,6 +107,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="DirectXGame\Data\Material.cpp" />
     <ClCompile Include="DirectXGame\Data\MaterialInfo.cpp" />
+    <ClCompile Include="DirectXGame\Data\SpriteData.cpp" />
     <ClCompile Include="DirectXGame\Data\TextureData.cpp" />
     <ClCompile Include="DirectXGame\Data\Transform.cpp" />
     <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp" />
@@ -125,6 +126,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Particle\testParticle.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp" />
     <ClCompile Include="DirectXGame\Base\Framework\Framework.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Camera\GameClearCamera.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Camera\GameOverCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DirectXGame\Manager\AudioManager.cpp" />
     <ClCompile Include="DirectXGame\Manager\GameManager.cpp" />
@@ -153,8 +156,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Object\WireFrameBox.cpp" />
     <ClCompile Include="DirectXGame\Manager\SceneManager.cpp" />
     <ClCompile Include="DirectXGame\Scene\SceneFactory\SceneFactory.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Camera\MenuCamera.cpp" />
+    <ClCompile Include="DirectXGame\Manager\ObjectManager.cpp" />
+    <ClCompile Include="DirectXGame\Data\SpriteItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Data\SpriteData.h" />
     <ClInclude Include="DirectXGame\Math\AABB.h" />
     <ClInclude Include="DirectXGame\Data\AccelerationField.h" />
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h" />
@@ -224,6 +231,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Base\Framework\Framework.h" />
     <ClInclude Include="DirectXGame\Manager\SceneManager.h" />
     <ClInclude Include="DirectXGame\Scene\SceneFactory\SceneFactory.h" />
+    <ClInclude Include="DirectXGame\GameObject\Camera\MenuCamera.h" />
+    <ClInclude Include="DirectXGame\GameObject\Camera\GameClearCamera.h" />
+    <ClInclude Include="DirectXGame\GameObject\Camera\GameOverCamera.h" />
+    <ClInclude Include="DirectXGame\Manager\ObjectManager.h" />
+    <ClInclude Include="DirectXGame\Data\SpriteItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

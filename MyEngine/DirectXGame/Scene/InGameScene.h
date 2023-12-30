@@ -2,6 +2,8 @@
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 #include "DirectXGame/Manager/ImGuiManager.h"
+#include "DirectXGame/Manager/ObjectManager.h"
+#include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/InputManager.h"
 #include "DirectXGame/Manager/AudioManager.h"
 #include "DirectXGame/Manager/ParticleManager.h"
@@ -57,22 +59,14 @@ private:
 	uint32_t monsterBallHandle_;
 	uint32_t fenceHandle_;
 
-	Vector2 windowPos_;
-
 	//描画モデル
 	std::unique_ptr<TestParticle> testParticle1_;
 
-	std::unique_ptr<Model> groundModel_;
+	Model* groundModel_;
 	RenderItem groundModelInfo_;
 
-	std::unique_ptr<Sphere> monsterBall_;
-	RenderItem monsterBallInfo_;
-
-	std::unique_ptr<Sprite> sprite_;
-	RenderItem spriteInfo_;
-
-	std::unique_ptr<WireFrameBox> wireFrameBox_;
-	RenderItem wireFrameBoxInfo_;
+	Sprite* sprite_;
+	SpriteItem spriteInfo_;
 
 	//サウンド
 	uint32_t soundHandle_;

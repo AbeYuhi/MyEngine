@@ -91,6 +91,12 @@
     <Filter Include="ソース ファイル\Debug">
       <UniqueIdentifier>{aab891f3-9145-4a22-b559-f78bc1296561}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Entity">
+      <UniqueIdentifier>{654c46a8-26e6-409f-8235-25bcd692fce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Entity">
+      <UniqueIdentifier>{a9726fed-d0da-4c9b-bd59-e50aa999852b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -244,7 +250,25 @@
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Scene\SceneFactory\SceneFactory.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Camera\GameClearCamera.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Camera\GameOverCamera.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Camera\MenuCamera.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Manager\ObjectManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Data\SpriteData.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Data\SpriteItem.cpp">
+      <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -453,7 +477,25 @@
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Scene\SceneFactory\SceneFactory.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Camera\GameOverCamera.h">
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Camera\MenuCamera.h">
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Camera\GameClearCamera.h">
+      <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Manager\ObjectManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\SpriteData.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\SpriteItem.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

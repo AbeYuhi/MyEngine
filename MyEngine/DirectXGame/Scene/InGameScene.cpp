@@ -50,19 +50,13 @@ void InGameScene::Initialize() {
 	testParticle1_ = std::make_unique<TestParticle>(100);
 	testParticle1_->Initialize();
 
-	groundModel_ = Model::Create("terrain");
-	groundModelInfo_.Initialize(false);
+	groundModel_ = ObjectManager::Create("terrain");
+	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
-	monsterBall_ = Sphere::Create();
-	monsterBallInfo_.Initialize(false);
-	monsterBallInfo_.materialInfo_.material_->enableLightint = true;
-
 	float hatibunnkatu = 1.0f / 8.0f;
-	sprite_ = Sprite::Create({ 640, 360 }, uvCheckerHandle_);
-	spriteInfo_.Initialize(true);
-
-	windowPos_ = { 0, 100 };
+	sprite_ = ObjectManager::CreateSprite();
+	spriteInfo_.Initialize();
 }
 
 void InGameScene::Update() {
@@ -88,17 +82,6 @@ void InGameScene::Update() {
 	testParticle1_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
-	if (ImGui::BeginTabItem("monsterBall")) {
-		ImGui::SliderFloat3("pos", &monsterBallInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &monsterBallInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &monsterBallInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::SliderFloat("shininess", &monsterBallInfo_.materialInfo_.material_->shininess, 0, 100);
-		bool a = false;
-		if (ImGui::Checkbox("isSpecularReflection", &a)) {
-			monsterBallInfo_.materialInfo_.material_->isSpecularReflection = !monsterBallInfo_.materialInfo_.material_->isSpecularReflection;
-		}
-		ImGui::EndTabItem();
-	}
 	if (ImGui::BeginTabItem("groundModel")) {
 		ImGui::SliderFloat3("pos", &groundModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
 		ImGui::SliderFloat3("rotate", &groundModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
@@ -125,7 +108,6 @@ void InGameScene::Update() {
 	ImGui::End();
 
 	groundModelInfo_.Update();
-	monsterBallInfo_.Update();
 	spriteInfo_.Update();
 }
 
@@ -137,7 +119,7 @@ void InGameScene::Draw() {
 
 	///背景スプライトの描画開始
 
-	sprite_->Draw(spriteInfo_);
+	
 
 	///背景スプライト描画終了
 	//深度バッファのクリア
@@ -145,21 +127,20 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
-
+	//sprite_->Draw(spriteInfo_);
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	//monsterBall_->Draw(monsterBallInfo_, monsterBallHandle_);
-	//groundModel_->Draw(groundModelInfo_);
+	groundModel_->Draw(groundModelInfo_);
 	//testParticle1_->EmitterDraw();
 
 	///オブジェクトの描画終了
 
 	///パーティクルの描画
 
-	//testParticle1_->Draw();
+	testParticle1_->Draw();
 
 	///パーティクルの描画終了
 }

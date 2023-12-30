@@ -41,7 +41,7 @@ void ParticleManager::Initialize() {
 	emitter_.frequency = 0.5f;
 	emitter_.frequencyTime = 0.0f;
 
-	emitterObj_ = WireFrameBox::Create();
+	emitterObj_ = ObjectManager::CreateWireFrameBox();
 	emitterObjInfo_.Initialize();
 
 	//パーティクルがスプライト用かどうか

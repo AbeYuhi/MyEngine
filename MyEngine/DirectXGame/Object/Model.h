@@ -27,7 +27,7 @@ class Model
 {
 public: //静的メンバ関数
 
-	static std::unique_ptr<Model> Create(const std::string filename);
+	static std::unique_ptr<Model> Create(const std::string filename = "cube");
 
 private: //静的メンバ変数
 
@@ -38,8 +38,10 @@ public: //メンバ関数
 	void Initialize(const std::string filename);
 
 	void Draw(RenderItem& renderItem);
+	void Draw(RenderItem& renderItem, uint32_t textureHandle);
 
 	void Draw(ParticleDrawInfo drawInfo);
+	void Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle);
 
 public: //ゲッターセッター
 

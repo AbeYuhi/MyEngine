@@ -1,11 +1,11 @@
 #pragma once
 #include "Base3DCamera.h"
 
-class TitleCamera : public Base3DCamera
+class GameOverCamera : public Base3DCamera
 {
 public:
-	TitleCamera();
-	~TitleCamera();
+	GameOverCamera();
+	~GameOverCamera();
 
 	void Initialize() override;
 

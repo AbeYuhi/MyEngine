@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model(){}
+Model::Model() {}
 Model::~Model() {}
 
 std::unique_ptr<Model> Model::Create(const std::string filename) {
@@ -19,7 +19,7 @@ void Model::Initialize(const std::string filename) {
 
 	//VertexResourceを作る
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
-	
+
 	//頂点バッファビューを作成
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
@@ -57,6 +57,33 @@ void Model::Draw(RenderItem& renderItem) {
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
+void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
+	//シングルトーンの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	TextureManager* textureManager = TextureManager::GetInstance();
+	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+
+	//ViewPortの設定
+	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
+	//Scirssorの設定
+	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
+	//パイプラインステートの設定
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
+	//ルートシグネチャの設定
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
+	//プリミティブ形状を設定
+	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//VBVの設定
+	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	//マテリアルCBufferの場所を設定
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
+	//wvpCBufferの場所を設定
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
+	//描画
+	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+}
 
 void Model::Draw(ParticleDrawInfo drawInfo) {
 	//シングルトーンの取得
@@ -81,6 +108,32 @@ void Model::Draw(ParticleDrawInfo drawInfo) {
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, drawInfo.srvHandle_->GPUHandle);
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle_));
+	//描画
+	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
+}
+void Model::Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle) {
+	//シングルトーンの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	TextureManager* textureManager = TextureManager::GetInstance();
+	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+
+	//ViewPortの設定
+	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
+	//Scirssorの設定
+	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
+	//パイプラインステートの設定
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(PipelineState::kParticle));
+	//ルートシグネチャの設定
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(PipelineState::kParticle));
+	//プリミティブ形状を設定
+	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//VBVの設定
+	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	//マテリアルCBufferの場所を設定
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, drawInfo.materialInfo_->resource_->GetGPUVirtualAddress());
+	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, drawInfo.srvHandle_->GPUHandle);
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
 }
@@ -136,7 +189,7 @@ void Model::LoadObjFile(const std::string& filename) {
 				Vector4 position = positions[elementIndices[0] - 1];
 				Vector2 texcoord = texcoords[elementIndices[1] - 1];
 				Vector3 normal = normals[elementIndices[2] - 1];
-				triangle[faceVertex] = {position, texcoord, normal};
+				triangle[faceVertex] = { position, texcoord, normal };
 			}
 			modelData_.vertices.push_back(triangle[2]);
 			modelData_.vertices.push_back(triangle[1]);

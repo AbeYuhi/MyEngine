@@ -8,32 +8,15 @@ Sprite::~Sprite()
 {
 }
 
-std::unique_ptr<Sprite> Sprite::Create(Vector2 spriteSize, uint32_t textureHandle, Vector2 anchorPoint, Vector2 baseUVPos, Vector2 texSize, bool isFlipX, bool isFlipY) {
+std::unique_ptr<Sprite> Sprite::Create() {
 	std::unique_ptr<Sprite> object = std::make_unique<Sprite>();
-	object->Initialize(spriteSize, textureHandle, anchorPoint, baseUVPos, texSize, isFlipX, isFlipY);
+	object->Initialize();
 	return object;
 }
 
-void Sprite::Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anchorPoint, Vector2 baseUVPos, Vector2 texSize, bool isFlipX, bool isFlipY) {
+void Sprite::Initialize() {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-
-	//メンバ変数の初期化
-	//size
-	size_ = spriteSize;
-	//アンカーポイント
-	anchorPoint_ = anchorPoint;
-	//BaseUVPos
-	baseUvPos_ = baseUVPos;
-	//TexSize
-	texSize_ = texSize;
-	//反転
-	isFlipX_ = isFlipX;
-	isFlipY_ = isFlipY;
-	//非表示か
-	isInvisible_ = false;
-	//テクスチャ
-	textureHandle_ = textureHandle;
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);
@@ -48,17 +31,9 @@ void Sprite::Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anch
 	//Resourceにデータを書き込む
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	//1枚目の三角形
-	vertexData_[0].position = { 0.0f, size_.y, 0.0f, 1.0f }; //左下
-	vertexData_[0].texcoord = { 0.0f, 1.0f };
 	vertexData_[0].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[1].position = { 0.0f, 0.0f, 0.0f, 1.0f }; //左上
-	vertexData_[1].texcoord = { 0.0f, 0.0f };
 	vertexData_[1].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[2].position = { size_.x, size_.y, 0.0f, 1.0f }; //右下
-	vertexData_[2].texcoord = { 1.0f, 1.0f };
 	vertexData_[2].normal = { 0.0f, 0.0f, -1.0f };
-	vertexData_[3].position = { size_.x, 0.0f, 0.0f, 1.0f }; //右上
-	vertexData_[3].texcoord = { 1.0f, 0.0f };
 	vertexData_[3].normal = { 0.0f, 0.0f, -1.0f };
 
 	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
@@ -68,23 +43,21 @@ void Sprite::Initialize(Vector2 spriteSize, uint32_t textureHandle, Vector2 anch
 	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
 	indexData_[0] = 0;	indexData_[1] = 1;	indexData_[2] = 2;
 	indexData_[3] = 1;	indexData_[4] = 3;	indexData_[5] = 2;
-
-	TransferVertices();
 }
 
-void Sprite::TransferVertices() {
+void Sprite::TransferVertices(SpriteData spriteData) {
 
-	float left = (0.0f - anchorPoint_.x) * size_.x;
-	float right = (1.0f - anchorPoint_.x) * size_.x;
-	float top = (0.0f - anchorPoint_.y) * size_.y;
-	float bot = (1.0f - anchorPoint_.y) * size_.y;
+	float left = (0.0f - spriteData.anchorPoint_.x) * spriteData.size_.x;
+	float right = (1.0f - spriteData.anchorPoint_.x) * spriteData.size_.x;
+	float top = (0.0f - spriteData.anchorPoint_.y) * spriteData.size_.y;
+	float bot = (1.0f - spriteData.anchorPoint_.y) * spriteData.size_.y;
 
-	if (isFlipX_) {
+	if (spriteData.isFlipX_) {
 		left = -left;
 		right = -right;
 	}
 
-	if (isFlipY_) {
+	if (spriteData.isFlipY_) {
 		top = -top;
 		bot = -bot;
 	}
@@ -94,17 +67,15 @@ void Sprite::TransferVertices() {
 	vertexData_[2].position = { right, bot, 0.0f, 1.0f }; //右下
 	vertexData_[3].position = { right, top, 0.0f, 1.0f }; //右上
 
-	D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetTextureDesc(textureHandle_);
-
 	/*float uvLeft = (0.0f - baseUvPos_.x);
 	float uvRight = (1.0f - baseUvPos_.x);
 	float uvTop = (0.0f - baseUvPos_.y);
 	float uvBot = (1.0f - baseUvPos_.y);*/
 
-	float uvLeft = baseUvPos_.x;
-	float uvRight = baseUvPos_.x + texSize_.x;
-	float uvTop = baseUvPos_.y;
-	float uvBot = baseUvPos_.y + texSize_.y;
+	float uvLeft = spriteData.baseUvPos_.x;
+	float uvRight = spriteData.baseUvPos_.x + spriteData.texSize_.x;
+	float uvTop = spriteData.baseUvPos_.y;
+	float uvBot = spriteData.baseUvPos_.y + spriteData.texSize_.y;
 
 	vertexData_[0].texcoord = { uvLeft, uvBot, }; //左下
 	vertexData_[1].texcoord = { uvLeft, uvTop, }; //左上
@@ -112,50 +83,16 @@ void Sprite::TransferVertices() {
 	vertexData_[3].texcoord = { uvRight, uvTop }; //右上
 }
 
-void Sprite::SetTextureHandle(uint32_t textureHandle) {
-	textureHandle_ = textureHandle;
-	TransferVertices();
-}
-
-void Sprite::SetSize(Vector2 size) {
-	size_ = size; 
-	TransferVertices();
-}
-
-void Sprite::SetAnchorPoint(Vector2 anchorPoint) { 
-	anchorPoint_ = anchorPoint; 
-	TransferVertices();
-}
-
-void Sprite::SetBaseUvPos(Vector2 baseUvPos) {
-	baseUvPos_ = baseUvPos;
-	TransferVertices();
-}
-
-void Sprite::SetTexSize(Vector2 texSize) {
-	texSize_ = texSize;
-	TransferVertices();
-}
-
-void Sprite::SetIsFlipX(bool isFlip) {
-	isFlipX_ = isFlip; 
-	TransferVertices();
-}
-
-void Sprite::SetIsFlipY(bool isFlip) { 
-	isFlipY_ = isFlip;
-	TransferVertices();
-}
-
-void Sprite::Draw(RenderItem& renderItem) {
+void Sprite::Draw(SpriteItem& spriteItem) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 
 	//非表示なら表示しない
-	if (isInvisible_) {
+	if (spriteItem.spriteData_.isInvisible_) {
 		return;
 	}
+	TransferVertices(spriteItem.spriteData_);
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
@@ -171,19 +108,25 @@ void Sprite::Draw(RenderItem& renderItem) {
 	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	dxCommon->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
 	//マテリアルCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, spriteItem.materialInfo_.resource_->GetGPUVirtualAddress());
 	//wvpCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, spriteItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle_));
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(spriteItem.spriteData_.textureHandle_));
 	//描画
 	dxCommon->GetCommandList()->DrawIndexedInstanced(kIndexNumber, 1, 0, 0, 0);
 }
 
-void Sprite::Draw(ParticleDrawInfo drawInfo) {
+void Sprite::Draw(ParticleDrawInfo drawInfo, SpriteData spriteData) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+
+	//非表示なら表示しない
+	if (spriteData.isInvisible_) {
+		return;
+	}
+	TransferVertices(spriteData);
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
@@ -202,7 +145,7 @@ void Sprite::Draw(ParticleDrawInfo drawInfo) {
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, drawInfo.materialInfo_->resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, drawInfo.srvHandle_->GPUHandle);
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle_));
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(spriteData.textureHandle_));
 	//描画
 	dxCommon->GetCommandList()->DrawIndexedInstanced(kIndexNumber, (UINT)*drawInfo.kMaxParticleCount_, 0, 0, 0);
 }

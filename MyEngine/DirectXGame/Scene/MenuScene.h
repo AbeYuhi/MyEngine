@@ -1,5 +1,8 @@
 #pragma once
 #include "IScene.h"
+#include "DirectXGame/GameObject/Camera/MenuCamera.h"
+#include "DirectXGame/GameObject/Camera/MainCamera.h"
+#include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 
 class MenuScene : public IScene
 {
@@ -16,5 +19,7 @@ public:
 	void Finalize() override;
 
 private:
+	MainCamera* mainCamera_;
+	SpriteCamera* spriteCamera_;
 
 };

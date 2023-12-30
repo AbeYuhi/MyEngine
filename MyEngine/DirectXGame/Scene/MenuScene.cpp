@@ -10,6 +10,8 @@ void MenuScene::Finalize() {
 void MenuScene::Initialize() {
 	sceneNo_ = MENU;
 
+	mainCamera_ = MainCamera::GetInstance();
+	spriteCamera_ = SpriteCamera::GetInstance();
 }
 
 void MenuScene::Update() {

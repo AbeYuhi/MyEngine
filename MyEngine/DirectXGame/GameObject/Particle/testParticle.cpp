@@ -8,15 +8,20 @@ void TestParticle::Initialize() {
 	ParticleManager::Initialize();
 
 	//パーティクルの初期化
-	plane_ = Plane::Create();
+	particleModel_ = ObjectManager::Create("plane");
+	particleSprite_ = ObjectManager::CreateSprite();
 
 	//使用するテクスチャの読み込み
 	//textureHandle_ = TextureManager::Load("uvChecker.png");
 	textureHandle_ = TextureManager::Load("circle.png");
+	spriteData_.Initialize(textureHandle_);
 
 	//エミッター情報
-	emitter_.transform.scale_ = {2, 2, 2};
-	emitter_.count = 10;
+	isSpriteParticle_ = true;
+	//emitter_.transform.scale_ = {2, 2, 2};
+	emitter_.transform.scale_ = {0, 0, 0};
+	emitter_.transform.translate_ = { 640, 360, 0 };
+	emitter_.count = 3;
 	emitter_.frequency = 0.5;
 
 	//ブレンドモード
@@ -28,7 +33,7 @@ void TestParticle::Initialize() {
 	accelerationField_.area.max = { 1.0f, 1.0f, 1.0f };
 
 	//力を加えるか
-	isAccelerationField_ = true;
+	isAccelerationField_ = false;
 
 	//パーティクルの生成
 	/*for (int index = 0; index < 10; index++) {
@@ -64,11 +69,11 @@ void TestParticle::Update() {
 			if (IsCollision(accelerationField_.area, particle->srtData.translate_)) {
 				particle->velocity += accelerationField_.accelerationField * kDeltaTime_;
 			}
-			particle->srtData.translate_ += particle->velocity * kDeltaTime_;
 		}
 
 		//移動
-		particle->srtData.translate_ += particle->velocity * kDeltaTime_;
+		//particle->srtData.translate_ += particle->velocity * kDeltaTime_;
+		particle->srtData.translate_ += particle->velocity;
 		particle->currenttime += kDeltaTime_;
 		particle->color.w = 1.0f - (particle->currenttime / particle->lifeTime);
 
@@ -87,7 +92,7 @@ void TestParticle::Draw() {
 
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(blendMode_);
 
-	plane_->Draw(drawInfo_, textureHandle_);
+	particleSprite_->Draw(drawInfo_, spriteData_);
 
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(preBlendMode_);
 }
@@ -100,7 +105,8 @@ ParticleInfo TestParticle::MakeNewParticle() {
 		randomManager_->GetRandomNumber(-emitter_.transform.scale_.y / 2.0f, emitter_.transform.scale_.y / 2.0f),
 		randomManager_->GetRandomNumber(-emitter_.transform.scale_.z / 2.0f, emitter_.transform.scale_.z / 2.0f) };
 	particle.srtData.translate_ += emitter_.transform.translate_;
-	particle.velocity = { randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f) };
+	//particle.velocity = { randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f) };
+	particle.velocity = { randomManager_->GetRandomNumber(-10.0f, 10.0f), randomManager_->GetRandomNumber(-10.0f, 10.0f), 0 };
 	particle.color = { randomManager_->GetRandomNumber(0.0f, 1.0f), randomManager_->GetRandomNumber(0.0f, 1.0f), randomManager_->GetRandomNumber(0.0f, 1.0f), 1.0f };
 	particle.lifeTime = randomManager_->GetRandomNumber(1.0f, 3.0f);
 	particle.currenttime = 0.0f;

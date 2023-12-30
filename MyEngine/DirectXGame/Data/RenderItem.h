@@ -9,10 +9,9 @@ struct RenderItem {
 	/// <summary>
 	/// レンダリング情報の初期化
 	/// </summary>
-	/// <param name="isSprite">Sprite用のレンダリング情報か</param>
-	void Initialize(bool isSprite = false) {
+	void Initialize() {
 		materialInfo_.Initialize();
-		worldTransform_.Initialize(isSprite);
+		worldTransform_.Initialize(false);
 	}
 
 	void Update() {
