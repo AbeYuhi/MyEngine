@@ -111,6 +111,7 @@ void Model::Draw(ParticleDrawInfo drawInfo) {
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
 }
+
 void Model::Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle) {
 	//シングルトーンの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();

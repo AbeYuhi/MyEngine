@@ -47,10 +47,10 @@ void InGameScene::Initialize() {
 	fenceHandle_ = TextureManager::Load("fence.png");
 
 	//ゲームオブジェクト
-	testParticle1_ = std::make_unique<TestParticle>(100);
+	testParticle1_ = std::make_unique<TestParticle>(1000);
 	testParticle1_->Initialize();
 
-	groundModel_ = ObjectManager::Create("terrain");
+	groundModel_ = ObjectManager::Create("YudukiYukari");
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
@@ -134,7 +134,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	groundModel_->Draw(groundModelInfo_);
-	//testParticle1_->EmitterDraw();
+	testParticle1_->EmitterDraw();
 
 	///オブジェクトの描画終了
 
