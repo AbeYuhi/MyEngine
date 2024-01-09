@@ -11,7 +11,6 @@ struct SpriteData {
 	Vector2 texSize_;
 	bool isFlipX_;
 	bool isFlipY_;
-	bool isInvisible_;
 
-	void Initialize(uint32_t textureHandle = 0, Vector2 size = { 640, 360 }, Vector2 anchorPoint = { 0.5f, 0.5f }, Vector2 baseUvPos = { 0, 0 }, Vector2 texSize = { 1.0f, 1.0f }, bool isFlipX = false, bool isFlipY = false, bool isInvisible = false);
+	void Initialize(uint32_t textureHandle = 0, Vector2 size = { 640, 360 }, Vector2 anchorPoint = { 0.5f, 0.5f }, Vector2 baseUvPos = { 0, 0 }, Vector2 texSize = { 1.0f, 1.0f }, bool isFlipX = false, bool isFlipY = false);
 };

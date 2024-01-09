@@ -30,6 +30,19 @@ WireFrameBox* ObjectManager::LoadWireFrameBox() {
 	return wireFrameBoxData_.get();
 }
 
+WireFrameSpriteBox* ObjectManager::CreateWireFrameSpriteBox() {
+	return GetInstance()->LoadWireFrameSpriteBox();
+}
+
+WireFrameSpriteBox* ObjectManager::LoadWireFrameSpriteBox() {
+
+	if (!wireFrameSpriteBoxData_) {
+		wireFrameSpriteBoxData_ = WireFrameSpriteBox::Create();
+	}
+
+	return wireFrameSpriteBoxData_.get();
+}
+
 Sprite* ObjectManager::CreateSprite() {
 	return GetInstance()->LoadSprite();
 }

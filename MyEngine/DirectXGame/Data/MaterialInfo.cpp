@@ -6,6 +6,7 @@ void MaterialInfo::Initialize() {
 
 	material_->Initialize();
 	uvTransform_.Initialize();
+	isInvisible_ = false;
 
 	UpdateMatrix();
 }
@@ -28,6 +29,7 @@ void ParticleMaterialInfo::Initialize() {
 
 	material_->Initialize();
 	uvTransform_.Initialize();
+	isInvisible_ = false;
 
 	UpdateMatrix();
 }

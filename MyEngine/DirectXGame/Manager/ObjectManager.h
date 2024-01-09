@@ -8,7 +8,7 @@
 #include "DirectXGame/Object/Model.h"
 #include "DirectXGame/Object/Sprite.h"
 #include "DirectXGame/Object/WireFrameBox.h"
-
+#include "DirectXGame/Object/WireFrameSpriteBox.h"
 
 class ObjectManager
 {
@@ -24,12 +24,14 @@ public:
 	/// <returns></returns>
 	static Model* Create(const std::string& fileName = "cube");
 	static WireFrameBox* CreateWireFrameBox();
+	static WireFrameSpriteBox* CreateWireFrameSpriteBox();
 	static Sprite* CreateSprite();
 
 private:
 
 	Model* LoadObj(const std::string& fileName);
 	WireFrameBox* LoadWireFrameBox();
+	WireFrameSpriteBox* LoadWireFrameSpriteBox();
 	Sprite* LoadSprite();
 
 private:
@@ -38,5 +40,6 @@ private:
 
 	std::map<std::string, std::unique_ptr<Model>> modelDatas_;
 	std::unique_ptr<WireFrameBox> wireFrameBoxData_;
+	std::unique_ptr<WireFrameSpriteBox> wireFrameSpriteBoxData_;
 	std::unique_ptr<Sprite> spriteData_;
 };

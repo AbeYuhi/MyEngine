@@ -87,6 +87,11 @@ void WireFrameBox::Draw(RenderItem& renderItem) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 
+	//非表示なら表示しない
+	if (renderItem.materialInfo_.isInvisible_) {
+		return;
+	}
+
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定

@@ -16,7 +16,7 @@ void InGameScene::Initialize() {
 	//基本機能
 	winApp_ = WinApp::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
-	input_ = InputManager::GetInstance();;
+	input_ = InputManager::GetInstance();
 	audioManager_ = AudioManager::GetInstance();
 	randomManager_ = RandomManager::GetInstance();
 	mainCamera_ = MainCamera::GetInstance();
@@ -50,6 +50,12 @@ void InGameScene::Initialize() {
 	testParticle1_ = std::make_unique<TestParticle>(100);
 	testParticle1_->Initialize();
 
+	spriteParticle_ = std::make_unique<SpriteParticle>(100);
+	spriteParticle_->Initialize();
+
+	planeParticle_ = std::make_unique<PlaneParticle>(100);
+	planeParticle_->Initialize();
+
 	groundModel_ = ObjectManager::Create("terrain");
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
@@ -80,6 +86,8 @@ void InGameScene::Update() {
 
 	//パーティクルの更新
 	testParticle1_->Update();
+	spriteParticle_->Update();
+	planeParticle_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("groundModel")) {
@@ -127,20 +135,20 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
-	//sprite_->Draw(spriteInfo_);
+	spriteParticle_->EmitterDraw();
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	groundModel_->Draw(groundModelInfo_);
-	//testParticle1_->EmitterDraw();
+	planeParticle_->EmitterDraw();
 
 	///オブジェクトの描画終了
 
 	///パーティクルの描画
 
-	testParticle1_->Draw();
+	spriteParticle_->Draw();
+	planeParticle_->Draw();
 
 	///パーティクルの描画終了
 }

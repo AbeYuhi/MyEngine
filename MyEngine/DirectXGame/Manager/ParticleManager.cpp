@@ -44,6 +44,14 @@ void ParticleManager::Initialize() {
 	emitterObj_ = ObjectManager::CreateWireFrameBox();
 	emitterObjInfo_.Initialize();
 
+	emitterSprite_ = ObjectManager::CreateWireFrameSpriteBox();
+	emitterSpriteInfo_.Initialize(1, {1, 1});
+
+#ifdef NDEBUG
+	emitterObjInfo_.materialInfo_.isInvisible_ = true;
+	emitterSpriteInfo_.materialInfo_.isInvisible_ = true;
+#endif // NDEBUG
+
 	//パーティクルがスプライト用かどうか
 	isSpriteParticle_ = false;
 
@@ -63,6 +71,9 @@ void ParticleManager::Update() {
 	//エミッターの可視化
 	emitterObjInfo_.worldTransform_.data_ = emitter_.transform;
 	emitterObjInfo_.Update();
+
+	emitterSpriteInfo_.worldTransform_.data_ = emitter_.transform;
+	emitterSpriteInfo_.Update();
 
 	//パーティクルの発生
 	emitter_.frequencyTime += kDeltaTime_;
@@ -112,7 +123,15 @@ void ParticleManager::Update() {
 	particleCount_ = (int)particles_.size();
 }
 
-void ParticleManager::EmitterDraw() {}
+void ParticleManager::EmitterDraw() {
+
+	if (isSpriteParticle_) {
+		emitterSprite_->Draw(emitterSpriteInfo_);
+	}
+	else {
+		emitterObj_->Draw(emitterObjInfo_);
+	}
+}
 
 void ParticleManager::Draw() {}
 

@@ -1,20 +1,21 @@
-#include "Sprite.h"
+#include "WireFrameSpriteBox.h"
 
-Sprite::Sprite()
+WireFrameSpriteBox::WireFrameSpriteBox()
 {
 }
 
-Sprite::~Sprite()
+WireFrameSpriteBox::~WireFrameSpriteBox()
 {
 }
 
-std::unique_ptr<Sprite> Sprite::Create() {
-	std::unique_ptr<Sprite> object = std::make_unique<Sprite>();
+std::unique_ptr<WireFrameSpriteBox> WireFrameSpriteBox::Create() {
+	std::unique_ptr<WireFrameSpriteBox> object = std::make_unique<WireFrameSpriteBox>();
 	object->Initialize();
+
 	return object;
 }
 
-void Sprite::Initialize() {
+void WireFrameSpriteBox::Initialize() {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
@@ -41,11 +42,13 @@ void Sprite::Initialize() {
 	indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 
 	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
-	indexData_[0] = 0;	indexData_[1] = 1;	indexData_[2] = 2;
-	indexData_[3] = 1;	indexData_[4] = 3;	indexData_[5] = 2;
+	indexData_[0] = 0;	indexData_[1] = 1;
+	indexData_[2] = 1;	indexData_[3] = 3;
+	indexData_[4] = 3;	indexData_[5] = 2;
+	indexData_[6] = 2;	indexData_[7] = 0;
 }
 
-void Sprite::TransferVertices(SpriteData spriteData) {
+void WireFrameSpriteBox::TransferVertices(SpriteData spriteData) {
 
 	float left = (0.0f - spriteData.anchorPoint_.x) * spriteData.size_.x;
 	float right = (1.0f - spriteData.anchorPoint_.x) * spriteData.size_.x;
@@ -67,11 +70,6 @@ void Sprite::TransferVertices(SpriteData spriteData) {
 	vertexData_[2].position = { right, bot, 0.0f, 1.0f }; //右下
 	vertexData_[3].position = { right, top, 0.0f, 1.0f }; //右上
 
-	/*float uvLeft = (0.0f - baseUvPos_.x);
-	float uvRight = (1.0f - baseUvPos_.x);
-	float uvTop = (0.0f - baseUvPos_.y);
-	float uvBot = (1.0f - baseUvPos_.y);*/
-
 	float uvLeft = spriteData.baseUvPos_.x;
 	float uvRight = spriteData.baseUvPos_.x + spriteData.texSize_.x;
 	float uvTop = spriteData.baseUvPos_.y;
@@ -83,9 +81,9 @@ void Sprite::TransferVertices(SpriteData spriteData) {
 	vertexData_[3].texcoord = { uvRight, uvTop }; //右上
 }
 
-void Sprite::Draw(SpriteItem& spriteItem) {
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+void WireFrameSpriteBox::Draw(SpriteItem& spriteItem) {
 	TextureManager* textureManager = TextureManager::GetInstance();
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 
 	//非表示なら表示しない
@@ -103,7 +101,7 @@ void Sprite::Draw(SpriteItem& spriteItem) {
 	//ルートシグネチャの設定
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	//プリミティブ形状を設定
-	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 	//VBVの設定
 	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	dxCommon->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
@@ -112,40 +110,7 @@ void Sprite::Draw(SpriteItem& spriteItem) {
 	//wvpCBufferの場所を設定
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, spriteItem.worldTransform_.resource_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(spriteItem.spriteData_.textureHandle_));
+	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(1));
 	//描画
 	dxCommon->GetCommandList()->DrawIndexedInstanced(kIndexNumber, 1, 0, 0, 0);
-}
-
-void Sprite::Draw(ParticleDrawInfo drawInfo, SpriteData spriteData) {
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	TextureManager* textureManager = TextureManager::GetInstance();
-	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
-
-	//非表示なら表示しない
-	if (drawInfo.materialInfo_->isInvisible_) {
-		return;
-	}
-	TransferVertices(spriteData);
-
-	//ViewPortの設定
-	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
-	//Scirssorの設定
-	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
-	//パイプラインステートの設定
-	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(PipelineState::kParticle));
-	//ルートシグネチャの設定
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(PipelineState::kParticle));
-	//プリミティブ形状を設定
-	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//VBVの設定
-	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
-	dxCommon->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
-	//マテリアルCBufferの場所を設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, drawInfo.materialInfo_->resource_->GetGPUVirtualAddress());
-	//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, drawInfo.srvHandle_->GPUHandle);
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(spriteData.textureHandle_));
-	//描画
-	dxCommon->GetCommandList()->DrawIndexedInstanced(kIndexNumber, (UINT)*drawInfo.kMaxParticleCount_, 0, 0, 0);
 }

@@ -12,6 +12,8 @@ struct MaterialInfo {
 	TransformData uvTransform_;
 	//マテリアル情報
 	Material* material_;
+	//非表示かどうか
+	bool isInvisible_;
 
 	/// <summary>
 	/// 初期化
@@ -42,6 +44,8 @@ struct ParticleMaterialInfo {
 	TransformData uvTransform_;
 	//マテリアル情報
 	ParticleMaterial* material_;
+	//非表示かどうか
+	bool isInvisible_;
 
 	/// <summary>
 	/// 初期化

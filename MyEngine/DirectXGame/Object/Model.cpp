@@ -36,6 +36,10 @@ void Model::Draw(RenderItem& renderItem) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 
+	if (renderItem.materialInfo_.isInvisible_) {
+		return;
+	}
+
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
@@ -62,6 +66,10 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+
+	if (renderItem.materialInfo_.isInvisible_) {
+		return;
+	}
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
@@ -91,6 +99,10 @@ void Model::Draw(ParticleDrawInfo drawInfo) {
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 
+	if (drawInfo.materialInfo_->isInvisible_) {
+		return;
+	}
+
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
@@ -111,11 +123,16 @@ void Model::Draw(ParticleDrawInfo drawInfo) {
 	//描画
 	dxCommon->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
 }
+
 void Model::Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle) {
 	//シングルトーンの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	TextureManager* textureManager = TextureManager::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+
+	if (drawInfo.materialInfo_->isInvisible_) {
+		return;
+	}
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());

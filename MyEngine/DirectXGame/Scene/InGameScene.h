@@ -20,6 +20,8 @@
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 #include "DirectXGame/GameObject/Light/LightObject.h"
 #include "DirectXGame/GameObject/Particle/testParticle.h"
+#include "DirectXGame/GameObject/Particle/Object/PlaneParticle.h"
+#include "DirectXGame/GameObject/Particle/Sprite/SpriteParticle.h"
 #include "DirectXGame/Scene/IScene.h"
 
 class InGameScene : public IScene {
@@ -61,6 +63,8 @@ private:
 
 	//描画モデル
 	std::unique_ptr<TestParticle> testParticle1_;
+	std::unique_ptr<SpriteParticle> spriteParticle_;
+	std::unique_ptr<PlaneParticle> planeParticle_;
 
 	Model* groundModel_;
 	RenderItem groundModelInfo_;

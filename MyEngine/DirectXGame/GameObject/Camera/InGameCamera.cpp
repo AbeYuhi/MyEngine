@@ -13,7 +13,7 @@ void InGameCamera::Initialize() {
 	//カメラの初期化
 	Base3DCamera::Initialize();
 
-	cameraName_ = "title";
+	cameraName_ = "inGame";
 
 	//カメラが切り取る範囲
 	nearClip_ = 0.1f;

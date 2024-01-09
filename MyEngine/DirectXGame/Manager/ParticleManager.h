@@ -12,7 +12,6 @@
 #include "DirectXGame/Manager/ObjectManager.h"
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
-#include "DirectXGame/Object/WireFrameBox.h"
 
 struct ParticleInfo {
 	TransformData srtData;
@@ -84,7 +83,9 @@ protected: //メンバ変数
 	//エミッターの情報
 	Emitter emitter_;
 	WireFrameBox* emitterObj_;
+	WireFrameSpriteBox* emitterSprite_;
 	RenderItem emitterObjInfo_;
+	SpriteItem emitterSpriteInfo_;
 	//データ
 	ParticleForGPU* particleData_;
 	ParticleMaterialInfo materialInfo_;

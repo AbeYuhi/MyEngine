@@ -19,10 +19,10 @@ struct SpriteItem {
 	/// <param name="isFlipX">X軸に反転するか</param>
 	/// <param name="isFlipY">Y軸に反転するか</param>
 	/// <param name="isInvisible">非表示かどうか</param>
-	void Initialize(uint32_t textureHandle = 0, Vector2 size = { 640, 360 }, Vector2 anchorPoint = { 0.5f, 0.5f }, Vector2 baseUvPos = { 0, 0 }, Vector2 texSize = { 1.0f, 1.0f }, bool isFlipX = false, bool isFlipY = false, bool isInvisible = false) {
+	void Initialize(uint32_t textureHandle = 0, Vector2 size = { 640, 360 }, Vector2 anchorPoint = { 0.5f, 0.5f }, Vector2 baseUvPos = { 0, 0 }, Vector2 texSize = { 1.0f, 1.0f }, bool isFlipX = false, bool isFlipY = false) {
 		materialInfo_.Initialize();
 		worldTransform_.Initialize(true);
-		spriteData_.Initialize(textureHandle, size, anchorPoint, baseUvPos, texSize, isFlipX, isFlipY, isInvisible);
+		spriteData_.Initialize(textureHandle, size, anchorPoint, baseUvPos, texSize, isFlipX, isFlipY);
 	}
 
 	void Update() {
