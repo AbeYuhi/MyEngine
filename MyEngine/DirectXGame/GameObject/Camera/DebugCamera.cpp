@@ -41,12 +41,9 @@ void DebugCamera::Update() {
 
 	if (isMove_) {
 		if (input->IsMousePush(0)) {
-			ImVec2 mouseAmount;
-			mouseAmount.x = mousePos_.x - preMousePos_.x;
-			mouseAmount.y = mousePos_.y - preMousePos_.y;
 
-			transform_.rotate_.x += mouseAmount.y * 0.005f;
-			transform_.rotate_.y += mouseAmount.x * 0.005f;
+			transform_.rotate_.x += input->GetMouseMovement().y * 0.005f;
+			transform_.rotate_.y += input->GetMouseMovement().x * 0.005f;
 		}
 
 		Vector3 cameraVelocity = { 0.0f, 0.0f, 0.0f };

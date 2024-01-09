@@ -11,6 +11,7 @@
 #include <cassert>
 #include <compare>
 #include <chrono>
+#include <thread>
 
 using namespace Microsoft::WRL;
 

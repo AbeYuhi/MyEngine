@@ -47,7 +47,7 @@ void InGameScene::Initialize() {
 	fenceHandle_ = TextureManager::Load("fence.png");
 
 	//ゲームオブジェクト
-	testParticle1_ = std::make_unique<TestParticle>(100);
+	testParticle1_ = std::make_unique<TestParticle>(1000);
 	testParticle1_->Initialize();
 
 	spriteParticle_ = std::make_unique<SpriteParticle>(100);
