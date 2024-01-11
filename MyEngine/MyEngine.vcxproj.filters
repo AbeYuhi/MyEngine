@@ -97,6 +97,24 @@
     <Filter Include="ヘッダー ファイル\GameObject\Entity">
       <UniqueIdentifier>{a9726fed-d0da-4c9b-bd59-e50aa999852b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Particle\Sprite">
+      <UniqueIdentifier>{f3f4f912-3edc-4496-856d-13c93c1d701e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Particle\Object">
+      <UniqueIdentifier>{650cd8bf-51a3-4812-a8f0-ffcead63f507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Particle\Sprite">
+      <UniqueIdentifier>{14aa28e3-ddf0-4afc-942e-3e7dc54e8c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Particle\Object">
+      <UniqueIdentifier>{8a2dde78-cd29-4012-a728-e3eddfca1fd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\LoadFile">
+      <UniqueIdentifier>{d2dff816-65e8-47f6-8ee3-4e13ff0c0a11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\LoadFile">
+      <UniqueIdentifier>{576d992c-da5c-4f84-bf03-e7db8559b369}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -228,9 +246,6 @@
     <ClCompile Include="DirectXGame\Base\CreateResource\CreateResource.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\DebugSytem\GlobalVariables.cpp">
-      <Filter>ソース ファイル\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Manager\RandomManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
@@ -269,6 +284,21 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Data\SpriteItem.cpp">
       <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.cpp">
+      <Filter>ソース ファイル\GameObject\Particle\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.cpp">
+      <Filter>ソース ファイル\GameObject\Particle\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Object\WireFrameSpriteBox.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\LoadFile\GlobalVariables.cpp">
+      <Filter>ソース ファイル\LoadFile</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\LoadFile\LoadCSV.cpp">
+      <Filter>ソース ファイル\LoadFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -446,9 +476,6 @@
     <ClInclude Include="DirectXGame\DebugSytem\ReleseCheck.h">
       <Filter>ヘッダー ファイル\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\DebugSytem\GlobalVariables.h">
-      <Filter>ヘッダー ファイル\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Manager\RandomManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
@@ -496,6 +523,21 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\SpriteItem.h">
       <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.h">
+      <Filter>ヘッダー ファイル\GameObject\Particle\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.h">
+      <Filter>ヘッダー ファイル\GameObject\Particle\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Object\WireFrameSpriteBox.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\LoadFile\GlobalVariables.h">
+      <Filter>ヘッダー ファイル\LoadFile</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\LoadFile\LoadCSV.h">
+      <Filter>ヘッダー ファイル\LoadFile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

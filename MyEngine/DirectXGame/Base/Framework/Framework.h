@@ -1,7 +1,7 @@
 #pragma once
 #include "DirectXGame/DebugSytem/DebugLog.h"
 #include "DirectXGame/DebugSytem/ReleseCheck.h"
-#include "DirectXGame/DebugSytem/GlobalVariables.h"
+#include "DirectXGame/LoadFile/GlobalVariables.h"
 #include "DirectXGame/Base/SafeDelete/SafeDelete.h"
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"

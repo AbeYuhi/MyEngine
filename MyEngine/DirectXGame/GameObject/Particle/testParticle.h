@@ -26,6 +26,8 @@ private: //メンバ関数
 private:
 	//std::unique_ptr<Plane> plane_;
 	Model* particleModel_;
+	Sprite* particleSprite_;
+	SpriteData spriteData_;
 	uint32_t textureHandle_;
 
 	//風フィールド

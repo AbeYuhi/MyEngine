@@ -14,7 +14,6 @@ void PlaneParticle::Initialize() {
 	textureHandle_ = TextureManager::Load("circle.png");
 
 	//エミッター情報
-	isSpriteParticle_ = false;
 	emitter_.transform.scale_ = {2, 2, 2};
 	emitter_.transform.translate_ = { 0, 0, 0 };
 	emitter_.count = 3;
@@ -38,8 +37,10 @@ void PlaneParticle::Update() {
 	ImGui::SliderFloat3("EmitterPos", &emitter_.transform.translate_.x, -10, 10);
 	ImGui::SliderFloat3("EmitterScale", &emitter_.transform.scale_.x, 0, 10);
 	ImGui::SliderInt("popCount", &emitter_.count, 0, 10);
+	ImGui::Checkbox("isPop", &isPopParticle_);
 	ImGui::Checkbox("isAccelerationField", &isAccelerationField_);
 	ImGui::Checkbox("isInvisible", &materialInfo_.isInvisible_);
+	ImGui::Checkbox("isInvisibleEmitter", &emitterObjInfo_.materialInfo_.isInvisible_);
 
 	int blendMode = blendMode_;
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };

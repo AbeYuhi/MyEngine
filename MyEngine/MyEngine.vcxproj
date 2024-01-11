@@ -111,7 +111,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Data\TextureData.cpp" />
     <ClCompile Include="DirectXGame\Data\Transform.cpp" />
     <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp" />
-    <ClCompile Include="DirectXGame\DebugSytem\GlobalVariables.cpp" />
+    <ClCompile Include="DirectXGame\LoadFile\GlobalVariables.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.cpp" />
+    <ClCompile Include="DirectXGame\Object\WireFrameSpriteBox.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />
     <ClCompile Include="External\imgui\imgui_draw.cpp" />
@@ -128,6 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Base\Framework\Framework.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\GameClearCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\GameOverCamera.cpp" />
+    <ClCompile Include="DirectXGame\LoadFile\LoadCSV.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DirectXGame\Manager\AudioManager.cpp" />
     <ClCompile Include="DirectXGame\Manager\GameManager.cpp" />
@@ -162,6 +166,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Data\SpriteData.h" />
+    <ClInclude Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.h" />
+    <ClInclude Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.h" />
     <ClInclude Include="DirectXGame\Math\AABB.h" />
     <ClInclude Include="DirectXGame\Data\AccelerationField.h" />
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h" />
@@ -181,8 +187,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Data\Transform.h" />
     <ClInclude Include="DirectXGame\Data\VertexData.h" />
     <ClInclude Include="DirectXGame\DebugSytem\DebugLog.h" />
-    <ClInclude Include="DirectXGame\DebugSytem\GlobalVariables.h" />
+    <ClInclude Include="DirectXGame\LoadFile\GlobalVariables.h" />
     <ClInclude Include="DirectXGame\DebugSytem\ReleseCheck.h" />
+    <ClInclude Include="DirectXGame\Object\WireFrameSpriteBox.h" />
     <ClInclude Include="External\imgui\imconfig.h" />
     <ClInclude Include="External\imgui\imgui.h" />
     <ClInclude Include="External\imgui\imgui_impl_dx12.h" />
@@ -236,6 +243,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\GameObject\Camera\GameOverCamera.h" />
     <ClInclude Include="DirectXGame\Manager\ObjectManager.h" />
     <ClInclude Include="DirectXGame\Data\SpriteItem.h" />
+    <ClInclude Include="DirectXGame\LoadFile\LoadCSV.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

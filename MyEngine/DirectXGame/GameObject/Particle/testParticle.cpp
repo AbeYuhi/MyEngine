@@ -9,16 +9,19 @@ void TestParticle::Initialize() {
 
 	//パーティクルの初期化
 	particleModel_ = ObjectManager::Create("plane");
+	particleSprite_ = ObjectManager::CreateSprite();
 
 	//使用するテクスチャの読み込み
 	//textureHandle_ = TextureManager::Load("uvChecker.png");
 	textureHandle_ = TextureManager::Load("circle.png");
+	spriteData_.Initialize(textureHandle_);
 
 	//エミッター情報
-	isSpriteParticle_ = false;
-	emitter_.transform.scale_ = {2, 2, 2};
-	//emitter_.transform.translate_ = { 640, 360, 0 };
-	emitter_.count = 100;
+	isSpriteParticle_ = true;
+	//emitter_.transform.scale_ = {2, 2, 2};
+	emitter_.transform.scale_ = {0, 0, 0};
+	emitter_.transform.translate_ = { 640, 360, 0 };
+	emitter_.count = 3;
 	emitter_.frequency = 0.5;
 
 	//ブレンドモード
@@ -70,8 +73,8 @@ void TestParticle::Update() {
 		}
 
 		//移動
-		particle->srtData.translate_ += particle->velocity * kDeltaTime_;
-		//particle->srtData.translate_ += particle->velocity;
+		//particle->srtData.translate_ += particle->velocity * kDeltaTime_;
+		particle->srtData.translate_ += particle->velocity;
 		particle->currenttime += kDeltaTime_;
 		particle->color.w = 1.0f - (particle->currenttime / particle->lifeTime);
 
@@ -90,7 +93,7 @@ void TestParticle::Draw() {
 
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(blendMode_);
 
-	particleModel_->Draw(drawInfo_, textureHandle_);
+	particleSprite_->Draw(drawInfo_, spriteData_);
 
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(preBlendMode_);
 }
@@ -103,8 +106,8 @@ ParticleInfo TestParticle::MakeNewParticle() {
 		randomManager_->GetRandomNumber(-emitter_.transform.scale_.y / 2.0f, emitter_.transform.scale_.y / 2.0f),
 		randomManager_->GetRandomNumber(-emitter_.transform.scale_.z / 2.0f, emitter_.transform.scale_.z / 2.0f) };
 	particle.srtData.translate_ += emitter_.transform.translate_;
-	particle.velocity = { randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f) };
-	//particle.velocity = { randomManager_->GetRandomNumber(-10.0f, 10.0f), randomManager_->GetRandomNumber(-10.0f, 10.0f), 0 };
+	//particle.velocity = { randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f), randomManager_->GetRandomNumber(-1.0f, 1.0f) };
+	particle.velocity = { randomManager_->GetRandomNumber(-10.0f, 10.0f), randomManager_->GetRandomNumber(-10.0f, 10.0f), 0 };
 	particle.color = { randomManager_->GetRandomNumber(0.0f, 1.0f), randomManager_->GetRandomNumber(0.0f, 1.0f), randomManager_->GetRandomNumber(0.0f, 1.0f), 1.0f };
 	particle.lifeTime = randomManager_->GetRandomNumber(1.0f, 3.0f);
 	particle.currenttime = 0.0f;

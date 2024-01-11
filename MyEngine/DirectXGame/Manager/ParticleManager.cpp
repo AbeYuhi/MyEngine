@@ -126,9 +126,17 @@ void ParticleManager::Update() {
 void ParticleManager::EmitterDraw() {
 
 	if (isSpriteParticle_) {
+		if (emitterSpriteInfo_.materialInfo_.isInvisible_) {
+			return;
+		}
+
 		emitterSprite_->Draw(emitterSpriteInfo_);
 	}
 	else {
+		if (emitterObjInfo_.materialInfo_.isInvisible_) {
+			return;
+		}
+
 		emitterObj_->Draw(emitterObjInfo_);
 	}
 }

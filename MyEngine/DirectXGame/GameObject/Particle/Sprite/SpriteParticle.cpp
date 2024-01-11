@@ -29,7 +29,10 @@ void SpriteParticle::Update() {
 	ImGui::Begin("SpriteParticle");
 	ImGui::SliderFloat3("EmitterPos", &emitter_.transform.translate_.x, 0, 1280);
 	ImGui::SliderFloat3("EmitterScale", &emitter_.transform.scale_.x, 0, 500);
+	ImGui::SliderInt("popCount", &emitter_.count, 0, 10);
+	ImGui::Checkbox("isPop", &isPopParticle_);
 	ImGui::Checkbox("isInvisible", &materialInfo_.isInvisible_);
+	ImGui::Checkbox("isInvisibleEmitter", &emitterSpriteInfo_.materialInfo_.isInvisible_);
 	int blendMode = blendMode_;
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };
 	ImGui::Combo("blendMode", &blendMode, modes, IM_ARRAYSIZE(modes));
