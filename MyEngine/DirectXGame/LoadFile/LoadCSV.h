@@ -8,7 +8,7 @@ class LoadCSV
 {
 public:
 
-	static std::stringstream Load(const char fileName[]);
+	static std::stringstream Load(std::string fileName);
 
 
 private:
