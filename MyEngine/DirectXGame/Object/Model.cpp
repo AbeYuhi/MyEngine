@@ -259,8 +259,8 @@ void Model::LoadObjFile(const std::string& filename) {
 				vertex.normal = { normal.x, normal.y, normal.z };
 				vertex.texcoord = { texcoord.x, texcoord.y };
 
-				vertex.position.x *= -1.0f;
-				vertex.normal.x *= -1.0f;
+				vertex.position.z *= -1.0f;
+				vertex.normal.z *= -1.0f;
 				modelData_.vertices.push_back(vertex);
 			}
 		}
