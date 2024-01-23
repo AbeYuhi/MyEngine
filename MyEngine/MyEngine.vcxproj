@@ -111,15 +111,20 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Base\CreateResource\CreateResource.cpp" />
     <ClCompile Include="DirectXGame\Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="DirectXGame\Data\Collider.cpp" />
     <ClCompile Include="DirectXGame\Data\Material.cpp" />
     <ClCompile Include="DirectXGame\Data\MaterialInfo.cpp" />
     <ClCompile Include="DirectXGame\Data\SpriteData.cpp" />
     <ClCompile Include="DirectXGame\Data\TextureData.cpp" />
     <ClCompile Include="DirectXGame\Data\Transform.cpp" />
     <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Entity\Player.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Map\CreateStage.cpp" />
+    <ClCompile Include="DirectXGame\GameObject\Map\Stage.cpp" />
     <ClCompile Include="DirectXGame\LoadFile\GlobalVariables.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.cpp" />
+    <ClCompile Include="DirectXGame\Manager\CollisionManager.cpp" />
     <ClCompile Include="DirectXGame\Object\WireFrameSpriteBox.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />
@@ -171,9 +176,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Data\SpriteItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Data\Collider.h" />
     <ClInclude Include="DirectXGame\Data\SpriteData.h" />
+    <ClInclude Include="DirectXGame\Data\StageBlock.h" />
+    <ClInclude Include="DirectXGame\GameObject\Entity\Player.h" />
+    <ClInclude Include="DirectXGame\GameObject\Map\CreateStage.h" />
+    <ClInclude Include="DirectXGame\GameObject\Map\Stage.h" />
     <ClInclude Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.h" />
     <ClInclude Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.h" />
+    <ClInclude Include="DirectXGame\Manager\CollisionManager.h" />
     <ClInclude Include="DirectXGame\Math\AABB.h" />
     <ClInclude Include="DirectXGame\Data\AccelerationField.h" />
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h" />

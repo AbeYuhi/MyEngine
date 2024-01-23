@@ -57,7 +57,6 @@ void InGameScene::Initialize() {
 	planeParticle_->Initialize();
 
 	groundModel_ = ObjectManager::Create("yukari");
-	//groundModel_ = ObjectManager::Create("YudukiYukari");
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 

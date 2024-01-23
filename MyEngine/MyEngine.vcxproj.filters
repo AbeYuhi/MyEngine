@@ -115,6 +115,12 @@
     <Filter Include="ヘッダー ファイル\LoadFile">
       <UniqueIdentifier>{576d992c-da5c-4f84-bf03-e7db8559b369}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Map">
+      <UniqueIdentifier>{831ee262-51d7-42ce-b060-ae02589e9056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Map">
+      <UniqueIdentifier>{928c5bf6-854d-416e-9b8d-15d6b278cbf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -299,6 +305,21 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\LoadFile\LoadCSV.cpp">
       <Filter>ソース ファイル\LoadFile</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Entity\Player.cpp">
+      <Filter>ソース ファイル\GameObject\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Map\CreateStage.cpp">
+      <Filter>ソース ファイル\GameObject\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Map\Stage.cpp">
+      <Filter>ソース ファイル\GameObject\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Data\Collider.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Manager\CollisionManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -541,6 +562,24 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\Mesh.h">
       <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Entity\Player.h">
+      <Filter>ヘッダー ファイル\GameObject\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Map\CreateStage.h">
+      <Filter>ヘッダー ファイル\GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Map\Stage.h">
+      <Filter>ヘッダー ファイル\GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\Collider.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Manager\CollisionManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\StageBlock.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

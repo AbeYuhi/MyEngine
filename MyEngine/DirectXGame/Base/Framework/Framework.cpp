@@ -37,6 +37,9 @@ void Framework::Initialize() {
 	randomManager_ = RandomManager::GetInstance();
 	randomManager_->Initialize();
 
+	collisionManager_ = CollisionManager::GetInstance();
+	collisionManager_->Initialize();
+
 	graphicsPipelineManager_ = GraphicsPipelineManager::GetInstance();
 	graphicsPipelineManager_->Initialize();
 

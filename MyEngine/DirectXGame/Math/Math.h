@@ -115,4 +115,8 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 
 #pragma endregion
 
+void ControlMinMax(AABB& a);
+
+bool IsCollision(const AABB& a, const AABB& b);
+
 bool IsCollision(const AABB& aabb, const Vector3& point);

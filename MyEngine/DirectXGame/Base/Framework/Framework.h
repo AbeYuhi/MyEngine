@@ -10,6 +10,7 @@
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 #include "DirectXGame/Manager/ImGuiManager.h"
 #include "DirectXGame/Manager/RandomManager.h"
+#include "DirectXGame/Manager/CollisionManager.h"
 #include "DirectXGame/Manager/InputManager.h"
 
 class Framework
@@ -31,6 +32,7 @@ protected:
 	AudioManager* audioManager_ = nullptr;
 	ImGuiManager* imGuiManager_ = nullptr;
 	RandomManager* randomManager_ = nullptr;
+	CollisionManager* collisionManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	GlobalVariables* globalVariables_ = nullptr;
 };

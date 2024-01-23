@@ -500,6 +500,27 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 }
 #pragma endregion
 
+
+void ControlMinMax(AABB& a) {
+	a.min.x = (std::min)(a.min.x, a.max.x);
+	a.max.x = (std::max)(a.min.x, a.max.x);
+
+	a.min.y = (std::min)(a.min.y, a.max.y);
+	a.max.y = (std::max)(a.min.y, a.max.y);
+
+	a.min.z = (std::min)(a.min.z, a.max.z);
+	a.max.z = (std::max)(a.min.z, a.max.z);
+}
+
+bool IsCollision(const AABB& a, const AABB& b) {
+	if (a.min.x <= b.max.x && a.max.x >= b.min.x &&
+		a.min.y <= b.max.y && a.max.y >= b.min.y &&
+		a.min.z <= b.max.z && a.max.z >= b.min.z) {
+		return true;
+	}
+	return false;
+}	
+
 bool IsCollision(const AABB& aabb, const Vector3& point) {
 	if (aabb.min.x <= point.x && aabb.max.x >= point.x &&
 		aabb.min.y <= point.y && aabb.max.y >= point.y &&
