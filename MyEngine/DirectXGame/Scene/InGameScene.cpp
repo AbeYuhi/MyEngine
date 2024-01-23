@@ -142,6 +142,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	planeParticle_->EmitterDraw();
+	//groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
 

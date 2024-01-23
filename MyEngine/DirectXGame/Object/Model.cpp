@@ -156,6 +156,9 @@ void Model::Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle) {
 }
 
 void Model::LoadObjFile(const std::string& filename) {
+
+	//自力でobjを読み込む場合
+	/*
 	std::vector<Vector4> positions;
 	std::vector<Vector3> normals;
 	std::vector<Vector2> texcoords;
@@ -226,6 +229,61 @@ void Model::LoadObjFile(const std::string& filename) {
 			}
 		}
 	}
+	*/
+
+	//assimpで読み込む
+	Assimp::Importer importer;
+	std::string filePath = "Resources/Images/" + filename + "/" + filename + ".obj";
+	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+	assert(scene->HasMeshes());
+	
+	//meshを解析する
+	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; meshIndex++) {
+		aiMesh* mesh = scene->mMeshes[meshIndex];
+		assert(mesh->HasNormals());
+		assert(mesh->HasTextureCoords(0));
+
+		//中身の解析
+		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
+			aiFace& face = mesh->mFaces[faceIndex];
+			assert(face.mNumIndices == 3);
+			//Vertexの解析
+			for (uint32_t element = 0; element < face.mNumIndices; element++) {
+				uint32_t vertexIndex = face.mIndices[element];
+				aiVector3D& position = mesh->mVertices[vertexIndex];
+				aiVector3D& normal = mesh->mNormals[vertexIndex];
+				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+				VertexData vertex;
+
+				vertex.position = { position.x, position.y, position.z, 1.0f };
+				vertex.normal = { normal.x, normal.y, normal.z };
+				vertex.texcoord = { texcoord.x, texcoord.y };
+
+				vertex.position.x *= -1.0f;
+				vertex.normal.x *= -1.0f;
+				modelData_.vertices.push_back(vertex);
+			}
+		}
+	}
+
+	//materialの解析
+	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; materialIndex++) {
+		aiMaterial* material = scene->mMaterials[materialIndex];
+		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
+			aiString textureFilePath;
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
+			modelData_.material.textureFilePath = filename + "/" + textureFilePath.C_Str();
+			textureName_ = textureFilePath.C_Str();
+		}
+	}
+	//もしテクスチャが見つからなかった場合は白い画像を入れる
+	if (!modelData_.material.textureFilePath.empty()) {
+		textureHandle_ = TextureManager::Load(textureName_, modelData_.material.textureFilePath);
+	}
+	else {
+		textureHandle_ = TextureManager::Load("whiteTexture2x2.png");
+	}
+
 }
 
 void Model::LoadMaterialDataTemplateFile(const std::string& folderPath, const std::string& filename) {
