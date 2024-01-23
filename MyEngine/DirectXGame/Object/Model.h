@@ -6,6 +6,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <assimp/material.h>
 #include "DirectXGame/Base/CreateResource/CreateResource.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 #include "DirectXGame/Manager/ImGuiManager.h"

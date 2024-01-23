@@ -57,6 +57,7 @@ void InGameScene::Initialize() {
 	planeParticle_->Initialize();
 
 	groundModel_ = ObjectManager::Create("yukari");
+	//groundModel_ = ObjectManager::Create("YudukiYukari");
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
@@ -141,7 +142,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//planeParticle_->EmitterDraw();
-	groundModel_->Draw(groundModelInfo_, 1);
+	groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
 

@@ -212,7 +212,7 @@ void Model::LoadObjFile(const std::string& filename) {
 		std::string textureName = textureFilePath.C_Str();
 
 		//もしテクスチャが見つからなかった場合は白い画像を入れる
-		if (!modelPart.modelData.material.textureFilePath.empty()) {
+		if (!textureName.empty()) {
 			modelPart.textureHandle = TextureManager::Load(textureName, modelPart.modelData.material.textureFilePath);
 		}
 		else {
