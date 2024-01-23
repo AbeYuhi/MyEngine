@@ -95,6 +95,8 @@ protected: //メンバ変数
 	bool isSpriteParticle_;
 	//パーティクルを発生させるか
 	bool isPopParticle_;
+	//ビルボードするかどうか
+	bool isBillboard_;
 	
 	//描画の際に必要なパーティクルデータ
 	ParticleDrawInfo drawInfo_;

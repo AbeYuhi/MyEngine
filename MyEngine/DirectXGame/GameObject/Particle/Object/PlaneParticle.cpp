@@ -1,6 +1,5 @@
 #include "PlaneParticle.h"
 
-
 PlaneParticle::PlaneParticle(int maxParticleCount) : ParticleManager(maxParticleCount) {}
 
 void PlaneParticle::Initialize() {
@@ -41,6 +40,7 @@ void PlaneParticle::Update() {
 	ImGui::Checkbox("isAccelerationField", &isAccelerationField_);
 	ImGui::Checkbox("isInvisible", &materialInfo_.isInvisible_);
 	ImGui::Checkbox("isInvisibleEmitter", &emitterObjInfo_.materialInfo_.isInvisible_);
+	ImGui::Checkbox("isBillboard", &isBillboard_);
 
 	int blendMode = blendMode_;
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };

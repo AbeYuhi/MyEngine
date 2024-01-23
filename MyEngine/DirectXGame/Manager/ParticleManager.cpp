@@ -58,6 +58,9 @@ void ParticleManager::Initialize() {
 	//パーティクルを発生させるか
 	isPopParticle_ = true;
 
+	//ビルボードさせるか
+	isBillboard_ = true;
+
 	//ブレンドモード
 	blendMode_ = kBlendModeAdd;
 
@@ -104,7 +107,12 @@ void ParticleManager::Update() {
 			worldViewProjectionMatrix = Multiply(worldMatrix, SpriteCamera::GetInstance()->GetViewProjectionMatrix());
 		}
 		else {
-			worldMatrix = Multiply(MakeScaleMatrix(particle->srtData.scale_), Multiply(billboardMatrix, MakeTranslateMatrix(particle->srtData.translate_)));
+			if (isBillboard_) {
+				worldMatrix = Multiply(MakeScaleMatrix(particle->srtData.scale_), Multiply(billboardMatrix, MakeTranslateMatrix(particle->srtData.translate_)));
+			}
+			else {
+				worldMatrix = MakeAffineMatrix(particle->srtData.scale_, particle->srtData.rotate_, particle->srtData.translate_);
+			}
 			worldViewProjectionMatrix = Multiply(worldMatrix, MainCamera::GetInstance()->GetViewProjectionMatrix());
 		}
 
