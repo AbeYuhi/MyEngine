@@ -16,6 +16,7 @@
 # Mono auto generated filesmono_crash.*
 
 # Build results
+[Gg]enerated/
 [Dd]ebugPublic/
 [Rr]eleases/
 x64/
