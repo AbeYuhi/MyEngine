@@ -24,6 +24,8 @@ enum PipelineState {
 	kDefault,
 	//パーティクル用
 	kParticle,
+	//ワイヤフレーム用
+	kWireFrame,
 	//パイプラインステートの数
 	kCountOfPipelineState
 };

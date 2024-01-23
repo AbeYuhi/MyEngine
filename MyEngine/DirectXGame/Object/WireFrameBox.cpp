@@ -91,13 +91,17 @@ void WireFrameBox::Draw(RenderItem& renderItem) {
 	if (renderItem.materialInfo_.isInvisible_) {
 		return;
 	}
+#ifdef NDEBUG
+	return;
+#endif // NDEBUG
+
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
 	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
 	//パイプラインステートの設定
-	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(PipelineState::kWireFrame));
 	//ルートシグネチャの設定
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	//プリミティブ形状を設定

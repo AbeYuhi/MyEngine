@@ -47,6 +47,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
+		case PipelineState::kWireFrame:
 		default:
 #pragma region 通常のシェーダー
 		{
@@ -264,6 +265,7 @@ void GraphicsPipelineManager::CreatePSO() {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
+		case PipelineState::kWireFrame:
 		default:
 			//頂点シェーダー
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.VS.hlsl", L"vs_6_0");
@@ -288,6 +290,7 @@ void GraphicsPipelineManager::CreatePSO() {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
+		case PipelineState::kWireFrame:
 		default:
 			depthStencilDesc[shaderPack].DepthEnable = true;
 			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
@@ -317,7 +320,13 @@ void GraphicsPipelineManager::CreatePSO() {
 			graphicsPipeLineStateDesc.NumRenderTargets = 1;
 			graphicsPipeLineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 			//利用する形状タイプ
-			graphicsPipeLineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+			if (shaderPack == PipelineState::kWireFrame) {
+				graphicsPipeLineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
+			}
+			else {
+				graphicsPipeLineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+			}
+
 			//どのように画面に色を打ち込むのかの設定
 			graphicsPipeLineStateDesc.SampleDesc.Count = 1;	
 			graphicsPipeLineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;

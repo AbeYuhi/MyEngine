@@ -113,3 +113,13 @@ Vector3 operator/=(Vector3& num1, const float num2) {
 
 	return num1;
 }
+
+bool operator==(const Vector3& num1, const Vector3& num2) {
+	if (num1.x == num2.x
+		&& num1.y == num2.y
+		&& num1.z == num2.z) {
+		return true;
+	}
+
+	return false;
+}

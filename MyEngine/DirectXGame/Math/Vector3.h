@@ -37,3 +37,4 @@ Vector3 operator*=(Vector3& num1, const float num2);
 Vector3 operator*=(Vector3& num1, const Vector3& num2);
 Vector3 operator/=(Vector3& num1, const Vector3& num2);
 Vector3 operator/=(Vector3& num1, const float num2);
+bool operator==(const Vector3& num1, const Vector3& num2);
