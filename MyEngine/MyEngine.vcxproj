@@ -250,6 +250,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Manager\ObjectManager.h" />
     <ClInclude Include="DirectXGame\Data\SpriteItem.h" />
     <ClInclude Include="DirectXGame\LoadFile\LoadCSV.h" />
+    <ClInclude Include="DirectXGame\Data\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

@@ -539,6 +539,9 @@
     <ClInclude Include="DirectXGame\LoadFile\LoadCSV.h">
       <Filter>ヘッダー ファイル\LoadFile</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Data\Mesh.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj">

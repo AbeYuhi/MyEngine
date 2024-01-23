@@ -56,11 +56,10 @@ void InGameScene::Initialize() {
 	planeParticle_ = std::make_unique<PlaneParticle>(100);
 	planeParticle_->Initialize();
 
-	groundModel_ = ObjectManager::Create("YudukiYukari");
+	groundModel_ = ObjectManager::Create("yukari");
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
-	float hatibunnkatu = 1.0f / 8.0f;
 	sprite_ = ObjectManager::CreateSprite();
 	spriteInfo_.Initialize();
 }
@@ -135,21 +134,21 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
-	spriteParticle_->EmitterDraw();
+	//spriteParticle_->EmitterDraw();
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	planeParticle_->EmitterDraw();
-	groundModel_->Draw(groundModelInfo_);
+	//planeParticle_->EmitterDraw();
+	groundModel_->Draw(groundModelInfo_, 1);
 
 	///オブジェクトの描画終了
 
 	///パーティクルの描画
 
-	spriteParticle_->Draw();
-	planeParticle_->Draw();
+	//spriteParticle_->Draw();
+	//planeParticle_->Draw();
 
 	///パーティクルの描画終了
 }

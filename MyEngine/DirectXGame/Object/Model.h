@@ -14,15 +14,14 @@
 #include "DirectXGame/Math/Vector4.h"
 #include "DirectXGame/Math/Matrix4x4.h"
 #include "DirectXGame/Math/Math.h"
-#include "DirectXGame/Data/VertexData.h"
 #include "DirectXGame/Data/Transform.h"
-#include "DirectXGame/Data/MaterialData.h"
 #include "DirectXGame/Data/ModelData.h"
 #include "DirectXGame/Data/Material.h"
 #include "DirectXGame/Data/MaterialInfo.h"
 #include "DirectXGame/Data/RenderItem.h"
 #include "DirectXGame/Data/TextureData.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
+#include "DirectXGame/Data/Mesh.h"
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 
@@ -52,22 +51,9 @@ public: //ゲッターセッター
 
 private: //メンバ関数
 	void LoadObjFile(const std::string& filename);
-	void LoadMaterialDataTemplateFile(const std::string& folderPath, const std::string& filename);
 
 private: //メンバ変数
-	//モデルデータ
-	ModelData modelData_;
 
-	//テクスチャデータ
-	std::string textureName_;
-	uint32_t textureHandle_;
+	std::list<Mesh> meshs_;
 
-	//オブジェクト情報のResource
-	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
-
-	//VertexBufferView
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
-
-	//オブジェクトのローカル情報
-	VertexData* vertexData_;
 };
