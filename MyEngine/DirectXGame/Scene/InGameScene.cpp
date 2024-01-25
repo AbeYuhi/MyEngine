@@ -124,7 +124,7 @@ void InGameScene::Draw() {
 	//ライティングの転送
 	lightObj_->Draw();
 
-	///背景スプライトの描画開始
+	///背景スプライトの描画開始 
 
 	
 
