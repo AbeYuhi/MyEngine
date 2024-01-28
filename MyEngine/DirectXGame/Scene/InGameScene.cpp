@@ -62,6 +62,11 @@ void InGameScene::Initialize() {
 
 	sprite_ = ObjectManager::CreateSprite();
 	spriteInfo_.Initialize();
+	spriteInfo_.spriteData_.size_ = { 64, 64 };
+
+	sprite1_ = ObjectManager::CreateSprite();
+	spriteInfo1_.Initialize();
+	spriteInfo1_.spriteData_.size_ = { 128, 128 };
 }
 
 void InGameScene::Update() {
@@ -106,6 +111,12 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("scale", &spriteInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::EndTabItem();
 	}
+	if (ImGui::BeginTabItem("sprite1")) {
+		ImGui::SliderFloat3("pos", &spriteInfo1_.worldTransform_.data_.translate_.x, -1000, 1000);
+		ImGui::SliderFloat3("rotate", &spriteInfo1_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &spriteInfo1_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::EndTabItem();
+	}
 	ImGui::EndTabBar();
 
 	ImGui::Begin("BlendMode");
@@ -116,6 +127,7 @@ void InGameScene::Update() {
 
 	groundModelInfo_.Update();
 	spriteInfo_.Update();
+	spriteInfo1_.Update();
 }
 
 void InGameScene::Draw() {
@@ -133,6 +145,9 @@ void InGameScene::Draw() {
 	directXCommon_->ClearDepthStencilBuffer();
 
 	///前面スプライトの描画開始
+
+	sprite_->Draw(spriteInfo_);
+	sprite1_->Draw(spriteInfo1_);
 
 	//spriteParticle_->EmitterDraw();
 
