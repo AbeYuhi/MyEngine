@@ -70,6 +70,9 @@ private:
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;
 
+	std::shared_ptr<Sprite> sprite1_;
+	SpriteItem spriteInfo1_;
+
 	//サウンド
 	uint32_t soundHandle_;
 };
