@@ -71,6 +71,9 @@ private:
 	Sprite* sprite_;
 	SpriteItem spriteInfo_;
 
+	Sprite* sprite1_;
+	SpriteItem spriteInfo1_;
+
 	//サウンド
 	uint32_t soundHandle_;
 };
