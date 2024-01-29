@@ -30,9 +30,11 @@ class Model
 {
 public: //静的メンバ関数
 
-	static std::unique_ptr<Model> Create(const std::string& filepath, const std::string filename);
+	static std::shared_ptr<Model> Create(const std::string& filepath, const std::string filename);
 
 private: //静的メンバ変数
+
+	static std::map<std::string, std::shared_ptr<Model>> sModels_;
 
 public: //メンバ関数
 	Model();
@@ -45,10 +47,6 @@ public: //メンバ関数
 
 	void Draw(ParticleDrawInfo drawInfo);
 	void Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle);
-
-public: //ゲッターセッター
-
-	//void SetColor(Vector4 color) { materialData_->color = color; }
 
 private: //メンバ関数
 	void LoadModelFile(const std::string& filepath, const std::string& filename);

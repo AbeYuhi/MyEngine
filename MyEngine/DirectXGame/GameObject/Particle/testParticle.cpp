@@ -1,6 +1,5 @@
 #include "testParticle.h"
 
-
 TestParticle::TestParticle(int maxParticleCount) : ParticleManager(maxParticleCount){}
 
 void TestParticle::Initialize() {
@@ -8,8 +7,8 @@ void TestParticle::Initialize() {
 	ParticleManager::Initialize();
 
 	//パーティクルの初期化
-	particleModel_ = ObjectManager::Create("plane", "plane.obj");
-	particleSprite_ = ObjectManager::CreateSprite();
+	particleModel_ = Model::Create("plane", "plane.obj");
+	particleSprite_ = Sprite::Create();
 
 	//使用するテクスチャの読み込み
 	//textureHandle_ = TextureManager::Load("uvChecker.png");

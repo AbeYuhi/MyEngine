@@ -126,9 +126,6 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Object\Triangle.cpp">
-      <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Math\Vector2.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
@@ -180,9 +177,6 @@
     <ClCompile Include="DirectXGame\GameObject\Camera\DebugCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Object\Sphere.cpp">
-      <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Manager\GraphicsPipelineManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
@@ -203,9 +197,6 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\GameObject\Camera\InGameCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Object\Plane.cpp">
-      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Manager\ParticleManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
@@ -282,9 +273,6 @@
     <ClCompile Include="DirectXGame\GameObject\Camera\MenuCamera.cpp">
       <Filter>ソース ファイル\GameObject\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Manager\ObjectManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Data\SpriteData.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
@@ -323,9 +311,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Object\Triangle.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Math\Math.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
@@ -392,9 +377,6 @@
     <ClInclude Include="DirectXGame\GameObject\Camera\SpriteCamera.h">
       <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Object\Sphere.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Manager\GraphicsPipelineManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
@@ -430,9 +412,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Camera\InGameCamera.h">
       <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Object\Plane.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Manager\ParticleManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
@@ -535,9 +514,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Camera\GameClearCamera.h">
       <Filter>ヘッダー ファイル\GameObject\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Manager\ObjectManager.h">
-      <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\SpriteData.h">
       <Filter>ヘッダー ファイル\Data</Filter>

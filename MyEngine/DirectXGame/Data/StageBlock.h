@@ -4,7 +4,7 @@
 #include "DirectXGame/Data/Collider.h"
 
 struct StageBlock {
-	Model* stageModel;
+	std::shared_ptr<Model> stageModel;
 	RenderItem stageModelInfo;
 	Vector3 velocity_;
 	std::unique_ptr<Collider> collider;

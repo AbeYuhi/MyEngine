@@ -8,8 +8,8 @@ Sprite::~Sprite()
 {
 }
 
-std::unique_ptr<Sprite> Sprite::Create() {
-	std::unique_ptr<Sprite> object = std::make_unique<Sprite>();
+std::shared_ptr<Sprite> Sprite::Create() {
+	std::shared_ptr<Sprite> object = std::make_shared<Sprite>();
 	object->Initialize();
 	return object;
 }

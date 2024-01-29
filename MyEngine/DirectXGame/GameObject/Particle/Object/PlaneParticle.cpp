@@ -7,7 +7,7 @@ void PlaneParticle::Initialize() {
 	ParticleManager::Initialize();
 
 	//パーティクルの初期化
-	particleModel_ = ObjectManager::Create("plane", "plane.obj");
+	particleModel_ = Model::Create("plane", "plane.obj");
 
 	//使用するテクスチャの読み込み
 	textureHandle_ = TextureManager::Load("circle.png");

@@ -3,11 +3,16 @@
 Model::Model() {}
 Model::~Model() {}
 
-std::unique_ptr<Model> Model::Create(const std::string& filepath, const std::string filename) {
-	std::unique_ptr<Model> object = std::make_unique<Model>();
-	object->Initialize(filepath, filename);
+std::map<std::string, std::shared_ptr<Model>> Model::sModels_;
 
-	return object;
+std::shared_ptr<Model> Model::Create(const std::string& filepath, const std::string filename) {
+
+	if (sModels_.find(filepath) == sModels_.end()) {
+		sModels_[filepath] = std::make_shared<Model>();
+		sModels_[filepath]->Initialize(filepath, filename);
+	}
+	
+	return sModels_[filepath];
 }
 
 void Model::Initialize(const std::string& filepath, const std::string filename) {

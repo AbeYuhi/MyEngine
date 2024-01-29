@@ -2,7 +2,6 @@
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 #include "DirectXGame/Manager/ImGuiManager.h"
-#include "DirectXGame/Manager/ObjectManager.h"
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/InputManager.h"
 #include "DirectXGame/Manager/AudioManager.h"
@@ -62,13 +61,13 @@ private:
 	std::unique_ptr<SpriteParticle> spriteParticle_;
 	std::unique_ptr<PlaneParticle> planeParticle_;
 
-	Model* groundModel_;
+	std::shared_ptr<Model> groundModel_;
 	RenderItem groundModelInfo_;
 
-	Model* planeModel_;
+	std::shared_ptr<Model> planeModel_;
 	RenderItem planeModelInfo_;
 
-	Sprite* sprite_;
+	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;
 
 	//サウンド

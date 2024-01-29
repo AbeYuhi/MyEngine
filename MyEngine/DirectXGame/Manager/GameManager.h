@@ -1,9 +1,7 @@
 #pragma once
 #include <memory>
 #include "DirectXGame/Base/Framework/Framework.h"
-#include "DirectXGame/Object/Triangle.h"
 #include "DirectXGame/Object/Sprite.h"
-#include "DirectXGame/Object/Sphere.h"
 #include "DirectXGame/Manager/SceneManager.h"
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
 

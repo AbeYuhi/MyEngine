@@ -8,7 +8,7 @@ CollisionManager* CollisionManager::GetInstance() {
 void CollisionManager::Initialize() {
 	colliders_.clear();
 
-	wireFrame_ = ObjectManager::CreateWireFrameBox();
+	wireFrame_ = WireFrameBox::Create();
 }
 
 void CollisionManager::Update() {

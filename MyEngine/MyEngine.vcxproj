@@ -155,10 +155,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Math\Vector3.cpp" />
     <ClCompile Include="DirectXGame\Math\Math.cpp" />
     <ClCompile Include="DirectXGame\Object\Model.cpp" />
-    <ClCompile Include="DirectXGame\Object\Plane.cpp" />
-    <ClCompile Include="DirectXGame\Object\Sphere.cpp" />
     <ClCompile Include="DirectXGame\Object\Sprite.cpp" />
-    <ClCompile Include="DirectXGame\Object\Triangle.cpp" />
     <ClCompile Include="DirectXGame\Scene\GameClearScene.cpp" />
     <ClCompile Include="DirectXGame\Scene\GameOverScene.cpp" />
     <ClCompile Include="DirectXGame\Scene\InGameScene.cpp" />
@@ -172,7 +169,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Manager\SceneManager.cpp" />
     <ClCompile Include="DirectXGame\Scene\SceneFactory\SceneFactory.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\MenuCamera.cpp" />
-    <ClCompile Include="DirectXGame\Manager\ObjectManager.cpp" />
     <ClCompile Include="DirectXGame\Data\SpriteItem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,10 +233,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Math\Math.h" />
     <ClInclude Include="DirectXGame\Math\Vector4.h" />
     <ClInclude Include="DirectXGame\Object\Model.h" />
-    <ClInclude Include="DirectXGame\Object\Plane.h" />
-    <ClInclude Include="DirectXGame\Object\Sphere.h" />
     <ClInclude Include="DirectXGame\Object\Sprite.h" />
-    <ClInclude Include="DirectXGame\Object\Triangle.h" />
     <ClInclude Include="DirectXGame\Scene\GameClearScene.h" />
     <ClInclude Include="DirectXGame\Scene\GameOverScene.h" />
     <ClInclude Include="DirectXGame\Scene\InGameScene.h" />
@@ -258,7 +251,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\GameObject\Camera\MenuCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\GameClearCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\GameOverCamera.h" />
-    <ClInclude Include="DirectXGame\Manager\ObjectManager.h" />
     <ClInclude Include="DirectXGame\Data\SpriteItem.h" />
     <ClInclude Include="DirectXGame\LoadFile\LoadCSV.h" />
     <ClInclude Include="DirectXGame\Data\Mesh.h" />

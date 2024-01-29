@@ -9,7 +9,7 @@ void Player::Initialize() {
 
 	isDead_ = false;
 
-	playerModel_ = ObjectManager::Create("cube", "cube.obj");
+	playerModel_ = Model::Create("cube", "cube.obj");
 	playerModelInfo_.Initialize();
 	playerModelInfo_.worldTransform_.data_.scale_ = { 0.7f, 0.7f, 0.7f };
 

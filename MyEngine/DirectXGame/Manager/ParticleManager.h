@@ -9,7 +9,8 @@
 #include "DirectXGame/Data/AccelerationField.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 #include "DirectXGame/Manager/RandomManager.h"
-#include "DirectXGame/Manager/ObjectManager.h"
+#include "DirectXGame/Object/WireFrameBox.h"
+#include "DirectXGame/Object/WireFrameSpriteBox.h"
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
 
@@ -82,8 +83,8 @@ protected: //メンバ変数
 	ResourceHandles srvHandle_;
 	//エミッターの情報
 	Emitter emitter_;
-	WireFrameBox* emitterObj_;
-	WireFrameSpriteBox* emitterSprite_;
+	std::shared_ptr<WireFrameBox> emitterObj_;
+	std::shared_ptr<WireFrameSpriteBox> emitterSprite_;
 	RenderItem emitterObjInfo_;
 	SpriteItem emitterSpriteInfo_;
 	//データ

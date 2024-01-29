@@ -41,10 +41,10 @@ void ParticleManager::Initialize() {
 	emitter_.frequency = 0.5f;
 	emitter_.frequencyTime = 0.0f;
 
-	emitterObj_ = ObjectManager::CreateWireFrameBox();
+	emitterObj_ = WireFrameBox::Create();
 	emitterObjInfo_.Initialize();
 
-	emitterSprite_ = ObjectManager::CreateWireFrameSpriteBox();
+	emitterSprite_ = WireFrameSpriteBox::Create();
 	emitterSpriteInfo_.Initialize(1, {1, 1});
 
 #ifdef NDEBUG

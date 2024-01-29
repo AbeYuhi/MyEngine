@@ -1,7 +1,7 @@
 #pragma once
 #include "DirectXGame/Manager/CollisionManager.h"
-#include "DirectXGame/Manager/ObjectManager.h"
 #include "DirectXGame/Manager/InputManager.h"
+#include "DirectXGame/Object/Model.h"
 
 class Stage;
 
@@ -29,7 +29,7 @@ private:
 	InputManager* input_ = nullptr;
 	Stage* stage_ = nullptr;
 
-	Model* playerModel_;
+	std::shared_ptr<Model> playerModel_;
 	RenderItem playerModelInfo_;
 	std::unique_ptr<Collider> collider_;
 	Vector3 velocity_;

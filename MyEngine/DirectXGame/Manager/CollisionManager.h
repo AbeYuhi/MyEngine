@@ -3,7 +3,6 @@
 #include <list>
 #include "DirectXGame/Data/Collider.h"
 #include "DirectXGame/Object/WireFrameBox.h"
-#include "DirectXGame/Manager/ObjectManager.h"
 #include "DirectXGame/Math/AABB.h"
 #include "DirectXGame/Math/Math.h"
 
@@ -33,6 +32,6 @@ private:
 	~CollisionManager() = default;
 
 	std::list<Collider*> colliders_;
-	WireFrameBox* wireFrame_;
+	std::shared_ptr<WireFrameBox> wireFrame_;
 };
 

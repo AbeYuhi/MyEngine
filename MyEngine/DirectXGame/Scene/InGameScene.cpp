@@ -56,14 +56,14 @@ void InGameScene::Initialize() {
 	planeParticle_ = std::make_unique<PlaneParticle>(100);
 	planeParticle_->Initialize();
 
-	groundModel_ = ObjectManager::Create("yukari", "yukari.obj");
+	groundModel_ = Model::Create("yukari", "yukari.obj");
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = false;
 
-	planeModel_ = ObjectManager::Create("plane_gltf", "plane.gltf");
+	planeModel_ = Model::Create("plane_gltf", "plane.gltf");
 	planeModelInfo_.Initialize();
 
-	sprite_ = ObjectManager::CreateSprite();
+	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize();
 	spriteInfo_.spriteData_.size_ = { 64, 64 };
 }
@@ -104,16 +104,21 @@ void InGameScene::Update() {
 		}
 		ImGui::EndTabItem();
 	}
+	if (ImGui::BeginTabItem("planeModel")) {
+		ImGui::SliderFloat3("pos", &planeModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &planeModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &planeModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::SliderFloat("shininess", &planeModelInfo_.materialInfo_.material_->shininess, 0, 100);
+		bool b = false;
+		if (ImGui::Checkbox("isSpecularReflection", &b)) {
+			planeModelInfo_.materialInfo_.material_->isSpecularReflection = !planeModelInfo_.materialInfo_.material_->isSpecularReflection;
+		}
+		ImGui::EndTabItem();
+	}
 	if (ImGui::BeginTabItem("sprite")) {
 		ImGui::SliderFloat3("pos", &spriteInfo_.worldTransform_.data_.translate_.x, -1000, 1000);
 		ImGui::SliderFloat3("rotate", &spriteInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &spriteInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("sprite1")) {
-		ImGui::SliderFloat3("pos", &spriteInfo1_.worldTransform_.data_.translate_.x, -1000, 1000);
-		ImGui::SliderFloat3("rotate", &spriteInfo1_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &spriteInfo1_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::EndTabItem();
 	}
 	ImGui::EndTabBar();
@@ -125,6 +130,7 @@ void InGameScene::Update() {
 	ImGui::End();
 
 	groundModelInfo_.Update();
+	planeModelInfo_.Update();
 	spriteInfo_.Update();
 }
 
@@ -144,7 +150,7 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
-	sprite_->Draw(spriteInfo_);
+	//sprite_->Draw(spriteInfo_);
 
 	//spriteParticle_->EmitterDraw();
 
@@ -153,6 +159,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//planeParticle_->EmitterDraw();
+	//planeModel_->Draw(planeModelInfo_);
 	groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了

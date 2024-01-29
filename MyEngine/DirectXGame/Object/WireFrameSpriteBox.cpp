@@ -8,11 +8,15 @@ WireFrameSpriteBox::~WireFrameSpriteBox()
 {
 }
 
-std::unique_ptr<WireFrameSpriteBox> WireFrameSpriteBox::Create() {
-	std::unique_ptr<WireFrameSpriteBox> object = std::make_unique<WireFrameSpriteBox>();
-	object->Initialize();
+std::shared_ptr<WireFrameSpriteBox> WireFrameSpriteBox::sWireFrameSpriteBox_;
+std::shared_ptr<WireFrameSpriteBox> WireFrameSpriteBox::Create() {
+	
+	if (!sWireFrameSpriteBox_) {
+		sWireFrameSpriteBox_ = std::make_shared<WireFrameSpriteBox>();
+		sWireFrameSpriteBox_->Initialize();
+	}
 
-	return object;
+	return sWireFrameSpriteBox_;
 }
 
 void WireFrameSpriteBox::Initialize() {

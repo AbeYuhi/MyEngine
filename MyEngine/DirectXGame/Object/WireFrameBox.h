@@ -19,11 +19,12 @@
 class WireFrameBox
 {
 public: //静的メンバ関数
-	static std::unique_ptr<WireFrameBox> Create();
+	static std::shared_ptr<WireFrameBox> Create();
 
 private: //静的メンバ変数
 	const static UINT kVertexNumber = 8;
 	const static UINT kIndexNumber = 24;
+	static std::shared_ptr<WireFrameBox> sWireFrameBox_;
 
 public: //メンバ関数
 	WireFrameBox();

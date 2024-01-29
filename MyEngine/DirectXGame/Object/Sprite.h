@@ -25,7 +25,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// スプライトの生成
 	/// </summary>
-	static std::unique_ptr<Sprite> Create();
+	static std::shared_ptr<Sprite> Create();
 
 private: //静的メンバ変数
 	const static UINT kVertexNumber = 4;

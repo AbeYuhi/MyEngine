@@ -6,7 +6,7 @@ void SpriteParticle::Initialize() {
 	//基本機能の初期化
 	ParticleManager::Initialize();
 
-	particleSprite_ = ObjectManager::CreateSprite();
+	particleSprite_ = Sprite::Create();
 
 	//使用するテクスチャの読み込み
 	//textureHandle_ = TextureManager::Load("uvChecker.png");

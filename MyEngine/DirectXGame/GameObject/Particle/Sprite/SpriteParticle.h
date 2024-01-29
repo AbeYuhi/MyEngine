@@ -1,8 +1,6 @@
 #pragma once
 #include "DirectXGame/Manager/ParticleManager.h"
-#include "DirectXGame/Manager/ObjectManager.h"
-#include "DirectXGame/Object/Plane.h"
-#include "DirectXGame/Object/Model.h"
+#include "DirectXGame/Object/Sprite.h"
 
 class SpriteParticle : public ParticleManager
 {
@@ -24,7 +22,7 @@ private: //メンバ関数
 	ParticleInfo MakeNewParticle() override;
 
 private:
-	Sprite* particleSprite_;
+	std::shared_ptr<Sprite> particleSprite_;
 	SpriteData spriteData_;
 	uint32_t textureHandle_;
 };
