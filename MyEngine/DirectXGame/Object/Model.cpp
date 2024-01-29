@@ -3,19 +3,19 @@
 Model::Model() {}
 Model::~Model() {}
 
-std::unique_ptr<Model> Model::Create(const std::string filename) {
+std::unique_ptr<Model> Model::Create(const std::string& filepath, const std::string filename) {
 	std::unique_ptr<Model> object = std::make_unique<Model>();
-	object->Initialize(filename);
+	object->Initialize(filepath, filename);
 
 	return object;
 }
 
-void Model::Initialize(const std::string filename) {
+void Model::Initialize(const std::string& filepath, const std::string filename) {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//モデル読み込み
-	LoadObjFile(filename);
+	LoadModelFile(filepath, filename);
 
 	//VertexResourceを作る
 	for (auto& mesh : meshs_) {
@@ -166,11 +166,11 @@ void Model::Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle) {
 	}
 }
 
-void Model::LoadObjFile(const std::string& filename) {
+void Model::LoadModelFile(const std::string& filepath, const std::string& filename) {
 
 	//assimpで読み込む
 	Assimp::Importer importer;
-	std::string filePath = "Resources/Images/" + filename + "/" + filename + ".obj";
+	std::string filePath = "Resources/Images/" + filepath + "/" + filename;
 	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
 	assert(scene->HasMeshes());
 	
@@ -208,7 +208,7 @@ void Model::LoadObjFile(const std::string& filename) {
 		const aiMaterial* material = scene->mMaterials[materialIndex];
 		aiString textureFilePath;
 		material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-		modelPart.modelData.material.textureFilePath = filename + "/" + textureFilePath.C_Str();
+		modelPart.modelData.material.textureFilePath = filepath + "/" + textureFilePath.C_Str();
 		std::string textureName = textureFilePath.C_Str();
 
 		//もしテクスチャが見つからなかった場合は白い画像を入れる

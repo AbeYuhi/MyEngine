@@ -22,14 +22,14 @@ public:
 	/// </summary>
 	/// <param name="fileName">読み込みたいObjファイル名</param>
 	/// <returns></returns>
-	static Model* Create(const std::string& fileName = "cube");
+	static Model* Create(const std::string& filepath, const std::string& fileName);
 	static WireFrameBox* CreateWireFrameBox();
 	static WireFrameSpriteBox* CreateWireFrameSpriteBox();
 	static Sprite* CreateSprite();
 
 private:
 
-	Model* LoadObj(const std::string& fileName);
+	Model* LoadObj(const std::string& filepath, const std::string& fileName);
 	WireFrameBox* LoadWireFrameBox();
 	WireFrameSpriteBox* LoadWireFrameSpriteBox();
 	Sprite* LoadSprite();

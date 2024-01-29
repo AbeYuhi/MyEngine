@@ -56,9 +56,12 @@ void InGameScene::Initialize() {
 	planeParticle_ = std::make_unique<PlaneParticle>(100);
 	planeParticle_->Initialize();
 
-	groundModel_ = ObjectManager::Create("yukari");
+	groundModel_ = ObjectManager::Create("yukari", "yukari.obj");
 	groundModelInfo_.Initialize();
-	groundModelInfo_.materialInfo_.material_->enableLightint = true;
+	groundModelInfo_.materialInfo_.material_->enableLightint = false;
+
+	planeModel_ = ObjectManager::Create("plane_gltf", "plane.gltf");
+	planeModelInfo_.Initialize();
 
 	sprite_ = ObjectManager::CreateSprite();
 	spriteInfo_.Initialize();

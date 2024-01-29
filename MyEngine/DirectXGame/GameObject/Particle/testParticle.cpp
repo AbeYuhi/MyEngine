@@ -8,7 +8,7 @@ void TestParticle::Initialize() {
 	ParticleManager::Initialize();
 
 	//パーティクルの初期化
-	particleModel_ = ObjectManager::Create("plane");
+	particleModel_ = ObjectManager::Create("plane", "plane.obj");
 	particleSprite_ = ObjectManager::CreateSprite();
 
 	//使用するテクスチャの読み込み

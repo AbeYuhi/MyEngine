@@ -65,6 +65,9 @@ private:
 	Model* groundModel_;
 	RenderItem groundModelInfo_;
 
+	Model* planeModel_;
+	RenderItem planeModelInfo_;
+
 	Sprite* sprite_;
 	SpriteItem spriteInfo_;
 

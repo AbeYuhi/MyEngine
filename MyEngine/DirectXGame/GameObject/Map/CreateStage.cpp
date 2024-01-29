@@ -38,7 +38,7 @@ std::list<std::unique_ptr<StageBlock>> CreateStage(std::string stageFileName, Ve
 			int blockID = (int)std::atoi(word.c_str());
 			if (blockID != 0) {
 				std::unique_ptr<StageBlock> stageBlock = std::make_unique<StageBlock>();
-				stageBlock->stageModel = ObjectManager::Create();
+				stageBlock->stageModel = ObjectManager::Create("cube", "cube.obj");
 				stageBlock->stageModelInfo.Initialize();
 				stageBlock->stageModelInfo.worldTransform_.data_.translate_ = { (float)x * size.x, (float)y * size.y, 0.0f };
 				stageBlock->stageModelInfo.worldTransform_.data_.scale_ = size;

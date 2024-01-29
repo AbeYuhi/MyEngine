@@ -5,16 +5,16 @@ ObjectManager* ObjectManager::GetInstance() {
 	return &instance;
 }
 
-Model* ObjectManager::Create(const std::string& fileName) {
-	return GetInstance()->LoadObj(fileName);
+Model* ObjectManager::Create(const std::string& filepath, const std::string& fileName) {
+	return GetInstance()->LoadObj(filepath, fileName);
 }
 
-Model* ObjectManager::LoadObj(const std::string& fileName) {
-	if (modelDatas_.find(fileName) == modelDatas_.end()) {
-		modelDatas_[fileName] = Model::Create(fileName);
+Model* ObjectManager::LoadObj(const std::string& filepath, const std::string& fileName) {
+	if (modelDatas_.find(filepath) == modelDatas_.end()) {
+		modelDatas_[filepath] = Model::Create(filepath, fileName);
 	}
 
-	return modelDatas_[fileName].get();
+	return modelDatas_[filepath].get();
 }
 
 WireFrameBox* ObjectManager::CreateWireFrameBox() {

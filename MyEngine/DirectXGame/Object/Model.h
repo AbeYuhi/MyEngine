@@ -30,7 +30,7 @@ class Model
 {
 public: //静的メンバ関数
 
-	static std::unique_ptr<Model> Create(const std::string filename = "cube");
+	static std::unique_ptr<Model> Create(const std::string& filepath, const std::string filename);
 
 private: //静的メンバ変数
 
@@ -38,7 +38,7 @@ public: //メンバ関数
 	Model();
 	~Model();
 
-	void Initialize(const std::string filename);
+	void Initialize(const std::string& filepath, const std::string filename);
 
 	void Draw(RenderItem& renderItem);
 	void Draw(RenderItem& renderItem, uint32_t textureHandle);
@@ -51,7 +51,7 @@ public: //ゲッターセッター
 	//void SetColor(Vector4 color) { materialData_->color = color; }
 
 private: //メンバ関数
-	void LoadObjFile(const std::string& filename);
+	void LoadModelFile(const std::string& filepath, const std::string& filename);
 
 private: //メンバ変数
 
