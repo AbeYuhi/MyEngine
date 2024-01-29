@@ -66,10 +66,6 @@ void InGameScene::Initialize() {
 	sprite_ = ObjectManager::CreateSprite();
 	spriteInfo_.Initialize();
 	spriteInfo_.spriteData_.size_ = { 64, 64 };
-
-	sprite1_ = ObjectManager::CreateSprite();
-	spriteInfo1_.Initialize();
-	spriteInfo1_.spriteData_.size_ = { 128, 128 };
 }
 
 void InGameScene::Update() {
@@ -130,7 +126,6 @@ void InGameScene::Update() {
 
 	groundModelInfo_.Update();
 	spriteInfo_.Update();
-	spriteInfo1_.Update();
 }
 
 void InGameScene::Draw() {
@@ -150,7 +145,6 @@ void InGameScene::Draw() {
 	///前面スプライトの描画開始
 
 	sprite_->Draw(spriteInfo_);
-	sprite1_->Draw(spriteInfo1_);
 
 	//spriteParticle_->EmitterDraw();
 
