@@ -60,8 +60,9 @@ void InGameScene::Initialize() {
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = false;
 
-	planeModel_ = Model::Create("plane_gltf", "plane.gltf");
+	planeModel_ = Model::Create("Material01", "Material_01.gltf");
 	planeModelInfo_.Initialize();
+	planeModelInfo_.materialInfo_.material_->enableLightint = false;
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize();
@@ -159,8 +160,8 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//planeParticle_->EmitterDraw();
-	//planeModel_->Draw(planeModelInfo_);
-	groundModel_->Draw(groundModelInfo_);
+	planeModel_->Draw(planeModelInfo_);
+	//groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
 
