@@ -23,7 +23,8 @@ void InGameScene::Initialize() {
 	spriteCamera_ = SpriteCamera::GetInstance();
 
 	//デバックモード中ならdebugカメラを有効に
-	isDebugCamera_ = debugMode_;
+	//isDebugCamera_ = debugMode_;
+	isDebugCamera_ = true;
 
 	//インゲームカメラ
 	gameCamera_ = std::make_unique<InGameCamera>();
@@ -99,7 +100,7 @@ void InGameScene::Update() {
 	//planeParticle_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
-	if (ImGui::BeginTabItem("groundModel")) {
+	if (ImGui::BeginTabItem("YukariModel")) {
 		ImGui::SliderFloat3("pos", &groundModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
 		ImGui::SliderFloat3("rotate", &groundModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &groundModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
