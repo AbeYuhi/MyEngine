@@ -104,10 +104,6 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("rotate", &groundModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &groundModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &groundModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		bool b = false;
-		if (ImGui::Checkbox("isSpecularReflection", &b)) {
-			groundModelInfo_.materialInfo_.material_->isSpecularReflection = !groundModelInfo_.materialInfo_.material_->isSpecularReflection;
-		}
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("sphereModel")) {
@@ -115,10 +111,15 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("rotate", &sphereModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &sphereModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &sphereModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		bool b = false;
-		if (ImGui::Checkbox("isSpecularReflection", &b)) {
-			sphereModelInfo_.materialInfo_.material_->isSpecularReflection = !sphereModelInfo_.materialInfo_.material_->isSpecularReflection;
+		bool b = 0;
+		if (sphereModelInfo_.materialInfo_.material_->isSpecularReflection == 0) {
+			b = false;
 		}
+		else {
+			b = true;
+		}
+		ImGui::Checkbox("isSpecularReflection", &b);
+		sphereModelInfo_.materialInfo_.material_->isSpecularReflection = b;
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("planeOBJModel")) {
@@ -126,10 +127,6 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("rotate", &planeOBJModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &planeOBJModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &planeOBJModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		bool b = false;
-		if (ImGui::Checkbox("isSpecularReflection", &b)) {
-			planeOBJModelInfo_.materialInfo_.material_->isSpecularReflection = !planeOBJModelInfo_.materialInfo_.material_->isSpecularReflection;
-		}
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("planeGLTFModel")) {
@@ -137,10 +134,6 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("rotate", &planeGLTFModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &planeGLTFModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &planeGLTFModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		bool b = false;
-		if (ImGui::Checkbox("isSpecularReflection", &b)) {
-			planeGLTFModelInfo_.materialInfo_.material_->isSpecularReflection = !planeGLTFModelInfo_.materialInfo_.material_->isSpecularReflection;
-		}
 		ImGui::EndTabItem();
 	}
 	ImGui::EndTabBar();
@@ -185,7 +178,7 @@ void InGameScene::Draw() {
 	planeOBJModel_->Draw(planeOBJModelInfo_);
 	planeGLTFModel_->Draw(planeGLTFModelInfo_);
 	sphereModel_->Draw(sphereModelInfo_, monsterBallHandle_);
-	//groundModel_->Draw(groundModelInfo_);
+	groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
 
