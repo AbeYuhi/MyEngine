@@ -60,17 +60,18 @@ void InGameScene::Initialize() {
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = false;
 
-	planeModel_ = Model::Create("Material01", "Material_01.gltf");
-	planeModelInfo_.Initialize();
-	planeModelInfo_.materialInfo_.material_->enableLightint = false;
+	sphereModel_ = Model::Create("sphere", "sphere.obj");
+	sphereModelInfo_.Initialize();
+	sphereModelInfo_.materialInfo_.material_->enableLightint = true;
 
-	sprite_ = Sprite::Create();
-	spriteInfo_.Initialize();
-	spriteInfo_.spriteData_.size_ = { 64, 64 };
+	planeOBJModel_ = Model::Create("plane", "plane.obj");
+	planeOBJModelInfo_.Initialize();
+	planeOBJModelInfo_.materialInfo_.material_->enableLightint = false;
 
-	sprite1_ = Sprite::Create();
-	spriteInfo1_.Initialize();
-	spriteInfo1_.spriteData_.size_ = { 128, 128 };
+	planeGLTFModel_ = Model::Create("Material01", "Material_01.gltf");
+	planeGLTFModelInfo_.Initialize();
+	planeGLTFModelInfo_.materialInfo_.material_->enableLightint = false;
+
 }
 
 void InGameScene::Update() {
@@ -93,9 +94,9 @@ void InGameScene::Update() {
 	lightObj_->Update();
 
 	//パーティクルの更新
-	testParticle1_->Update();
-	spriteParticle_->Update();
-	planeParticle_->Update();
+	//testParticle1_->Update();
+	//spriteParticle_->Update();
+	//planeParticle_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("groundModel")) {
@@ -109,27 +110,37 @@ void InGameScene::Update() {
 		}
 		ImGui::EndTabItem();
 	}
-	if (ImGui::BeginTabItem("planeModel")) {
-		ImGui::SliderFloat3("pos", &planeModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &planeModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &planeModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::SliderFloat("shininess", &planeModelInfo_.materialInfo_.material_->shininess, 0, 100);
+	if (ImGui::BeginTabItem("sphereModel")) {
+		ImGui::SliderFloat3("pos", &sphereModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &sphereModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &sphereModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::SliderFloat("shininess", &sphereModelInfo_.materialInfo_.material_->shininess, 0, 100);
 		bool b = false;
 		if (ImGui::Checkbox("isSpecularReflection", &b)) {
-			planeModelInfo_.materialInfo_.material_->isSpecularReflection = !planeModelInfo_.materialInfo_.material_->isSpecularReflection;
+			sphereModelInfo_.materialInfo_.material_->isSpecularReflection = !sphereModelInfo_.materialInfo_.material_->isSpecularReflection;
 		}
 		ImGui::EndTabItem();
 	}
-	if (ImGui::BeginTabItem("sprite")) {
-		ImGui::SliderFloat3("pos", &spriteInfo_.worldTransform_.data_.translate_.x, -1000, 1000);
-		ImGui::SliderFloat3("rotate", &spriteInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &spriteInfo_.worldTransform_.data_.scale_.x, -10, 10);
+	if (ImGui::BeginTabItem("planeOBJModel")) {
+		ImGui::SliderFloat3("pos", &planeOBJModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &planeOBJModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &planeOBJModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::SliderFloat("shininess", &planeOBJModelInfo_.materialInfo_.material_->shininess, 0, 100);
+		bool b = false;
+		if (ImGui::Checkbox("isSpecularReflection", &b)) {
+			planeOBJModelInfo_.materialInfo_.material_->isSpecularReflection = !planeOBJModelInfo_.materialInfo_.material_->isSpecularReflection;
+		}
 		ImGui::EndTabItem();
 	}
-	if (ImGui::BeginTabItem("sprite1")) {
-		ImGui::SliderFloat3("pos", &spriteInfo1_.worldTransform_.data_.translate_.x, -1000, 1000);
-		ImGui::SliderFloat3("rotate", &spriteInfo1_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &spriteInfo1_.worldTransform_.data_.scale_.x, -10, 10);
+	if (ImGui::BeginTabItem("planeGLTFModel")) {
+		ImGui::SliderFloat3("pos", &planeGLTFModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &planeGLTFModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &planeGLTFModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::SliderFloat("shininess", &planeGLTFModelInfo_.materialInfo_.material_->shininess, 0, 100);
+		bool b = false;
+		if (ImGui::Checkbox("isSpecularReflection", &b)) {
+			planeGLTFModelInfo_.materialInfo_.material_->isSpecularReflection = !planeGLTFModelInfo_.materialInfo_.material_->isSpecularReflection;
+		}
 		ImGui::EndTabItem();
 	}
 	ImGui::EndTabBar();
@@ -141,9 +152,9 @@ void InGameScene::Update() {
 	ImGui::End();
 
 	groundModelInfo_.Update();
-	planeModelInfo_.Update();
-	spriteInfo_.Update();
-	spriteInfo1_.Update();
+	sphereModelInfo_.Update();
+	planeOBJModelInfo_.Update();
+	planeGLTFModelInfo_.Update();
 }
 
 void InGameScene::Draw() {
@@ -162,8 +173,7 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
-	sprite_->Draw(spriteInfo_);
-	sprite1_->Draw(spriteInfo1_);
+
 
 	//spriteParticle_->EmitterDraw();
 
@@ -172,8 +182,10 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//planeParticle_->EmitterDraw();
-	//planeModel_->Draw(planeModelInfo_);
-	groundModel_->Draw(groundModelInfo_);
+	planeOBJModel_->Draw(planeOBJModelInfo_);
+	planeGLTFModel_->Draw(planeGLTFModelInfo_);
+	sphereModel_->Draw(sphereModelInfo_, monsterBallHandle_);
+	//groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
 
