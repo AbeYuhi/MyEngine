@@ -65,14 +65,8 @@ void InGameScene::Initialize() {
 	sphereModelInfo_.Initialize();
 	sphereModelInfo_.materialInfo_.material_->enableLightint = true;
 
-	planeOBJModel_ = Model::Create("plane", "plane.obj");
-	planeOBJModelInfo_.Initialize();
-	planeOBJModelInfo_.materialInfo_.material_->enableLightint = false;
-
-	planeGLTFModel_ = Model::Create("Material01", "Material_01.gltf");
-	planeGLTFModelInfo_.Initialize();
-	planeGLTFModelInfo_.materialInfo_.material_->enableLightint = false;
-
+	sprite_ = Sprite::Create();
+	spriteInfo_.Initialize(uvCheckerHandle_);
 }
 
 void InGameScene::Update() {
@@ -96,8 +90,8 @@ void InGameScene::Update() {
 
 	//パーティクルの更新
 	//testParticle1_->Update();
-	//spriteParticle_->Update();
-	//planeParticle_->Update();
+	spriteParticle_->Update();
+	planeParticle_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
@@ -123,18 +117,10 @@ void InGameScene::Update() {
 		sphereModelInfo_.materialInfo_.material_->isSpecularReflection = b;
 		ImGui::EndTabItem();
 	}
-	if (ImGui::BeginTabItem("planeOBJModel")) {
-		ImGui::SliderFloat3("pos", &planeOBJModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &planeOBJModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &planeOBJModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::SliderFloat("shininess", &planeOBJModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("planeGLTFModel")) {
-		ImGui::SliderFloat3("pos", &planeGLTFModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &planeGLTFModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &planeGLTFModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::SliderFloat("shininess", &planeGLTFModelInfo_.materialInfo_.material_->shininess, 0, 100);
+	if (ImGui::BeginTabItem("sprite")) {
+		ImGui::SliderFloat3("pos", &spriteInfo_.worldTransform_.data_.translate_.x, 0, 1280);
+		ImGui::SliderFloat3("rotate", &spriteInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &spriteInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::EndTabItem();
 	}
 	ImGui::EndTabBar();
@@ -147,8 +133,7 @@ void InGameScene::Update() {
 
 	groundModelInfo_.Update();
 	sphereModelInfo_.Update();
-	planeOBJModelInfo_.Update();
-	planeGLTFModelInfo_.Update();
+	spriteInfo_.Update();
 }
 
 void InGameScene::Draw() {
@@ -167,17 +152,15 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
+	sprite_->Draw(spriteInfo_);
 
-
-	//spriteParticle_->EmitterDraw();
+	spriteParticle_->EmitterDraw();
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	//planeParticle_->EmitterDraw();
-	planeOBJModel_->Draw(planeOBJModelInfo_);
-	planeGLTFModel_->Draw(planeGLTFModelInfo_);
+	planeParticle_->EmitterDraw();
 	sphereModel_->Draw(sphereModelInfo_, monsterBallHandle_);
 	groundModel_->Draw(groundModelInfo_);
 
@@ -185,8 +168,8 @@ void InGameScene::Draw() {
 
 	///パーティクルの描画
 
-	//spriteParticle_->Draw();
-	//planeParticle_->Draw();
+	spriteParticle_->Draw();
+	planeParticle_->Draw();
 
 	///パーティクルの描画終了
 }

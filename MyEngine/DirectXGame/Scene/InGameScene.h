@@ -67,11 +67,9 @@ private:
 	std::shared_ptr<Model> sphereModel_;
 	RenderItem sphereModelInfo_;
 
-	std::shared_ptr<Model> planeOBJModel_;
-	RenderItem planeOBJModelInfo_;
+	std::shared_ptr<Sprite> sprite_;
+	SpriteItem spriteInfo_;
 
-	std::shared_ptr<Model> planeGLTFModel_;
-	RenderItem planeGLTFModelInfo_;
 
 	//サウンド
 	uint32_t soundHandle_;
