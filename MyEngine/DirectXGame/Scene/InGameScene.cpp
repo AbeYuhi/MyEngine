@@ -96,8 +96,8 @@ void InGameScene::Update() {
 
 	//パーティクルの更新
 	//testParticle1_->Update();
-	//spriteParticle_->Update();
-	//planeParticle_->Update();
+	spriteParticle_->Update();
+	planeParticle_->Update();
 
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
@@ -169,13 +169,13 @@ void InGameScene::Draw() {
 
 
 
-	//spriteParticle_->EmitterDraw();
+	spriteParticle_->EmitterDraw();
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	//planeParticle_->EmitterDraw();
+	planeParticle_->EmitterDraw();
 	planeOBJModel_->Draw(planeOBJModelInfo_);
 	planeGLTFModel_->Draw(planeGLTFModelInfo_);
 	sphereModel_->Draw(sphereModelInfo_, monsterBallHandle_);
@@ -185,8 +185,8 @@ void InGameScene::Draw() {
 
 	///パーティクルの描画
 
-	//spriteParticle_->Draw();
-	//planeParticle_->Draw();
+	spriteParticle_->Draw();
+	planeParticle_->Draw();
 
 	///パーティクルの描画終了
 }
