@@ -95,6 +95,7 @@ void InGameScene::Update() {
 	spriteParticle_->Update();
 	planeParticle_->Update();
 
+#ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
 		ImGui::SliderFloat3("pos", &groundModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
@@ -128,10 +129,11 @@ void InGameScene::Update() {
 	ImGui::EndTabBar();
 
 	ImGui::Begin("BlendMode");
-	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen"};
+	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };
 	ImGui::Combo("blendMode", &blendMode_, modes, IM_ARRAYSIZE(modes));
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(static_cast<BlendMode>(blendMode_));
 	ImGui::End();
+#endif // _DEBUG
 
 	groundModelInfo_.Update();
 	sphereModelInfo_.Update();

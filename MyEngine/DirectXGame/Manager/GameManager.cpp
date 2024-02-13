@@ -57,6 +57,7 @@ int GameManager::Run() {
 		///更新処理
 		//入力受付
 		inputManager_->Update();
+#ifdef _DEBUG
 		//ImGuiの受付開始
 		imGuiManager_->Begin();
 		//グローバル変数の更新
@@ -65,18 +66,26 @@ int GameManager::Run() {
 		ImGui::Begin("FPS");
 		ImGui::Text("fps : %lf", fps_);
 		ImGui::End();
+#endif // _DEBUG
 		//シーンの更新
 		sceneManager_->Update();
+
+#ifdef _DEBUG
 		//ImGuiの受付終了
 		imGuiManager_->End();
+#endif // _DEBUG
 
 		///描画処理
 		//画面初期化
 		directXCommon_->PreDraw();
 		//シーンの描画
 		sceneManager_->Draw();
+
+#ifdef _DEBUG
 		//ImGuiの描画
 		imGuiManager_->Draw();
+#endif // _DEBUG
+
 		//描画終了
 		directXCommon_->PostDraw();
 

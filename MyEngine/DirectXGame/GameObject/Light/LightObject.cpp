@@ -40,6 +40,8 @@ void LightObject::Initialize() {
 
 void LightObject::Update() {
 
+#ifdef _DEBUG
+
 	ImGui::Begin("DirectionLight");
 	ImGui::BeginTabBar("DirectionLight");
 	for (int index = 0; index < kDirectionLightNum; index++) {
@@ -103,6 +105,8 @@ void LightObject::Update() {
 	}
 	ImGui::EndTabBar();
 	ImGui::End();
+
+#endif // _DEBUG
 }
 
 void LightObject::Draw() {

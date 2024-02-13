@@ -15,10 +15,6 @@ void DebugCamera::Initialize() {
 	transform_.translate_ = { 0.0f, 0.0f, -10.0f };
 	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);
 
-	//マウスの位置
-	mousePos_ = { 0, 0 };
-	preMousePos_ = { 0, 0 };
-
 	//カメラが切り取る範囲
 	nearClip_ = 0.1f;
 	farClip_ = 100.0f;
@@ -29,15 +25,13 @@ void DebugCamera::Initialize() {
 void DebugCamera::Update() {
 	InputManager* input = InputManager::GetInstance();
 
+#ifdef _DEBUG
 	ImGui::Begin("CameraManager");
 	ImGui::Checkbox("IsMoveCamera", &isMove_);
 	ImGui::SliderFloat3("CameraTranslate", &transform_.translate_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat3("CameraRotate", &transform_.rotate_.x, -2.0f * M_PI, 2.0f * M_PI);
 	ImGui::End();
-
-	Vector3 prePos = transform_.translate_;
-	preMousePos_ = mousePos_;
-	mousePos_ = ImGui::GetMousePos();
+#endif // _DEBUG
 
 	if (isMove_) {
 		if (input->IsMousePush(0)) {
@@ -70,11 +64,11 @@ void DebugCamera::Update() {
 			cameraVelocity.z += wheel * 0.02f;
 		}
 
-		transform_.translate_ += TransformNormal(cameraVelocity, worldMatrix_);
-
 		if (input->IsPushKey(DIK_LSHIFT)) {
-			transform_.translate_.y = prePos.y;
+			cameraVelocity.y = 0;
 		}
+
+		transform_.translate_ += TransformNormal(cameraVelocity, worldMatrix_);
 	}
 
 	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);

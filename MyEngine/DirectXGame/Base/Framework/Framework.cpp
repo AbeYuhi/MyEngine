@@ -21,9 +21,11 @@ void Framework::Initialize() {
 	inputManager_ = InputManager::GetInstance();
 	inputManager_->Initialize();
 
+#ifdef _DEBUG
 	//ImGuiマネージャーの初期化
 	imGuiManager_ = ImGuiManager::GetInstance();
 	imGuiManager_->Initialize();
+#endif //_DEBUG
 
 	//JSONの読み書き
 	globalVariables_ = GlobalVariables::GetInstance();
@@ -50,8 +52,12 @@ void Framework::Initialize() {
 void Framework::Finalize() {
 	//音声データの解放
 	audioManager_->Finalize();
+
+#ifdef _DEBUG
 	//ImGuiの解放処理
 	imGuiManager_->ReleseProcess();
+#endif // _DEBUG
+
 	//ゲームウィンドウの破棄
 	winApp_->DiscardingWindow();
 }

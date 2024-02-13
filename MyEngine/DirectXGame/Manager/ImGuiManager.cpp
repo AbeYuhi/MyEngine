@@ -1,5 +1,7 @@
 #include "ImGuiManager.h"
 
+#ifdef _DEBUG
+
 ImGuiManager* ImGuiManager::GetInstance() {
 	static ImGuiManager instance;
 	return &instance;
@@ -35,11 +37,6 @@ void ImGuiManager::End() {
 void ImGuiManager::Draw() {
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
-#ifdef NDEBUG
-	Begin();
-	End();
-#endif // NDEBUG
-
 	//描画コマンドを積む
 	ImGui_ImplDX12_RenderDrawData(GetDrawData(), commandList);
 }
@@ -49,3 +46,5 @@ void ImGuiManager::ReleseProcess() {
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 }
+
+#endif // _DEBUG

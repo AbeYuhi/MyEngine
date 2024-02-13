@@ -30,7 +30,9 @@ protected:
 	InputManager* inputManager_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
 	AudioManager* audioManager_ = nullptr;
+#ifdef _DEBUG
 	ImGuiManager* imGuiManager_ = nullptr;
+#endif //_DEBUG
 	RandomManager* randomManager_ = nullptr;
 	CollisionManager* collisionManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;

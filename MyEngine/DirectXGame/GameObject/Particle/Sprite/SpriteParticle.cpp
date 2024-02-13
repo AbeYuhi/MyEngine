@@ -26,6 +26,7 @@ void SpriteParticle::Initialize() {
 
 void SpriteParticle::Update() {
 
+#ifdef _DEBUG
 	ImGui::Begin("SpriteParticle");
 	ImGui::SliderFloat3("EmitterPos", &emitter_.transform.translate_.x, 0, 1280);
 	ImGui::SliderFloat3("EmitterScale", &emitter_.transform.scale_.x, 0, 500);
@@ -39,6 +40,7 @@ void SpriteParticle::Update() {
 	blendMode_ = static_cast<BlendMode>(blendMode);
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(blendMode_);
 	ImGui::End();
+#endif // _DEBUG
 
 	//パーティクルの更新
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end();) {

@@ -13,8 +13,6 @@ void SpriteCamera::Initialize() {
 	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);
 
 	//マウスの位置
-	mousePos_ = { 0, 0 };
-	preMousePos_ = { 0, 0 };
 	isMove_ = false;
 
 	//カメラが切り取る範囲
@@ -25,6 +23,7 @@ void SpriteCamera::Initialize() {
 void SpriteCamera::Update() {
 	WinApp* winApp = WinApp::GetInstance();
 	
+#ifdef _DEBUG
 	ImGui::Begin("SpriteCameraManager");
 	ImGui::Checkbox("IsMove", &isMove_);
 	ImGui::SliderFloat3("CameraTranslate", &transform_.translate_.x, -100.0f, 100.0f);
@@ -49,8 +48,8 @@ void SpriteCamera::Update() {
 
 		if (input->IsMousePush(2)) {
 			ImVec2 mouseAmount;
-			mouseAmount.x = mousePos_.x - preMousePos_.x;
-			mouseAmount.y = mousePos_.y - preMousePos_.y;
+			mouseAmount.x = input->GetMouseMovement().x;
+			mouseAmount.y = input->GetMouseMovement().y;
 
 			cameraVelocity.x += -mouseAmount.x * 0.05f;
 			cameraVelocity.y += mouseAmount.y * 0.05f;
@@ -59,8 +58,9 @@ void SpriteCamera::Update() {
 		transform_.translate_ += TransformNormal(cameraVelocity, worldMatrix_);
 	}
 
-	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);
+#endif // _DEBUG
 
+	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);
 	viewMatrix_ = Inverse(worldMatrix_);
 	projectionMatrix_ = MakeOrthographicMatrix(0.0f, 0.0f, (float)winApp->kWindowWidth, (float)winApp->kWindowHeight, nearClip_, farClip_);
 	viewProjectionMatrix_ = Multiply(viewMatrix_, projectionMatrix_);

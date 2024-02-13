@@ -4,6 +4,8 @@
 #include "External/imgui/imgui.h"
 #include "External/imgui/imgui_impl_dx12.h"
 #include "External/imgui/imgui_impl_win32.h"
+
+#ifdef _DEBUG
 using namespace ImGui;
 
 class ImGuiManager
@@ -25,3 +27,4 @@ private:
 	ImGuiManager() = default;
 	~ImGuiManager() = default;
 };
+#endif // _DEBUG

@@ -22,10 +22,14 @@ void SceneManager::Initialize(GameScene gameScene){
 void SceneManager::Update(){
 	preSceneNo_ = sceneNo_;
 	sceneNo_ = scene_->GetSceneNo();
+
+#ifdef _DEBUG
 	ImGui::Begin("GameScene");
 	const char* modes[] = { "Title", "InGame", "Menu", "GameOver", "GameClear" };
 	ImGui::Combo("gameScene", &sceneNo_, modes, IM_ARRAYSIZE(modes));
 	ImGui::End();
+#endif // _DEBUG
+
 	if (preSceneNo_ != sceneNo_) {
 		//シーンの削除
 		scene_->Finalize();

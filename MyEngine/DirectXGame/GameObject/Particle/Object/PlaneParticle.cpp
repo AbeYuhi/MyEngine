@@ -32,6 +32,7 @@ void PlaneParticle::Initialize() {
 
 void PlaneParticle::Update() {
 
+#ifdef _DEBUG
 	ImGui::Begin("PlaneParticle");
 	ImGui::SliderFloat3("EmitterPos", &emitter_.transform.translate_.x, -10, 10);
 	ImGui::SliderFloat3("EmitterScale", &emitter_.transform.scale_.x, 0, 10);
@@ -41,13 +42,13 @@ void PlaneParticle::Update() {
 	ImGui::Checkbox("isInvisible", &materialInfo_.isInvisible_);
 	ImGui::Checkbox("isInvisibleEmitter", &emitterObjInfo_.materialInfo_.isInvisible_);
 	ImGui::Checkbox("isBillboard", &isBillboard_);
-
 	int blendMode = blendMode_;
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };
 	ImGui::Combo("blendMode", &blendMode, modes, IM_ARRAYSIZE(modes));
 	blendMode_ = static_cast<BlendMode>(blendMode);
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(blendMode_);
 	ImGui::End();
+#endif //_DEBUG
 
 	//パーティクルの更新
 	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end();) {

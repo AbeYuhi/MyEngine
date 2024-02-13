@@ -38,10 +38,6 @@ protected:
 	float farClip_;
 	float fovY_;
 
-	//マウスの位置
-	ImVec2 mousePos_;
-	ImVec2 preMousePos_;
-
 	std::string cameraName_;
 };
 

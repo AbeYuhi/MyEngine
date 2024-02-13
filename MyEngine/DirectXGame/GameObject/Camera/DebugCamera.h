@@ -43,8 +43,4 @@ private:
 	float fovY_;
 
 	bool isMove_;
-
-	//マウスの位置
-	ImVec2 mousePos_;
-	ImVec2 preMousePos_;
 };

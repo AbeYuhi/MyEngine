@@ -38,8 +38,4 @@ private:
 	float nearClip_;
 	float farClip_;
 	bool isMove_;
-
-	//マウスの位置
-	ImVec2 mousePos_;
-	ImVec2 preMousePos_;
 };
