@@ -35,10 +35,10 @@ void ImGuiManager::End() {
 void ImGuiManager::Draw() {
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
 
-//#ifdef NDEBUG
-//	Begin();
-//	End();
-//#endif // NDEBUG
+#ifdef NDEBUG
+	Begin();
+	End();
+#endif // NDEBUG
 
 	//描画コマンドを積む
 	ImGui_ImplDX12_RenderDrawData(GetDrawData(), commandList);

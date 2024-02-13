@@ -23,8 +23,7 @@ void InGameScene::Initialize() {
 	spriteCamera_ = SpriteCamera::GetInstance();
 
 	//デバックモード中ならdebugカメラを有効に
-	//isDebugCamera_ = debugMode_;
-	isDebugCamera_ = true;
+	isDebugCamera_ = debugMode_;
 
 	//インゲームカメラ
 	gameCamera_ = std::make_unique<InGameCamera>();
@@ -70,10 +69,13 @@ void InGameScene::Initialize() {
 }
 
 void InGameScene::Update() {
+
 	//カメラの更新
+#ifdef _DEBUG
 	ImGui::Begin("Debug");
 	ImGui::Checkbox("UseDebugCamera", &isDebugCamera_);
 	ImGui::End();
+#endif // _DEBUG
 	
 	if (isDebugCamera_) {
 		debugCamera_->Update();
