@@ -88,6 +88,8 @@ public: //ゲッターセッター
 
 	inline D3D12_DEPTH_STENCIL_VIEW_DESC GetDsvDesc() { return dsvDesc_; }
 
+	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle();
+
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(int index);
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(int index);

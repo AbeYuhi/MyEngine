@@ -455,12 +455,12 @@ void DirectXCommon::CreateDepthStencilView() {
 	depthStencilResource_ = CreateDepthStencilTextureResource();
 
 	//shadowMapDepthResourceの生成
-	shadowMapDepthResource_ = CreateDepthStencilTextureResource();
+	//shadowMapDepthResource_ = CreateDepthStencilTextureResource();
 
 	//DsvHeapの先頭にDSVの生成
 	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc_, dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
 	//DsvHeapの2つめににシャドウマップの生成
-	device_->CreateDepthStencilView(shadowMapDepthResource_.Get(), &shadowMapDepthDesc_, CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 1, device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)));
+	//device_->CreateDepthStencilView(shadowMapDepthResource_.Get(), &shadowMapDepthDesc_, CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 1, device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)));
 }
 
 void DirectXCommon::CreateFence() {
@@ -508,6 +508,18 @@ void DirectXCommon::UpdateFixFPS() {
 	}
 	//現在の時間を記録
 	reference_ = std::chrono::steady_clock::now();
+}
+
+CD3DX12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetRtvHandle() {
+	//バックバッファの取得
+	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
+
+	//バックバッファのハンドルの取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+	rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), backBufferIndex,
+	device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+
+	return rtvHandle;
 }
 
 D3D12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetCPUDescriptorHandle(int index) {
