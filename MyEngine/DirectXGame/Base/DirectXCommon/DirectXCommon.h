@@ -133,12 +133,14 @@ private: //メンバ変数
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr;
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_;
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc_;
+	D3D12_DEPTH_STENCIL_VIEW_DESC shadowMapDepthDesc_;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 	ComPtr<ID3D12Fence> fence_ = nullptr;
 	ComPtr<IDxcUtils> dxcUtils_ = nullptr;
 	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
+	ComPtr<ID3D12Resource> shadowMapDepthResource_ = nullptr;
 	uint64_t fenceValue_ = 0;
 	std::chrono::steady_clock::time_point reference_;
 };
