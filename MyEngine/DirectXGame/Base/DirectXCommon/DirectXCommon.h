@@ -65,10 +65,14 @@ public: //メンバ関数
 	/// <summary>
 	/// 深度情報を収納するためのリソース確保関数
 	/// </summary>
-	/// <param name="width">画像横幅</param>
-	/// <param name="height">画像縦幅</param>
 	/// <returns></returns>
 	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource();
+
+	/// <summary>
+	/// 深度情報を収納するためのリソース確保関数
+	/// </summary>
+	/// <returns></returns>
+	ComPtr<ID3D12Resource> CreateShadowMapTextureResource();
 
 public: //ゲッターセッター
 

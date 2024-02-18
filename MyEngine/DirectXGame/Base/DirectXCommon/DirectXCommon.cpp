@@ -235,6 +235,45 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource() {
 	return resource;
 }
 
+ComPtr<ID3D12Resource> DirectXCommon::CreateShadowMapTextureResource() {
+	//WinAppの取得
+	WinApp* winApp = WinApp::GetInstance();
+	//DxCommonの取得
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+
+	D3D12_RESOURCE_DESC resourceDesc{};
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	resourceDesc.Width = winApp->kWindowWidth;
+	resourceDesc.Height = winApp->kWindowHeight;
+	resourceDesc.DepthOrArraySize = 1;
+	resourceDesc.MipLevels = 1;
+	resourceDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+	resourceDesc.SampleDesc.Count = 1;
+	resourceDesc.SampleDesc.Quality = 0;
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+
+	//利用するヒープの設定
+	D3D12_HEAP_PROPERTIES heapProperities{};
+	heapProperities.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+	//深層値のクリア設定
+	D3D12_CLEAR_VALUE depthClearValue{};
+	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthClearValue.DepthStencil.Depth = 1.0f;
+	depthClearValue.DepthStencil.Stencil = 0;
+
+	ComPtr<ID3D12Resource> resource = nullptr;
+	HRESULT hr = dxCommon->GetDevice()->CreateCommittedResource(
+		&heapProperities,
+		D3D12_HEAP_FLAG_NONE,
+		&resourceDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		&depthClearValue,
+		IID_PPV_ARGS(&resource));
+	assert(SUCCEEDED(hr));
+	return resource;
+}
+
 void DirectXCommon::ClearRenderTarget() {
 	//バックバッファの取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
@@ -455,12 +494,12 @@ void DirectXCommon::CreateDepthStencilView() {
 	depthStencilResource_ = CreateDepthStencilTextureResource();
 
 	//shadowMapDepthResourceの生成
-	//shadowMapDepthResource_ = CreateDepthStencilTextureResource();
+	shadowMapDepthResource_ = CreateShadowMapTextureResource();
 
 	//DsvHeapの先頭にDSVの生成
 	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc_, dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
 	//DsvHeapの2つめににシャドウマップの生成
-	//device_->CreateDepthStencilView(shadowMapDepthResource_.Get(), &shadowMapDepthDesc_, CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 1, device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)));
+	device_->CreateDepthStencilView(shadowMapDepthResource_.Get(), &shadowMapDepthDesc_, CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 1, device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)));
 }
 
 void DirectXCommon::CreateFence() {
