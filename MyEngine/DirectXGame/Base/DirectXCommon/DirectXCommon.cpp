@@ -486,9 +486,9 @@ void DirectXCommon::CreateDepthStencilView() {
 	dsvDesc_.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	dsvDesc_.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 
-	shadowMapDepthDesc_.Format = DXGI_FORMAT_D32_FLOAT;
+	shadowMapDepthDesc_.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	shadowMapDepthDesc_.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	shadowMapDepthDesc_.Flags = D3D12_DSV_FLAG_NONE;
+	shadowMapDepthDesc_.Flags = D3D12_DSV_FLAG_READ_ONLY_DEPTH;
 
 	//depthStencilResourceの生成
 	depthStencilResource_ = CreateDepthStencilTextureResource();
@@ -499,7 +499,10 @@ void DirectXCommon::CreateDepthStencilView() {
 	//DsvHeapの先頭にDSVの生成
 	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc_, dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
 	//DsvHeapの2つめににシャドウマップの生成
-	device_->CreateDepthStencilView(shadowMapDepthResource_.Get(), &shadowMapDepthDesc_, CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 1, device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)));
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 1,
+		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV));
+	device_->CreateDepthStencilView(shadowMapDepthResource_.Get(), &shadowMapDepthDesc_, dsvHandle);
 }
 
 void DirectXCommon::CreateFence() {
