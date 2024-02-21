@@ -163,6 +163,15 @@ void GraphicsPipelineManager::CreateRootSignature() {
 		}
 #pragma endregion
 			break;
+		case PipelineState::kShadowMap:
+#pragma once シャドウマップシェーダー
+		{
+			CD3DX12_ROOT_PARAMETER1 rootParameter;
+			rootParameter.InitAsDescriptorTable(1, &CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0), D3D12_SHADER_VISIBILITY_PIXEL);
+
+		}
+#pragma endregion
+			break;
 		}
 	}
 }

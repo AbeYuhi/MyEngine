@@ -505,6 +505,19 @@ void DirectXCommon::CreateDepthStencilView() {
 	device_->CreateDepthStencilView(shadowMapDepthResource_.Get(), &shadowMapDepthDesc_, dsvHandle);
 }
 
+void DirectXCommon::CreateSamplerView() {
+	//ディスクリプターヒープの生成
+	samplerDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER, 1, true);
+
+	samplerDesc_ = {};
+	samplerDesc_.Filter = D3D12_FILTER_COMPARISON_MIN_MAG_MIP_POINT;
+	samplerDesc_.AddressU = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	samplerDesc_.AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	samplerDesc_.AddressW = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	samplerDesc_.ComparisonFunc = D3D12_COMPARISON_FUNC_EQUAL;
+	device_->CreateSampler(&samplerDesc_, samplerDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
+}
+
 void DirectXCommon::CreateFence() {
 	//初期値0でFenceの生成
 	fenceValue_ = 0;
