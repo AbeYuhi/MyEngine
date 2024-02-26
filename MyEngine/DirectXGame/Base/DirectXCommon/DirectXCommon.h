@@ -117,7 +117,8 @@ private: //メンバ関数
 	/// <summary>
 	/// 0 : ImGuiManager
 	/// 1～1000 : Texture
-	/// 1001～1500 : Particle
+	/// 1001～2000 : Particle
+	/// 2001 : シャドウマップ
 	/// </summary>
 	void CreateShaderResourceView();
 

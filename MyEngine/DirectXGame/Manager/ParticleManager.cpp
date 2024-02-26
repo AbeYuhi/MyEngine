@@ -13,8 +13,8 @@ void ParticleManager::Initialize() {
 	randomManager_ = RandomManager::GetInstance();
 	//現在生成されているパーティクル数をインクリメント
 	sEmittersCount_++;
-	if (sEmittersCount_ > 500) {
-		Log(ConvertString(std::format(L"500個以上パーティクルは生成できません\n")));
+	if (sEmittersCount_ > 1000) {
+		Log(ConvertString(std::format(L"1000個以上パーティクルは生成できません\n")));
 		assert(false);
 	}
 
@@ -24,11 +24,11 @@ void ParticleManager::Initialize() {
 	//書き込むためのアドレスの取得
 	worldTransformResource_->Map(0, nullptr, reinterpret_cast<void**>(&particleData_));
 	//単位行列の書き込み
-	for (int index = 0; index < 10; index++) {
+	/*for (int index = 0; index < 10; index++) {
 		particleData_[index].WVP_ = MakeIdentity4x4();
 		particleData_[index].World_ = MakeIdentity4x4();
 		particleData_[index].color_ = { 1.0f, 1.0f, 1.0f, 0.0f };
-	}
+	}*/
 
 	materialInfo_.Initialize();
 

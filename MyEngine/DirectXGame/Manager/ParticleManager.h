@@ -34,7 +34,7 @@ class ParticleManager
 private:
 	//現在のパーティクルの生成数
 	static int sEmittersCount_;
-	static const int kEmittersMaxCount_ = 500;
+	static const int kEmittersMaxCount_ = 1000;
 	static std::map<int, bool> isDrawing_;
 
 public: //メンバ関数
