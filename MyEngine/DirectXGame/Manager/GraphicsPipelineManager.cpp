@@ -163,7 +163,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 		}
 #pragma endregion
 			break;
-		case PipelineState::kShadowMap:
+		/*case PipelineState::kShadowMap:
 #pragma once シャドウマップシェーダー
 		{
 			CD3DX12_ROOT_PARAMETER1 rootParameter;
@@ -171,7 +171,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 
 		}
 #pragma endregion
-			break;
+			break;*/
 		}
 	}
 }
