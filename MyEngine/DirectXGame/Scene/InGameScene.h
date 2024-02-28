@@ -1,23 +1,24 @@
 #pragma once
-#include "DirectXGame/Base/WinApp/WinApp.h"
-#include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
-#include "DirectXGame/Manager/ImGuiManager.h"
-#include "DirectXGame/Manager/TextureManager.h"
-#include "DirectXGame/Manager/InputManager.h"
-#include "DirectXGame/Manager/AudioManager.h"
-#include "DirectXGame/Manager/ParticleManager.h"
-#include "DirectXGame/Manager/RandomManager.h"
-#include "DirectXGame/Object/Sprite.h"
-#include "DirectXGame/Object/Model.h"
-#include "DirectXGame/GameObject/Camera/MainCamera.h"
-#include "DirectXGame/GameObject/Camera/InGameCamera.h"
-#include "DirectXGame/GameObject/Camera/DebugCamera.h"
-#include "DirectXGame/GameObject/Camera/SpriteCamera.h"
-#include "DirectXGame/GameObject/Light/LightObject.h"
-#include "DirectXGame/GameObject/Particle/testParticle.h"
-#include "DirectXGame/GameObject/Particle/Object/PlaneParticle.h"
-#include "DirectXGame/GameObject/Particle/Sprite/SpriteParticle.h"
-#include "DirectXGame/Scene/IScene.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Manager/ImGuiManager.h"
+#include "Manager/TextureManager.h"
+#include "Manager/InputManager.h"
+#include "Manager/AudioManager.h"
+#include "Manager/ParticleManager.h"
+#include "Manager/RandomManager.h"
+#include "Object/Sprite.h"
+#include "Object/Model.h"
+#include "GameObject/Camera/MainCamera.h"
+#include "GameObject/Camera/InGameCamera.h"
+#include "GameObject/Camera/DebugCamera.h"
+#include "GameObject/Camera/SpriteCamera.h"
+#include "GameObject/Light/LightObject.h"
+#include "GameObject/Shadow/Shadow.h"
+#include "GameObject/Particle/testParticle.h"
+#include "GameObject/Particle/Object/PlaneParticle.h"
+#include "GameObject/Particle/Sprite/SpriteParticle.h"
+#include "Scene/IScene.h"
 
 class InGameScene : public IScene {
 public:
@@ -48,6 +49,8 @@ private:
 	bool isDebugCamera_;
 	//ライト
 	std::unique_ptr<LightObject> lightObj_;
+	//シャドウ
+	std::unique_ptr<Shadow> shadow_;
 
 	//ブレンドモード
 	int blendMode_;
@@ -61,15 +64,14 @@ private:
 	std::unique_ptr<SpriteParticle> spriteParticle_;
 	std::unique_ptr<PlaneParticle> planeParticle_;
 
+	std::shared_ptr<Model> yukariModel_;
+	RenderItem yukariModelInfo_;
+
 	std::shared_ptr<Model> groundModel_;
 	RenderItem groundModelInfo_;
 
-	std::shared_ptr<Model> sphereModel_;
-	RenderItem sphereModelInfo_;
-
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;
-
 
 	//サウンド
 	uint32_t soundHandle_;

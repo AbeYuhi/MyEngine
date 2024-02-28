@@ -1,2 +1,0 @@
-#include "ShadowMap.hlsli"
-

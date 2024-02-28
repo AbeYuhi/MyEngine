@@ -68,12 +68,6 @@ public: //メンバ関数
 	/// <returns></returns>
 	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource();
 
-	/// <summary>
-	/// 深度情報を収納するためのリソース確保関数
-	/// </summary>
-	/// <returns></returns>
-	ComPtr<ID3D12Resource> CreateShadowMapTextureResource();
-
 public: //ゲッターセッター
 
 	inline ID3D12Device* GetDevice() { return device_.Get(); }
@@ -88,13 +82,9 @@ public: //ゲッターセッター
 
 	inline ID3D12DescriptorHeap* GetDsvDescriptorHeap() { return dsvDescriptorHeap_.Get(); }
 
-	inline ID3D12DescriptorHeap* GetSamplerDescriptorHeap() { return samplerDescriptorHeap_.Get(); }
-
 	inline D3D12_RENDER_TARGET_VIEW_DESC GetRtvDesc() { return rtvDesc_; }
 
 	inline D3D12_DEPTH_STENCIL_VIEW_DESC GetDsvDesc() { return dsvDesc_; }
-
-	inline D3D12_DEPTH_STENCIL_VIEW_DESC GetShadowMapDepthDesc() { return shadowMapDepthDesc_; }
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle();
 
@@ -124,8 +114,6 @@ private: //メンバ関数
 
 	void CreateDepthStencilView();
 
-	void CreateSamplerView();
-
 	void CreateFence();
 
 	void InitializeDXC();
@@ -144,18 +132,14 @@ private: //メンバ変数
 	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr;
-	ComPtr<ID3D12DescriptorHeap> samplerDescriptorHeap_ = nullptr;
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_;
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc_;
-	D3D12_DEPTH_STENCIL_VIEW_DESC shadowMapDepthDesc_;
-	D3D12_SAMPLER_DESC samplerDesc_;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 	ComPtr<ID3D12Fence> fence_ = nullptr;
 	ComPtr<IDxcUtils> dxcUtils_ = nullptr;
 	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
-	ComPtr<ID3D12Resource> shadowMapDepthResource_ = nullptr;
 	uint64_t fenceValue_ = 0;
 	std::chrono::steady_clock::time_point reference_;
 };

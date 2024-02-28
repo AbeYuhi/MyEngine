@@ -15,10 +15,17 @@ struct VertexShaderInput
     float32_t3 normal : NORMAL0;
 };
 
+struct Shadow
+{
+    matrix shadow;
+};
+ConstantBuffer<Shadow> gShadow : register(b1);
+
 VertexShaderOutput main(VertexShaderInput input)
 {
     VertexShaderOutput output;
     output.position = mul(input.position, gTransformationMatrix.WVP);
+    output.position = mul(gShadow.shadow, output.position);
     output.texcoord = input.texcoord;
     output.normal = normalize(mul(input.normal, (float32_t3x3) gTransformationMatrix.WorldInverseTranspose));
     output.worldPosition = mul(input.position, gTransformationMatrix.World).xyz;

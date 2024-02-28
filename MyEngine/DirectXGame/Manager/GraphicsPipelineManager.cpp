@@ -63,7 +63,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
 			//RootParameter作成。
-			D3D12_ROOT_PARAMETER rootParameters[5] = {};
+			D3D12_ROOT_PARAMETER rootParameters[6] = {};
 			rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[0].Descriptor.ShaderRegister = 0;
@@ -80,6 +80,9 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[4].Descriptor.ShaderRegister = 2;
+			rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+			rootParameters[5].Descriptor.ShaderRegister = 1;
 			descriptionRootSignature.pParameters = rootParameters;
 			descriptionRootSignature.NumParameters = _countof(rootParameters);
 
@@ -163,15 +166,6 @@ void GraphicsPipelineManager::CreateRootSignature() {
 		}
 #pragma endregion
 			break;
-		/*case PipelineState::kShadowMap:
-#pragma once シャドウマップシェーダー
-		{
-			CD3DX12_ROOT_PARAMETER1 rootParameter;
-			rootParameter.InitAsDescriptorTable(1, &CD3DX12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0), D3D12_SHADER_VISIBILITY_PIXEL);
-
-		}
-#pragma endregion
-			break;*/
 		}
 	}
 }

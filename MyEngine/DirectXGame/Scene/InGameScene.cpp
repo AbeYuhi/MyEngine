@@ -39,6 +39,10 @@ void InGameScene::Initialize() {
 	lightObj_ = std::make_unique<LightObject>();
 	lightObj_->Initialize();
 
+	//影
+	shadow_ = std::make_unique<Shadow>();
+	shadow_->Initialize();
+
 	//ブレンドモード
 	blendMode_ = kBlendModeNormal;
 
@@ -56,13 +60,16 @@ void InGameScene::Initialize() {
 	planeParticle_ = std::make_unique<PlaneParticle>(100);
 	planeParticle_->Initialize();
 
-	groundModel_ = Model::Create("yukari", "yukari.obj");
-	groundModelInfo_.Initialize();
-	groundModelInfo_.materialInfo_.material_->enableLightint = false;
+	yukariModel_ = Model::Create("yukari", "yukari.obj");
+	yukariModelInfo_.Initialize();
+	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
+	yukariModelInfo_.worldTransform_.data_.translate_.y = 1;
 
-	sphereModel_ = Model::Create("sphere", "sphere.obj");
-	sphereModelInfo_.Initialize();
-	sphereModelInfo_.materialInfo_.material_->enableLightint = true;
+	groundModel_ = Model::Create("plane", "plane.obj");
+	groundModelInfo_.Initialize();
+	groundModelInfo_.worldTransform_.data_.rotate_.x = 3 * 3.14f / 2.0f;
+	groundModelInfo_.worldTransform_.data_.scale_ *= 10;
+	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -89,6 +96,8 @@ void InGameScene::Update() {
 	spriteCamera_->Update();
 	//ライトの更新
 	lightObj_->Update();
+	//影の更新
+	shadow_->Update(lightObj_->GetDirectionalLightData(0).direction);
 
 	//パーティクルの更新
 	//testParticle1_->Update();
@@ -98,26 +107,26 @@ void InGameScene::Update() {
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
+		ImGui::SliderFloat3("pos", &yukariModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &yukariModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &yukariModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::SliderFloat("shininess", &yukariModelInfo_.materialInfo_.material_->shininess, 0, 100);
+		ImGui::EndTabItem();
+	}
+	if (ImGui::BeginTabItem("groundModel")) {
 		ImGui::SliderFloat3("pos", &groundModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
 		ImGui::SliderFloat3("rotate", &groundModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &groundModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &groundModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("sphereModel")) {
-		ImGui::SliderFloat3("pos", &sphereModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &sphereModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &sphereModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::SliderFloat("shininess", &sphereModelInfo_.materialInfo_.material_->shininess, 0, 100);
 		bool b = 0;
-		if (sphereModelInfo_.materialInfo_.material_->isSpecularReflection == 0) {
+		if (groundModelInfo_.materialInfo_.material_->isSpecularReflection == 0) {
 			b = false;
 		}
 		else {
 			b = true;
 		}
 		ImGui::Checkbox("isSpecularReflection", &b);
-		sphereModelInfo_.materialInfo_.material_->isSpecularReflection = b;
+		groundModelInfo_.materialInfo_.material_->isSpecularReflection = b;
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("sprite")) {
@@ -135,8 +144,8 @@ void InGameScene::Update() {
 	ImGui::End();
 #endif // _DEBUG
 
+	yukariModelInfo_.Update();
 	groundModelInfo_.Update();
-	sphereModelInfo_.Update();
 	spriteInfo_.Update();
 }
 
@@ -145,6 +154,8 @@ void InGameScene::Draw() {
 	mainCamera_->Draw();
 	//ライティングの転送
 	lightObj_->Draw();
+	//シャドウの転送
+	shadow_->Draw();
 
 	///背景スプライトの描画開始 
 
@@ -158,22 +169,22 @@ void InGameScene::Draw() {
 
 	sprite_->Draw(spriteInfo_);
 
-	spriteParticle_->EmitterDraw();
+	//spriteParticle_->EmitterDraw();
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	planeParticle_->EmitterDraw();
-	sphereModel_->Draw(sphereModelInfo_, monsterBallHandle_);
-	groundModel_->Draw(groundModelInfo_);
+	//planeParticle_->EmitterDraw();
+	yukariModel_->Draw(yukariModelInfo_);
+	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
 
 	///オブジェクトの描画終了
 
 	///パーティクルの描画
 
-	spriteParticle_->Draw();
-	planeParticle_->Draw();
+	//spriteParticle_->Draw();
+	//planeParticle_->Draw();
 
 	///パーティクルの描画終了
 }

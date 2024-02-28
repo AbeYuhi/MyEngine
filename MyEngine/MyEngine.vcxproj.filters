@@ -121,8 +121,11 @@
     <Filter Include="ソース ファイル\GameObject\Map">
       <UniqueIdentifier>{928c5bf6-854d-416e-9b8d-15d6b278cbf9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader\ShadowMap">
-      <UniqueIdentifier>{2035d429-b84f-4c60-b665-aa79ed0220aa}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\GameObject\Shadow">
+      <UniqueIdentifier>{2addc2a3-9140-43ae-a72d-d46bd39ab2cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Shadow">
+      <UniqueIdentifier>{ff48d20c-b5b4-4534-9de4-99f4ac07175f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +314,9 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Manager\CollisionManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\GameObject\Shadow\Shadow.cpp">
+      <Filter>ソース ファイル\GameObject\Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -560,6 +566,9 @@
     <ClInclude Include="DirectXGame\Data\StageBlock.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\GameObject\Shadow\Shadow.h">
+      <Filter>ヘッダー ファイル\GameObject\Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj">
@@ -573,9 +582,6 @@
     </None>
     <None Include="Resources\Shaders\Object3d.hlsli">
       <Filter>Shader\Object3d</Filter>
-    </None>
-    <None Include="Resources\Shaders\ShadowMap.hlsli">
-      <Filter>Shader\ShadowMap</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -595,12 +601,6 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
       <Filter>Shader\Object3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ShadowMap.PS.hlsl">
-      <Filter>Shader\ShadowMap</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ShadowMap.VS.hlsl">
-      <Filter>Shader\ShadowMap</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

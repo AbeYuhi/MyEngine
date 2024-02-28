@@ -22,8 +22,6 @@ enum BlendMode{
 enum PipelineState {
 	//通常用
 	kDefault,
-	//シャドウマップ用
-	kShadowMap,
 	//パーティクル用
 	kParticle,
 	//ワイヤフレーム用

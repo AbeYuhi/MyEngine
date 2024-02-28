@@ -54,10 +54,10 @@ void LightObject::Update() {
 			ImGui::SliderFloat("intensity", &lightData_->directionalLight[index].intensity, 0.0f, 1.0f);
 			ImGui::EndTabItem();
 		}
-		lightData_->directionalLight[index].direction = Normalize(lightData_->directionalLight[index].direction);
+		/*lightData_->directionalLight[index].direction = Normalize(lightData_->directionalLight[index].direction);
 		if (std::isnan(lightData_->directionalLight[index].direction.x)) {
 			lightData_->directionalLight[index].direction = { 0.0f, -1.0f, 0.0f };
-		}
+		}*/
 	}
 	ImGui::EndTabBar();
 	ImGui::End();
