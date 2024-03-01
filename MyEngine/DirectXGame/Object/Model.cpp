@@ -47,11 +47,6 @@ void Model::Draw(RenderItem& renderItem) {
 		return;
 	}
 
-	//RTVの設定
-	//CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = dxCommon->GetRtvHandle();
-	//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dxCommon->GetDsvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-	//dxCommon->GetCommandList()->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
-
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
@@ -72,7 +67,7 @@ void Model::Draw(RenderItem& renderItem) {
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
-		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
+		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 2, 0, 0);
 	}
 }
 

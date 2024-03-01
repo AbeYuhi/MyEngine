@@ -20,6 +20,6 @@ public:
 
 private:
 	ComPtr<ID3D12Resource> shadowResorce_ = nullptr;
-	DirectX::XMMATRIX* shadowData_;
+	Matrix4x4* shadowData_;
 };
 
