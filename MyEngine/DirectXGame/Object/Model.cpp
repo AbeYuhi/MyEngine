@@ -208,6 +208,8 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			}
 		}
 
+		//インデックスバッファの生成
+
 		//マテリアルのインプット
 		unsigned int materialIndex = mesh->mMaterialIndex;
 		const aiMaterial* material = scene->mMaterials[materialIndex];
@@ -226,4 +228,6 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 		meshs_.push_back(modelPart);
 	}
+
+	importer.FreeScene();
 }
