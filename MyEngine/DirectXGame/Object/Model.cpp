@@ -67,7 +67,7 @@ void Model::Draw(RenderItem& renderItem) {
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
-		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 2, 0, 0);
+		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
 	}
 }
 

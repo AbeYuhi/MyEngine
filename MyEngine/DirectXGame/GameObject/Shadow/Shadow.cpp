@@ -29,11 +29,5 @@ void Shadow::Update(Vector3 lightVec) {
 }
 
 void Shadow::Draw() {
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
-	//パイプラインステートの設定
-	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
-	//ルートシグネチャの設定
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(5, shadowResorce_->GetGPUVirtualAddress());
+
 }
