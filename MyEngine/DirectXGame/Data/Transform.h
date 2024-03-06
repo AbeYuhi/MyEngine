@@ -48,6 +48,11 @@ struct WorldTransform {
 	void TransferMatrix();
 
 	/// <summary>
+	/// Nodeを含めた更新
+	/// </summary>
+	void NodeUpdate(Matrix4x4 localMatrix);
+
+	/// <summary>
 	/// ワールドポジションの取得
 	/// </summary>
 	Vector3 GetWorldPos();

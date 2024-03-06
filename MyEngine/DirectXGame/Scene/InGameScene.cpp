@@ -65,10 +65,8 @@ void InGameScene::Initialize() {
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 	yukariModelInfo_.worldTransform_.data_.translate_.y = 1;
 
-	groundModel_ = Model::Create("plane", "plane.obj");
+	groundModel_ = Model::Create("planeGltf", "plane.gltf");
 	groundModelInfo_.Initialize();
-	groundModelInfo_.worldTransform_.data_.rotate_.x = 3 * 3.14f / 2.0f;
-	groundModelInfo_.worldTransform_.data_.scale_ *= 10;
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
 	sprite_ = Sprite::Create();
@@ -177,7 +175,7 @@ void InGameScene::Draw() {
 
 	//planeParticle_->EmitterDraw();
 	yukariModel_->Draw(yukariModelInfo_);
-	groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
+	groundModel_->Draw(groundModelInfo_);
 
 	///オブジェクトの描画終了
 

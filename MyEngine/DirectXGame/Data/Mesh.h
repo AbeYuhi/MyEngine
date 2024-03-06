@@ -14,10 +14,13 @@ struct Mesh {
 
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource;
+	ComPtr<ID3D12Resource> indexResource;
 
 	//VertexBufferView
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
+	D3D12_INDEX_BUFFER_VIEW indexBufferView;
 
 	//オブジェクトのローカル情報
 	VertexData* vertexData;
+	uint32_t* indexData;
 };

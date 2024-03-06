@@ -318,6 +318,9 @@
     <ClCompile Include="DirectXGame\GameObject\Shadow\Shadow.cpp">
       <Filter>ソース ファイル\GameObject\Shadow</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Data\Node.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">
@@ -568,6 +571,12 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Shadow\Shadow.h">
       <Filter>ヘッダー ファイル\GameObject\Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\IndexData.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\Node.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

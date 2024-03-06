@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Data\Collider.cpp" />
     <ClCompile Include="DirectXGame\Data\Material.cpp" />
     <ClCompile Include="DirectXGame\Data\MaterialInfo.cpp" />
+    <ClCompile Include="DirectXGame\Data\Node.cpp" />
     <ClCompile Include="DirectXGame\Data\SpriteData.cpp" />
     <ClCompile Include="DirectXGame\Data\TextureData.cpp" />
     <ClCompile Include="DirectXGame\Data\Transform.cpp" />
@@ -174,6 +175,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Data\Collider.h" />
+    <ClInclude Include="DirectXGame\Data\Node.h" />
     <ClInclude Include="DirectXGame\Data\SpriteData.h" />
     <ClInclude Include="DirectXGame\Data\StageBlock.h" />
     <ClInclude Include="DirectXGame\GameObject\Entity\Player.h" />
@@ -256,6 +258,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\LoadFile\LoadCSV.h" />
     <ClInclude Include="DirectXGame\Data\Mesh.h" />
     <ClInclude Include="DirectXGame\GameObject\Shadow\Shadow.h" />
+    <ClInclude Include="DirectXGame\Data\IndexData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

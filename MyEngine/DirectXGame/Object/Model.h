@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <map>
+#include <filesystem>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -54,5 +55,5 @@ private: //メンバ関数
 private: //メンバ変数
 
 	std::list<Mesh> meshs_;
-
+	bool isGltf_;
 };

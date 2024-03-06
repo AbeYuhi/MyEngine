@@ -18,4 +18,8 @@ struct RenderItem {
 		materialInfo_.UpdateMatrix();
 		worldTransform_.UpdateWorld();
 	}
+
+	void UpdateGltf(Matrix4x4 localMatrix) {
+		worldTransform_.NodeUpdate(localMatrix);
+	}
 };
