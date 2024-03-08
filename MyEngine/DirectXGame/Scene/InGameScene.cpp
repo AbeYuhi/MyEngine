@@ -175,7 +175,7 @@ void InGameScene::Draw() {
 
 	//planeParticle_->EmitterDraw();
 	yukariModel_->Draw(yukariModelInfo_);
-	groundModel_->Draw(groundModelInfo_);
+	groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
 
 	///オブジェクトの描画終了
 

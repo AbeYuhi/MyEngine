@@ -24,6 +24,7 @@
 #include "DirectXGame/Data/TextureData.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
 #include "DirectXGame/Data/Mesh.h"
+#include "DirectXGame/Data/Animation.h"
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 
@@ -55,5 +56,6 @@ private: //メンバ関数
 private: //メンバ変数
 
 	std::list<Mesh> meshs_;
+	std::map <std::string, Animation > animations_;
 	bool isGltf_;
 };

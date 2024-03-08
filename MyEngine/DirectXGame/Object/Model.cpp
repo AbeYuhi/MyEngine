@@ -109,6 +109,10 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	//プリミティブ形状を設定
 	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	for (auto& mesh : meshs_) {
+		if (isGltf_) {
+			renderItem.UpdateGltf(mesh.modelData.rootNode.localMatrix);
+		}
+
 		//VBVの設定
 		dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
 		//IBVの設定
@@ -281,6 +285,9 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 		meshs_.push_back(modelPart);
 	}
+
+	//アニメーションの読み込み
+	for(scene->)
 
 	importer.FreeScene();
 }
