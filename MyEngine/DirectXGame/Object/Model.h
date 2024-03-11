@@ -56,6 +56,6 @@ private: //メンバ関数
 private: //メンバ変数
 
 	std::list<Mesh> meshs_;
-	std::map <std::string, Animation > animations_;
+	std::map <std::string, Animation> animations_;
 	bool isGltf_;
 };

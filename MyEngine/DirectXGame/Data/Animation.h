@@ -31,7 +31,6 @@ struct ScaleChannel {
 };
 
 struct AnimationChannnel {
-	std::string name;
 	PositionChannel positionChannel;
 	RotationChannel rotationChannel;
 	ScaleChannel scaleChannel;

@@ -287,7 +287,15 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	}
 
 	//アニメーションの読み込み
-	for(scene->)
+	for (int animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
+		animations_[scene->mAnimations[animationIndex]->mName.C_Str()].name = scene->mAnimations[animationIndex]->mName.C_Str();
+		animations_[scene->mAnimations[animationIndex]->mName.C_Str()].numFrames = scene->mAnimations[animationIndex]->mDuration * scene->mAnimations[animationIndex]->mTicksPerSecond;
+
+		for (int channelIndex = 0; channelIndex < scene->mAnimations[animationIndex]->mNumChannels; channelIndex++) {
+			scene->mAnimations[animationIndex]->mChannels[channelIndex]
+		}
+
+	}
 
 	importer.FreeScene();
 }
