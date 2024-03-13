@@ -9,12 +9,6 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 
-struct Animation {
-	std::string name;
-	uint32_t numFrames;
-	AnimationChannnel channel;
-};
-
 struct PositionChannel {
 	Vector3 position;
 	float time;
@@ -30,8 +24,19 @@ struct ScaleChannel {
 	float time;
 };
 
-struct AnimationChannnel {
-	PositionChannel positionChannel;
-	RotationChannel rotationChannel;
-	ScaleChannel scaleChannel;
+struct AnimationChannel {
+	std::string nodeName;
+	uint32_t numPositionChannel;
+	uint32_t numRotateChannel;
+	uint32_t numScaleChannel;
+	std::vector<PositionChannel> positionChannel;
+	std::vector<RotationChannel> rotationChannel;
+	std::vector<ScaleChannel> scaleChannel;
+};
+
+struct AnimationData {
+	std::string name;
+	uint32_t numFrames;
+	uint32_t numChannels;
+	std::vector<AnimationChannel> channels;
 };

@@ -10,5 +10,4 @@ struct ModelData {
 	std::vector<VertexData> vertices;
 	std::vector<IndexData> indices;
 	MaterialData material;
-	Node rootNode;
 };

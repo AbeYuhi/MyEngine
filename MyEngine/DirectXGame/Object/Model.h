@@ -50,12 +50,16 @@ public: //メンバ関数
 	void Draw(ParticleDrawInfo drawInfo);
 	void Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle);
 
+	void NodeUpdate();
+
 private: //メンバ関数
 	void LoadModelFile(const std::string& filepath, const std::string& filename);
 
 private: //メンバ変数
 
+	std::string filePath_;
 	std::list<Mesh> meshs_;
-	std::map <std::string, Animation> animations_;
+	std::map <std::string, AnimationData> animations_;
+	Node rootNode_;
 	bool isGltf_;
 };

@@ -12,6 +12,9 @@ struct Mesh {
 	//テクスチャデータ
 	uint32_t textureHandle;
 
+	//メッシュの名前
+	std::string name;
+
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource;
 	ComPtr<ID3D12Resource> indexResource;
