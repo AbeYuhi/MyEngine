@@ -52,6 +52,8 @@ public: //メンバ関数
 
 	void NodeUpdate();
 
+	void Animation(std::string animationName);
+
 private: //メンバ関数
 	void LoadModelFile(const std::string& filepath, const std::string& filename);
 
