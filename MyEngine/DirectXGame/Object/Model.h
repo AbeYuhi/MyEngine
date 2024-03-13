@@ -52,6 +52,10 @@ public: //メンバ関数
 
 	void NodeUpdate();
 
+	void StartAnimation(std::string animationName);
+
+	void PlayAnimation(std::string animationName);
+
 	void Animation(std::string animationName);
 
 private: //メンバ関数
@@ -64,4 +68,6 @@ private: //メンバ変数
 	std::map <std::string, AnimationData> animations_;
 	Node rootNode_;
 	bool isGltf_;
+	bool isAnimation_;
+	int animationFrame_;
 };

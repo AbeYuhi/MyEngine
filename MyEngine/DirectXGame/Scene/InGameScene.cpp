@@ -51,14 +51,8 @@ void InGameScene::Initialize() {
 	fenceHandle_ = TextureManager::Load("fence.png");
 
 	//ゲームオブジェクト
-	testParticle1_ = std::make_unique<TestParticle>(100);
+	testParticle1_ = std::make_unique<TestParticle>();
 	testParticle1_->Initialize();
-
-	spriteParticle_ = std::make_unique<SpriteParticle>(100);
-	spriteParticle_->Initialize();
-
-	planeParticle_ = std::make_unique<PlaneParticle>(100);
-	planeParticle_->Initialize();
 
 	yukariModel_ = Model::Create("yukari", "yukari.obj");
 	yukariModelInfo_.Initialize();
@@ -68,6 +62,9 @@ void InGameScene::Initialize() {
 	groundModel_ = Model::Create("planeGltf", "plane.gltf");
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
+
+	cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
+	cubeModelInfo_.Initialize();
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -98,9 +95,7 @@ void InGameScene::Update() {
 	shadow_->Update(lightObj_->GetDirectionalLightData(0).direction);
 
 	//パーティクルの更新
-	//testParticle1_->Update();
-	spriteParticle_->Update();
-	planeParticle_->Update();
+	testParticle1_->Update();
 
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
@@ -144,6 +139,7 @@ void InGameScene::Update() {
 
 	yukariModelInfo_.Update();
 	groundModelInfo_.Update();
+	cubeModelInfo_.Update();
 	spriteInfo_.Update();
 }
 
@@ -165,24 +161,21 @@ void InGameScene::Draw() {
 
 	///前面スプライトの描画開始
 
-	sprite_->Draw(spriteInfo_);
-
-	//spriteParticle_->EmitterDraw();
+	//sprite_->Draw(spriteInfo_);
 
 	///前面スプライトの描画終了
 
 	///オブジェクトの描画開始
 
-	//planeParticle_->EmitterDraw();
-	yukariModel_->Draw(yukariModelInfo_);
-	groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
+	//yukariModel_->Draw(yukariModelInfo_);
+	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
+	cubeModel_->Draw(cubeModelInfo_);
 
 	///オブジェクトの描画終了
 
 	///パーティクルの描画
 
-	//spriteParticle_->Draw();
-	//planeParticle_->Draw();
+	testParticle1_->Draw();
 
 	///パーティクルの描画終了
 }

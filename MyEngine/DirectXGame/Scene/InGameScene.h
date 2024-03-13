@@ -61,14 +61,15 @@ private:
 
 	//描画モデル
 	std::unique_ptr<TestParticle> testParticle1_;
-	std::unique_ptr<SpriteParticle> spriteParticle_;
-	std::unique_ptr<PlaneParticle> planeParticle_;
 
 	std::shared_ptr<Model> yukariModel_;
 	RenderItem yukariModelInfo_;
 
 	std::shared_ptr<Model> groundModel_;
 	RenderItem groundModelInfo_;
+
+	std::shared_ptr<Model> cubeModel_;
+	RenderItem cubeModelInfo_;
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;

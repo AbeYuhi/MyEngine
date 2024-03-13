@@ -24,5 +24,4 @@ private: //メンバ関数
 private:
 	std::shared_ptr<Sprite> particleSprite_;
 	SpriteData spriteData_;
-	uint32_t textureHandle_;
 };

@@ -1,36 +1,23 @@
 #pragma once
+#include <memory>
 #include "DirectXGame/Manager/ParticleManager.h"
+#include "DirectXGame/GameObject/Particle/Object/PlaneParticle.h"
 #include "DirectXGame/Object/Model.h"
 #include "DirectXGame/Object/Sprite.h"
 
-class TestParticle : public ParticleManager
+class TestParticle
 {
 public:
 
-	TestParticle(int maxParticleCount);
-	~TestParticle() = default;
+	void Initialize();
 
-	void Initialize() override;
+	void Update();
 
-	void Update() override;
-
-	void EmitterDraw() override;
-
-	void Draw() override;
-
-private: //メンバ関数
-
-	ParticleInfo MakeNewParticle() override;
+	void Draw();
 
 private:
-	std::shared_ptr<Model> particleModel_;
-	std::shared_ptr<Sprite> particleSprite_;
-	SpriteData spriteData_;
-	uint32_t textureHandle_;
+	std::unique_ptr<PlaneParticle> particle0_;
+	std::unique_ptr<PlaneParticle> particle1_;
 
-	//風フィールド
-	AccelerationField accelerationField_;
-
-	//風が吹いているか
-	bool isAccelerationField_;
+	Vector3 pos;
 };

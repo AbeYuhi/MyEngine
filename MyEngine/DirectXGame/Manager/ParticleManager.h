@@ -64,6 +64,8 @@ public: //ゲッターセッター
 
 	inline bool GetIsPopParticle() { return isPopParticle_; }
 	inline void SetIsPopParticle(bool isPopParticle) { isPopParticle_ = isPopParticle; }
+	inline void SetTextureHandle(uint32_t textureHandle) { textureHandle_ = textureHandle; }
+	inline void SetEmitterPos(Vector3 pos) { emitter_.transform.translate_ = pos; }
 
 protected: //メンバ変数
 	//乱数マネージャー
@@ -75,6 +77,8 @@ protected: //メンバ変数
 	//ブレンドモード
 	BlendMode blendMode_;
 	BlendMode preBlendMode_;
+	//テクスチャハンドル
+	uint32_t textureHandle_;
 
 	//リソース
 	ComPtr<ID3D12Resource> worldTransformResource_;

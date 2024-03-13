@@ -231,7 +231,52 @@ void Model::NodeUpdate() {
 
 void Model::Animation(std::string animationName) {
 
-	//animations_[animationName].
+	if (!isAnimation_) {
+		StartAnimation(animationName);
+	}
+	else {
+		PlayAnimation(animationName);
+	}
+}
+
+void Model::StartAnimation(std::string animationName) {
+
+	isAnimation_ = true;
+	animationFrame_ = 0;
+
+}
+
+void Model::PlayAnimation(std::string animationName) {
+	
+	animationFrame_++;
+	if (animationFrame_ > animations_[animationName].numFrames) {
+		isAnimation_ = false;
+	}
+
+	for (uint32_t channelIndex = 0; channelIndex < animations_[animationName].numChannels; channelIndex++) {
+		//Assimpで開く
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(filePath_.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+
+		animations_[animationName].channels[channelIndex].
+
+		if (scene->mRootNode->mName.C_Str() == animations_[animationName].name) {
+			scene->mRootNode->mTransformation.Translation();
+			//scene->mRootNode->mTransformation.
+			//scene->mRootNode->mTransformation.
+		}
+		else {
+			for (uint32_t nodeIndex = 0; nodeIndex < scene->mRootNode->mNumChildren; nodeIndex++) {
+				if (scene->mRootNode->mChildren[nodeIndex]->mName.C_Str() == animations_[animationName].name) {
+					
+
+				}
+			}
+		}
+		
+	}
+
+	NodeUpdate();
 
 }
 

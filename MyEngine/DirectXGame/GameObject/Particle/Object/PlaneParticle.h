@@ -23,7 +23,6 @@ private: //メンバ関数
 
 private:
 	std::shared_ptr<Model> particleModel_;
-	uint32_t textureHandle_;
 
 	//風フィールド
 	AccelerationField accelerationField_;
