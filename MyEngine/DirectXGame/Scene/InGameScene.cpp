@@ -97,6 +97,8 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
+	cubeModel_->Animation("move");
+
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
@@ -175,7 +177,6 @@ void InGameScene::Draw() {
 
 	///パーティクルの描画
 
-	testParticle1_->Draw();
 
 	///パーティクルの描画終了
 }

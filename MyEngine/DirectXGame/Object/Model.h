@@ -67,7 +67,9 @@ private: //メンバ変数
 	std::list<Mesh> meshs_;
 	std::map <std::string, AnimationData> animations_;
 	Node rootNode_;
+
+	const aiScene* scene_;
 	bool isGltf_;
 	bool isAnimation_;
-	int animationFrame_;
+	uint32_t animationFrame_;
 };
