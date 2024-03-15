@@ -15,7 +15,7 @@ struct PositionChannel {
 };
 
 struct RotationChannel {
-	Vector4 rotation;
+	Vector3 rotation;
 	float time;
 };
 
