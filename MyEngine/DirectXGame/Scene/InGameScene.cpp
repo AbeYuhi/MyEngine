@@ -98,6 +98,7 @@ void InGameScene::Update() {
 	testParticle1_->Update();
 
 	cubeModel_->Animation("move");
+	//cubeModel_->Animation("scale");
 
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");

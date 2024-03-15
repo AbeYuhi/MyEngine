@@ -247,12 +247,6 @@ void Model::StartAnimation(std::string animationName) {
 }
 
 void Model::PlayAnimation(std::string animationName) {
-	
-	animationFrame_++;
-	if (animationFrame_ >= animations_[animationName].numFrames) {
-		isAnimation_ = false;
-		return;
-	}
 
 	for (uint32_t channelIndex = 0; channelIndex < animations_[animationName].numChannels; channelIndex++) {
 
@@ -262,8 +256,11 @@ void Model::PlayAnimation(std::string animationName) {
 			if (animations_[animationName].channels[channelIndex].numPositionChannel == 1) {
 				pos = animations_[animationName].channels[channelIndex].positionChannel[0].position;
 			}
-			else {
+			else if(animationFrame_ < animations_[animationName].channels[channelIndex].numPositionChannel){
 				pos = animations_[animationName].channels[channelIndex].positionChannel[animationFrame_].position;
+			}
+			else {
+				pos = animations_[animationName].channels[channelIndex].positionChannel[animations_[animationName].channels[channelIndex].numPositionChannel - 1].position;
 			}
 
 			//回転
@@ -271,8 +268,11 @@ void Model::PlayAnimation(std::string animationName) {
 			if (animations_[animationName].channels[channelIndex].numRotateChannel == 1) {
 				rotate = animations_[animationName].channels[channelIndex].rotationChannel[0].rotation;
 			}
-			else {
+			else if(animationFrame_ < animations_[animationName].channels[channelIndex].numRotateChannel){
 				rotate = animations_[animationName].channels[channelIndex].rotationChannel[animationFrame_].rotation;
+			}
+			else {
+				rotate = animations_[animationName].channels[channelIndex].rotationChannel[animations_[animationName].channels[channelIndex].numRotateChannel - 1].rotation;
 			}
 
 			//サイズ
@@ -280,12 +280,14 @@ void Model::PlayAnimation(std::string animationName) {
 			if (animations_[animationName].channels[channelIndex].numScaleChannel == 1) {
 				scale = animations_[animationName].channels[channelIndex].scaleChannel[0].scale;
 			}
-			else {
+			else if (animationFrame_ < animations_[animationName].channels[channelIndex].numScaleChannel) {
 				scale = animations_[animationName].channels[channelIndex].scaleChannel[animationFrame_].scale;
+			}
+			else {
+				scale = animations_[animationName].channels[channelIndex].scaleChannel[animations_[animationName].channels[channelIndex].numScaleChannel - 1].scale;
 			}
 
 			Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
-		
 			rootNode_.localMatrix = affineMatrix;
 		}
 		else {
@@ -296,8 +298,11 @@ void Model::PlayAnimation(std::string animationName) {
 					if (animations_[animationName].channels[channelIndex].numPositionChannel == 1) {
 						pos = animations_[animationName].channels[channelIndex].positionChannel[0].position;
 					}
-					else {
+					else if (animationFrame_ < animations_[animationName].channels[channelIndex].numPositionChannel) {
 						pos = animations_[animationName].channels[channelIndex].positionChannel[animationFrame_].position;
+					}
+					else {
+						pos = animations_[animationName].channels[channelIndex].positionChannel[animations_[animationName].channels[channelIndex].numPositionChannel - 1].position;
 					}
 
 					//回転
@@ -305,8 +310,11 @@ void Model::PlayAnimation(std::string animationName) {
 					if (animations_[animationName].channels[channelIndex].numRotateChannel == 1) {
 						rotate = animations_[animationName].channels[channelIndex].rotationChannel[0].rotation;
 					}
-					else {
+					else if (animationFrame_ < animations_[animationName].channels[channelIndex].numRotateChannel) {
 						rotate = animations_[animationName].channels[channelIndex].rotationChannel[animationFrame_].rotation;
+					}
+					else {
+						rotate = animations_[animationName].channels[channelIndex].rotationChannel[animations_[animationName].channels[channelIndex].numRotateChannel - 1].rotation;
 					}
 
 					//サイズ
@@ -314,16 +322,23 @@ void Model::PlayAnimation(std::string animationName) {
 					if (animations_[animationName].channels[channelIndex].numScaleChannel == 1) {
 						scale = animations_[animationName].channels[channelIndex].scaleChannel[0].scale;
 					}
-					else {
+					else if (animationFrame_ < animations_[animationName].channels[channelIndex].numScaleChannel) {
 						scale = animations_[animationName].channels[channelIndex].scaleChannel[animationFrame_].scale;
+					}
+					else {
+						scale = animations_[animationName].channels[channelIndex].scaleChannel[animations_[animationName].channels[channelIndex].numScaleChannel - 1].scale;
 					}
 
 					Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
-
-					rootNode_.children[nodeIndex].localMatrix = affineMatrix;
+					rootNode_.localMatrix = affineMatrix;
 				}
 			}
 		}
+	}
+
+	animationFrame_++;
+	if (animationFrame_ >= animations_[animationName].numFrames) {
+		isAnimation_ = false;
 	}
 }
 
@@ -416,13 +431,24 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
 		std::string animationName = scene->mAnimations[animationIndex]->mName.C_Str();
 		animations_[animationName].name = scene->mAnimations[animationIndex]->mName.C_Str();
-		animations_[animationName].numFrames = static_cast<uint32_t>(scene->mAnimations[animationIndex]->mDuration * 60 / 1000);
+		animations_[animationName].numFrames = 0;
 		animations_[animationName].numChannels = scene->mAnimations[animationIndex]->mNumChannels;
 		animations_[animationName].channels.resize(scene->mAnimations[animationIndex]->mNumChannels);
 		for (uint32_t channelIndex = 0; channelIndex < scene->mAnimations[animationIndex]->mNumChannels; channelIndex++) {
 			//移動するNodeの名前
 			std::string nodeName = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNodeName.C_Str();
 			animations_[animationName].channels[channelIndex].nodeName = nodeName;
+			//Frame
+			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys > animations_[animationName].numFrames) {
+				animations_[animationName].numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
+			}
+			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys > animations_[animationName].numFrames) {
+				animations_[animationName].numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys;
+			}
+			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys > animations_[animationName].numFrames) {
+				animations_[animationName].numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys;
+			}
+
 			//場所に関係する情報の格納場所
 			animations_[animationName].channels[channelIndex].numPositionChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
 			animations_[animationName].channels[channelIndex].positionChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys);
@@ -451,6 +477,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 				animations_[animationName].channels[channelIndex].scaleChannel[keyIndex].scale.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.z;
 			}
 		}
+
 	}
 
 	//Nodeの解析
