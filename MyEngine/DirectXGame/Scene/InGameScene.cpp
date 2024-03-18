@@ -63,7 +63,8 @@ void InGameScene::Initialize() {
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
-	cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
+	//cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
+	cubeModel_ = Model::Create("dualCube", "Animation_NodeMisc_04.gltf");
 	cubeModelInfo_.Initialize();
 
 	sprite_ = Sprite::Create();

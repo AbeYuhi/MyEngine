@@ -69,6 +69,8 @@ void Model::Draw(RenderItem& renderItem) {
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	//プリミティブ形状を設定
 	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	int meshIndex = 0;
 	for (auto& mesh : meshs_) {
 		if (isGltf_) {
 			if (mesh.name == rootNode_.name) {
@@ -77,7 +79,7 @@ void Model::Draw(RenderItem& renderItem) {
 			else {
 				for (uint32_t nodeIndex = 0; nodeIndex < rootNode_.children.size(); nodeIndex++) {
 					if (mesh.name == rootNode_.children[nodeIndex].name) {
-						renderItem.UpdateGltf(rootNode_.localMatrix);
+						renderItem.UpdateGltf(rootNode_.children[nodeIndex].localMatrix);
 						break;
 					}
 				}
@@ -91,12 +93,14 @@ void Model::Draw(RenderItem& renderItem) {
 		//マテリアルCBufferの場所を設定
 		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
 		//wvpCBufferの場所を設定
-		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+		//dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.meshWorldTransforms_[meshIndex].resource_->GetGPUVirtualAddress());
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
 		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
 		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size() * 3), 1, 0, 0, 0);
+		meshIndex++;
 	}
 }
 
@@ -120,6 +124,8 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	//プリミティブ形状を設定
 	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	
+	int meshIndex = 0;
 	for (auto& mesh : meshs_) {
 		if (isGltf_) {
 			if (mesh.name == rootNode_.name) {
@@ -142,12 +148,14 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 		//マテリアルCBufferの場所を設定
 		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
 		//wvpCBufferの場所を設定
-		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+		//dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.meshWorldTransforms_[meshIndex].resource_->GetGPUVirtualAddress());
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
 		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
 		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size() * 3), 1, 0, 0, 0);
+		meshIndex++;
 	}
 }
 
@@ -183,7 +191,6 @@ void Model::Draw(ParticleDrawInfo drawInfo) {
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
 		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
-		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size() * 3), (UINT)*drawInfo.kMaxParticleCount_, 0, 0, 0);
 	}
 }
 

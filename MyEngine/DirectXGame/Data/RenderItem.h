@@ -1,9 +1,11 @@
 #pragma once
+#include <vector>
 #include "MaterialInfo.h"
 #include "Transform.h"
 
 struct RenderItem {
 	WorldTransform worldTransform_;
+	std::vector<WorldTransform> meshWorldTransforms_;
 	MaterialInfo materialInfo_;
 
 	/// <summary>
@@ -17,9 +19,14 @@ struct RenderItem {
 	void Update() {
 		materialInfo_.UpdateMatrix();
 		worldTransform_.UpdateWorld();
+		meshWorldTransforms_.clear();
 	}
 
 	void UpdateGltf(Matrix4x4 localMatrix) {
-		worldTransform_.NodeUpdate(localMatrix);
+		WorldTransform transform;
+		transform.Initialize(false);
+		transform.worldMatrix_ = worldTransform_.worldMatrix_;
+		transform.NodeUpdate(localMatrix);
+		meshWorldTransforms_.push_back(transform);
 	}
 };
