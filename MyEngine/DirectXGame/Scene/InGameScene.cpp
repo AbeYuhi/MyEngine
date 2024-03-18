@@ -97,8 +97,8 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
-	cubeModel_->Animation("move");
-	//cubeModel_->Animation("scale");
+	//cubeModel_->Animation("move");
+	//cubeModel_->Animation("size");
 
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");

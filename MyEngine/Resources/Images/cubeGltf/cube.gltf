@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v3.5.30",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -34,6 +34,13 @@
 						"node":0,
 						"path":"rotation"
 					}
+				},
+				{
+					"sampler":2,
+					"target":{
+						"node":0,
+						"path":"scale"
+					}
 				}
 			],
 			"name":"move",
@@ -47,6 +54,54 @@
 					"input":4,
 					"interpolation":"LINEAR",
 					"output":6
+				},
+				{
+					"input":7,
+					"interpolation":"STEP",
+					"output":8
+				}
+			]
+		},
+		{
+			"channels":[
+				{
+					"sampler":0,
+					"target":{
+						"node":0,
+						"path":"translation"
+					}
+				},
+				{
+					"sampler":1,
+					"target":{
+						"node":0,
+						"path":"rotation"
+					}
+				},
+				{
+					"sampler":2,
+					"target":{
+						"node":0,
+						"path":"scale"
+					}
+				}
+			],
+			"name":"size",
+			"samplers":[
+				{
+					"input":9,
+					"interpolation":"STEP",
+					"output":10
+				},
+				{
+					"input":9,
+					"interpolation":"STEP",
+					"output":11
+				},
+				{
+					"input":12,
+					"interpolation":"LINEAR",
+					"output":13
 				}
 			]
 		}
@@ -74,8 +129,8 @@
 				{
 					"attributes":{
 						"POSITION":0,
-						"TEXCOORD_0":1,
-						"NORMAL":2
+						"NORMAL":1,
+						"TEXCOORD_0":2
 					},
 					"indices":3,
 					"material":0
@@ -104,13 +159,13 @@
 			"bufferView":1,
 			"componentType":5126,
 			"count":24,
-			"type":"VEC2"
+			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
 			"count":24,
-			"type":"VEC3"
+			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
@@ -141,6 +196,66 @@
 			"componentType":5126,
 			"count":120,
 			"type":"VEC4"
+		},
+		{
+			"bufferView":7,
+			"componentType":5126,
+			"count":2,
+			"max":[
+				5
+			],
+			"min":[
+				0.041666666666666664
+			],
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":8,
+			"componentType":5126,
+			"count":2,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":9,
+			"componentType":5126,
+			"count":2,
+			"max":[
+				6.666666666666667
+			],
+			"min":[
+				0.041666666666666664
+			],
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":10,
+			"componentType":5126,
+			"count":2,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":11,
+			"componentType":5126,
+			"count":2,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":12,
+			"componentType":5126,
+			"count":160,
+			"max":[
+				6.666666666666667
+			],
+			"min":[
+				0.041666666666666664
+			],
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":13,
+			"componentType":5126,
+			"count":160,
+			"type":"VEC3"
 		}
 	],
 	"bufferViews":[
@@ -152,14 +267,14 @@
 		},
 		{
 			"buffer":0,
-			"byteLength":192,
+			"byteLength":288,
 			"byteOffset":288,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":288,
-			"byteOffset":480,
+			"byteLength":192,
+			"byteOffset":576,
 			"target":34962
 		},
 		{
@@ -182,11 +297,46 @@
 			"buffer":0,
 			"byteLength":1920,
 			"byteOffset":2760
+		},
+		{
+			"buffer":0,
+			"byteLength":8,
+			"byteOffset":4680
+		},
+		{
+			"buffer":0,
+			"byteLength":24,
+			"byteOffset":4688
+		},
+		{
+			"buffer":0,
+			"byteLength":8,
+			"byteOffset":4712
+		},
+		{
+			"buffer":0,
+			"byteLength":24,
+			"byteOffset":4720
+		},
+		{
+			"buffer":0,
+			"byteLength":32,
+			"byteOffset":4744
+		},
+		{
+			"buffer":0,
+			"byteLength":640,
+			"byteOffset":4776
+		},
+		{
+			"buffer":0,
+			"byteLength":1920,
+			"byteOffset":5416
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":4680,
+			"byteLength":7336,
 			"uri":"cube.bin"
 		}
 	]
