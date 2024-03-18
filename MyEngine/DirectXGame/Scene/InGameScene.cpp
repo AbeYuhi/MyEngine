@@ -64,7 +64,7 @@ void InGameScene::Initialize() {
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
 	//cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
-	cubeModel_ = Model::Create("dualCube", "dualCube.gltf");
+	cubeModel_ = Model::Create("dualCube", "Animation_NodeMisc_04.gltf");
 	cubeModelInfo_.Initialize();
 
 	sprite_ = Sprite::Create();
@@ -98,7 +98,7 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
-	cubeModel_->Animation("move");
+	cubeModel_->Animation("");
 	//cubeModel_->Animation("scale");
 
 #ifdef _DEBUG
