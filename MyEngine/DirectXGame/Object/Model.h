@@ -57,7 +57,7 @@ public: //ゲッター
 
 private: //メンバ関数
 
-	void NodeUpdate(RenderItem renderItem);
+	void NodeUpdate(RenderItem& renderItem);
 
 	void LoadModelFile(const std::string& filepath, const std::string& filename);
 

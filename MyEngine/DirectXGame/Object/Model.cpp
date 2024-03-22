@@ -74,7 +74,7 @@ void Model::Draw(RenderItem& renderItem) {
 	int meshIndex = 0;
 	for (auto& mesh : meshs_) {
 		if (isGltf_) {
-			renderItem.UpdateGltf(mesh);
+			renderItem.UpdateGltf(mesh, meshIndex);
 		}
 
 		//VBVの設定
@@ -126,7 +126,7 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	int meshIndex = 0;
 	for (auto& mesh : meshs_) {
 		if (isGltf_) {
-			renderItem.UpdateGltf(mesh);
+			renderItem.UpdateGltf(mesh, meshIndex);
 		}
 
 		//VBVの設定
@@ -143,7 +143,7 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.meshWorldTransforms_[meshIndex].resource_->GetGPUVirtualAddress());
 		}
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
-		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
 		//描画
 		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
 		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size() * 3), 1, 0, 0, 0);
@@ -222,8 +222,9 @@ void Model::Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle) {
 	}
 }
 
-void Model::NodeUpdate(RenderItem renderItem) {
+void Model::NodeUpdate(RenderItem& renderItem) {
 
+	//アニメーションの更新
 	if (renderItem.animationInfo_.isAnimation) {
 		for (uint32_t channelIndex = 0; channelIndex < animations_[renderItem.animationInfo_.name].numChannels; channelIndex++) {
 
@@ -318,6 +319,49 @@ void Model::NodeUpdate(RenderItem renderItem) {
 		if (renderItem.animationInfo_.frame >= animations_[renderItem.animationInfo_.name].numFrames) {
 			renderItem.animationInfo_.frame = 0;
 		}
+	}
+	else {
+		for (uint32_t channelIndex = 0; channelIndex < animations_[renderItem.animationInfo_.name].numChannels; channelIndex++) {
+
+			if (rootNode_.name == animations_[renderItem.animationInfo_.name].channels[channelIndex].nodeName) {
+				//位置
+				Vector3 pos;
+				pos = animations_[renderItem.animationInfo_.name].channels[channelIndex].positionChannel[0].position;
+
+				//回転
+				Vector3 rotate;
+				rotate = animations_[renderItem.animationInfo_.name].channels[channelIndex].rotationChannel[0].rotation;
+
+				//サイズ
+				Vector3 scale;
+				scale = animations_[renderItem.animationInfo_.name].channels[channelIndex].scaleChannel[0].scale;
+
+				Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
+				rootNode_.localMatrix = affineMatrix;
+			}
+			else {
+				for (uint32_t nodeIndex = 0; nodeIndex < rootNode_.children.size(); nodeIndex++) {
+					if (rootNode_.children[nodeIndex].name == animations_[renderItem.animationInfo_.name].channels[channelIndex].nodeName) {
+						//位置
+						Vector3 pos;
+						pos = animations_[renderItem.animationInfo_.name].channels[channelIndex].positionChannel[0].position;
+
+						//回転
+						Vector3 rotate;
+						rotate = animations_[renderItem.animationInfo_.name].channels[channelIndex].rotationChannel[0].rotation;
+
+						//サイズ
+						Vector3 scale;
+						scale = animations_[renderItem.animationInfo_.name].channels[channelIndex].scaleChannel[0].scale;
+
+						Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
+						rootNode_.children[nodeIndex].localMatrix = affineMatrix;
+					}
+				}
+			}
+		}
+
+		renderItem.animationInfo_.rootNode = rootNode_;
 	}
 
 }

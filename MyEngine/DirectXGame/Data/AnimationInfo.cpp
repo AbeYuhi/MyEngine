@@ -16,6 +16,9 @@ void AnimationInfo::Update() {
 			frame = 0;
 		}
 	}
+	else {
+		frame = 0;
+	}
 
 	preName = name;
 }
