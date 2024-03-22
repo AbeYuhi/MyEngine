@@ -63,8 +63,7 @@ void InGameScene::Initialize() {
 	groundModelInfo_.Initialize();
 	groundModelInfo_.materialInfo_.material_->enableLightint = true;
 
-	//cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
-	cubeModel_ = Model::Create("dualCube", "Animation_NodeMisc_04.gltf");
+	cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
 	cubeModelInfo_.Initialize();
 
 	sprite_ = Sprite::Create();
@@ -98,9 +97,6 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
-	//cubeModel_->Animation("move");
-	//cubeModel_->Animation("size");
-
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
@@ -124,6 +120,19 @@ void InGameScene::Update() {
 		}
 		ImGui::Checkbox("isSpecularReflection", &b);
 		groundModelInfo_.materialInfo_.material_->isSpecularReflection = b;
+		ImGui::EndTabItem();
+	}
+	if (ImGui::BeginTabItem("cubeModel")) {
+		ImGui::SliderFloat3("pos", &cubeModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &cubeModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &cubeModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::Checkbox("isAnimation", &cubeModelInfo_.animationInfo_.isAnimation);
+		for (int index = 0; index < cubeModel_->GetAnimationNum(); index++) {
+			if (ImGui::Button(cubeModel_->GetAnimationName(index).c_str())) {
+				cubeModelInfo_.animationInfo_.name = cubeModel_->GetAnimationName(index);
+			}
+		}
+
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("sprite")) {

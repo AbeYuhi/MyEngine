@@ -50,15 +50,15 @@ public: //メンバ関数
 	void Draw(ParticleDrawInfo drawInfo);
 	void Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle);
 
-	void NodeUpdate();
+public: //ゲッター
 
-	void StartAnimation(std::string animationName);
-
-	void PlayAnimation(std::string animationName);
-
-	void Animation(std::string animationName);
+	inline std::string GetAnimationName(int index) { return animationNames_[index]; }
+	inline size_t GetAnimationNum() { return animationNames_.size(); }
 
 private: //メンバ関数
+
+	void NodeUpdate(RenderItem renderItem);
+
 	void LoadModelFile(const std::string& filepath, const std::string& filename);
 
 private: //メンバ変数
@@ -66,9 +66,8 @@ private: //メンバ変数
 	std::string filePath_;
 	std::list<Mesh> meshs_;
 	std::map <std::string, AnimationData> animations_;
+	std::vector<std::string> animationNames_;
 	Node rootNode_;
 
 	bool isGltf_;
-	bool isAnimation_;
-	uint32_t animationFrame_;
 };

@@ -321,6 +321,9 @@
     <ClCompile Include="DirectXGame\Data\Node.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Data\AnimationInfo.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">
@@ -579,6 +582,9 @@
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\Animation.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\AnimationInfo.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>
