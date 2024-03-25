@@ -39,7 +39,4 @@ struct AnimationData {
 	uint32_t numFrames;
 	uint32_t numChannels;
 	std::vector<AnimationChannel> channels;
-
-	//イージング用
-
 };

@@ -2,6 +2,7 @@
 
 
 void AnimationInfo::Initialize() {
+	name = "None";
 	frame = 0;
 	isAnimation = false;
 }

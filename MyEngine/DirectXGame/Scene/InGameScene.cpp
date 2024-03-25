@@ -65,6 +65,7 @@ void InGameScene::Initialize() {
 
 	cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
 	cubeModelInfo_.Initialize();
+	cubeModelInfo1_.Initialize();
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -135,6 +136,19 @@ void InGameScene::Update() {
 
 		ImGui::EndTabItem();
 	}
+	if (ImGui::BeginTabItem("cubeModel1")) {
+		ImGui::SliderFloat3("pos", &cubeModelInfo1_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &cubeModelInfo1_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &cubeModelInfo1_.worldTransform_.data_.scale_.x, -10, 10);
+		ImGui::Checkbox("isAnimation", &cubeModelInfo1_.animationInfo_.isAnimation);
+		for (int index = 0; index < cubeModel_->GetAnimationNum(); index++) {
+			if (ImGui::Button(cubeModel_->GetAnimationName(index).c_str())) {
+				cubeModelInfo1_.animationInfo_.name = cubeModel_->GetAnimationName(index);
+			}
+		}
+
+		ImGui::EndTabItem();
+	}
 	if (ImGui::BeginTabItem("sprite")) {
 		ImGui::SliderFloat3("pos", &spriteInfo_.worldTransform_.data_.translate_.x, 0, 1280);
 		ImGui::SliderFloat3("rotate", &spriteInfo_.worldTransform_.data_.rotate_.x, -10, 10);
@@ -153,6 +167,7 @@ void InGameScene::Update() {
 	yukariModelInfo_.Update();
 	groundModelInfo_.Update();
 	cubeModelInfo_.Update();
+	cubeModelInfo1_.Update();
 	spriteInfo_.Update();
 }
 
@@ -183,6 +198,7 @@ void InGameScene::Draw() {
 	//yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
 	cubeModel_->Draw(cubeModelInfo_);
+	cubeModel_->Draw(cubeModelInfo1_);
 
 	///オブジェクトの描画終了
 

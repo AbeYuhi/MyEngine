@@ -226,6 +226,20 @@ void Model::NodeUpdate(RenderItem& renderItem) {
 
 	//アニメーションの更新
 	if (renderItem.animationInfo_.isAnimation) {
+
+		if (renderItem.animationInfo_.name == "None" || animations_.find(renderItem.animationInfo_.name) == animations_.end()) {
+			
+			Assimp::Importer importer;
+			const aiScene* scene = importer.ReadFile(filePath_.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+			assert(scene->HasMeshes());
+
+			rootNode_ = ReadNode(scene->mRootNode);
+
+			renderItem.animationInfo_.rootNode = rootNode_;
+
+			return;
+		}
+
 		for (uint32_t channelIndex = 0; channelIndex < animations_[renderItem.animationInfo_.name].numChannels; channelIndex++) {
 
 			if (rootNode_.name == animations_[renderItem.animationInfo_.name].channels[channelIndex].nodeName) {
@@ -321,45 +335,11 @@ void Model::NodeUpdate(RenderItem& renderItem) {
 		}
 	}
 	else {
-		for (uint32_t channelIndex = 0; channelIndex < animations_[renderItem.animationInfo_.name].numChannels; channelIndex++) {
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(filePath_.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+		assert(scene->HasMeshes());
 
-			if (rootNode_.name == animations_[renderItem.animationInfo_.name].channels[channelIndex].nodeName) {
-				//位置
-				Vector3 pos;
-				pos = animations_[renderItem.animationInfo_.name].channels[channelIndex].positionChannel[0].position;
-
-				//回転
-				Vector3 rotate;
-				rotate = animations_[renderItem.animationInfo_.name].channels[channelIndex].rotationChannel[0].rotation;
-
-				//サイズ
-				Vector3 scale;
-				scale = animations_[renderItem.animationInfo_.name].channels[channelIndex].scaleChannel[0].scale;
-
-				Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
-				rootNode_.localMatrix = affineMatrix;
-			}
-			else {
-				for (uint32_t nodeIndex = 0; nodeIndex < rootNode_.children.size(); nodeIndex++) {
-					if (rootNode_.children[nodeIndex].name == animations_[renderItem.animationInfo_.name].channels[channelIndex].nodeName) {
-						//位置
-						Vector3 pos;
-						pos = animations_[renderItem.animationInfo_.name].channels[channelIndex].positionChannel[0].position;
-
-						//回転
-						Vector3 rotate;
-						rotate = animations_[renderItem.animationInfo_.name].channels[channelIndex].rotationChannel[0].rotation;
-
-						//サイズ
-						Vector3 scale;
-						scale = animations_[renderItem.animationInfo_.name].channels[channelIndex].scaleChannel[0].scale;
-
-						Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
-						rootNode_.children[nodeIndex].localMatrix = affineMatrix;
-					}
-				}
-			}
-		}
+		rootNode_ = ReadNode(scene->mRootNode);
 
 		renderItem.animationInfo_.rootNode = rootNode_;
 	}
@@ -452,6 +432,11 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	}
 
 	//アニメーションの読み込み
+	//Noneの作成
+	std::string noneName = "None";
+	animations_[noneName].name = "None";
+	animationNames_.push_back("None");
+	//GLTFからの読み込み
 	for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
 		std::string animationName = scene->mAnimations[animationIndex]->mName.C_Str();
 		animationNames_.push_back(scene->mAnimations[animationIndex]->mName.C_Str());
