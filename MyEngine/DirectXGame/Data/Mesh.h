@@ -4,6 +4,7 @@
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 #include "DirectXGame/Data/ModelData.h"
 #include "DirectXGame/Data/VertexData.h"
+#include "DirectXGame/Data/Bone.h"
 
 struct Mesh {
 	//モデルデータ
@@ -11,6 +12,9 @@ struct Mesh {
 
 	//テクスチャデータ
 	uint32_t textureHandle;
+
+	//Boneデータ
+	Bone bones;
 
 	//メッシュの名前
 	std::string name;

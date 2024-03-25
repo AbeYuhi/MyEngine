@@ -70,7 +70,9 @@ private:
 
 	std::shared_ptr<Model> cubeModel_;
 	RenderItem cubeModelInfo_;
-	RenderItem cubeModelInfo1_;
+
+	std::shared_ptr<Model> testModel_;
+	RenderItem testModelInfo_;
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;

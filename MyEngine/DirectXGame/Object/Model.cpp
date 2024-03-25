@@ -242,7 +242,7 @@ void Model::NodeUpdate(RenderItem& renderItem) {
 
 		for (uint32_t channelIndex = 0; channelIndex < animations_[renderItem.animationInfo_.name].numChannels; channelIndex++) {
 
-			if (rootNode_.name == animations_[renderItem.animationInfo_.name].channels[channelIndex].nodeName) {
+			if (rootNode_.name == animations_[renderItem.animationInfo_.name].channels[channelIndex].name) {
 				//位置
 				Vector3 pos;
 				if (animations_[renderItem.animationInfo_.name].channels[channelIndex].numPositionChannel == 1) {
@@ -284,7 +284,7 @@ void Model::NodeUpdate(RenderItem& renderItem) {
 			}
 			else {
 				for (uint32_t nodeIndex = 0; nodeIndex < rootNode_.children.size(); nodeIndex++) {
-					if (rootNode_.children[nodeIndex].name == animations_[renderItem.animationInfo_.name].channels[channelIndex].nodeName) {
+					if (rootNode_.children[nodeIndex].name == animations_[renderItem.animationInfo_.name].channels[channelIndex].name) {
 						//位置
 						Vector3 pos;
 						if (animations_[renderItem.animationInfo_.name].channels[channelIndex].numPositionChannel == 1) {
@@ -428,6 +428,8 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 		modelPart.name = mesh->mName.C_Str();
 
+		modelPart.bones = ReadBone(*mesh->mBones);
+
 		meshs_.push_back(modelPart);
 	}
 
@@ -447,7 +449,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		for (uint32_t channelIndex = 0; channelIndex < scene->mAnimations[animationIndex]->mNumChannels; channelIndex++) {
 			//移動するNodeの名前
 			std::string nodeName = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNodeName.C_Str();
-			animations_[animationName].channels[channelIndex].nodeName = nodeName;
+			animations_[animationName].channels[channelIndex].name = nodeName;
 			//Frame
 			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys > animations_[animationName].numFrames) {
 				animations_[animationName].numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;

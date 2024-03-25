@@ -25,6 +25,8 @@
 #include "DirectXGame/Data/ParticleDrawInfo.h"
 #include "DirectXGame/Data/Mesh.h"
 #include "DirectXGame/Data/Animation.h"
+#include "DirectXGame/Data/Node.h"
+#include "DirectXGame/Data/Bone.h"
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
 

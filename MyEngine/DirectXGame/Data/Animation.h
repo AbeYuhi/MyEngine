@@ -25,7 +25,7 @@ struct ScaleChannel {
 };
 
 struct AnimationChannel {
-	std::string nodeName;
+	std::string name;
 	uint32_t numPositionChannel;
 	uint32_t numRotateChannel;
 	uint32_t numScaleChannel;

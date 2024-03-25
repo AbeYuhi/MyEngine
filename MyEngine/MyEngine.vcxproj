@@ -112,6 +112,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Base\CreateResource\CreateResource.cpp" />
     <ClCompile Include="DirectXGame\Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="DirectXGame\Data\Bone.cpp" />
     <ClCompile Include="DirectXGame\Data\Collider.cpp" />
     <ClCompile Include="DirectXGame\Data\Material.cpp" />
     <ClCompile Include="DirectXGame\Data\MaterialInfo.cpp" />
@@ -177,6 +178,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="DirectXGame\Data\AnimationInfo.h" />
     <ClInclude Include="DirectXGame\Data\Animation.h" />
+    <ClInclude Include="DirectXGame\Data\Bone.h" />
     <ClInclude Include="DirectXGame\Data\Collider.h" />
     <ClInclude Include="DirectXGame\Data\Node.h" />
     <ClInclude Include="DirectXGame\Data\SpriteData.h" />
