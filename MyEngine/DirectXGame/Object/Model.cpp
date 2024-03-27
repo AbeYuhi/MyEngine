@@ -58,7 +58,9 @@ void Model::Draw(RenderItem& renderItem) {
 	}
 
 	//Nodeの更新
-	NodeUpdate(renderItem);
+	if (isGltf_) {
+		NodeUpdate(renderItem);
+	}
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
@@ -84,11 +86,11 @@ void Model::Draw(RenderItem& renderItem) {
 		//マテリアルCBufferの場所を設定
 		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
 		//wvpCBufferの場所を設定
-		if (renderItem.meshWorldTransforms_.size() == 0) {
-			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+		if (isGltf_) {
+			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.meshWorldTransforms_[meshIndex].resource_->GetGPUVirtualAddress());
 		}
 		else {
-			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.meshWorldTransforms_[meshIndex].resource_->GetGPUVirtualAddress());
+			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 		}
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
@@ -110,7 +112,9 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	}
 
 	//Nodeの更新
-	NodeUpdate(renderItem);
+	if (isGltf_) {
+		NodeUpdate(renderItem);
+	}
 
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
@@ -136,11 +140,11 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 		//マテリアルCBufferの場所を設定
 		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, renderItem.materialInfo_.resource_->GetGPUVirtualAddress());
 		//wvpCBufferの場所を設定
-		if (renderItem.meshWorldTransforms_.size() == 0) {
-			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
+		if (isGltf_) {
+			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.meshWorldTransforms_[meshIndex].resource_->GetGPUVirtualAddress());
 		}
 		else {
-			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.meshWorldTransforms_[meshIndex].resource_->GetGPUVirtualAddress());
+			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 		}
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
@@ -427,10 +431,6 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		}
 
 		modelPart.name = mesh->mName.C_Str();
-
-		if (mesh->HasBones()) {
-			//modelPart.bones = ReadBone(*mesh->mBones);
-		}
 
 		meshs_.push_back(modelPart);
 	}

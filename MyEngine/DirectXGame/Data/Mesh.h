@@ -13,9 +13,6 @@ struct Mesh {
 	//テクスチャデータ
 	uint32_t textureHandle;
 
-	//Boneデータ
-	Bone bones;
-
 	//メッシュの名前
 	std::string name;
 
