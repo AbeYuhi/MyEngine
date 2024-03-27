@@ -18,7 +18,6 @@ void TitleScene::Initialize() {
 	//カメラ
 	titleCamera_ = std::make_unique<TitleCamera>();
 	titleCamera_->Initialize();
-
 }
 
 void TitleScene::Update() {
@@ -28,5 +27,6 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
+
 
 }

@@ -428,7 +428,9 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 		modelPart.name = mesh->mName.C_Str();
 
-		modelPart.bones = ReadBone(*mesh->mBones);
+		if (mesh->HasBones()) {
+			//modelPart.bones = ReadBone(*mesh->mBones);
+		}
 
 		meshs_.push_back(modelPart);
 	}

@@ -3,6 +3,9 @@
 #include "DirectXGame/GameObject/Camera/TitleCamera.h"
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
+#include "Data/SpriteItem.h"
+#include "Object/Model.h"
+#include "Object/Sprite.h"
 
 class TitleScene : public IScene
 {

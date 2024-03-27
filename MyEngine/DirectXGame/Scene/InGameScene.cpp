@@ -66,7 +66,7 @@ void InGameScene::Initialize() {
 	cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
 	cubeModelInfo_.Initialize();
 
-	testModel_ = Model::Create("test", "test.gltf");
+	//testModel_ = Model::Create("test", "test.gltf");
 	testModelInfo_.Initialize();
 
 	sprite_ = Sprite::Create();
@@ -200,7 +200,7 @@ void InGameScene::Draw() {
 	//yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
 	cubeModel_->Draw(cubeModelInfo_);
-	testModel_->Draw(testModelInfo_);
+	//testModel_->Draw(testModelInfo_);
 
 	///オブジェクトの描画終了
 
