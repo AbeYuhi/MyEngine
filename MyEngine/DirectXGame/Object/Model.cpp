@@ -45,11 +45,6 @@ void Model::Initialize(const std::string& filepath, const std::string filename) 
 		mesh.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&mesh.indexData));
 		std::memcpy(mesh.indexData, mesh.modelData.indices.data(), sizeof(IndexData) * mesh.modelData.indices.size());
 	}
-
-	//Nodeを転送するためにResourceの作成
-	size_t nodeNum = 1 + rootNode_.children.size();
-	boneResource_ = CreateBufferResource(sizeof(Bone) * nodeNum);
-	boneResource_->Map(0, nullptr, reinterpret_cast<void**>(boneData_));
 }
 
 void Model::Draw(RenderItem& renderItem) {
@@ -65,18 +60,6 @@ void Model::Draw(RenderItem& renderItem) {
 	//Nodeの更新
 	if (isGltf_) {
 		NodeUpdate(renderItem);
-		if (isBone_) {
-			size_t nodeNum = 1 + rootNode_.children.size();
-			boneData_[0].name = rootNode_.name;
-			boneData_[0].localMatrix = rootNode_.localMatrix;
-			boneData_[0].boneNum = nodeNum;
-			for (uint32_t nodeIndex = 0; nodeIndex < rootNode_.children.size(); nodeIndex++) {
-				boneData_[nodeIndex + 1].name = rootNode_.children[nodeIndex].name;
-				boneData_[nodeIndex + 1].localMatrix = rootNode_.children[nodeIndex].localMatrix;
-				boneData_[nodeIndex + 1].boneNum = nodeNum;
-			}
-
-		}
 	}
 
 	//ViewPortの設定
@@ -109,8 +92,6 @@ void Model::Draw(RenderItem& renderItem) {
 		else {
 			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 		}
-		//boneの情報を送る
-		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(5, boneResource_->GetGPUVirtualAddress());
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
@@ -133,19 +114,6 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	//Nodeの更新
 	if (isGltf_) {
 		NodeUpdate(renderItem);
-
-		if (isBone_) {
-			size_t nodeNum = 1 + rootNode_.children.size();
-			boneData_[0].name = rootNode_.name;
-			boneData_[0].localMatrix = rootNode_.localMatrix;
-			boneData_[0].boneNum = nodeNum;
-			for (uint32_t nodeIndex = 0; nodeIndex < rootNode_.children.size(); nodeIndex++) {
-				boneData_[nodeIndex + 1].name = rootNode_.children[nodeIndex].name;
-				boneData_[nodeIndex + 1].localMatrix = rootNode_.children[nodeIndex].localMatrix;
-				boneData_[nodeIndex + 1].boneNum = nodeNum;
-			}
-
-		}
 	}
 
 	//ViewPortの設定
@@ -178,8 +146,6 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 		else {
 			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, renderItem.worldTransform_.resource_->GetGPUVirtualAddress());
 		}
-		//boneの情報を送る
-		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(5, boneResource_->GetGPUVirtualAddress());
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
 		//描画
