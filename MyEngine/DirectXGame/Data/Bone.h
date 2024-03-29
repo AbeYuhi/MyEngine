@@ -10,7 +10,6 @@
 
 struct Bone final {
 	std::string name;
-	Node node;
+	Matrix4x4 localMatrix;
+	size_t boneNum;
 };
-
-Bone ReadBone(aiBone* bone);

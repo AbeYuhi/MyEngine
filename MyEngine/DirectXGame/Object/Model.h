@@ -69,7 +69,10 @@ private: //メンバ変数
 	std::list<Mesh> meshs_;
 	std::map <std::string, AnimationData> animations_;
 	std::vector<std::string> animationNames_;
+	ComPtr<ID3D12Resource> boneResource_;
+	Bone* boneData_;
 	Node rootNode_;
 
 	bool isGltf_;
+	bool isBone_;
 };
