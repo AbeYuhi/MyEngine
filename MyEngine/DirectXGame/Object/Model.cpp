@@ -395,14 +395,14 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 				vertex.normal = { normal.x, normal.y, normal.z };
 				vertex.texcoord = { texcoord.x, texcoord.y };
 
-				if (mesh->HasBones()) {
+				/*if (mesh->HasBones()) {
 					isBone_ = true;
 					vertex.boneName = mesh->mBones[vertexIndex]->mName.C_Str();
 				}
 				else {
 					isBone_ = false;
 					vertex.boneName = "";
-				}
+				}*/
 
 				vertex.position.z *= -1.0f;
 				vertex.normal.z *= -1.0f;
