@@ -67,8 +67,7 @@ private: //メンバ変数
 
 	std::string filePath_;
 	std::list<Mesh> meshs_;
-	std::map <std::string, AnimationData> animations_;
-	std::vector<std::string> animationNames_;
+	std::unique_ptr<Animation> animation_;
 	Node rootNode_;
 
 	bool isGltf_;

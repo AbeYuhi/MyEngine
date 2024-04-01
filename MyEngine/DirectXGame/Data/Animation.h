@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <list>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -8,6 +9,8 @@
 #include "Math/Matrix4x4.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
+#include "Math/Math.h"
+#include "Node.h"
 
 struct PositionChannel {
 	Vector3 position;
@@ -39,4 +42,26 @@ struct AnimationData {
 	uint32_t numFrames;
 	uint32_t numChannels;
 	std::vector<AnimationChannel> channels;
+};
+
+struct AnimationInfo {
+	AnimationData data;
+	bool isAnimation;
+	int frame;
+};
+
+struct Animation {
+	//アニメーションのローカル情報
+	std::list<AnimationInfo> infos;
+	//Node情報
+	Node rootNode;
+	//初期モデルのNode
+	Node initialNode;
+
+	void Initialize();
+
+	void Update();
+
+	void NodeUpdate();
+
 };

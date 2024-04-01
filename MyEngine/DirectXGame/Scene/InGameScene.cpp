@@ -129,26 +129,6 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("pos", &cubeModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
 		ImGui::SliderFloat3("rotate", &cubeModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &cubeModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::Checkbox("isAnimation", &cubeModelInfo_.animationInfo_.isAnimation);
-		for (int index = 0; index < cubeModel_->GetAnimationNum(); index++) {
-			if (ImGui::Button(cubeModel_->GetAnimationName(index).c_str())) {
-				cubeModelInfo_.animationInfo_.name = cubeModel_->GetAnimationName(index);
-			}
-		}
-
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("testModel")) {
-		ImGui::SliderFloat3("pos", &testModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &testModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &testModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::Checkbox("isAnimation", &testModelInfo_.animationInfo_.isAnimation);
-		for (int index = 0; index < testModel_->GetAnimationNum(); index++) {
-			if (ImGui::Button(testModel_->GetAnimationName(index).c_str())) {
-				testModelInfo_.animationInfo_.name = testModel_->GetAnimationName(index);
-			}
-		}
-
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("sprite")) {

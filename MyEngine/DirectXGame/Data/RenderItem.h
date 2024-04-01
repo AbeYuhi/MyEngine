@@ -9,7 +9,6 @@ struct RenderItem {
 	WorldTransform worldTransform_;
 	std::vector<WorldTransform> meshWorldTransforms_;
 	MaterialInfo materialInfo_;
-	AnimationInfo animationInfo_;
 
 	/// <summary>
 	/// レンダリング情報の初期化
@@ -17,7 +16,6 @@ struct RenderItem {
 	void Initialize() {
 		materialInfo_.Initialize();
 		worldTransform_.Initialize(false); 
-		animationInfo_.Initialize();
 
 		for (int index = 0; index < 10; index++) {
 			WorldTransform transform;
@@ -29,7 +27,6 @@ struct RenderItem {
 	void Update() {
 		materialInfo_.UpdateMatrix();
 		worldTransform_.UpdateWorld();
-		animationInfo_.Update();
 	}
 
 	void UpdateGltf(Mesh mesh, int index) {
@@ -37,7 +34,7 @@ struct RenderItem {
 			assert(false);
 		}
 
-		if (mesh.name == animationInfo_.rootNode.name) {		
+		/*if (mesh.name == animationInfo_.rootNode.name) {		
 			meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;
 			meshWorldTransforms_[index].NodeUpdate(animationInfo_.rootNode.localMatrix);
 		}
@@ -49,6 +46,6 @@ struct RenderItem {
 					break;
 				}
 			}
-		}
+		}*/
 	}
 };
