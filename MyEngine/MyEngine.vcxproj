@@ -108,10 +108,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\Data\AnimationInfo.cpp" />
     <ClCompile Include="DirectXGame\Base\CreateResource\CreateResource.cpp" />
     <ClCompile Include="DirectXGame\Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="DirectXGame\Data\Animation.cpp" />
     <ClCompile Include="DirectXGame\Data\Bone.cpp" />
     <ClCompile Include="DirectXGame\Data\Collider.cpp" />
     <ClCompile Include="DirectXGame\Data\Material.cpp" />
@@ -176,7 +176,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Shadow\Shadow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Data\AnimationInfo.h" />
     <ClInclude Include="DirectXGame\Data\Animation.h" />
     <ClInclude Include="DirectXGame\Data\Bone.h" />
     <ClInclude Include="DirectXGame\Data\Collider.h" />

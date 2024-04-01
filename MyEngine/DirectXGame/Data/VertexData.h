@@ -8,5 +8,4 @@ struct VertexData final {
 	Vector4 position;
 	Vector2 texcoord;
 	Vector3 normal;
-	std::string boneName;
 };

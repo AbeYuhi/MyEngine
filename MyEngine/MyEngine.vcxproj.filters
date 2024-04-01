@@ -321,10 +321,10 @@
     <ClCompile Include="DirectXGame\Data\Node.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Data\AnimationInfo.cpp">
+    <ClCompile Include="DirectXGame\Data\Bone.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Data\Bone.cpp">
+    <ClCompile Include="DirectXGame\Data\Animation.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
   </ItemGroup>
@@ -585,9 +585,6 @@
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\Animation.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Data\AnimationInfo.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\Bone.h">
