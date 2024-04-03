@@ -57,11 +57,6 @@ void Model::Draw(RenderItem& renderItem) {
 		return;
 	}
 
-	//Nodeの更新
-	if (isGltf_) {
-		NodeUpdate(renderItem);
-	}
-
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
@@ -109,11 +104,6 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 
 	if (renderItem.materialInfo_.isInvisible_) {
 		return;
-	}
-
-	//Nodeの更新
-	if (isGltf_) {
-		NodeUpdate(renderItem);
 	}
 
 	//ViewPortの設定
@@ -317,56 +307,55 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	animation.name = "None";
 	animation.numFrames = 0;
 	animation.numChannels = 0;
-	animation_->data
 	//GLTFからの読み込み
 	for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
 		std::string animationName = scene->mAnimations[animationIndex]->mName.C_Str();
-		std::unique_ptr<Animation> animation;
-		animation->data.name = scene->mAnimations[animationIndex]->mName.C_Str();
-		animation->data.numFrames = 0;
-		animation->data.numChannels = scene->mAnimations[animationIndex]->mNumChannels;
-		animation->data.channels.resize(scene->mAnimations[animationIndex]->mNumChannels);
+		AnimationData animation;
+		animation.name = scene->mAnimations[animationIndex]->mName.C_Str();
+		animation.numFrames = 0;
+		animation.numChannels = scene->mAnimations[animationIndex]->mNumChannels;
+		animation.channels.resize(scene->mAnimations[animationIndex]->mNumChannels);
 		for (uint32_t channelIndex = 0; channelIndex < scene->mAnimations[animationIndex]->mNumChannels; channelIndex++) {
 			//移動するNodeの名前
 			std::string nodeName = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNodeName.C_Str();
-			animation->data.channels[channelIndex].name = nodeName;
+			animation.channels[channelIndex].name = nodeName;
 			//Frame
 			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys > animations_[animationName].numFrames) {
-				animation->data.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
+				animation.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
 			}
 			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys > animations_[animationName].numFrames) {
-				animation->data.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys;
+				animation.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys;
 			}
 			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys > animations_[animationName].numFrames) {
-				animation->data.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys;
+				animation.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys;
 			}
 
 			//場所に関係する情報の格納場所
-			animation->data.channels[channelIndex].numPositionChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
-			animation->data.channels[channelIndex].positionChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys);
+			animation.channels[channelIndex].numPositionChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
+			animation.channels[channelIndex].positionChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys);
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys; keyIndex++) {
-				animation->data.channels[channelIndex].positionChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mTime);
-				animation->data.channels[channelIndex].positionChannel[keyIndex].position.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.x;
-				animation->data.channels[channelIndex].positionChannel[keyIndex].position.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.y;
-				animation->data.channels[channelIndex].positionChannel[keyIndex].position.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.z;
+				animation.channels[channelIndex].positionChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mTime);
+				animation.channels[channelIndex].positionChannel[keyIndex].position.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.x;
+				animation.channels[channelIndex].positionChannel[keyIndex].position.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.y;
+				animation.channels[channelIndex].positionChannel[keyIndex].position.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.z;
 			}
 			//回転に関係する情報の格納場所
-			animation->data.channels[channelIndex].numRotateChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys;
-			animation->data.channels[channelIndex].rotationChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys);
+			animation.channels[channelIndex].numRotateChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys;
+			animation.channels[channelIndex].rotationChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys);
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys; keyIndex++) {
-				animation->data.channels[channelIndex].rotationChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mTime);
-				animation->data.channels[channelIndex].rotationChannel[keyIndex].rotation.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.x * 3.14f;
-				animation->data.channels[channelIndex].rotationChannel[keyIndex].rotation.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.y * 3.14f;
-				animation->data.channels[channelIndex].rotationChannel[keyIndex].rotation.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.z * 3.14f;
+				animation.channels[channelIndex].rotationChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mTime);
+				animation.channels[channelIndex].rotationChannel[keyIndex].rotation.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.x * 3.14f;
+				animation.channels[channelIndex].rotationChannel[keyIndex].rotation.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.y * 3.14f;
+				animation.channels[channelIndex].rotationChannel[keyIndex].rotation.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.z * 3.14f;
 			}
 			//サイズに関係する情報の格納場所
-			animation->data.channels[channelIndex].numScaleChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys;
-			animation->data.channels[channelIndex].scaleChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys);
+			animation.channels[channelIndex].numScaleChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys;
+			animation.channels[channelIndex].scaleChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys);
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys; keyIndex++) {
-				animation->data.channels[channelIndex].scaleChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mTime);
-				animation->data.channels[channelIndex].scaleChannel[keyIndex].scale.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.x;
-				animation->data.channels[channelIndex].scaleChannel[keyIndex].scale.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.y;
-				animation->data.channels[channelIndex].scaleChannel[keyIndex].scale.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.z;
+				animation.channels[channelIndex].scaleChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mTime);
+				animation.channels[channelIndex].scaleChannel[keyIndex].scale.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.x;
+				animation.channels[channelIndex].scaleChannel[keyIndex].scale.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.y;
+				animation.channels[channelIndex].scaleChannel[keyIndex].scale.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.z;
 			}
 
 			animations_.push_back(animation);

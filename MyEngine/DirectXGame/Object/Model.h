@@ -54,12 +54,11 @@ public: //メンバ関数
 
 public: //ゲッター
 
-	inline std::string GetAnimationName(int index) { return animationNames_[index]; }
-	inline size_t GetAnimationNum() { return animationNames_.size(); }
+	inline const std::list<AnimationData> GetAnimationData() { return animations_; }
+
+	inline const Node GetInialNode() { return rootNode_; }
 
 private: //メンバ関数
-
-	void NodeUpdate(RenderItem& renderItem);
 
 	void LoadModelFile(const std::string& filepath, const std::string& filename);
 
@@ -67,7 +66,7 @@ private: //メンバ変数
 
 	std::string filePath_;
 	std::list<Mesh> meshs_;
-	std::unique_ptr<Animation> animation_;
+	std::list<AnimationData> animations_;
 	Node rootNode_;
 
 	bool isGltf_;

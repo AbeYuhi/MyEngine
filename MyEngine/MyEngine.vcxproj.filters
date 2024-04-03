@@ -590,6 +590,9 @@
     <ClInclude Include="DirectXGame\Data\Bone.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Data\AnimationData.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj">

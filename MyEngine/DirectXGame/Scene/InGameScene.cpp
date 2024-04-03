@@ -65,6 +65,8 @@ void InGameScene::Initialize() {
 
 	cubeModel_ = Model::Create("cubeGltf", "cube.gltf");
 	cubeModelInfo_.Initialize();
+	cubeModelInfo_.animation_.SetInialNode(cubeModel_->GetInialNode());
+	cubeModelInfo_.animation_.SetAnimation(cubeModel_->GetAnimationData());
 
 	//testModel_ = Model::Create("test", "test.gltf");
 	testModelInfo_.Initialize();
@@ -129,6 +131,12 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("pos", &cubeModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
 		ImGui::SliderFloat3("rotate", &cubeModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &cubeModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+
+		for (auto it = cubeModelInfo_.animation_.infos.begin(); it != cubeModelInfo_.animation_.infos.end(); it++) {
+			AnimationInfo info = *it;
+			ImGui::Checkbox(info.data.name.c_str(), &info.isAnimation);
+		}
+
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("sprite")) {

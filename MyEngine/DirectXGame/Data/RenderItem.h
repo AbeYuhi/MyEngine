@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "AnimationInfo.h"
+#include "Animation.h"
 #include "MaterialInfo.h"
 #include "Transform.h"
 #include "Mesh.h"
@@ -9,6 +9,7 @@ struct RenderItem {
 	WorldTransform worldTransform_;
 	std::vector<WorldTransform> meshWorldTransforms_;
 	MaterialInfo materialInfo_;
+	Animation animation_;
 
 	/// <summary>
 	/// レンダリング情報の初期化
@@ -27,6 +28,7 @@ struct RenderItem {
 	void Update() {
 		materialInfo_.UpdateMatrix();
 		worldTransform_.UpdateWorld();
+		animation_.Update();
 	}
 
 	void UpdateGltf(Mesh mesh, int index) {

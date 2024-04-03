@@ -6,6 +6,8 @@
 #include <assimp/postprocess.h>
 #include <assimp/material.h>
 #include "Math/Matrix4x4.h"
+#include "Math/Math.h"
+#include "Data/AnimationData.h"
 
 struct Node {
 	Matrix4x4 localMatrix;
@@ -14,3 +16,7 @@ struct Node {
 };
 
 Node ReadNode(aiNode* node);
+
+Node InitializeNode(Node node);
+
+Node UpdateNode(Node node, AnimationChannel info, uint32_t frame);

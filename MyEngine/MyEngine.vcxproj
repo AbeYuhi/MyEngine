@@ -176,6 +176,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Shadow\Shadow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Data\AnimationData.h" />
     <ClInclude Include="DirectXGame\Data\Animation.h" />
     <ClInclude Include="DirectXGame\Data\Bone.h" />
     <ClInclude Include="DirectXGame\Data\Collider.h" />

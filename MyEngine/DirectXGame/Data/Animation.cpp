@@ -6,116 +6,50 @@ void Animation::Initialize() {
 
 void Animation::Update() {
 
-	NodeUpdate();
+	//rootNodeの初期化
+	rootNode = InitializeNode(rootNode);
+
+	//アニメーションの更新
+	bool isAnimation = false;
+	for (auto it = infos.begin(); it != infos.end(); it++) {
+		AnimationInfo info = *it;
+		if (info.isAnimation || info.data.name != "None") {
+			isAnimation = true;
+			NodeUpdate(info);
+		}
+	}
+	if (!isAnimation) {
+		rootNode = initialNode;
+	}
 
 }
 
-void Animation::NodeUpdate() {
+void Animation::NodeUpdate(AnimationInfo info) {
 
-	//アニメーションの更新
-	if (isAnimation) {
+	for (uint32_t channelIndex = 0; channelIndex < info.data.numChannels; channelIndex++) {
 
-		if (data.name == "None") {
+		UpdateNode(rootNode, info.data.channels[channelIndex], info.frame);
+		
+	}
 
-			rootNode = initialNode;
-
-			return;
-		}
-
-		for (uint32_t channelIndex = 0; channelIndex < data.numChannels; channelIndex++) {
-
-			if (rootNode.name == data.channels[channelIndex].name) {
-				//位置
-				Vector3 pos;
-				if (data.channels[channelIndex].numPositionChannel == 1) {
-					pos = data.channels[channelIndex].positionChannel[0].position;
-				}
-				else if (frame < data.channels[channelIndex].numPositionChannel) {
-					pos = data.channels[channelIndex].positionChannel[frame].position;
-				}
-				else {
-					pos = data.channels[channelIndex].positionChannel[data.channels[channelIndex].numPositionChannel - 1].position;
-				}
-
-				//回転
-				Vector3 rotate;
-				if (data.channels[channelIndex].numRotateChannel == 1) {
-					rotate = data.channels[channelIndex].rotationChannel[0].rotation;
-				}
-				else if (frame < data.channels[channelIndex].numRotateChannel) {
-					rotate = data.channels[channelIndex].rotationChannel[frame].rotation;
-				}
-				else {
-					rotate = data.channels[channelIndex].rotationChannel[data.channels[channelIndex].numRotateChannel - 1].rotation;
-				}
-
-				//サイズ
-				Vector3 scale;
-				if (data.channels[channelIndex].numScaleChannel == 1) {
-					scale = data.channels[channelIndex].scaleChannel[0].scale;
-				}
-				else if (frame < data.channels[channelIndex].numScaleChannel) {
-					scale = data.channels[channelIndex].scaleChannel[frame].scale;
-				}
-				else {
-					scale = data.channels[channelIndex].scaleChannel[data.channels[channelIndex].numScaleChannel - 1].scale;
-				}
-
-				Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
-				rootNode.localMatrix = affineMatrix;
-			}
-			else {
-				for (uint32_t nodeIndex = 0; nodeIndex < rootNode.children.size(); nodeIndex++) {
-					if (rootNode.children[nodeIndex].name == data.channels[channelIndex].name) {
-						//位置
-						Vector3 pos;
-						if (data.channels[channelIndex].numPositionChannel == 1) {
-							pos = data.channels[channelIndex].positionChannel[0].position;
-						}
-						else if (frame < data.channels[channelIndex].numPositionChannel) {
-							pos = data.channels[channelIndex].positionChannel[frame].position;
-						}
-						else {
-							pos = data.channels[channelIndex].positionChannel[data.channels[channelIndex].numPositionChannel - 1].position;
-						}
-
-						//回転
-						Vector3 rotate;
-						if (data.channels[channelIndex].numRotateChannel == 1) {
-							rotate = data.channels[channelIndex].rotationChannel[0].rotation;
-						}
-						else if (frame < data.channels[channelIndex].numRotateChannel) {
-							rotate = data.channels[channelIndex].rotationChannel[frame].rotation;
-						}
-						else {
-							rotate = data.channels[channelIndex].rotationChannel[data.channels[channelIndex].numRotateChannel - 1].rotation;
-						}
-
-						//サイズ
-						Vector3 scale;
-						if (data.channels[channelIndex].numScaleChannel == 1) {
-							scale = data.channels[channelIndex].scaleChannel[0].scale;
-						}
-						else if (frame < data.channels[channelIndex].numScaleChannel) {
-							scale = data.channels[channelIndex].scaleChannel[frame].scale;
-						}
-						else {
-							scale = data.channels[channelIndex].scaleChannel[data.channels[channelIndex].numScaleChannel - 1].scale;
-						}
-
-						Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
-						rootNode.children[nodeIndex].localMatrix = affineMatrix;
-					}
-				}
-			}
-		}
-
-		if (frame >= data.numFrames) {
-			frame = 0;
-		}
+	if (info.frame >= info.data.numFrames) {
+		info.frame = 0;
 	}
 	else {
-		rootNode = initialNode;
+		info.frame++;
+	}
+}
+
+void Animation::SetAnimation(std::list<AnimationData> datas) {
+
+	for (auto it = datas.begin(); it != datas.end(); it++) {
+		AnimationData data = *it;
+		
+		AnimationInfo info;
+		info.data = data;
+		info.isAnimation = false;
+		info.frame = 0;
+		infos.push_back(info);
 	}
 
 }
