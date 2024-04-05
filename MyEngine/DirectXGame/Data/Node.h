@@ -20,3 +20,5 @@ Node ReadNode(aiNode* node);
 Node InitializeNode(Node node);
 
 Node UpdateNode(Node node, AnimationChannel info, uint32_t frame);
+
+Matrix4x4 FindMatix(Node node, std::string meshName);

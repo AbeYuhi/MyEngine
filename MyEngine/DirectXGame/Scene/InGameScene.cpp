@@ -133,8 +133,7 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("scale", &cubeModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 
 		for (auto it = cubeModelInfo_.animation_.infos.begin(); it != cubeModelInfo_.animation_.infos.end(); it++) {
-			AnimationInfo info = *it;
-			ImGui::Checkbox(info.data.name.c_str(), &info.isAnimation);
+			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
 		}
 
 		ImGui::EndTabItem();

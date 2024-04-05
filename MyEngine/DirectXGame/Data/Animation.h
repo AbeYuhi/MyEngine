@@ -17,7 +17,7 @@ struct Animation {
 
 	void Update();
 
-	void NodeUpdate(AnimationInfo info);
+	void NodeUpdate(AnimationInfo& info);
 
 	void SetAnimation(std::list<AnimationData> datas);
 

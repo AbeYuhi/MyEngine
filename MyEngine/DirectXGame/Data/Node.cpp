@@ -83,3 +83,18 @@ Node UpdateNode(Node node, AnimationChannel info, uint32_t frame) {
 
 	return node;
 }
+
+Matrix4x4 FindMatix(Node node, std::string meshName) {
+
+	if (node.name == meshName) {
+		return node.localMatrix;
+	}
+	else {
+		for (uint32_t childIndex = 0; childIndex < node.children.size(); childIndex++) {
+			//再帰的に読む
+			return FindMatix(node.children[childIndex], meshName);
+		}
+	}
+
+	return MakeIdentity4x4();
+}

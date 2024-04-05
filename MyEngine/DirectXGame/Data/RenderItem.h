@@ -17,6 +17,7 @@ struct RenderItem {
 	void Initialize() {
 		materialInfo_.Initialize();
 		worldTransform_.Initialize(false); 
+		animation_.Initialize();
 
 		for (int index = 0; index < 10; index++) {
 			WorldTransform transform;
@@ -36,18 +37,7 @@ struct RenderItem {
 			assert(false);
 		}
 
-		/*if (mesh.name == animationInfo_.rootNode.name) {		
-			meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;
-			meshWorldTransforms_[index].NodeUpdate(animationInfo_.rootNode.localMatrix);
-		}
-		else {
-			for (uint32_t nodeIndex = 0; nodeIndex < animationInfo_.rootNode.children.size(); nodeIndex++) {
-				if (mesh.name == animationInfo_.rootNode.children[nodeIndex].name) {
-					meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;
-					meshWorldTransforms_[index].NodeUpdate(animationInfo_.rootNode.children[nodeIndex].localMatrix);
-					break;
-				}
-			}
-		}*/
+		meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;
+		meshWorldTransforms_[index].NodeUpdate(FindMatix(animation_.rootNode, mesh.name));
 	}
 };

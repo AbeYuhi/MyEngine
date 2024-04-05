@@ -303,10 +303,12 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 	//アニメーションの読み込み
 	//Noneの作成
-	AnimationData animation;
-	animation.name = "None";
-	animation.numFrames = 0;
-	animation.numChannels = 0;
+	AnimationData noneAnimation;
+	noneAnimation.name = "None";
+	noneAnimation.numFrames = 0;
+	noneAnimation.numChannels = 0;
+	animations_.push_back(noneAnimation);
+
 	//GLTFからの読み込み
 	for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
 		std::string animationName = scene->mAnimations[animationIndex]->mName.C_Str();
@@ -320,13 +322,13 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			std::string nodeName = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNodeName.C_Str();
 			animation.channels[channelIndex].name = nodeName;
 			//Frame
-			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys > animations_[animationName].numFrames) {
+			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys > animation.numFrames) {
 				animation.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
 			}
-			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys > animations_[animationName].numFrames) {
+			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys > animation.numFrames) {
 				animation.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys;
 			}
-			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys > animations_[animationName].numFrames) {
+			if (scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys > animation.numFrames) {
 				animation.numFrames = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys;
 			}
 

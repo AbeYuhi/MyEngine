@@ -41,5 +41,6 @@ struct AnimationData {
 struct AnimationInfo {
 	AnimationData data;
 	bool isAnimation;
+	bool preIsAnimation;
 	uint32_t frame;
 };
