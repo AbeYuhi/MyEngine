@@ -38,6 +38,6 @@ struct RenderItem {
 		}
 
 		meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;
-		meshWorldTransforms_[index].NodeUpdate(FindMatix(animation_.rootNode, mesh.name));
+		meshWorldTransforms_[index].NodeUpdate(*FindMatix(animation_.rootNode, mesh.name));
 	}
 };

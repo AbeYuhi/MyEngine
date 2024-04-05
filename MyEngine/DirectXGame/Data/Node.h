@@ -13,12 +13,15 @@ struct Node {
 	Matrix4x4 localMatrix;
 	std::string name;
 	std::vector<Node> children;
+	bool isMove;
 };
 
 Node ReadNode(aiNode* node);
 
 Node InitializeNode(Node node);
 
+Node SubstitutionNode(Node node, Node InitNode);
+
 Node UpdateNode(Node node, AnimationChannel info, uint32_t frame);
 
-Matrix4x4 FindMatix(Node node, std::string meshName);
+Matrix4x4* FindMatix(Node node, std::string meshName);

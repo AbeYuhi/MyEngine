@@ -28,6 +28,8 @@ void Animation::Update() {
 		rootNode = initialNode;
 	}
 
+	//変更がなかったNodeを初期ポジに戻す
+	rootNode = SubstitutionNode(rootNode, initialNode);
 }
 
 void Animation::NodeUpdate(AnimationInfo& info) {

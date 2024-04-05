@@ -51,7 +51,7 @@ void WorldTransform::TransferMatrix() {
 void WorldTransform::NodeUpdate(Matrix4x4 localMatrix) {
 	matrix_->World_ = Multiply(localMatrix, worldMatrix_);
 	matrix_->WVP_ = Multiply(Multiply(localMatrix, worldMatrix_), *viewProjectionMatrix_);
-	matrix_->WorldInverseTranspose_ = Transpose(Inverse(worldMatrix_));
+	matrix_->WorldInverseTranspose_ = Transpose(Inverse(Multiply(localMatrix, worldMatrix_)));
 }
 
 Vector3 WorldTransform::GetWorldPos() {

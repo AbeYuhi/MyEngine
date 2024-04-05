@@ -22,6 +22,7 @@ Node ReadNode(aiNode* node) {
 
 Node InitializeNode(Node node) {
 
+	node.isMove = false;
 	node.localMatrix = MakeIdentity4x4();
 	for (uint32_t childIndex = 0; childIndex < node.children.size(); childIndex++) {
 		//再帰的に読む
@@ -31,9 +32,25 @@ Node InitializeNode(Node node) {
 	return node;
 }
 
+Node SubstitutionNode(Node node, Node InitNode) {
+
+	if (!node.isMove) {
+		node.localMatrix = InitNode.localMatrix;
+	}
+
+	for (uint32_t childIndex = 0; childIndex < node.children.size(); childIndex++) {
+		//再帰的に読む
+		node.children[childIndex] = SubstitutionNode(node.children[childIndex], InitNode.children[childIndex]);
+	}
+
+	return node;
+}
+
 Node UpdateNode(Node node, AnimationChannel info, uint32_t frame) {
 
 	if (node.name == info.name) {
+
+		node.isMove = true;
 
 		//位置
 		Vector3 pos;
@@ -84,17 +101,19 @@ Node UpdateNode(Node node, AnimationChannel info, uint32_t frame) {
 	return node;
 }
 
-Matrix4x4 FindMatix(Node node, std::string meshName) {
+Matrix4x4* FindMatix(Node node, std::string meshName) {
 
 	if (node.name == meshName) {
-		return node.localMatrix;
+		return &node.localMatrix;
 	}
 	else {
 		for (uint32_t childIndex = 0; childIndex < node.children.size(); childIndex++) {
 			//再帰的に読む
-			return FindMatix(node.children[childIndex], meshName);
+			if (FindMatix(node.children[childIndex], meshName)) {
+				return FindMatix(node.children[childIndex], meshName);
+			}
 		}
 	}
 
-	return MakeIdentity4x4();
+	return nullptr;
 }
