@@ -4,7 +4,17 @@
 #include "Math/Matrix4x4.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
+#include "Math/Quaternion.h"
 #include "Math/Math.h"
+
+template <typename tValue>
+struct Keyframe {
+	tValue value;
+	float time;
+};
+
+using KeyframeVector3 = Keyframe<Vector3>;
+using KeyframeQuaternion = Keyframe<Quaternion>;
 
 struct PositionChannel {
 	Vector3 position;
@@ -12,7 +22,7 @@ struct PositionChannel {
 };
 
 struct RotationChannel {
-	Vector3 rotation;
+	Quaternion rotation;
 	float time;
 };
 
@@ -21,21 +31,19 @@ struct ScaleChannel {
 	float time;
 };
 
-struct AnimationChannel {
+struct NodeAnimation {
 	std::string name;
-	uint32_t numPositionChannel;
-	uint32_t numRotateChannel;
-	uint32_t numScaleChannel;
-	std::vector<PositionChannel> positionChannel;
-	std::vector<RotationChannel> rotationChannel;
-	std::vector<ScaleChannel> scaleChannel;
+	std::vector<KeyframeVector3> position;
+	std::vector<KeyframeQuaternion> rotation;
+	std::vector<KeyframeVector3> scale;
 };
 
 struct AnimationData {
 	std::string name;
 	uint32_t numFrames;
+	float duration;
 	uint32_t numChannels;
-	std::vector<AnimationChannel> channels;
+	std::vector<NodeAnimation> animations;
 };
 
 struct AnimationInfo {

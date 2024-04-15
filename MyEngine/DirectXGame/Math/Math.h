@@ -2,6 +2,7 @@
 #include <math.h>
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include "Quaternion.h"
 #include "AABB.h"
 
 static const int kColumnWidth = 60;
@@ -104,6 +105,8 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 Matrix4x4 MakeScaleMatrix(const Vector3& scale);
 
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
 
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 

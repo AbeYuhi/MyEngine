@@ -315,6 +315,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		AnimationData animation;
 		animation.name = scene->mAnimations[animationIndex]->mName.C_Str();
 		animation.numFrames = 0;
+		animation.duration = float(scene->mAnimations[animationIndex]->mDuration / scene->mAnimations[animationIndex]->mTicksPerSecond);//時間の単位を秒に変換
 		animation.numChannels = scene->mAnimations[animationIndex]->mNumChannels;
 		animation.channels.resize(scene->mAnimations[animationIndex]->mNumChannels);
 		for (uint32_t channelIndex = 0; channelIndex < scene->mAnimations[animationIndex]->mNumChannels; channelIndex++) {
@@ -336,16 +337,16 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			animation.channels[channelIndex].numPositionChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys;
 			animation.channels[channelIndex].positionChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys);
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys; keyIndex++) {
-				animation.channels[channelIndex].positionChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mTime);
+				animation.channels[channelIndex].positionChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mTime / scene->mAnimations[animationIndex]->mTicksPerSecond);
 				animation.channels[channelIndex].positionChannel[keyIndex].position.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.x;
 				animation.channels[channelIndex].positionChannel[keyIndex].position.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.y;
-				animation.channels[channelIndex].positionChannel[keyIndex].position.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.z;
+				animation.channels[channelIndex].positionChannel[keyIndex].position.z = -scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.z;
 			}
 			//回転に関係する情報の格納場所
 			animation.channels[channelIndex].numRotateChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys;
 			animation.channels[channelIndex].rotationChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys);
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys; keyIndex++) {
-				animation.channels[channelIndex].rotationChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mTime);
+				animation.channels[channelIndex].rotationChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mTime / scene->mAnimations[animationIndex]->mTicksPerSecond);
 				animation.channels[channelIndex].rotationChannel[keyIndex].rotation.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.x * 3.14f;
 				animation.channels[channelIndex].rotationChannel[keyIndex].rotation.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.y * 3.14f;
 				animation.channels[channelIndex].rotationChannel[keyIndex].rotation.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.z * 3.14f;
@@ -354,7 +355,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			animation.channels[channelIndex].numScaleChannel = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys;
 			animation.channels[channelIndex].scaleChannel.resize(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys);
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys; keyIndex++) {
-				animation.channels[channelIndex].scaleChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mTime);
+				animation.channels[channelIndex].scaleChannel[keyIndex].time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mTime / scene->mAnimations[animationIndex]->mTicksPerSecond);
 				animation.channels[channelIndex].scaleChannel[keyIndex].scale.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.x;
 				animation.channels[channelIndex].scaleChannel[keyIndex].scale.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.y;
 				animation.channels[channelIndex].scaleChannel[keyIndex].scale.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.z;
