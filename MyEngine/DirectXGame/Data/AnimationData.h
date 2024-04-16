@@ -16,34 +16,22 @@ struct Keyframe {
 using KeyframeVector3 = Keyframe<Vector3>;
 using KeyframeQuaternion = Keyframe<Quaternion>;
 
-struct PositionChannel {
-	Vector3 position;
-	float time;
-};
-
-struct RotationChannel {
-	Quaternion rotation;
-	float time;
-};
-
-struct ScaleChannel {
-	Vector3 scale;
-	float time;
+template <typename tValue>
+struct AnimationCurve {
+	std::vector<Keyframe<tValue>> keyframes;
 };
 
 struct NodeAnimation {
-	std::string name;
-	std::vector<KeyframeVector3> position;
-	std::vector<KeyframeQuaternion> rotation;
-	std::vector<KeyframeVector3> scale;
+	std::string nodeName;
+	AnimationCurve<Vector3> position;
+	AnimationCurve<Quaternion> rotation;
+	AnimationCurve<Vector3> scale;
 };
 
 struct AnimationData {
 	std::string name;
-	uint32_t numFrames;
 	float duration;
-	uint32_t numChannels;
-	std::vector<NodeAnimation> animations;
+	std::vector<NodeAnimation> nodeAnimations;
 };
 
 struct AnimationInfo {
