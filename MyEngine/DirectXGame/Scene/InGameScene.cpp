@@ -135,6 +135,8 @@ void InGameScene::Update() {
 
 		for (auto it = cubeModelInfo_.animation_.infos.begin(); it != cubeModelInfo_.animation_.infos.end(); it++) {
 			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
+			std::string animationSpeed = it->data.name + ": speed";
+			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, 0.0f, 5.0f);
 		}
 
 		ImGui::EndTabItem();

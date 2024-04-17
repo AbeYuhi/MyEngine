@@ -40,7 +40,7 @@ void Animation::NodeUpdate(AnimationInfo& info) {
 		
 	}
 
-	info.animationTime += 1.0f / 60.0f;
+	info.animationTime += 1.0f / 60.0f * info.animationSpeed;
 	if (info.animationTime > info.data.duration) {
 		info.animationTime = 0.0f;
 		info.isAnimation = false;
@@ -57,6 +57,7 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 		info.isAnimation = false;
 		info.preIsAnimation = false;
 		info.animationTime = 0;
+		info.animationSpeed = 1.0f;
 		infos.push_back(info);
 	}
 

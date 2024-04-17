@@ -23,4 +23,6 @@ struct Animation {
 
 	inline void SetInialNode(Node node) { initialNode = node; }
 
+	inline void SetAnimationSpeed(float speed) {};
+
 };
