@@ -60,5 +60,12 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 		info.animationSpeed = 1.0f;
 		infos.push_back(info);
 	}
+}
 
+void Animation::SetAnimationSpeed(std::string animationName, float speed) {
+	for (auto it = infos.begin(); it != infos.end(); it++) {
+		if (it->data.name == animationName) {
+			it->animationSpeed = speed;
+		}
+	}
 }

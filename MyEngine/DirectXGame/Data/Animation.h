@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include "Manager/ImGuiManager.h"
 #include "AnimationData.h"
 #include "Node.h"
 
@@ -23,6 +24,6 @@ struct Animation {
 
 	inline void SetInialNode(Node node) { initialNode = node; }
 
-	inline void SetAnimationSpeed(float speed) {};
+	void SetAnimationSpeed(std::string animationName, float speed);
 
 };
