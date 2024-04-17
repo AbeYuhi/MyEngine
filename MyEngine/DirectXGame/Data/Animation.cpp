@@ -14,7 +14,7 @@ void Animation::Update() {
 	for (auto it = infos.begin(); it != infos.end(); it++) {
 
 		if (it->isAnimation != it->preIsAnimation) {
-			it->frame = 0;
+			it->animationTime = 0;
 		}
 
 		if (it->isAnimation && it->data.name != "None") {
@@ -29,22 +29,21 @@ void Animation::Update() {
 	}
 
 	//変更がなかったNodeを初期ポジに戻す
-	rootNode = SubstitutionNode(rootNode, initialNode);
+	rootNode = InitializeNode(rootNode, initialNode);
 }
 
 void Animation::NodeUpdate(AnimationInfo& info) {
 
-	for (uint32_t channelIndex = 0; channelIndex < info.data.numChannels; channelIndex++) {
+	for (uint32_t channelIndex = 0; channelIndex < info.data.nodeAnimations.size(); channelIndex++) {
 
-		rootNode = UpdateNode(rootNode, info.data.channels[channelIndex], info.frame);
+		rootNode = UpdateNode(rootNode, info.data.nodeAnimations[channelIndex], info.animationTime);
 		
 	}
 
-	if (info.frame >= info.data.numFrames) {
-		info.frame = 0;
-	}
-	else {
-		info.frame++;
+	info.animationTime += 1.0f / 60.0f;
+	if (info.animationTime > info.data.duration) {
+		info.animationTime = 0.0f;
+		info.isAnimation = false;
 	}
 }
 
@@ -57,7 +56,7 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 		info.data = data;
 		info.isAnimation = false;
 		info.preIsAnimation = false;
-		info.frame = 0;
+		info.animationTime = 0;
 		infos.push_back(info);
 	}
 

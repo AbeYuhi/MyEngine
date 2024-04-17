@@ -13,6 +13,7 @@ struct Quaternion {
 Quaternion operator*(const Quaternion& num1, const float num2);
 Quaternion operator*(const float num1, const Quaternion& num2);
 Quaternion operator+(const Quaternion& num1, const Quaternion& num2);
+bool operator==(const Quaternion& num1, const Quaternion& num2);
 
 //積
 Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs);

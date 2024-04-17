@@ -316,8 +316,8 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		for (uint32_t channelIndex = 0; channelIndex < scene->mAnimations[animationIndex]->mNumChannels; channelIndex++) {
 			//移動するNodeの名前
 			std::string nodeName = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNodeName.C_Str();
-			NodeAnimation animation;
-			animation.nodeName = nodeName;
+			NodeAnimation animationInfo;
+			animationInfo.nodeName = nodeName;
 
 			//場所に関係する情報の格納場所
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys; keyIndex++) {
@@ -326,7 +326,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 				pos.value.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.x;
 				pos.value.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.y;
 				pos.value.z = -scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.z;
-				animation.position.keyframes.push_back(pos);
+				animationInfo.position.keyframes.push_back(pos);
 			}
 			//回転に関係する情報の格納場所
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumRotationKeys; keyIndex++) {
@@ -336,7 +336,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 				rotate.value.y = -scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.y;
 				rotate.value.z = -scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.z;
 				rotate.value.w = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mRotationKeys[keyIndex].mValue.w;
-				animation.rotation.keyframes.push_back(rotate);
+				animationInfo.rotation.keyframes.push_back(rotate);
 			}
 			//サイズに関係する情報の格納場所
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumScalingKeys; keyIndex++) {
@@ -345,12 +345,13 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 				scale.value.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.x;
 				scale.value.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.y;
 				scale.value.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mScalingKeys[keyIndex].mValue.z;
-				animation.scale.keyframes.push_back(scale);
+				animationInfo.scale.keyframes.push_back(scale);
 			}
 
-			animations_.push_back(animation);
+			animation.nodeAnimations.push_back(animationInfo);
 		}
 
+		animations_.push_back(animation);
 	}
 
 	//Nodeの解析

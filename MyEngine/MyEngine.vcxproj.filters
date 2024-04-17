@@ -330,6 +330,9 @@
     <ClCompile Include="DirectXGame\Math\Quaternion.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Data\AnimationData.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">

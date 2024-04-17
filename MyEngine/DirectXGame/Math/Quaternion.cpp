@@ -30,6 +30,15 @@ Quaternion operator+(const Quaternion& num1, const Quaternion& num2) {
 	return ans;
 }
 
+bool operator==(const Quaternion& num1, const Quaternion& num2) {
+
+	if (num1.w == num2.w && num1.x == num2.x && num1.y == num2.y && num1.z == num2.z) {
+		return true;
+	}
+
+	return false;
+}
+
 Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs) {
 	Quaternion ans;
 

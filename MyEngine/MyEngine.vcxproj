@@ -108,6 +108,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Data\AnimationData.cpp" />
     <ClCompile Include="DirectXGame\Base\CreateResource\CreateResource.cpp" />
     <ClCompile Include="DirectXGame\Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Base\WinApp\WinApp.cpp" />

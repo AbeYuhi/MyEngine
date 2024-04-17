@@ -38,5 +38,9 @@ struct AnimationInfo {
 	AnimationData data;
 	bool isAnimation;
 	bool preIsAnimation;
-	uint32_t frame;
+	float animationTime;
 };
+
+Vector3 CalculateValue(const AnimationCurve<Vector3>& curve, float time);
+
+Quaternion CalculateValue(const AnimationCurve<Quaternion>& curve, float time);
