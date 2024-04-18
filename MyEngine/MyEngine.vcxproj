@@ -267,6 +267,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Data\Mesh.h" />
     <ClInclude Include="DirectXGame\GameObject\Shadow\Shadow.h" />
     <ClInclude Include="DirectXGame\Data\IndexData.h" />
+    <ClInclude Include="DirectXGame\Data\Skeleton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

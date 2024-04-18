@@ -1,6 +1,8 @@
 #pragma once
 #include "DirectXGame/Math/Vector3.h"
 #include "DirectXGame/Math/Matrix4x4.h"
+#include "DirectXGame/Math/Quaternion.h"
+#include "DirectXGame/Math/Math.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 #include "DirectXGame/Base/CreateResource/CreateResource.h"
 
@@ -10,9 +12,17 @@ struct TransformMatrix {
 	Matrix4x4 WorldInverseTranspose_;
 };
 
-struct TransformData{
+struct EulerTransformData{
 	Vector3 scale_;
 	Vector3 rotate_;
+	Vector3 translate_;
+
+	void Initialize();
+};
+
+struct QuaternionTransformData {
+	Vector3 scale_;
+	Quaternion rotate_;
 	Vector3 translate_;
 
 	void Initialize();
@@ -22,7 +32,7 @@ struct WorldTransform {
 	//リソース
 	ComPtr<ID3D12Resource> resource_ = nullptr;
 	//ローカル情報
-	TransformData data_;
+	EulerTransformData data_;
 	//ワールドMatrix
 	Matrix4x4 worldMatrix_;
 	//Matrix転送済みデータ

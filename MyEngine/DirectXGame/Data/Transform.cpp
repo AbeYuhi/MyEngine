@@ -2,9 +2,15 @@
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
 #include "DirectXGame/GameObject/Camera/SpriteCamera.h"
 
-void TransformData::Initialize(){
+void EulerTransformData::Initialize(){
 	scale_ = { 1.0f, 1.0f, 1.0f };
 	rotate_ = { 0.0f, 0.0f, 0.0f };
+	translate_ = { 0.0f, 0.0f, 0.0f };
+}
+
+void QuaternionTransformData::Initialize() {
+	scale_ = { 1.0f, 1.0f, 1.0f };
+	rotate_ = IdentityQuaternion();
 	translate_ = { 0.0f, 0.0f, 0.0f };
 }
 

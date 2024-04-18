@@ -9,7 +9,7 @@ struct MaterialInfo {
 	//Resource
 	ComPtr<ID3D12Resource> resource_ = nullptr;
 	//UVtransform
-	TransformData uvTransform_;
+	EulerTransformData uvTransform_;
 	//マテリアル情報
 	Material* material_;
 	//非表示かどうか
@@ -41,7 +41,7 @@ struct ParticleMaterialInfo {
 	//Resource
 	ComPtr<ID3D12Resource> resource_ = nullptr;
 	//UVtransform
-	TransformData uvTransform_;
+	EulerTransformData uvTransform_;
 	//マテリアル情報
 	ParticleMaterial* material_;
 	//非表示かどうか

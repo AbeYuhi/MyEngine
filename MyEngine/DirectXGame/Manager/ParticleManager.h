@@ -15,7 +15,7 @@
 #include "DirectXGame/GameObject/Camera/MainCamera.h"
 
 struct ParticleInfo {
-	TransformData srtData;
+	EulerTransformData srtData;
 	Vector3 velocity;
 	Vector4 color;
 	float lifeTime;
@@ -23,7 +23,7 @@ struct ParticleInfo {
 };
 
 struct Emitter {
-	TransformData transform;
+	EulerTransformData transform;
 	int count; //発生数
 	float frequency;
 	float frequencyTime;

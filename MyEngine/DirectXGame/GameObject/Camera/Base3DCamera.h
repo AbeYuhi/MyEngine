@@ -18,7 +18,7 @@ public:
 
 	virtual void Update();
 
-	inline TransformData GetWorldTransrom() { return transform_; }
+	inline EulerTransformData GetWorldTransrom() { return transform_; }
 	inline Matrix4x4 GetWorldMatrix() { return worldMatrix_; }
 	inline Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 	inline Matrix4x4 GetProjectionMatrix() { return projectionMatrix_; }
@@ -29,7 +29,7 @@ public:
 	inline float GetFovY() { return fovY_; }
 
 protected:
-	TransformData transform_;
+	EulerTransformData transform_;
 	Matrix4x4 worldMatrix_;
 	Matrix4x4 viewMatrix_;
 	Matrix4x4 projectionMatrix_;

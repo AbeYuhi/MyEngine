@@ -18,7 +18,7 @@ public:
 
 	void Update();
 
-	inline TransformData GetWorldTransrom() { return transform_; }
+	inline EulerTransformData GetWorldTransrom() { return transform_; }
 	inline Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 	inline Matrix4x4 GetProjectionMatrix() { return projectionMatrix_; }
 	inline Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; }
@@ -30,7 +30,7 @@ private:
 	SpriteCamera() = default;
 	~SpriteCamera() = default;
 
-	TransformData transform_;
+	EulerTransformData transform_;
 	Matrix4x4 worldMatrix_;
 	Matrix4x4 viewMatrix_;
 	Matrix4x4 projectionMatrix_;

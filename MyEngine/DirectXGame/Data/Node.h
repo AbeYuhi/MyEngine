@@ -7,9 +7,11 @@
 #include <assimp/material.h>
 #include "Math/Matrix4x4.h"
 #include "Math/Math.h"
+#include "Data/Transform.h"
 #include "Data/AnimationData.h"
 
 struct Node {
+	QuaternionTransformData transform;
 	Matrix4x4 localMatrix;
 	std::string name;
 	std::vector<Node> children;
