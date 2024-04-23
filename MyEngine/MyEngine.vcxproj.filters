@@ -333,6 +333,9 @@
     <ClCompile Include="DirectXGame\Data\AnimationData.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Data\Skeleton.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">

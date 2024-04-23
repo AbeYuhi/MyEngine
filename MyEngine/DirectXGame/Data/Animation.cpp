@@ -47,6 +47,19 @@ void Animation::NodeUpdate(AnimationInfo& info) {
 	}
 }
 
+void Animation::SkeletonUpdate() {
+	//すべてのJointを更新。親が若いので通常ループで処理が可能
+	for (Joint& joint : skeleton.joints) {
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale_, joint.transform.rotate_, joint.transform.translate_);
+		if (joint.parent) {
+			joint.skeletonSpaceMatrix = joint.localMatrix * skeleton.joints[*joint.parent].skeletonSpaceMatrix;
+		}
+		else {
+			joint.skeletonSpaceMatrix = joint.localMatrix;
+		}
+	}
+}
+
 void Animation::SetAnimation(std::list<AnimationData> datas) {
 
 	for (auto it = datas.begin(); it != datas.end(); it++) {

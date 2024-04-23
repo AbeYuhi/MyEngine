@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <map>
 #include "Data/Transform.h"
+#include "Data/Node.h"
 #include "Math/Matrix4x4.h"
 
 struct Joint {
@@ -21,3 +22,7 @@ struct Skeleton {
 	std::map<std::string, int32_t> jointMap;
 	std::vector<Joint> joints;
 };
+
+int32_t CreateJoint(const Node& node, const std::optional<Joint>& joints);
+
+Skeleton CreateSkeleton(const Node& rootNode);
