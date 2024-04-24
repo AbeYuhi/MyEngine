@@ -70,8 +70,17 @@ void InGameScene::Initialize() {
 	cubeModelInfo_.animation_.SetInialNode(cubeModel_->GetInialNode());
 	cubeModelInfo_.animation_.SetAnimation(cubeModel_->GetAnimationData());
 
-	//testModel_ = Model::Create("test", "test.gltf");
+	testModel_ = Model::Create("human", "sneakWalk.gltf");
 	testModelInfo_.Initialize();
+	testModelInfo_.animation_.SetInialNode(testModel_->GetInialNode());
+	testModelInfo_.animation_.SetAnimation(testModel_->GetAnimationData());
+
+	sphereModel_ = Model::Create("sphere", "sphere.obj");
+	for (int index = 0; index < testModelInfo_.animation_.skeleton.joints.size(); index++) {
+		RenderItem jointInfo;
+		jointInfo.Initialize();
+		jointInfos_.push_back(jointInfo);
+	}
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -142,6 +151,19 @@ void InGameScene::Update() {
 
 		ImGui::EndTabItem();
 	}
+	if (ImGui::BeginTabItem("humanModel")) {
+		ImGui::SliderFloat3("pos", &testModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &testModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &testModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+
+		for (auto it = testModelInfo_.animation_.infos.begin(); it != testModelInfo_.animation_.infos.end(); it++) {
+			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
+			std::string animationSpeed = it->data.name + ": speed";
+			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, 0.0f, 5.0f);
+		}
+
+		ImGui::EndTabItem();
+	}
 	if (ImGui::BeginTabItem("sprite")) {
 		ImGui::SliderFloat3("pos", &spriteInfo_.worldTransform_.data_.translate_.x, 0, 1280);
 		ImGui::SliderFloat3("rotate", &spriteInfo_.worldTransform_.data_.rotate_.x, -10, 10);
@@ -162,6 +184,11 @@ void InGameScene::Update() {
 	cubeModelInfo_.Update();
 	testModelInfo_.Update();
 	spriteInfo_.Update();
+
+	for (int index = 0; index < testModelInfo_.animation_.skeleton.joints.size(); index++) {
+		jointInfos_[index].worldTransform_.worldMatrix_ = testModelInfo_.animation_.skeleton.joints[index].skeletonSpaceMatrix;
+		jointInfos_[index].worldTransform_.TransferMatrix();
+	}
 }
 
 void InGameScene::Draw() {
@@ -188,10 +215,13 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	yukariModel_->Draw(yukariModelInfo_);
+	//yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
-	cubeModel_->Draw(cubeModelInfo_);
-	//testModel_->Draw(testModelInfo_);
+	//cubeModel_->Draw(cubeModelInfo_);
+	testModel_->Draw(testModelInfo_);
+	for (int index = 0; index < testModelInfo_.animation_.skeleton.joints.size(); index++) {
+		sphereModel_->Draw(jointInfos_[index]);
+	}
 
 	///オブジェクトの描画終了
 

@@ -23,6 +23,6 @@ struct Skeleton {
 	std::vector<Joint> joints;
 };
 
-int32_t CreateJoint(const Node& node, const std::optional<Joint>& joints);
+int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
 
 Skeleton CreateSkeleton(const Node& rootNode);

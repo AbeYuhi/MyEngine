@@ -19,7 +19,18 @@ void Animation::Update() {
 
 		if (it->isAnimation && it->data.name != "None") {
 			isAnimation = true;
+			//アニメーションの時間を進める
+			it->animationTime += 1.0f / 60.0f * it->animationSpeed;
+			if (it->animationTime > it->data.duration) {
+				it->animationTime = 0.0f;
+				it->isAnimation = false;
+			}
+
+			//Nodeのアップデートをする
 			NodeUpdate(*it);
+
+			//Jointの更新
+			ApplyAnimation(*it);
 		}
 
 		it->preIsAnimation = it->isAnimation;
@@ -30,6 +41,9 @@ void Animation::Update() {
 
 	//変更がなかったNodeを初期ポジに戻す
 	rootNode = InitializeNode(rootNode, initialNode);
+
+	//Skeltonの更新
+	SkeletonUpdate();
 }
 
 void Animation::NodeUpdate(AnimationInfo& info) {
@@ -38,12 +52,6 @@ void Animation::NodeUpdate(AnimationInfo& info) {
 
 		rootNode = UpdateNode(rootNode, info.data.nodeAnimations[channelIndex], info.animationTime);
 		
-	}
-
-	info.animationTime += 1.0f / 60.0f * info.animationSpeed;
-	if (info.animationTime > info.data.duration) {
-		info.animationTime = 0.0f;
-		info.isAnimation = false;
 	}
 }
 
@@ -58,6 +66,23 @@ void Animation::SkeletonUpdate() {
 			joint.skeletonSpaceMatrix = joint.localMatrix;
 		}
 	}
+}
+
+void Animation::ApplyAnimation(AnimationInfo& info) {
+	for (Joint& joint : skeleton.joints) {
+		for (int index = 0; index < info.data.nodeAnimations.size();index++) {
+			if (joint.name == info.data.nodeAnimations[index].nodeName) {
+				const NodeAnimation& rootNodeAnimation = info.data.nodeAnimations[index];
+				joint.transform.translate_ = CalculateValue(rootNodeAnimation.position, info.animationTime);
+				joint.transform.rotate_ = CalculateValue(rootNodeAnimation.rotation, info.animationTime);
+				joint.transform.scale_ = CalculateValue(rootNodeAnimation.scale, info.animationTime);
+			}
+		}
+	}
+}
+
+void Animation::SkeletonDraw() {
+
 }
 
 void Animation::SetAnimation(std::list<AnimationData> datas) {

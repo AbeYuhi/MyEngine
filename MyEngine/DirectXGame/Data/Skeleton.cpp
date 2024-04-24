@@ -1,6 +1,6 @@
 #include "Skeleton.h"
 
-int32_t CreateJoint(const Node& node, const std::optional<int32_t>&parent, std::vector<Joint>& joints) {
+int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints) {
 	Joint joint;
 	joint.name = node.name;
 	joint.localMatrix = node.localMatrix;
@@ -9,6 +9,7 @@ int32_t CreateJoint(const Node& node, const std::optional<int32_t>&parent, std::
 	joint.index = int32_t(joints.size());
 	joint.parent = parent;
 	joints.push_back(joint);
+	
 	for (const Node& child : node.children) {
 		int32_t childIndex = CreateJoint(child, joint.index, joints);
 		joints[joint.index].children.push_back(childIndex);

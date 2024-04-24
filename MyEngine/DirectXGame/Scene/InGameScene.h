@@ -74,6 +74,9 @@ private:
 	std::shared_ptr<Model> testModel_;
 	RenderItem testModelInfo_;
 
+	std::shared_ptr<Model> sphereModel_;
+	std::vector<RenderItem> jointInfos_;
+
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;
 

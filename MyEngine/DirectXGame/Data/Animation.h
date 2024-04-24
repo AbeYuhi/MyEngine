@@ -25,7 +25,11 @@ struct Animation {
 
 	void SkeletonUpdate();
 
+	void ApplyAnimation(AnimationInfo& info);
+
 	void SetAnimation(std::list<AnimationData> datas);
+
+	void SkeletonDraw();
 
 	inline void SetInialNode(Node node) { initialNode = node; }
 

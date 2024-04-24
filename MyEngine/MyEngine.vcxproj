@@ -148,6 +148,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Camera\GameClearCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\GameOverCamera.cpp" />
     <ClCompile Include="DirectXGame\LoadFile\LoadCSV.cpp" />
+    <ClCompile Include="DirectXGame\Object\Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DirectXGame\Manager\AudioManager.cpp" />
     <ClCompile Include="DirectXGame\Manager\GameManager.cpp" />
@@ -269,6 +270,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\GameObject\Shadow\Shadow.h" />
     <ClInclude Include="DirectXGame\Data\IndexData.h" />
     <ClInclude Include="DirectXGame\Data\Skeleton.h" />
+    <ClInclude Include="DirectXGame\Object\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
