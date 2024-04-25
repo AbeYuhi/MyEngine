@@ -37,6 +37,7 @@ void Animation::Update() {
 	}
 	if (!isAnimation) {
 		rootNode = initialNode;
+		skeleton = CreateSkeleton(initialNode);
 	}
 
 	//変更がなかったNodeを初期ポジに戻す
@@ -98,6 +99,12 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 		info.animationSpeed = 1.0f;
 		infos.push_back(info);
 	}
+}
+
+void Animation::SetSkeleton() {
+
+	skeleton = CreateSkeleton(initialNode);
+
 }
 
 void Animation::SetAnimationSpeed(std::string animationName, float speed) {

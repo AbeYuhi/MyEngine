@@ -28,5 +28,16 @@ Skeleton CreateSkeleton(const Node& rootNode) {
 		skeleton.jointMap.emplace(joint.name, joint.index);
 	}
 
+	//行列の更新
+	for (Joint& joint : skeleton.joints) {
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale_, joint.transform.rotate_, joint.transform.translate_);
+		if (joint.parent) {
+			joint.skeletonSpaceMatrix = joint.localMatrix * skeleton.joints[*joint.parent].skeletonSpaceMatrix;
+		}
+		else {
+			joint.skeletonSpaceMatrix = joint.localMatrix;
+		}
+	}
+
 	return skeleton;
 }

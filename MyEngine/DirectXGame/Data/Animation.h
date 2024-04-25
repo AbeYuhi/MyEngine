@@ -33,6 +33,8 @@ struct Animation {
 
 	inline void SetInialNode(Node node) { initialNode = node; }
 
+	void SetSkeleton();	
+
 	void SetAnimationSpeed(std::string animationName, float speed);
 
 };

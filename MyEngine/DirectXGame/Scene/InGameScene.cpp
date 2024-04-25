@@ -70,17 +70,14 @@ void InGameScene::Initialize() {
 	cubeModelInfo_.animation_.SetInialNode(cubeModel_->GetInialNode());
 	cubeModelInfo_.animation_.SetAnimation(cubeModel_->GetAnimationData());
 
-	testModel_ = Model::Create("human", "sneakWalk.gltf");
+	//testModel_ = Model::Create("human", "sneakWalk.gltf");
+	testModel_ = Model::Create("human", "walk.gltf");
 	testModelInfo_.Initialize();
 	testModelInfo_.animation_.SetInialNode(testModel_->GetInialNode());
 	testModelInfo_.animation_.SetAnimation(testModel_->GetAnimationData());
+	testModelInfo_.animation_.SetSkeleton();
 
 	sphereModel_ = Model::Create("sphere", "sphere.obj");
-	for (int index = 0; index < testModelInfo_.animation_.skeleton.joints.size(); index++) {
-		RenderItem jointInfo;
-		jointInfo.Initialize();
-		jointInfos_.push_back(jointInfo);
-	}
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -184,11 +181,6 @@ void InGameScene::Update() {
 	cubeModelInfo_.Update();
 	testModelInfo_.Update();
 	spriteInfo_.Update();
-
-	for (int index = 0; index < testModelInfo_.animation_.skeleton.joints.size(); index++) {
-		jointInfos_[index].worldTransform_.worldMatrix_ = testModelInfo_.animation_.skeleton.joints[index].skeletonSpaceMatrix;
-		jointInfos_[index].worldTransform_.TransferMatrix();
-	}
 }
 
 void InGameScene::Draw() {
@@ -219,9 +211,6 @@ void InGameScene::Draw() {
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
 	//cubeModel_->Draw(cubeModelInfo_);
 	testModel_->Draw(testModelInfo_);
-	for (int index = 0; index < testModelInfo_.animation_.skeleton.joints.size(); index++) {
-		sphereModel_->Draw(jointInfos_[index]);
-	}
 
 	///オブジェクトの描画終了
 
