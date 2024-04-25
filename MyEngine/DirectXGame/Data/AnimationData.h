@@ -23,6 +23,7 @@ struct AnimationCurve {
 
 struct NodeAnimation {
 	std::string nodeName;
+	bool isMeshNode;
 	AnimationCurve<Vector3> position;
 	AnimationCurve<Quaternion> rotation;
 	AnimationCurve<Vector3> scale;

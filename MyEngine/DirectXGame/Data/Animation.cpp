@@ -51,8 +51,9 @@ void Animation::NodeUpdate(AnimationInfo& info) {
 
 	for (uint32_t channelIndex = 0; channelIndex < info.data.nodeAnimations.size(); channelIndex++) {
 
-		rootNode = UpdateNode(rootNode, info.data.nodeAnimations[channelIndex], info.animationTime);
-		
+		if (info.data.nodeAnimations[channelIndex].isMeshNode) {
+			rootNode = UpdateNode(rootNode, info.data.nodeAnimations[channelIndex], info.animationTime);
+		}
 	}
 }
 
