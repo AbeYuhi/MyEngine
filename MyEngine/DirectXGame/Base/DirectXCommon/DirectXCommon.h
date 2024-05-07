@@ -1,6 +1,7 @@
 #pragma once
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/DebugSytem/DebugLog.h"
+#include "Math/Vector4.h"
 #include "External/DirectXTex/d3dx12.h"
 #include <WRL/client.h>
 #include <format>
@@ -27,6 +28,11 @@ public: //メンバ関数
 	/// 描画前処理
 	/// </summary>
 	void PreDraw();
+
+	/// <summary>
+	/// RenderTargetに描画
+	/// </summary>
+	void RenderDraw();
 
 	/// <summary>
 	/// 描画後処理
@@ -68,6 +74,16 @@ public: //メンバ関数
 	/// <returns></returns>
 	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource();
 
+	/// <summary>
+	/// RenderTexutreのリソース確保関数
+	/// </summary>
+	/// <param name="width"></param>
+	/// <param name="height"></param>
+	/// <param name="format"></param>
+	/// <param name="clearColor"></param>
+	/// <returns></returns>
+	ComPtr<ID3D12Resource> CreateRenderTextureResoruce(uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor);
+
 public: //ゲッターセッター
 
 	inline ID3D12Device* GetDevice() { return device_.Get(); }
@@ -108,11 +124,13 @@ private: //メンバ関数
 	/// 0 : ImGuiManager
 	/// 1～1000 : Texture
 	/// 1001～2000 : Particle
-	/// 2001 : シャドウマップ
+	/// 2001 : RenderTexture
 	/// </summary>
 	void CreateShaderResourceView();
 
 	void CreateDepthStencilView();
+
+	void CreateRenderTexture();
 
 	void CreateFence();
 
@@ -140,6 +158,7 @@ private: //メンバ変数
 	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
+	ComPtr<ID3D12Resource> renderTextureResource_ = nullptr;
 	uint64_t fenceValue_ = 0;
 	std::chrono::steady_clock::time_point reference_;
 };
