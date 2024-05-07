@@ -226,5 +226,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         discard;
     }
     
+    float32_t value = dot(output.color.rgb, float32_t3(0.2125f, 0.7154f, 0.0721f));
+    output.color.rgb = float32_t3(value, value, value);
     return output;
 }
