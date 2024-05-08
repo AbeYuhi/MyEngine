@@ -30,7 +30,7 @@ void DirectXCommon::Initialize() {
 	CreateDepthStencilView();
 
 	//RenderTexutreの生成
-	CreateRenderTexture();
+	//CreateRenderTexture();
 
 	//フェンスの生成
 	CreateFence();
@@ -309,7 +309,7 @@ void DirectXCommon::ClearRenderTarget() {
 	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
 	//深度バッファのクリア
-	//ClearDepthStencilBuffer();
+	ClearDepthStencilBuffer();
 }
 
 void DirectXCommon::ClearDepthStencilBuffer() {

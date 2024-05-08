@@ -207,10 +207,10 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	//yukariModel_->Draw(yukariModelInfo_);
+	yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
 	//cubeModel_->Draw(cubeModelInfo_);
-	testModel_->Draw(testModelInfo_);
+	//testModel_->Draw(testModelInfo_);
 
 	///オブジェクトの描画終了
 
