@@ -267,14 +267,14 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateRenderTextureResoruce(uint32_t width
 	//頂点リソースの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//バックバッファリソース
-	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	resourceDesc.Width = width; //リソースのサイズ
+	resourceDesc.Width = width;
 	resourceDesc.Height = height;
-	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
-	resourceDesc.DepthOrArraySize = 1;
 	resourceDesc.MipLevels = 1;
+	resourceDesc.DepthOrArraySize = 1;
+	resourceDesc.Format = format;
 	resourceDesc.SampleDesc.Count = 1;
-	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
 	//クリア値
 	D3D12_CLEAR_VALUE clearValue;
 	clearValue.Format = format;
@@ -284,7 +284,7 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateRenderTextureResoruce(uint32_t width
 	clearValue.Color[3] = clearColor.w;
 	//実際に生成
 	ComPtr<ID3D12Resource> resource;
-	LRESULT hr = DirectXCommon::GetInstance()->GetDevice()->CreateCommittedResource(
+	LRESULT hr = device_->CreateCommittedResource(
 		&heapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,
