@@ -20,7 +20,7 @@ void PostEffectManager::Initialize() {
 
 }
 
-void PostEffectManager::Draw() {
+void PostEffectManager::PreDraw() {
 	DirectXCommon* directX = DirectXCommon::GetInstance();
 
 	switch (postEffect_)
@@ -33,6 +33,29 @@ void PostEffectManager::Draw() {
 
 		break;
 	}
+}
+
+void PostEffectManager::PostDraw() {
+	DirectXCommon* directX = DirectXCommon::GetInstance();
+
+	switch (postEffect_)
+	{
+	case kNone:
+	default:
+
+		break;
+	case kCopy:
+
+		break;
+	}
+}
+
+void PostEffectManager::NormalDraw() {
+
+}
+
+void PostEffectManager::RenderDraw() {
+
 }
 
 void PostEffectManager::CreateRenderTexture() {

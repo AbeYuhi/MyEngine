@@ -18,7 +18,9 @@ public: //メンバ関数
 
 	void Initialize();
 
-	void Draw();
+	void PreDraw();
+
+	void PostDraw();
 
 private:
 	PostEffectManager() = default;
@@ -29,6 +31,10 @@ private:
 	void CreateRootSignature();
 
 	void CreatePSO();
+
+	void NormalDraw();
+
+	void RenderDraw();
 
 	ComPtr<ID3D12Resource>CreateRenderTextureResoruce(uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor);
 
