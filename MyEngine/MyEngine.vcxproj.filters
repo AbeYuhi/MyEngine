@@ -127,6 +127,9 @@
     <Filter Include="ヘッダー ファイル\GameObject\Shadow">
       <UniqueIdentifier>{ff48d20c-b5b4-4534-9de4-99f4ac07175f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\PostEffect">
+      <UniqueIdentifier>{753521eb-2091-46ad-8302-2e50c3cf366e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -338,6 +341,9 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Object\Line.cpp">
       <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Manager\PostEffectManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -614,6 +620,9 @@
     <ClInclude Include="DirectXGame\Object\Line.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Manager\PostEffectManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj">
@@ -627,6 +636,9 @@
     </None>
     <None Include="Resources\Shaders\Object3d.hlsli">
       <Filter>Shader\Object3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\CopyImage.hlsli">
+      <Filter>Shader\PostEffect</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -646,6 +658,12 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
       <Filter>Shader\Object3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\CopyImage.PS.hlsl">
+      <Filter>Shader\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\CopyImage.VS.hlsl">
+      <Filter>Shader\PostEffect</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 #pragma once
 #include "DirectXGame/Base/WinApp/WinApp.h"
-#include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 
 enum BlendMode{
 	//ブレンドなし
@@ -26,6 +25,8 @@ enum PipelineState {
 	kParticle,
 	//ワイヤフレーム用
 	kWireFrame,
+	//ポストエフェクト用
+	kPostEffect,
 	//パイプラインステートの数
 	kCountOfPipelineState
 };

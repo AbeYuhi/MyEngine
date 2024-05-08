@@ -1,4 +1,5 @@
 #include "DirectXCommon.h"
+#include "Manager/GraphicsPipelineManager.h"
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -29,9 +30,6 @@ void DirectXCommon::Initialize() {
 	//DSVの生成
 	CreateDepthStencilView();
 
-	//RenderTexutreの生成
-	//CreateRenderTexture();
-
 	//フェンスの生成
 	CreateFence();
 	
@@ -48,6 +46,18 @@ void DirectXCommon::RenderDraw() {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 2,
 		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+
+	//TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER barrier{};
+	//今回のバリアの種類
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = renderTextureResource_.Get();
+	//遷移前のResourceState
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//遷移後のResoruceState
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	//TransitionBarrierを張る
+	commandList_->ResourceBarrier(1, &barrier);
 
 	//RTVの設定
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
@@ -66,6 +76,19 @@ void DirectXCommon::RenderDraw() {
 }
 
 void DirectXCommon::PreDraw() {
+
+	//TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER renderBarrier{};
+	//今回のバリアの種類
+	renderBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	renderBarrier.Transition.pResource = renderTextureResource_.Get();
+	//遷移前のResourceState
+	renderBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	//遷移後のResoruceState
+	renderBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//TransitionBarrierを張る
+	commandList_->ResourceBarrier(1, &renderBarrier);
+
 	//バックバッファの取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
 	
@@ -96,6 +119,13 @@ void DirectXCommon::PreDraw() {
 	//描画用DescriptorHeapの設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
 	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
+
+	//描画処理の記入
+	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+	commandList_->SetPipelineState(psoManager->GetPSO(PipelineState::kPostEffect));
+	commandList_->SetGraphicsRootSignature(psoManager->GetRootSignature(PipelineState::kPostEffect));
+	commandList_->SetGraphicsRootDescriptorTable(0, GetGPUDescriptorHandle(2001));
+	commandList_->DrawInstanced(3, 1, 0, 0);
 }
 
 void DirectXCommon::PostDraw() {
@@ -255,41 +285,6 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource() {
 		&resourceDesc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,
 		&depthClearValue,
-		IID_PPV_ARGS(&resource));
-	assert(SUCCEEDED(hr));
-	return resource;
-}
-
-ComPtr<ID3D12Resource> DirectXCommon::CreateRenderTextureResoruce(uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor) {
-	//頂点リソース用のヒープの設定
-	D3D12_HEAP_PROPERTIES heapProperties{};
-	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT;
-	//頂点リソースの設定
-	D3D12_RESOURCE_DESC resourceDesc{};
-	//バックバッファリソース
-	resourceDesc.Width = width;
-	resourceDesc.Height = height;
-	resourceDesc.MipLevels = 1;
-	resourceDesc.DepthOrArraySize = 1;
-	resourceDesc.Format = format;
-	resourceDesc.SampleDesc.Count = 1;
-	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
-	//クリア値
-	D3D12_CLEAR_VALUE clearValue;
-	clearValue.Format = format;
-	clearValue.Color[0] = clearColor.x;
-	clearValue.Color[1] = clearColor.y;
-	clearValue.Color[2] = clearColor.z;
-	clearValue.Color[3] = clearColor.w;
-	//実際に生成
-	ComPtr<ID3D12Resource> resource;
-	LRESULT hr = device_->CreateCommittedResource(
-		&heapProperties,
-		D3D12_HEAP_FLAG_NONE,
-		&resourceDesc,
-		D3D12_RESOURCE_STATE_RENDER_TARGET,	
-		&clearValue,
 		IID_PPV_ARGS(&resource));
 	assert(SUCCEEDED(hr));
 	return resource;
@@ -514,27 +509,6 @@ void DirectXCommon::CreateDepthStencilView() {
 	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc_, dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
 }
 
-void DirectXCommon::CreateRenderTexture() {
-	
-	//RTVの生成
-	const Vector4 kRenderTargetClearValue{ 1.0f, 0.0f, 0.0f, 1.0f }; //一旦赤色
-	renderTextureResource_ = CreateRenderTextureResoruce(WinApp::kWindowWidth, WinApp::kWindowHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kRenderTargetClearValue);
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 2,
-		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-	device_->CreateRenderTargetView(renderTextureResource_.Get(), &rtvDesc_, rtvHandle);
-
-	//SRVの生成
-	D3D12_SHADER_RESOURCE_VIEW_DESC renderTextureSrvDesc{};
-	renderTextureSrvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	renderTextureSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	renderTextureSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	renderTextureSrvDesc.Texture2D.MipLevels = 1;
-	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = srvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
-	handleCPU.ptr += device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * 2001;
-	device_->CreateShaderResourceView(renderTextureResource_.Get(), &renderTextureSrvDesc, handleCPU);
-}
-
 void DirectXCommon::CreateFence() {
 	//初期値0でFenceの生成
 	fenceValue_ = 0;
@@ -590,6 +564,15 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetRtvHandle() {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 	rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), backBufferIndex,
 	device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+
+	return rtvHandle;
+}
+
+CD3DX12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetRtvHandle(int index) {
+	//バックバッファのハンドルの取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), index,
+		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
 	return rtvHandle;
 }

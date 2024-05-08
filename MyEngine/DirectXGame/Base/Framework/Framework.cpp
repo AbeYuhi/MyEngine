@@ -45,6 +45,9 @@ void Framework::Initialize() {
 	graphicsPipelineManager_ = GraphicsPipelineManager::GetInstance();
 	graphicsPipelineManager_->Initialize();
 
+	postEffectManager_ = PostEffectManager::GetInstance();
+	postEffectManager_->Initialize();
+
 #pragma endregion
 
 }

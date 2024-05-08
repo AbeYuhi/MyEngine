@@ -74,16 +74,6 @@ public: //メンバ関数
 	/// <returns></returns>
 	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource();
 
-	/// <summary>
-	/// RenderTexutreのリソース確保関数
-	/// </summary>
-	/// <param name="width"></param>
-	/// <param name="height"></param>
-	/// <param name="format"></param>
-	/// <param name="clearColor"></param>
-	/// <returns></returns>
-	ComPtr<ID3D12Resource> CreateRenderTextureResoruce(uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor);
-
 public: //ゲッターセッター
 
 	inline ID3D12Device* GetDevice() { return device_.Get(); }
@@ -103,6 +93,16 @@ public: //ゲッターセッター
 	inline D3D12_DEPTH_STENCIL_VIEW_DESC GetDsvDesc() { return dsvDesc_; }
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle();
+
+	/// <summary>
+	/// RTVハンドルの取得
+	/// </summary>
+	/// <param name="index">
+	/// 0～1 : スワップチェイン
+	/// 2 : レンダーテクスチャー
+	/// </param>
+	/// <returns></returns>
+	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle(int index);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(int index);
 
@@ -130,8 +130,6 @@ private: //メンバ関数
 
 	void CreateDepthStencilView();
 
-	void CreateRenderTexture();
-
 	void CreateFence();
 
 	void InitializeDXC();
@@ -158,7 +156,6 @@ private: //メンバ変数
 	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
-	ComPtr<ID3D12Resource> renderTextureResource_ = nullptr;
 	uint64_t fenceValue_ = 0;
 	std::chrono::steady_clock::time_point reference_;
 };
