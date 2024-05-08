@@ -25,8 +25,6 @@ enum PipelineState {
 	kParticle,
 	//ワイヤフレーム用
 	kWireFrame,
-	//ポストエフェクト用
-	kPostEffect,
 	//パイプラインステートの数
 	kCountOfPipelineState
 };
