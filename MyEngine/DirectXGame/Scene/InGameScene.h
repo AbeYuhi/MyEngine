@@ -6,6 +6,7 @@
 #include "Manager/InputManager.h"
 #include "Manager/AudioManager.h"
 #include "Manager/ParticleManager.h"
+#include "Manager/PostEffectManager.h"
 #include "Manager/RandomManager.h"
 #include "Object/Sprite.h"
 #include "Object/Model.h"
@@ -40,6 +41,7 @@ private:
 	InputManager* input_;
 	AudioManager* audioManager_;
 	RandomManager* randomManager_;
+	PostEffectManager* postEffectManager_;
 	MainCamera* mainCamera_;
 	SpriteCamera* spriteCamera_;
 	//ゲームカメラ

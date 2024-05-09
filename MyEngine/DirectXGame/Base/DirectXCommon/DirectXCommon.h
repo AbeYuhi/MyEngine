@@ -24,25 +24,12 @@ public: //メンバ関数
 
 	void Initialize();
 
-	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	void PreDraw();
-
-	/// <summary>
-	/// RenderTargetに描画
-	/// </summary>
-	void RenderDraw();
-
-	/// <summary>
-	/// 描画後処理
-	/// </summary>
 	void PostDraw();
 
 	/// <summary>
 	/// 画面のクリア
 	/// </summary>
-	void ClearRenderTarget();
+	void ClearRenderTarget(Vector4 clearScreenColor, CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle);
 
 	/// <summary>
 	/// 深度バッファのクリア
@@ -53,6 +40,16 @@ public: //メンバ関数
 	/// コマンドのキックから次のコマンドリストの準備
 	/// </summary>
 	void TransferCommandList();
+
+	/// <summary>
+	/// コマンドリストのキック、スワップチェインの実行
+	/// </summary>
+	void SwapChainProcessing();
+
+	/// <summary>
+	/// FPSの固定化
+	/// </summary>
+	void UpdateFixFPS();
 
 	/// <summary>
 	/// Dxcのコンパイルシェーダー
@@ -94,12 +91,16 @@ public: //ゲッターセッター
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle();
 
+	D3D12_CPU_DESCRIPTOR_HANDLE GetDsvHandle();
+
+	inline ID3D12Resource* GetBackBuffer(int index) { return backBuffers[index].Get(); }
+
 	/// <summary>
 	/// RTVハンドルの取得
-	/// </summary>
-	/// <param name="index">
 	/// 0～1 : スワップチェイン
 	/// 2 : レンダーテクスチャー
+	/// </summary>
+	/// <param name="index">
 	/// </param>
 	/// <returns></returns>
 	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle(int index);
@@ -135,8 +136,6 @@ private: //メンバ関数
 	void InitializeDXC();
 
 	void InitializeFixFPS();
-
-	void UpdateFixFPS();
 
 private: //メンバ変数
 	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;

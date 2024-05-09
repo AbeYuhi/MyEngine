@@ -77,12 +77,11 @@ int GameManager::Run() {
 
 		///描画処理
 		//画面初期化
-		directXCommon_->RenderDraw();
+		postEffectManager_->PreDraw();
 		//シーンの描画
 		sceneManager_->Draw();
-		
-		//
-		directXCommon_->PreDraw();
+
+		postEffectManager_->PostDraw();
 
 #ifdef _DEBUG
 		//ImGuiの描画

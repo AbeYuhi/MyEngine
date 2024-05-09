@@ -637,7 +637,7 @@
     <None Include="Resources\Shaders\Object3d.hlsli">
       <Filter>Shader\Object3d</Filter>
     </None>
-    <None Include="Resources\Shaders\CopyImage.hlsli">
+    <None Include="Resources\Shaders\PostEffect\FullScreen.hlsli">
       <Filter>Shader\PostEffect</Filter>
     </None>
   </ItemGroup>
@@ -659,11 +659,15 @@
     <FxCompile Include="Resources\Shaders\Object3d.VS.hlsl">
       <Filter>Shader\Object3d</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\CopyImage.PS.hlsl">
+    <FxCompile Include="Resources\Shaders\PostEffect\CopyImage.PS.hlsl">
       <Filter>Shader\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\CopyImage.VS.hlsl">
+    <FxCompile Include="Resources\Shaders\PostEffect\FullScreen.VS.hlsl">
       <Filter>Shader\PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffect\GrayScale.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\PostEffect\SepiaScale.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\PostEffect\Vignette.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\PostEffect\BoxFilter.PS.hlsl" />
   </ItemGroup>
 </Project>

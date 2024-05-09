@@ -19,6 +19,7 @@ void InGameScene::Initialize() {
 	input_ = InputManager::GetInstance();
 	audioManager_ = AudioManager::GetInstance();
 	randomManager_ = RandomManager::GetInstance();
+	postEffectManager_ = PostEffectManager::GetInstance();
 	mainCamera_ = MainCamera::GetInstance();
 	spriteCamera_ = SpriteCamera::GetInstance();
 
@@ -173,6 +174,13 @@ void InGameScene::Update() {
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };
 	ImGui::Combo("blendMode", &blendMode_, modes, IM_ARRAYSIZE(modes));
 	GraphicsPipelineManager::GetInstance()->SetBlendMode(static_cast<BlendMode>(blendMode_));
+	ImGui::End();
+
+	ImGui::Begin("PostEffect");
+	const char* postEffects[] = { "None", "Copy", "GrayScale", "SepiaScale", "Vignette"};
+	int postEffect = postEffectManager_->GetPostEffect();
+	ImGui::Combo("postEffect", &postEffect, postEffects, IM_ARRAYSIZE(postEffects));
+	postEffectManager_->SetPostEffect(static_cast<PostEffect>(postEffect));
 	ImGui::End();
 #endif // _DEBUG
 

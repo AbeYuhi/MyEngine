@@ -23,39 +23,113 @@ void PostEffectManager::Initialize() {
 void PostEffectManager::PreDraw() {
 	DirectXCommon* directX = DirectXCommon::GetInstance();
 
-	switch (postEffect_)
-	{
-	case kNone:
-	default:
-
-		break;
-	case kCopy:
-
-		break;
+	if (postEffect_ == PostEffect::kNone) {
+		NormalPreDraw();
+		directX->ClearDepthStencilBuffer();
+	}
+	else{
+		RenderPreDraw();
 	}
 }
 
 void PostEffectManager::PostDraw() {
 	DirectXCommon* directX = DirectXCommon::GetInstance();
 
-	switch (postEffect_)
-	{
-	case kNone:
-	default:
-
-		break;
-	case kCopy:
-
-		break;
+	if (postEffect_ != PostEffect::kNone) {
+		RenderPostDraw();
 	}
 }
 
-void PostEffectManager::NormalDraw() {
+void PostEffectManager::NormalPreDraw() {
+	DirectXCommon* directX = DirectXCommon::GetInstance();
 
+	//バックバッファの取得
+	UINT backBufferIndex = directX->GetSwapShain()->GetCurrentBackBufferIndex();
+
+	//バックバッファのハンドルの取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = directX->GetRtvHandle(backBufferIndex);
+
+	//TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER barrier{};
+	//今回のバリアの種類
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = directX->GetBackBuffer(backBufferIndex);
+	//遷移前のResourceState
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+	//遷移後のResoruceState
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//TransitionBarrierを張る
+	directX->GetCommandList()->ResourceBarrier(1, &barrier);
+
+	//RTVの設定
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = directX->GetDsvHandle();
+	directX->GetCommandList()->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+
+	//画面のクリア
+	directX->ClearRenderTarget({ 0.1f, 0.25f, 0.5f, 1.0f }, rtvHandle);
+
+	//描画用DescriptorHeapの設定
+	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
+	directX->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
 }
 
-void PostEffectManager::RenderDraw() {
+void PostEffectManager::RenderPreDraw() {
+	DirectXCommon* directX = DirectXCommon::GetInstance();
 
+	//バックバッファのハンドルの取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = directX->GetRtvHandle(2);
+
+	//TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER barrier{};
+	//今回のバリアの種類
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = renderTextureResource_.Get();
+	//遷移前のResourceState
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//遷移後のResoruceState
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	//TransitionBarrierを張る
+	directX->GetCommandList()->ResourceBarrier(1, &barrier);
+
+	//RTVの設定
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = directX->GetDsvHandle();
+	directX->GetCommandList()->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+
+	//画面のクリア
+	//指定した色で画面のクリア
+	directX->ClearRenderTarget({ 1.0f, 0.0f, 0.0f, 1.0f }, rtvHandle);
+	//深度バッファのクリア
+	directX->ClearDepthStencilBuffer();
+
+	//描画用DescriptorHeapの設定
+	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
+	directX->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
+}
+
+void PostEffectManager::RenderPostDraw() {
+	DirectXCommon* directX = DirectXCommon::GetInstance();
+
+	//TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER renderBarrier{};
+	//今回のバリアの種類
+	renderBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	renderBarrier.Transition.pResource = renderTextureResource_.Get();
+	//遷移前のResourceState
+	renderBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	//遷移後のResoruceState
+	renderBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//TransitionBarrierを張る
+	directX->GetCommandList()->ResourceBarrier(1, &renderBarrier);
+
+	//スワップチェインに表示するためセット
+	NormalPreDraw();
+
+	//描画処理の記入
+	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+	directX->GetCommandList()->SetPipelineState(graphicsPipelineState_[postEffect_]->Get());
+	directX->GetCommandList()->SetGraphicsRootSignature(rootSignature_[postEffect_].Get());
+	directX->GetCommandList()->SetGraphicsRootDescriptorTable(0, directX->GetGPUDescriptorHandle(2001));
+	directX->GetCommandList()->DrawInstanced(3, 1, 0, 0);
 }
 
 void PostEffectManager::CreateRenderTexture() {
@@ -65,7 +139,8 @@ void PostEffectManager::CreateRenderTexture() {
 	const Vector4 kRenderTargetClearValue{ 1.0f, 0.0f, 0.0f, 1.0f }; //一旦赤色
 	renderTextureResource_ = CreateRenderTextureResoruce(WinApp::kWindowWidth, WinApp::kWindowHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kRenderTargetClearValue);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = directXCommon->GetRtvHandle(2);
-	directXCommon->GetDevice()->CreateRenderTargetView(renderTextureResource_.Get(), &directXCommon->GetRtvDesc(), rtvHandle);
+	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc = directXCommon->GetRtvDesc();
+	directXCommon->GetDevice()->CreateRenderTargetView(renderTextureResource_.Get(), &rtvDesc, rtvHandle);
 
 	//SRVの生成
 	D3D12_SHADER_RESOURCE_VIEW_DESC renderTextureSrvDesc{};
@@ -221,13 +296,37 @@ void PostEffectManager::CreatePSO() {
 		switch (shaderPack)
 		{
 		case PostEffect::kNone:
-		case PostEffect::kCopy:
 		default:
+		case PostEffect::kCopy:
 			//頂点シェーダー
-			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/CopyImage.VS.hlsl", L"vs_6_0");
+			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/FullScreen.VS.hlsl", L"vs_6_0");
 			assert(vertexShaderBlob[shaderPack] != nullptr);
 			//ピクセルシェーダー
-			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/CopyImage.PS.hlsl", L"ps_6_0");
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/CopyImage.PS.hlsl", L"ps_6_0");
+			assert(pixelShaderBlob[shaderPack] != nullptr);
+			break;
+		case PostEffect::kGrayScale:
+			//頂点シェーダー
+			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/FullScreen.VS.hlsl", L"vs_6_0");
+			assert(vertexShaderBlob[shaderPack] != nullptr);
+			//ピクセルシェーダー
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/GrayScale.PS.hlsl", L"ps_6_0");
+			assert(pixelShaderBlob[shaderPack] != nullptr);
+			break;
+		case PostEffect::kSepiaScale:
+			//頂点シェーダー
+			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/FullScreen.VS.hlsl", L"vs_6_0");
+			assert(vertexShaderBlob[shaderPack] != nullptr);
+			//ピクセルシェーダー
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/SepiaScale.PS.hlsl", L"ps_6_0");
+			assert(pixelShaderBlob[shaderPack] != nullptr);
+			break;
+		case PostEffect::kVignette:
+			//頂点シェーダー
+			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/FullScreen.VS.hlsl", L"vs_6_0");
+			assert(vertexShaderBlob[shaderPack] != nullptr);
+			//ピクセルシェーダー
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/Vignette.PS.hlsl", L"ps_6_0");
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 		}

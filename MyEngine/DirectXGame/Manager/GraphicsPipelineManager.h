@@ -1,5 +1,6 @@
 #pragma once
-#include "DirectXGame/Base/WinApp/WinApp.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 
 enum BlendMode{
 	//ブレンドなし

@@ -41,93 +41,6 @@ void DirectXCommon::Initialize() {
 
 }
 
-void DirectXCommon::RenderDraw() {
-	//バックバッファのハンドルの取得
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), 2,
-		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-
-	//TransitionBarrierの設定
-	D3D12_RESOURCE_BARRIER barrier{};
-	//今回のバリアの種類
-	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	barrier.Transition.pResource = renderTextureResource_.Get();
-	//遷移前のResourceState
-	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	//遷移後のResoruceState
-	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-	//TransitionBarrierを張る
-	commandList_->ResourceBarrier(1, &barrier);
-
-	//RTVの設定
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
-	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
-
-	//画面のクリア
-	//指定した色で画面のクリア
-	float clearColor[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	//深度バッファのクリア
-	ClearDepthStencilBuffer();
-
-	//描画用DescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
-	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
-}
-
-void DirectXCommon::PreDraw() {
-
-	//TransitionBarrierの設定
-	D3D12_RESOURCE_BARRIER renderBarrier{};
-	//今回のバリアの種類
-	renderBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	renderBarrier.Transition.pResource = renderTextureResource_.Get();
-	//遷移前のResourceState
-	renderBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-	//遷移後のResoruceState
-	renderBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	//TransitionBarrierを張る
-	commandList_->ResourceBarrier(1, &renderBarrier);
-
-	//バックバッファの取得
-	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
-	
-	//バックバッファのハンドルの取得
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), backBufferIndex,
-		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-
-	//TransitionBarrierの設定
-	D3D12_RESOURCE_BARRIER barrier{};
-	//今回のバリアの種類
-	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	barrier.Transition.pResource = backBuffers[backBufferIndex].Get();
-	//遷移前のResourceState
-	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
-	//遷移後のResoruceState
-	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	//TransitionBarrierを張る
-	commandList_->ResourceBarrier(1, &barrier);
-
-	//RTVの設定
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
-	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
-
-	//画面のクリア
-	ClearRenderTarget();
-
-	//描画用DescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
-	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
-
-	//描画処理の記入
-	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
-	commandList_->SetPipelineState(psoManager->GetPSO(PipelineState::kPostEffect));
-	commandList_->SetGraphicsRootSignature(psoManager->GetRootSignature(PipelineState::kPostEffect));
-	commandList_->SetGraphicsRootDescriptorTable(0, GetGPUDescriptorHandle(2001));
-	commandList_->DrawInstanced(3, 1, 0, 0);
-}
-
 void DirectXCommon::PostDraw() {
 	//バックバッファの取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
@@ -154,7 +67,7 @@ void DirectXCommon::PostDraw() {
 	LRESULT hr = commandList_->Close();
 	assert(SUCCEEDED(hr));
 	//GPUにコマンドリストの実行を行わせる
-	ID3D12CommandList* commandLists[] = {commandList_.Get()};
+	ID3D12CommandList* commandLists[] = { commandList_.Get() };
 	commandQueue_->ExecuteCommandLists(1, commandLists);
 	//GPUとOSに画面の交換を行わせる
 	swapChain_->Present(1, 0);
@@ -176,14 +89,15 @@ void DirectXCommon::PostDraw() {
 		CloseHandle(fenceEvent);
 	}
 
-	//FPS固定
-	UpdateFixFPS();
-
 	//次のフレーム用のコマンドリストの準備
 	hr = commandAllocator_->Reset();
 	assert(SUCCEEDED(hr));
 	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(hr));
+
+	//FPS固定
+	UpdateFixFPS();
+
 }
 
 ComPtr<IDxcBlob> DirectXCommon::CompilerShader(const std::wstring& filePath, const wchar_t* profile) {
@@ -290,21 +204,10 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource() {
 	return resource;
 }
 
-void DirectXCommon::ClearRenderTarget() {
-	//バックバッファの取得
-	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
-
-	//バックバッファのハンドルの取得
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(), backBufferIndex,
-		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-
+void DirectXCommon::ClearRenderTarget(Vector4 clearScreenColor, CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle) {
 	//指定した色で画面のクリア
-	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
+	float clearColor[4] = { clearScreenColor.x, clearScreenColor.y, clearScreenColor.z, clearScreenColor.w };
 	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-
-	//深度バッファのクリア
-	ClearDepthStencilBuffer();
 }
 
 void DirectXCommon::ClearDepthStencilBuffer() {
@@ -342,6 +245,42 @@ void DirectXCommon::TransferCommandList() {
 	assert(SUCCEEDED(hr));
 	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(hr));
+}
+
+void DirectXCommon::SwapChainProcessing() {
+	//コマンドリストを閉じる
+	LRESULT hr = commandList_->Close();
+	assert(SUCCEEDED(hr));
+	//GPUにコマンドリストの実行を行わせる
+	ID3D12CommandList* commandLists[] = { commandList_.Get() };
+	commandQueue_->ExecuteCommandLists(1, commandLists);
+	//GPUとOSに画面の交換を行わせる
+	swapChain_->Present(1, 0);
+
+	///同期処理
+	//Fenceの値を更新
+	fenceValue_++;
+	//GPUがここまでたどり着いたら、Fenceの値を更新した値に代入するようにSignalを送る
+	commandQueue_->Signal(fence_.Get(), fenceValue_);
+	//Fenceの値がSignal値にになったかを確認
+	if (fence_->GetCompletedValue() < fenceValue_) {
+		//イベントの生成
+		HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+		assert(fenceEvent != nullptr);
+		//指定したSignalにたどり着いてないので待つようにイベントを設定
+		fence_->SetEventOnCompletion(fenceValue_, fenceEvent);
+		//イベントを待つ
+		WaitForSingleObject(fenceEvent, INFINITE);
+	}
+
+	//次のフレーム用のコマンドリストの準備
+	hr = commandAllocator_->Reset();
+	assert(SUCCEEDED(hr));
+	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
+	assert(SUCCEEDED(hr));
+
+	//FPS固定
+	UpdateFixFPS();
 }
 
 void DirectXCommon::InitializeDxgiDevice() {
@@ -566,6 +505,11 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetRtvHandle() {
 	device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
 	return rtvHandle;
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetDsvHandle() {
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
+	return dsvHandle;
 }
 
 CD3DX12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetRtvHandle(int index) {
