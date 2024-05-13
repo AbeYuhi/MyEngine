@@ -357,5 +357,11 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	//Nodeの解析
 	rootNode_ = ReadNode(scene->mRootNode);
 
+	for (auto& animationIt : animations_) {
+		for (int i = 0; animationIt.nodeAnimations.size();i++) {
+			FindMatix(rootNode_, animationIt.nodeAnimations[i].nodeName);
+		}
+	}
+
 	importer.FreeScene();
 }

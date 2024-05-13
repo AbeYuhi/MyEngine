@@ -23,7 +23,9 @@ void Animation::Update() {
 			it->animationTime += 1.0f / 60.0f * it->animationSpeed;
 			if (it->animationTime > it->data.duration) {
 				it->animationTime = 0.0f;
-				it->isAnimation = false;
+				if (!it->isLoop) {
+					it->isAnimation = false;
+				}
 			}
 
 			//Nodeのアップデートをする
@@ -96,6 +98,7 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 		info.data = data;
 		info.isAnimation = false;
 		info.preIsAnimation = false;
+		info.isLoop = false;
 		info.animationTime = 0;
 		info.animationSpeed = 1.0f;
 		infos.push_back(info);

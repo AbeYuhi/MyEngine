@@ -41,6 +41,7 @@ struct AnimationInfo {
 	bool preIsAnimation;
 	float animationTime;
 	float animationSpeed;
+	bool isLoop;
 };
 
 Vector3 CalculateValue(const AnimationCurve<Vector3>& curve, float time);
