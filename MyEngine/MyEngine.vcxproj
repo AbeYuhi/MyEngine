@@ -269,7 +269,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\LoadFile\LoadCSV.h" />
     <ClInclude Include="DirectXGame\Data\Mesh.h" />
     <ClInclude Include="DirectXGame\GameObject\Shadow\Shadow.h" />
-    <ClInclude Include="DirectXGame\Data\IndexData.h" />
     <ClInclude Include="DirectXGame\Data\Skeleton.h" />
     <ClInclude Include="DirectXGame\Object\Line.h" />
     <ClInclude Include="DirectXGame\Manager\PostEffectManager.h" />

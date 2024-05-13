@@ -596,9 +596,6 @@
     <ClInclude Include="DirectXGame\GameObject\Shadow\Shadow.h">
       <Filter>ヘッダー ファイル\GameObject\Shadow</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Data\IndexData.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Data\Node.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>

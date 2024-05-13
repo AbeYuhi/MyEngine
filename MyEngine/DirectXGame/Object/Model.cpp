@@ -36,14 +36,14 @@ void Model::Initialize(const std::string& filepath, const std::string filename) 
 		std::memcpy(mesh.vertexData, mesh.modelData.vertices.data(), sizeof(VertexData) * mesh.modelData.vertices.size());
 
 		//IndexResource	
-		mesh.indexResource = CreateBufferResource(sizeof(IndexData) * mesh.modelData.indices.size());
+		mesh.indexResource = CreateBufferResource(sizeof(uint32_t) * mesh.modelData.indices.size());
 		//頂点バッファビューを作成
 		mesh.indexBufferView.BufferLocation = mesh.indexResource->GetGPUVirtualAddress();
-		mesh.indexBufferView.SizeInBytes = static_cast<uint32_t>(sizeof(IndexData) * mesh.modelData.indices.size());
+		mesh.indexBufferView.SizeInBytes = static_cast<uint32_t>(sizeof(uint32_t) * mesh.modelData.indices.size());
 		mesh.indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 		//頂点リソースにデータを書き込む
 		mesh.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&mesh.indexData));
-		std::memcpy(mesh.indexData, mesh.modelData.indices.data(), sizeof(IndexData) * mesh.modelData.indices.size());
+		std::memcpy(mesh.indexData, mesh.modelData.indices.data(), sizeof(uint32_t) * mesh.modelData.indices.size());
 	}
 }
 
@@ -90,8 +90,7 @@ void Model::Draw(RenderItem& renderItem) {
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
-		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
-		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size() * 3), 1, 0, 0, 0);
+		dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size()), 1, 0, 0, 0);
 		meshIndex++;
 	}
 }
@@ -139,8 +138,7 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
 		//描画
-		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
-		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size() * 3), 1, 0, 0, 0);
+		dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size()), 1, 0, 0, 0);
 		meshIndex++;
 	}
 }
@@ -176,7 +174,7 @@ void Model::Draw(ParticleDrawInfo drawInfo) {
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, drawInfo.srvHandle_->GPUHandle);
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
-		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
+		dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0, 0);
 	}
 }
 
@@ -211,8 +209,7 @@ void Model::Draw(ParticleDrawInfo drawInfo, uint32_t textureHandle) {
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, drawInfo.srvHandle_->GPUHandle);
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(textureHandle));
 		//描画
-		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0);
-		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size() * 3), (UINT)*drawInfo.kMaxParticleCount_, 0, 0, 0);
+		dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size()), (UINT)*drawInfo.kMaxParticleCount_, 0, 0, 0);
 	}
 }
 
@@ -237,7 +234,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	else {
 		isGltf_ = false;
 	}
-	
+
 	//meshを解析する
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; meshIndex++) {
 		Mesh modelPart = {};
@@ -245,39 +242,26 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		assert(mesh->HasNormals());
 		assert(mesh->HasTextureCoords(0));
 
-		//中身の解析
-		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
-			aiFace& face = mesh->mFaces[faceIndex];
-			assert(face.mNumIndices == 3);
-			//Vertexの解析
-			for (uint32_t element = 0; element < face.mNumIndices; element++) {
-				uint32_t vertexIndex = face.mIndices[element];
-				aiVector3D& position = mesh->mVertices[vertexIndex];
-				aiVector3D& normal = mesh->mNormals[vertexIndex];
-				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-				VertexData vertex;
+		//バーテックスバッファの生成
+		modelPart.modelData.vertices.resize(mesh->mNumVertices);
+		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
+			aiVector3D& position = mesh->mVertices[vertexIndex];
+			aiVector3D& normal = mesh->mNormals[vertexIndex];
+			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
 
-				vertex.position = { position.x, position.y, position.z, 1.0f };
-				vertex.normal = { normal.x, normal.y, normal.z };
-				vertex.texcoord = { texcoord.x, texcoord.y };
-
-				vertex.position.z *= -1.0f;
-				vertex.normal.z *= -1.0f;
-				modelPart.modelData.vertices.push_back(vertex);
-			}
+			modelPart.modelData.vertices[vertexIndex].position = { position.x, position.y, -position.z, 1.0f };
+			modelPart.modelData.vertices[vertexIndex].normal = { normal.x, normal.y, -normal.z };
+			modelPart.modelData.vertices[vertexIndex].texcoord = { texcoord.x, texcoord.y };
 		}
 
 		//インデックスバッファの生成
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
-
-			IndexData indexData;
-			indexData.index0 = face.mIndices[2];
-			indexData.index1 = face.mIndices[1];
-			indexData.index2 = face.mIndices[0];
-
-			modelPart.modelData.indices.push_back(indexData);
+			for (uint32_t element = 0; element < face.mNumIndices; element++) {
+				uint32_t vertexIndex = face.mIndices[element];
+				modelPart.modelData.indices.push_back(vertexIndex);
+			}
 		}
 
 		//マテリアルのインプット
