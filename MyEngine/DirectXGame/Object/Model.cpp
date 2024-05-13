@@ -318,6 +318,12 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			std::string nodeName = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNodeName.C_Str();
 			NodeAnimation animationInfo;
 			animationInfo.nodeName = nodeName;
+			animationInfo.isMeshNode = false;
+			for (auto& mesh : meshs_) {
+				if (animationInfo.nodeName == mesh.name) {
+					animationInfo.isMeshNode = true;
+				}
+			}
 
 			//場所に関係する情報の格納場所
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys; keyIndex++) {
@@ -356,12 +362,6 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 	//Nodeの解析
 	rootNode_ = ReadNode(scene->mRootNode);
-
-	for (auto& animationIt : animations_) {
-		for (int i = 0; animationIt.nodeAnimations.size();i++) {
-			FindMatix(rootNode_, animationIt.nodeAnimations[i].nodeName);
-		}
-	}
 
 	importer.FreeScene();
 }

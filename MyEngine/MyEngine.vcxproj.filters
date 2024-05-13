@@ -665,9 +665,17 @@
     <FxCompile Include="Resources\Shaders\PostEffect\FullScreen.VS.hlsl">
       <Filter>Shader\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\PostEffect\GrayScale.PS.hlsl" />
-    <FxCompile Include="Resources\Shaders\PostEffect\SepiaScale.PS.hlsl" />
-    <FxCompile Include="Resources\Shaders\PostEffect\Vignette.PS.hlsl" />
-    <FxCompile Include="Resources\Shaders\PostEffect\BoxFilter.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\PostEffect\GrayScale.PS.hlsl">
+      <Filter>Shader\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffect\SepiaScale.PS.hlsl">
+      <Filter>Shader\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffect\BoxFilter.PS.hlsl">
+      <Filter>Shader\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffect\Vignette.PS.hlsl">
+      <Filter>Shader\PostEffect</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

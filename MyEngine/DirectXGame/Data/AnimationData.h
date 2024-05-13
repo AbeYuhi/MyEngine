@@ -32,6 +32,7 @@ struct NodeAnimation {
 struct AnimationData {
 	std::string name;
 	float duration;
+	bool isNodeAnimation;
 	std::vector<NodeAnimation> nodeAnimations;
 };
 

@@ -145,6 +145,8 @@ void InGameScene::Update() {
 			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
 			std::string animationSpeed = it->data.name + ": speed";
 			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, 0.0f, 5.0f);
+			std::string animationLoop = it->data.name + ": loop";
+			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
 		}
 
 		ImGui::EndTabItem();
@@ -219,7 +221,7 @@ void InGameScene::Draw() {
 
 	yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
-	//cubeModel_->Draw(cubeModelInfo_);
+	cubeModel_->Draw(cubeModelInfo_);
 	testModel_->Draw(testModelInfo_);
 
 	///オブジェクトの描画終了
