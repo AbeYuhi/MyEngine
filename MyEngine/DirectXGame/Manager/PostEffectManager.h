@@ -53,5 +53,7 @@ private: //メンバ変数
 	ComPtr<ID3D12RootSignature> rootSignature_[PostEffect::kCountOfPostEffect];
 	ComPtr<ID3D12PipelineState> graphicsPipelineState_[PostEffect::kCountOfPostEffect][BlendMode::kCountOfBlendMode];
 	PostEffect postEffect_;
+	const int kRTVIndex = 2;
+	const int kSRVIndex = 3001;
 };
 

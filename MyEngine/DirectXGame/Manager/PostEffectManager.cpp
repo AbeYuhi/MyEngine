@@ -77,7 +77,7 @@ void PostEffectManager::RenderPreDraw() {
 	DirectXCommon* directX = DirectXCommon::GetInstance();
 
 	//バックバッファのハンドルの取得
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = directX->GetRtvHandle(2);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = directX->GetRtvHandle(kRTVIndex);
 
 	//TransitionBarrierの設定
 	D3D12_RESOURCE_BARRIER barrier{};
@@ -128,7 +128,7 @@ void PostEffectManager::RenderPostDraw() {
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 	directX->GetCommandList()->SetPipelineState(graphicsPipelineState_[postEffect_]->Get());
 	directX->GetCommandList()->SetGraphicsRootSignature(rootSignature_[postEffect_].Get());
-	directX->GetCommandList()->SetGraphicsRootDescriptorTable(0, directX->GetGPUDescriptorHandle(2001));
+	directX->GetCommandList()->SetGraphicsRootDescriptorTable(0, directX->GetGPUDescriptorHandle(kSRVIndex));
 	directX->GetCommandList()->DrawInstanced(3, 1, 0, 0);
 }
 
@@ -138,7 +138,7 @@ void PostEffectManager::CreateRenderTexture() {
 	//RTVの生成
 	const Vector4 kRenderTargetClearValue{ 1.0f, 0.0f, 0.0f, 1.0f }; //一旦赤色
 	renderTextureResource_ = CreateRenderTextureResoruce(WinApp::kWindowWidth, WinApp::kWindowHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kRenderTargetClearValue);
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = directXCommon->GetRtvHandle(2);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = directXCommon->GetRtvHandle(kRTVIndex);
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc = directXCommon->GetRtvDesc();
 	directXCommon->GetDevice()->CreateRenderTargetView(renderTextureResource_.Get(), &rtvDesc, rtvHandle);
 
@@ -148,7 +148,7 @@ void PostEffectManager::CreateRenderTexture() {
 	renderTextureSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	renderTextureSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	renderTextureSrvDesc.Texture2D.MipLevels = 1;
-	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = directXCommon->GetCPUDescriptorHandle(2001);
+	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = directXCommon->GetCPUDescriptorHandle(kSRVIndex);
 	directXCommon->GetDevice()->CreateShaderResourceView(renderTextureResource_.Get(), &renderTextureSrvDesc, handleCPU);
 }
 

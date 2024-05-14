@@ -125,7 +125,8 @@ private: //メンバ関数
 	/// 0 : ImGuiManager
 	/// 1～1000 : Texture
 	/// 1001～2000 : Particle
-	/// 2001 : RenderTexture
+	/// 2001～3000 : Palette
+	/// 3001 : RenderTexture
 	/// </summary>
 	void CreateShaderResourceView();
 

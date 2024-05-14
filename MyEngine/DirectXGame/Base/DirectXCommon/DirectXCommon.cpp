@@ -431,7 +431,7 @@ void DirectXCommon::CreateRenderTargetView() {
 
 void DirectXCommon::CreateShaderResourceView() {
 	//ディスクリプターヒープの生成
-	srvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 2056, true);
+	srvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 4096, true);
 }
 
 void DirectXCommon::CreateDepthStencilView() {
