@@ -8,5 +8,6 @@
 struct ModelData {
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
+	std::map<std::string, JointWeightData> skinClusterData;
 	MaterialData material;
 };

@@ -264,6 +264,24 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			}
 		}
 
+		//ジョイントのデータ
+		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++) {
+			aiBone* bone = mesh->mBones[boneIndex];
+			std::string jointName = bone->mName.C_Str();
+			JointWeightData& jointWeightData = modelPart.modelData.skinClusterData[jointName];
+
+			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
+			aiVector3D scale, translate;
+			aiQuaternion rotate;
+			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+			Matrix4x4 bindPoseMatrix = MakeAffineMatrix({ scale.x, scale.y, scale.z }, { rotate.x, -rotate.y, -rotate.z, rotate.w }, { -translate.x, translate.y, translate.z });
+			jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
+
+			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; weightIndex++) {
+				jointWeightData.vertexWeights.push_back({bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId});
+			}
+		}
+
 		//マテリアルのインプット
 		unsigned int materialIndex = mesh->mMaterialIndex;
 		const aiMaterial* material = scene->mMaterials[materialIndex];
