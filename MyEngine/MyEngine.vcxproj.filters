@@ -345,6 +345,9 @@
     <ClCompile Include="DirectXGame\Manager\PostEffectManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Data\SkinCluster.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">
