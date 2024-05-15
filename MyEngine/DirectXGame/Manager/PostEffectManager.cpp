@@ -329,6 +329,14 @@ void PostEffectManager::CreatePSO() {
 			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/Vignette.PS.hlsl", L"ps_6_0");
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
+		case PostEffect::kSmoothing:
+			//頂点シェーダー
+			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/FullScreen.VS.hlsl", L"vs_6_0");
+			assert(vertexShaderBlob[shaderPack] != nullptr);
+			//ピクセルシェーダー
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/BoxFilter.PS.hlsl", L"ps_6_0");
+			assert(pixelShaderBlob[shaderPack] != nullptr);
+			break;
 		}
 	}
 

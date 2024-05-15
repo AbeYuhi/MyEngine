@@ -9,6 +9,7 @@ enum PostEffect {
 	kGrayScale,
 	kSepiaScale,
 	kVignette,
+	kSmoothing,
 	kCountOfPostEffect
 };
 

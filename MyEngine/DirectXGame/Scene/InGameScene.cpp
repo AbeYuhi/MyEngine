@@ -181,7 +181,7 @@ void InGameScene::Update() {
 	ImGui::End();
 
 	ImGui::Begin("PostEffect");
-	const char* postEffects[] = { "None", "Copy", "GrayScale", "SepiaScale", "Vignette"};
+	const char* postEffects[] = { "None", "Copy", "GrayScale", "SepiaScale", "Vignette", "Smoothing"};
 	int postEffect = postEffectManager_->GetPostEffect();
 	ImGui::Combo("postEffect", &postEffect, postEffects, IM_ARRAYSIZE(postEffects));
 	postEffectManager_->SetPostEffect(static_cast<PostEffect>(postEffect));
