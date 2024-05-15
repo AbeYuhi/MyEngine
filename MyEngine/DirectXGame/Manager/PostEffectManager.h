@@ -1,6 +1,8 @@
 #pragma once
 #include "Base/DirectXCommon/DirectXCommon.h"
+#include "Base/CreateResource/CreateResource.h"
 #include "GraphicsPipelineManager.h"
+#include "Data/KernelSize.h"
 #include "ImGuiManager.h"
 
 enum PostEffect {
@@ -31,6 +33,9 @@ public: //ゲッターセッター
 	inline PostEffect GetPostEffect() { return postEffect_; }
 	inline void SetPostEffect(PostEffect postEffect) { postEffect_ = postEffect; }
 
+	inline int GetKernelSize() { return kernelSize_->size; }
+	inline void SetKernelSize(int kernelSize) { kernelSize_->size = kernelSize; }
+
 private:
 	PostEffectManager() = default;
 	~PostEffectManager() = default;
@@ -56,5 +61,10 @@ private: //メンバ変数
 	PostEffect postEffect_;
 	const int kRTVIndex = 2;
 	const int kSRVIndex = 3001;
+
+	//各ポストエフェクトにおける必要なResourceなど
+	//Smoothing
+	ComPtr<ID3D12Resource> kernelSizeResource_ = nullptr;
+	KernelSize* kernelSize_;
 };
 

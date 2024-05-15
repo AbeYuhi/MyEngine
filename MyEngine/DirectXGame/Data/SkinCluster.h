@@ -3,7 +3,7 @@
 #include <array>
 #include <span>
 #include <WRL/client.h>
-#include "External/DirectXTex/d3dx12.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 #include "Math/Matrix4x4.h"
 #include "Data/Skeleton.h"
 #include "Data/ModelData.h"
@@ -21,6 +21,7 @@ struct WellForGPU {
 	Matrix4x4 skeletonSpaceInverseTransposeMatrix; //法線用
 };
 
+static int sSkinClusterNum = 0;
 struct SkinCluster {
 	std::vector<Matrix4x4> inverseBindPoseMatrices;
 	ComPtr<ID3D12Resource> influenceResource;

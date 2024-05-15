@@ -274,6 +274,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Object\Line.h" />
     <ClInclude Include="DirectXGame\Manager\PostEffectManager.h" />
     <ClInclude Include="DirectXGame\Data\SkinCluster.h" />
+    <ClInclude Include="DirectXGame\Data\KernelSize.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

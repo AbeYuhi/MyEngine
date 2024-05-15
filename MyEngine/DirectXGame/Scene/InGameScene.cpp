@@ -181,11 +181,25 @@ void InGameScene::Update() {
 	ImGui::End();
 
 	ImGui::Begin("PostEffect");
-	const char* postEffects[] = { "None", "Copy", "GrayScale", "SepiaScale", "Vignette", "Smoothing"};
+	const char* postEffects[] = { "None", "Copy", "GrayScale", "SepiaScale", "Vignette", "Smoothing" };
 	int postEffect = postEffectManager_->GetPostEffect();
 	ImGui::Combo("postEffect", &postEffect, postEffects, IM_ARRAYSIZE(postEffects));
 	postEffectManager_->SetPostEffect(static_cast<PostEffect>(postEffect));
+
+	ImGui::BeginTabBar("PostEffectState");
+	if (ImGui::BeginTabItem("Smoothing")) {
+		int kernelSize = postEffectManager_->GetKernelSize();
+		ImGui::SliderInt("size", &kernelSize, 3, 9);
+		if (kernelSize % 2 == 0) {
+			kernelSize--;
+		}
+		postEffectManager_->SetKernelSize(kernelSize);
+		ImGui::EndTabItem();
+	}
+	ImGui::EndTabBar();
+
 	ImGui::End();
+
 #endif // _DEBUG
 
 	yukariModelInfo_.Update();
