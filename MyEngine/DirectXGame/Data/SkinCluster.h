@@ -38,8 +38,6 @@ struct SkinCluster {
 	int index;
 };
 
-SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modeldata, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t descriptorSize);
-
-void Update(SkinCluster& skinCluster, const Skeleton& skeleton);
+SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modeldata);
 
 void ClearSkinCluster(SkinCluster& skinCluster);

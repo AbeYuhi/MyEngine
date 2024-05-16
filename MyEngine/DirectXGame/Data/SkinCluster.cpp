@@ -3,7 +3,7 @@
 int SkinCluster::sSkinClusterNum = 0;
 std::map<int, bool> SkinCluster::isAlive;
 
-SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modeldata, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t descriptorSize) {
+SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modeldata) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	SkinCluster::sSkinClusterNum++;
 	SkinCluster skinCluster;
@@ -75,16 +75,6 @@ SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modelda
 	}
 
 	return skinCluster;
-}
-
-void Update(SkinCluster& skinCluster, const Skeleton& skeleton) {
-	for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); jointIndex++) {
-		assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
-		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix =
-			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
-		skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
-			Transpose(Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
-	}
 }
 
 void ClearSkinCluster(SkinCluster& skinCluster) {

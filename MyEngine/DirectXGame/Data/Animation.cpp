@@ -34,6 +34,12 @@ void Animation::Update() {
 
 			//Jointの更新
 			ApplyAnimation(*it);
+
+			//Skeltonの更新
+			SkeletonUpdate();
+
+			//SkinClusterの更新
+			SkinClusterUpdate();
 		}
 
 		it->preIsAnimation = it->isAnimation;
@@ -45,9 +51,6 @@ void Animation::Update() {
 
 	//変更がなかったNodeを初期ポジに戻す
 	rootNode = InitializeNode(rootNode, initialNode);
-
-	//Skeltonの更新
-	SkeletonUpdate();
 }
 
 void Animation::NodeUpdate(AnimationInfo& info) {
@@ -86,6 +89,18 @@ void Animation::ApplyAnimation(AnimationInfo& info) {
 	}
 }
 
+void Animation::SkinClusterUpdate() {
+	for (auto& skinCluster : skinClusters) {
+		for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); jointIndex++) {
+			assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
+			skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix =
+				skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
+			skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
+				Transpose(Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
+		}
+	}
+}
+
 void Animation::SkeletonDraw() {
 
 }
@@ -109,7 +124,11 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 void Animation::SetModel(Model* model) {
 	initialNode = model->GetInialNode();
 	skeleton = CreateSkeleton(initialNode);
-	//skinCluster = CreateSkinCluster(skeleton);
+	for (auto& mesh : model->GetMeshs()) {
+		SkinCluster skinCluster;
+		skinCluster = CreateSkinCluster(skeleton, mesh.modelData);
+		skinClusters.push_back(skinCluster);
+	}
 }
 
 void Animation::SetAnimationSpeed(std::string animationName, float speed) {

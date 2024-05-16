@@ -20,7 +20,7 @@ struct Animation {
 	//Skeleton情報
 	Skeleton skeleton;
 	//SkinCluster情報
-	SkinCluster skinCluster;
+	std::list<SkinCluster> skinClusters;
 
 	void Initialize();
 
@@ -31,6 +31,8 @@ struct Animation {
 	void SkeletonUpdate();
 
 	void ApplyAnimation(AnimationInfo& info);
+
+	void SkinClusterUpdate();
 
 	void SetAnimation(std::list<AnimationData> datas);
 

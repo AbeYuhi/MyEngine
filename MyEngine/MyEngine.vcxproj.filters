@@ -130,6 +130,9 @@
     <Filter Include="Shader\PostEffect">
       <UniqueIdentifier>{753521eb-2091-46ad-8302-2e50c3cf366e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\Skinning">
+      <UniqueIdentifier>{2defe5a4-cfdc-4c77-9780-8e7596e4c654}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -683,5 +686,6 @@
     <FxCompile Include="Resources\Shaders\PostEffect\Vignette.PS.hlsl">
       <Filter>Shader\PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\SkinningObject3d.VS.hlsl" />
   </ItemGroup>
 </Project>

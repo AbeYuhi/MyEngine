@@ -61,6 +61,8 @@ public: //ゲッター
 
 	inline const Skeleton GetSkeleton() { return skeleton_; }
 
+	inline const std::list<Mesh> GetMeshs() { return meshs_; }
+
 private: //メンバ関数
 
 	void LoadModelFile(const std::string& filepath, const std::string& filename);
