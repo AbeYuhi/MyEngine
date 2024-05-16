@@ -8,7 +8,7 @@ void GameClearScene::Finalize() {
 }
 
 void GameClearScene::Initialize() {
-	GAMECLEAR;
+	sceneNo_ = GAMECLEAR;
 
 	mainCamera_ = MainCamera::GetInstance();
 	spriteCamera_ = SpriteCamera::GetInstance();
