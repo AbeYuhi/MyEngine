@@ -81,7 +81,7 @@ protected: //メンバ変数
 	uint32_t textureHandle_;
 
 	//リソース
-	ComPtr<ID3D12Resource> worldTransformResource_;
+	ComPtr<ID3D12Resource> resource_;
 	int index_;
 	//Resourceハンドル
 	ResourceHandles srvHandle_;

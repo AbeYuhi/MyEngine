@@ -19,10 +19,10 @@ void ParticleManager::Initialize() {
 	}
 
 	//リソースの作成
-	worldTransformResource_ = CreateBufferResource(sizeof(ParticleForGPU) * kMaxParticleCount_);
+	resource_ = CreateBufferResource(sizeof(ParticleForGPU) * kMaxParticleCount_);
 
 	//書き込むためのアドレスの取得
-	worldTransformResource_->Map(0, nullptr, reinterpret_cast<void**>(&particleData_));
+	resource_->Map(0, nullptr, reinterpret_cast<void**>(&particleData_));
 	//単位行列の書き込み
 	/*for (int index = 0; index < 10; index++) {
 		particleData_[index].WVP_ = MakeIdentity4x4();
@@ -156,9 +156,9 @@ void ParticleManager::PopParticle() {
 }
 
 void ParticleManager::UnloadParticle() {
-	particleCount_--;
+	sEmittersCount_--;
 	isDrawing_[index_] = false;
-	worldTransformResource_.Reset();
+	resource_.Reset();
 }
 
 void ParticleManager::CreateSRV() {
@@ -184,7 +184,7 @@ void ParticleManager::CreateSRV() {
 			assert(false);
 		}
 	}
-	dxCommon->GetDevice()->CreateShaderResourceView(worldTransformResource_.Get(), &srvDesc, srvHandle_.CPUHandle);
+	dxCommon->GetDevice()->CreateShaderResourceView(resource_.Get(), &srvDesc, srvHandle_.CPUHandle);
 }
 
 std::list<ParticleInfo> ParticleManager::Emission() {

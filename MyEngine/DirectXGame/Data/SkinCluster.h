@@ -2,9 +2,11 @@
 #include <vector>
 #include <array>
 #include <span>
+#include <map>
 #include <WRL/client.h>
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Math/Matrix4x4.h"
+#include "Math/Math.h"
 #include "Data/Skeleton.h"
 #include "Data/ModelData.h"
 
@@ -21,8 +23,10 @@ struct WellForGPU {
 	Matrix4x4 skeletonSpaceInverseTransposeMatrix; //法線用
 };
 
-static int sSkinClusterNum = 0;
 struct SkinCluster {
+	static int sSkinClusterNum;
+	static const int kSkinClusterMaxNum = 1000;
+	static std::map<int, bool> isAlive;
 	std::vector<Matrix4x4> inverseBindPoseMatrices;
 	ComPtr<ID3D12Resource> influenceResource;
 	D3D12_VERTEX_BUFFER_VIEW influenceBufferView;
@@ -30,6 +34,11 @@ struct SkinCluster {
 	ComPtr<ID3D12Resource> paletteResource;
 	std::span<WellForGPU> mappedPalette;
 	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
+	int index;
 };
 
 SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modeldata, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t descriptorSize);
+
+void Update(SkinCluster& skinCluster, const Skeleton& skeleton);
+
+void ClearSkinCluster(SkinCluster skinCluster);
