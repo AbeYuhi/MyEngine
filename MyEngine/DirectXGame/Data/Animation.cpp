@@ -1,4 +1,5 @@
 #include "Animation.h"
+#include "Object/Model.h"
 
 void Animation::Initialize() {
 
@@ -103,12 +104,6 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 		info.animationSpeed = 1.0f;
 		infos.push_back(info);
 	}
-}
-
-void Animation::SetSkeleton() {
-
-	skeleton = CreateSkeleton(initialNode);
-
 }
 
 void Animation::SetAnimationSpeed(std::string animationName, float speed) {

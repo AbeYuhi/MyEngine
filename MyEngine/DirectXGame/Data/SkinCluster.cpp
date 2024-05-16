@@ -50,7 +50,9 @@ SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modelda
 
 	//InverceBindPoseMatrixの保存領域を作成
 	skinCluster.inverseBindPoseMatrices.resize(skeleton.joints.size());
-	std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), MakeIdentity4x4());
+	for (auto& inverseBindPoseMatrix : skinCluster.inverseBindPoseMatrices) {
+		inverseBindPoseMatrix = MakeIdentity4x4();
+	}
 
 	//ModelDataのSkinCluaster情報を解析してInfluenceの中身を埋める
 	for (const auto& jointWeight : modeldata.skinClusterData) {
@@ -85,7 +87,7 @@ void Update(SkinCluster& skinCluster, const Skeleton& skeleton) {
 	}
 }
 
-void ClearSkinCluster(SkinCluster skinCluster) {
+void ClearSkinCluster(SkinCluster& skinCluster) {
 	SkinCluster::sSkinClusterNum--;
 	SkinCluster::isAlive[skinCluster.index] = false;
 	skinCluster.paletteResource.Reset();

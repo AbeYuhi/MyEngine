@@ -11,6 +11,10 @@ struct RenderItem {
 	MaterialInfo materialInfo_;
 	Animation animation_;
 
+	~RenderItem() {
+		ClearSkinCluster(animation_.skinCluster);
+	}
+
 	/// <summary>
 	/// レンダリング情報の初期化
 	/// </summary>

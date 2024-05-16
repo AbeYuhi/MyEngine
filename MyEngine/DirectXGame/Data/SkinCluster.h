@@ -3,6 +3,7 @@
 #include <array>
 #include <span>
 #include <map>
+#include <algorithm>
 #include <WRL/client.h>
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Math/Matrix4x4.h"
@@ -41,4 +42,4 @@ SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modelda
 
 void Update(SkinCluster& skinCluster, const Skeleton& skeleton);
 
-void ClearSkinCluster(SkinCluster skinCluster);
+void ClearSkinCluster(SkinCluster& skinCluster);

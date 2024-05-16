@@ -68,15 +68,14 @@ void InGameScene::Initialize() {
 	//cubeModel_ = Model::Create("multiCube", "multiCube.gltf");
 	cubeModel_ = Model::Create("AnimatedCube", "AnimatedCube.gltf");
 	cubeModelInfo_.Initialize();
-	cubeModelInfo_.animation_.SetInialNode(cubeModel_->GetInialNode());
+	cubeModelInfo_.animation_.SetModel(cubeModel_->GetInialNode());
 	cubeModelInfo_.animation_.SetAnimation(cubeModel_->GetAnimationData());
 
 	//testModel_ = Model::Create("human", "sneakWalk.gltf");
 	testModel_ = Model::Create("human", "walk.gltf");
 	testModelInfo_.Initialize();
-	testModelInfo_.animation_.SetInialNode(testModel_->GetInialNode());
+	testModelInfo_.animation_.SetModel(testModel_->GetInialNode());
 	testModelInfo_.animation_.SetAnimation(testModel_->GetAnimationData());
-	testModelInfo_.animation_.SetSkeleton();
 
 	sphereModel_ = Model::Create("sphere", "sphere.obj");
 

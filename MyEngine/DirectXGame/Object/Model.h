@@ -20,7 +20,6 @@
 #include "DirectXGame/Data/ModelData.h"
 #include "DirectXGame/Data/Material.h"
 #include "DirectXGame/Data/MaterialInfo.h"
-#include "DirectXGame/Data/RenderItem.h"
 #include "DirectXGame/Data/TextureData.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
 #include "DirectXGame/Data/Mesh.h"
@@ -29,6 +28,8 @@
 #include "DirectXGame/Data/Bone.h"
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
+
+struct RenderItem;
 
 class Model
 {
@@ -58,6 +59,8 @@ public: //ゲッター
 
 	inline const Node GetInialNode() { return rootNode_; }
 
+	inline const Skeleton GetSkeleton() { return skeleton_; }
+
 private: //メンバ関数
 
 	void LoadModelFile(const std::string& filepath, const std::string& filename);
@@ -68,6 +71,7 @@ private: //メンバ変数
 	std::list<Mesh> meshs_;
 	std::list<AnimationData> animations_;
 	Node rootNode_;
+	Skeleton skeleton_;
 
 	bool isGltf_;
 	bool isBone_;

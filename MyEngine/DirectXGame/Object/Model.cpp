@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "DirectXGame/Data/RenderItem.h"
 
 Model::Model() {}
 Model::~Model() {}

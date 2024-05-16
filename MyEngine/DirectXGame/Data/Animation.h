@@ -6,6 +6,9 @@
 #include "AnimationData.h"
 #include "Node.h"
 #include "Skeleton.h"
+#include "SkinCluster.h"
+
+class Model;
 
 struct Animation {
 	//アニメーションのローカル情報
@@ -16,6 +19,8 @@ struct Animation {
 	Node initialNode;
 	//Skeleton情報
 	Skeleton skeleton;
+	//SkinCluster情報
+	SkinCluster skinCluster;
 
 	void Initialize();
 
@@ -31,9 +36,11 @@ struct Animation {
 
 	void SkeletonDraw();
 
-	inline void SetInialNode(Node node) { initialNode = node; }
-
-	void SetSkeleton();	
+	inline void SetModel(Model& model) {
+		initialNode = model.GetInialNode();
+		skeleton = CreateSkeleton(initialNode);
+		skinCluster = CreateSkinCluster(skeleton);
+	}
 
 	void SetAnimationSpeed(std::string animationName, float speed);
 
