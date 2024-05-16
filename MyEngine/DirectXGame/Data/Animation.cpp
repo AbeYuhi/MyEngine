@@ -106,6 +106,12 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 	}
 }
 
+void Animation::SetModel(Model* model) {
+	initialNode = model->GetInialNode();
+	skeleton = CreateSkeleton(initialNode);
+	//skinCluster = CreateSkinCluster(skeleton);
+}
+
 void Animation::SetAnimationSpeed(std::string animationName, float speed) {
 	for (auto it = infos.begin(); it != infos.end(); it++) {
 		if (it->data.name == animationName) {

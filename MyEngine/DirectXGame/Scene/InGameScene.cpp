@@ -68,13 +68,13 @@ void InGameScene::Initialize() {
 	//cubeModel_ = Model::Create("multiCube", "multiCube.gltf");
 	cubeModel_ = Model::Create("AnimatedCube", "AnimatedCube.gltf");
 	cubeModelInfo_.Initialize();
-	cubeModelInfo_.animation_.SetModel(cubeModel_->GetInialNode());
+	cubeModelInfo_.animation_.SetModel(cubeModel_.get());
 	cubeModelInfo_.animation_.SetAnimation(cubeModel_->GetAnimationData());
 
 	//testModel_ = Model::Create("human", "sneakWalk.gltf");
 	testModel_ = Model::Create("human", "walk.gltf");
 	testModelInfo_.Initialize();
-	testModelInfo_.animation_.SetModel(testModel_->GetInialNode());
+	testModelInfo_.animation_.SetModel(testModel_.get());
 	testModelInfo_.animation_.SetAnimation(testModel_->GetAnimationData());
 
 	sphereModel_ = Model::Create("sphere", "sphere.obj");
@@ -188,7 +188,7 @@ void InGameScene::Update() {
 	ImGui::BeginTabBar("PostEffectState");
 	if (ImGui::BeginTabItem("Smoothing")) {
 		int kernelSize = postEffectManager_->GetKernelSize();
-		ImGui::SliderInt("size", &kernelSize, 3, 9);
+		ImGui::SliderInt("size", &kernelSize, 3, 101);
 		if (kernelSize % 2 == 0) {
 			kernelSize--;
 		}
@@ -234,7 +234,7 @@ void InGameScene::Draw() {
 
 	yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
-	//cubeModel_->Draw(cubeModelInfo_);
+	cubeModel_->Draw(cubeModelInfo_);
 	//testModel_->Draw(testModelInfo_);
 
 	///オブジェクトの描画終了

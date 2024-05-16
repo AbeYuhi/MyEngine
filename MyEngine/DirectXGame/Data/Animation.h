@@ -36,11 +36,7 @@ struct Animation {
 
 	void SkeletonDraw();
 
-	inline void SetModel(Model& model) {
-		initialNode = model.GetInialNode();
-		skeleton = CreateSkeleton(initialNode);
-		skinCluster = CreateSkinCluster(skeleton);
-	}
+	void SetModel(Model* model);
 
 	void SetAnimationSpeed(std::string animationName, float speed);
 
