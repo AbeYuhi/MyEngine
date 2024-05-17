@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <map>
 #include "Manager/ImGuiManager.h"
 #include "AnimationData.h"
 #include "Node.h"
@@ -20,7 +21,7 @@ struct Animation {
 	//Skeleton情報
 	Skeleton skeleton;
 	//SkinCluster情報
-	std::list<SkinCluster> skinClusters;
+	std::map<std::string , SkinCluster> skinClusters;
 
 	void Initialize();
 

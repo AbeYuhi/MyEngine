@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include "Base/WinApp/WinApp.h"
 #include "Base/DirectXCommon/DirectXCommon.h"
 

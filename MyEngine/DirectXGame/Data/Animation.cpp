@@ -92,11 +92,11 @@ void Animation::ApplyAnimation(AnimationInfo& info) {
 void Animation::SkinClusterUpdate() {
 	for (auto& skinCluster : skinClusters) {
 		for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); jointIndex++) {
-			assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
-			skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix =
-				skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
-			skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
-				Transpose(Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
+			assert(jointIndex < skinCluster.second.inverseBindPoseMatrices.size());
+			skinCluster.second.mappedPalette[jointIndex].skeletonSpaceMatrix =
+				skinCluster.second.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
+			skinCluster.second.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
+				Transpose(Inverse(skinCluster.second.mappedPalette[jointIndex].skeletonSpaceMatrix));
 		}
 	}
 }
@@ -125,9 +125,7 @@ void Animation::SetModel(Model* model) {
 	initialNode = model->GetInialNode();
 	skeleton = CreateSkeleton(initialNode);
 	for (auto& mesh : model->GetMeshs()) {
-		SkinCluster skinCluster;
-		skinCluster = CreateSkinCluster(skeleton, mesh.modelData);
-		skinClusters.push_back(skinCluster);
+		skinClusters[mesh.name] = CreateSkinCluster(skeleton, mesh.modelData);
 	}
 }
 

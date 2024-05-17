@@ -13,8 +13,8 @@ struct RenderItem {
 
 	~RenderItem() {
 		for (auto& skinCluster : animation_.skinClusters) {
-			if (SkinCluster::isAlive[skinCluster.index]) {
-				ClearSkinCluster(skinCluster);
+			if (SkinCluster::isAlive[skinCluster.second.index]) {
+				ClearSkinCluster(skinCluster.second);
 			}
 		}
 	}

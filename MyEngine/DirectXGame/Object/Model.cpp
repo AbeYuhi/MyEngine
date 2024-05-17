@@ -62,10 +62,6 @@ void Model::Draw(RenderItem& renderItem) {
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
 	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
-	//パイプラインステートの設定
-	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
-	//ルートシグネチャの設定
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	//プリミティブ形状を設定
 	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -75,8 +71,31 @@ void Model::Draw(RenderItem& renderItem) {
 			renderItem.UpdateGltf(mesh, meshIndex);
 		}
 
-		//VBVの設定
-		dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
+		if (renderItem.animation_.skinClusters.size() > 0) {
+			//パイプラインステートの設定
+			dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kSkinning));
+			//ルートシグネチャの設定
+			dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(kSkinning));
+
+			D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
+				mesh.vertexBufferView,
+				renderItem.animation_.skinClusters[mesh.name].influenceBufferView
+			};
+
+			//VBVの設定
+			dxCommon->GetCommandList()->IASetVertexBuffers(0, 2, vbvs);
+
+			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(5, renderItem.animation_.skinClusters[mesh.name].paletteSrvHandle.second);
+		}
+		else {
+			//パイプラインステートの設定
+			dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
+			//ルートシグネチャの設定
+			dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
+			//VBVの設定
+			dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
+		}
+
 		//IBVの設定
 		dxCommon->GetCommandList()->IASetIndexBuffer(&mesh.indexBufferView);
 		//マテリアルCBufferの場所を設定
@@ -110,21 +129,39 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
 	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
-	//パイプラインステートの設定
-	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
-	//ルートシグネチャの設定
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	//プリミティブ形状を設定
 	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	
+
 	int meshIndex = 0;
 	for (auto& mesh : meshs_) {
 		if (isGltf_) {
 			renderItem.UpdateGltf(mesh, meshIndex);
 		}
 
-		//VBVの設定
-		dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
+		if (renderItem.animation_.skinClusters.size() > 0) {
+			//パイプラインステートの設定
+			dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kSkinning));
+			//ルートシグネチャの設定
+			dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(kSkinning));
+
+			D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
+				mesh.vertexBufferView,
+				renderItem.animation_.skinClusters[mesh.name].influenceBufferView
+			};
+
+			//VBVの設定
+			dxCommon->GetCommandList()->IASetVertexBuffers(0, 2, vbvs);
+			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(5, renderItem.animation_.skinClusters[mesh.name].paletteSrvHandle.second);
+		}
+		else {
+			//パイプラインステートの設定
+			dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
+			//ルートシグネチャの設定
+			dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
+			//VBVの設定
+			dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
+		}
+
 		//IBVの設定
 		dxCommon->GetCommandList()->IASetIndexBuffer(&mesh.indexBufferView);
 		//マテリアルCBufferの場所を設定

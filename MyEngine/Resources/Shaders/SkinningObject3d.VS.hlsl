@@ -8,6 +8,13 @@ struct TransformationMatrix
 };
 ConstantBuffer<TransformationMatrix> gTransformationMatrix : register(b0);
 
+struct Well
+{
+    float32_t4x4 skeletonSpaceMatrix;
+    float32_t4x4 skeletonSpaceInverseTransposeMatrix;
+};
+StructuredBuffer<Well> gMatrixPalette : register(t0);
+
 struct VertexShaderInput
 {
     float32_t4 position : POSITION0;
@@ -23,21 +30,14 @@ struct Skinned
     float32_t3 normal;
 };
 
-struct Well
-{
-    float32_t4x4 skeletonSpaceMatrix;
-    float32_t4x4 skeletonSpaceInverseTransposeMatrix;
-};
-StructuredBuffer<Well> gMatrixPalette : register(t0);
-
 Skinned Skinning(VertexShaderInput input)
 {
     Skinned skinned;
     //位置の変換
-    skinned.position = mul(input.position, gMatrixPalette[input.index.x].skeletonSpaceMatrix), input.weight.x;
-    skinned.position += mul(input.position, gMatrixPalette[input.index.y].skeletonSpaceMatrix), input.weight.y;
-    skinned.position += mul(input.position, gMatrixPalette[input.index.z].skeletonSpaceMatrix), input.weight.z;
-    skinned.position += mul(input.position, gMatrixPalette[input.index.w].skeletonSpaceMatrix), input.weight.w;
+    skinned.position = mul(input.position, gMatrixPalette[input.index.x].skeletonSpaceMatrix) * input.weight.x;
+    skinned.position += mul(input.position, gMatrixPalette[input.index.y].skeletonSpaceMatrix) * input.weight.y;
+    skinned.position += mul(input.position, gMatrixPalette[input.index.z].skeletonSpaceMatrix) * input.weight.z;
+    skinned.position += mul(input.position, gMatrixPalette[input.index.w].skeletonSpaceMatrix) * input.weight.w;
     skinned.position.w = 1.0f;
     
     //法線の変換

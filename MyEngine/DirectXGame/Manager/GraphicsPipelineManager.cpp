@@ -235,10 +235,13 @@ void GraphicsPipelineManager::CreatePSO() {
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 
 	//InputLayoutの設定
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc[PipelineState::kCountOfPipelineState] = {};
+	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc[PipelineState::kCountOfPipelineState] = {0};
 	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
 		switch (shaderPack)
 		{
+		case PipelineState::kDefault:
+		case PipelineState::kParticle:
+		case PipelineState::kWireFrame:
 		default:
 		{
 			D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {0};
@@ -257,9 +260,37 @@ void GraphicsPipelineManager::CreatePSO() {
 			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
 			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
 		}
-
+		break;
 		case PipelineState::kSkinning:
-			
+			D3D12_INPUT_ELEMENT_DESC inputElementDescs[5] = {0};
+			inputElementDescs[0].SemanticName = "POSITION";
+			inputElementDescs[0].SemanticIndex = 0;
+			inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			inputElementDescs[0].InputSlot = 0;
+			inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[1].SemanticName = "TEXCOORD";
+			inputElementDescs[1].SemanticIndex = 0;
+			inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+			inputElementDescs[1].InputSlot = 0;
+			inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[2].SemanticName = "NORMAL";
+			inputElementDescs[2].SemanticIndex = 0;
+			inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			inputElementDescs[2].InputSlot = 0;
+			inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[3].SemanticName = "WEIGHT";
+			inputElementDescs[3].SemanticIndex = 0;
+			inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			inputElementDescs[3].InputSlot = 1;
+			inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElementDescs[4].SemanticName = "INDEX";
+			inputElementDescs[4].SemanticIndex = 0;
+			inputElementDescs[4].Format = DXGI_FORMAT_R32G32B32A32_SINT;
+			inputElementDescs[4].InputSlot = 1;
+			inputElementDescs[4].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
+			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
+			break;
 		}
 	}
 
@@ -350,6 +381,7 @@ void GraphicsPipelineManager::CreatePSO() {
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 		case PipelineState::kParticle:
+			//頂点シェーダー
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Particle.VS.hlsl", L"vs_6_0");
 			assert(vertexShaderBlob[shaderPack] != nullptr);
 			//ピクセルシェーダー
@@ -357,10 +389,11 @@ void GraphicsPipelineManager::CreatePSO() {
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 			case PipelineState::kSkinning:
+			//頂点シェーダー
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/SkinningObject3d.VS.hlsl", L"vs_6_0");
 			assert(vertexShaderBlob[shaderPack] != nullptr);
 			//ピクセルシェーダー
-			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Particle.PS.hlsl", L"ps_6_0");
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.PS.hlsl", L"ps_6_0");
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 		}
