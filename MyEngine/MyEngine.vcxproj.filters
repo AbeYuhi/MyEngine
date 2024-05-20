@@ -686,6 +686,8 @@
     <FxCompile Include="Resources\Shaders\PostEffect\Vignette.PS.hlsl">
       <Filter>Shader\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\SkinningObject3d.VS.hlsl" />
+    <FxCompile Include="Resources\Shaders\SkinningObject3d.VS.hlsl">
+      <Filter>Shader\Skinning</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

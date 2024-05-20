@@ -21,11 +21,22 @@ void Animation::Update() {
 		if (it->isAnimation && it->data.name != "None") {
 			isAnimation = true;
 			//アニメーションの時間を進める
-			it->animationTime += 1.0f / 60.0f * it->animationSpeed;
-			if (it->animationTime > it->data.duration) {
-				it->animationTime = 0.0f;
-				if (!it->isLoop) {
-					it->isAnimation = false;
+			if (it->animationSpeed < 0.0f) {
+				it->animationTime += 1.0f / 60.0f * it->animationSpeed;
+				if (it->animationTime < 0.0f) {
+					it->animationTime = it->data.duration;
+					if (!it->isLoop) {
+						it->isAnimation = false;
+					}
+				}
+			}
+			else {
+				it->animationTime += 1.0f / 60.0f * it->animationSpeed;
+				if (it->animationTime > it->data.duration) {
+					it->animationTime = 0.0f;
+					if (!it->isLoop) {
+						it->isAnimation = false;
+					}
 				}
 			}
 
@@ -66,7 +77,7 @@ void Animation::NodeUpdate(AnimationInfo& info) {
 void Animation::SkeletonUpdate() {
 	//すべてのJointを更新。親が若いので通常ループで処理が可能
 	for (Joint& joint : skeleton.joints) {
-		joint.localMatrix = MakeAffineMatrix(joint.transform.scale_, joint.transform.rotate_, joint.transform.translate_);
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale_, Normalize(joint.transform.rotate_), joint.transform.translate_);
 		if (joint.parent) {
 			joint.skeletonSpaceMatrix = joint.localMatrix * skeleton.joints[*joint.parent].skeletonSpaceMatrix;
 		}

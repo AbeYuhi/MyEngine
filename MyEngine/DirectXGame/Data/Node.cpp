@@ -6,7 +6,7 @@ Node ReadNode(aiNode* node) {
 	aiQuaternion rotate;
 	node->mTransformation.Decompose(scale, rotate, translate);
 	result.transform.scale_ = { scale.x, scale.y, scale.z };
-	result.transform.rotate_ = {rotate.x, -rotate.y , -rotate.z , rotate.w};
+	result.transform.rotate_ = Normalize({rotate.x, -rotate.y , -rotate.z , rotate.w});
 	result.transform.translate_ = { -translate.x, translate.y, translate.z };
 	result.localMatrix = MakeAffineMatrix(result.transform.scale_, result.transform.rotate_, result.transform.translate_);
 
@@ -62,7 +62,7 @@ Node UpdateNode(Node node, NodeAnimation info, float time) {
 		//サイズ
 		Vector3 scale = CalculateValue(info.scale, time);
 
-		Matrix4x4 affineMatrix = MakeAffineMatrix(scale, rotate, pos);
+		Matrix4x4 affineMatrix = MakeAffineMatrix(scale, Normalize(rotate), pos);
 		node.localMatrix = Multiply(node.localMatrix, affineMatrix);
 	}
 	else {

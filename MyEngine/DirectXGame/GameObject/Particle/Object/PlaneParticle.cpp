@@ -51,7 +51,7 @@ void PlaneParticle::Update() {
 #endif //_DEBUG
 
 	//パーティクルの更新
-	for (std::list<ParticleInfo>::iterator itParticle = particles_.begin(); itParticle != particles_.end();) {
+	for (auto itParticle = particles_.begin(); itParticle != particles_.end();) {
 		ParticleInfo* particle = &(*itParticle);
 		//生存時間を過ぎたら
 		if (particle->lifeTime <= particle->currenttime) {

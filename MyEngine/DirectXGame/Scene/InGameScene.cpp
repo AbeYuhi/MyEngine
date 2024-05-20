@@ -77,8 +77,6 @@ void InGameScene::Initialize() {
 	testModelInfo_.animation_.SetModel(testModel_.get());
 	testModelInfo_.animation_.SetAnimation(testModel_->GetAnimationData());
 
-	sphereModel_ = Model::Create("sphere", "sphere.obj");
-
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 }
@@ -158,7 +156,7 @@ void InGameScene::Update() {
 		for (auto it = testModelInfo_.animation_.infos.begin(); it != testModelInfo_.animation_.infos.end(); it++) {
 			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
 			std::string animationSpeed = it->data.name + ": speed";
-			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, 0.0f, 5.0f);
+			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
 			std::string animationLoop = it->data.name + ": loop";
 			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
 		}
@@ -188,7 +186,7 @@ void InGameScene::Update() {
 	ImGui::BeginTabBar("PostEffectState");
 	if (ImGui::BeginTabItem("Smoothing")) {
 		int kernelSize = postEffectManager_->GetKernelSize();
-		ImGui::SliderInt("size", &kernelSize, 3, 101);
+		ImGui::SliderInt("size", &kernelSize, 3, 9);
 		if (kernelSize % 2 == 0) {
 			kernelSize--;
 		}
@@ -234,8 +232,8 @@ void InGameScene::Draw() {
 
 	yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
-	cubeModel_->Draw(cubeModelInfo_);
-	testModel_->Draw(testModelInfo_);
+	//cubeModel_->Draw(cubeModelInfo_);
+	//testModel_->Draw(testModelInfo_);
 
 	///オブジェクトの描画終了
 
