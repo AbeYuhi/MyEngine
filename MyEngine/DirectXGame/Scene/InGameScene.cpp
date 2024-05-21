@@ -58,7 +58,6 @@ void InGameScene::Initialize() {
 	yukariModel_ = Model::Create("yukari", "yukari.obj");
 	yukariModelInfo_.Initialize();
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
-	yukariModelInfo_.worldTransform_.data_.translate_.y = 1;
 
 	groundModel_ = Model::Create("planeGltf", "plane.gltf");
 	groundModelInfo_.Initialize();
@@ -230,10 +229,10 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	yukariModel_->Draw(yukariModelInfo_);
+	//yukariModel_->Draw(yukariModelInfo_);
 	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
-	//cubeModel_->Draw(cubeModelInfo_);
-	//testModel_->Draw(testModelInfo_);
+	cubeModel_->Draw(cubeModelInfo_);
+	testModel_->Draw(testModelInfo_);
 
 	///オブジェクトの描画終了
 

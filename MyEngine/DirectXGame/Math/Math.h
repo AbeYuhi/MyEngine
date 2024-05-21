@@ -42,6 +42,8 @@ Vector3 Slerp(const Vector3& v1, const Vector3& v2, float t);
 #pragma region Matrix4x4
 
 Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2);
+Matrix4x4 operator*=(Matrix4x4& num1, const Matrix4x4& num2);
+bool operator==(const Matrix4x4& num1, const Matrix4x4& num2);
 
 /// <summary>
 /// 4x4行列の加算

@@ -110,8 +110,8 @@ void Model::Draw(RenderItem& renderItem) {
 		//SRVのDescriptorTableの先頭を設定、2はrootParameter[2]である
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager->GetTextureHandleGPU(mesh.textureHandle));
 		//描画
-		dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
-		//dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size()), 1, 0, 0, 0);
+		//dxCommon->GetCommandList()->DrawInstanced(UINT(mesh.modelData.vertices.size()), 1, 0, 0);
+		dxCommon->GetCommandList()->DrawIndexedInstanced(UINT(mesh.modelData.indices.size()), 1, 0, 0, 0);
 		meshIndex++;
 	}
 }
@@ -288,8 +288,8 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			aiVector3D& normal = mesh->mNormals[vertexIndex];
 			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
 
-			modelPart.modelData.vertices[vertexIndex].position = { -position.x, position.y, position.z, 1.0f };
-			modelPart.modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, normal.z };
+			modelPart.modelData.vertices[vertexIndex].position = { -position.x, position.y, -position.z, 1.0f };
+			modelPart.modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, -normal.z };
 			modelPart.modelData.vertices[vertexIndex].texcoord = { texcoord.x, texcoord.y };
 		}
 
@@ -297,7 +297,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
-			for (uint32_t element = 0; element < face.mNumIndices; element++) {
+			for (int element = 2; element >= 0; element--) {
 				uint32_t vertexIndex = face.mIndices[element];
 				modelPart.modelData.indices.push_back(vertexIndex);
 			}
@@ -313,7 +313,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			aiVector3D scale, translate;
 			aiQuaternion rotate;
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
-			Matrix4x4 bindPoseMatrix = MakeAffineMatrix({ scale.x, scale.y, scale.z }, Normalize({ rotate.x, -rotate.y, -rotate.z, rotate.w }), { -translate.x, translate.y, translate.z });
+			Matrix4x4 bindPoseMatrix = MakeAffineMatrix({ scale.x, scale.y, scale.z }, Normalize({ -rotate.x, rotate.y, rotate.z, rotate.w }), { -translate.x, translate.y, -translate.z });
 			jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
 
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; weightIndex++) {

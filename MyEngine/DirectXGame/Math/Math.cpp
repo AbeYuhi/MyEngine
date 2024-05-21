@@ -163,6 +163,23 @@ Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2) {
 	return Multiply(num1, num2);
 }
 
+Matrix4x4 operator*=(Matrix4x4& num1, const Matrix4x4& num2) {
+	num1 = Multiply(num1, num2);
+	return num1;
+}
+
+bool operator==(const Matrix4x4& num1, const Matrix4x4& num2) {
+	bool orTF = true;
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
+			if (num1.m[y][x] != num2.m[y][x]) {
+				orTF = false;
+			}
+		}
+	}
+	return orTF;
+}
+
 Matrix4x4 Add(Matrix4x4 matrix1, Matrix4x4 matrix2) {
 	Matrix4x4 matrix = {};
 	for (int row = 0; row < 4; row++) {
