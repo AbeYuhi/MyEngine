@@ -138,6 +138,7 @@ void Animation::SetModel(Model* model) {
 	for (auto& mesh : model->GetMeshs()) {
 		skinClusters[mesh.name] = CreateSkinCluster(skeleton, mesh.modelData);
 	}
+	SkinClusterUpdate();
 }
 
 void Animation::SetAnimationSpeed(std::string animationName, float speed) {

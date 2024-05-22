@@ -7,7 +7,7 @@ Node ReadNode(aiNode* node) {
 	node->mTransformation.Decompose(scale, rotate, translate);
 	result.transform.scale_ = { scale.x, scale.y, scale.z };
 	result.transform.rotate_ = Normalize({rotate.x, -rotate.y , -rotate.z , rotate.w});
-	result.transform.translate_ = { -translate.x, translate.y, -translate.z };
+	result.transform.translate_ = { -translate.x, translate.y, translate.z };
 	result.localMatrix = MakeAffineMatrix(result.transform.scale_, result.transform.rotate_, result.transform.translate_);
 
 	result.name = node->mName.C_Str();

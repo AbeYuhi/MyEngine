@@ -67,14 +67,15 @@ private:
 	std::shared_ptr<Model> yukariModel_;
 	RenderItem yukariModelInfo_;
 
-	std::shared_ptr<Model> groundModel_;
-	RenderItem groundModelInfo_;
-
 	std::shared_ptr<Model> cubeModel_;
 	RenderItem cubeModelInfo_;
 
-	std::shared_ptr<Model> testModel_;
-	RenderItem testModelInfo_;
+	std::shared_ptr<Model> walkModel_;
+	std::shared_ptr<Model> sneakWalkModel_;
+	std::shared_ptr<Model> simpleSkinModel_;
+	RenderItem walkModelInfo_;
+	RenderItem sneakWalkModelInfo_;
+	RenderItem simpleSkinModelInfo_;
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;

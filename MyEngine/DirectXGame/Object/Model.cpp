@@ -7,13 +7,13 @@ Model::~Model() {}
 std::map<std::string, std::shared_ptr<Model>> Model::sModels_;
 
 std::shared_ptr<Model> Model::Create(const std::string& filepath, const std::string filename) {
-
-	if (sModels_.find(filepath) == sModels_.end()) {
-		sModels_[filepath] = std::make_shared<Model>();
-		sModels_[filepath]->Initialize(filepath, filename);
+	std::string filePath = filepath + "/" + filename;
+	if (sModels_.find(filePath) == sModels_.end()) {
+		sModels_[filePath] = std::make_shared<Model>();
+		sModels_[filePath]->Initialize(filepath, filename);
 	}
 	
-	return sModels_[filepath];
+	return sModels_[filePath];
 }
 
 void Model::Initialize(const std::string& filepath, const std::string filename) {
@@ -288,8 +288,8 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			aiVector3D& normal = mesh->mNormals[vertexIndex];
 			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
 
-			modelPart.modelData.vertices[vertexIndex].position = { -position.x, position.y, -position.z, 1.0f };
-			modelPart.modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, -normal.z };
+			modelPart.modelData.vertices[vertexIndex].position = { -position.x, position.y, position.z, 1.0f };
+			modelPart.modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, normal.z };
 			modelPart.modelData.vertices[vertexIndex].texcoord = { texcoord.x, texcoord.y };
 		}
 
@@ -297,7 +297,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
-			for (int element = 2; element >= 0; element--) {
+			for (unsigned int element = 0; element < face.mNumIndices; element++) {
 				uint32_t vertexIndex = face.mIndices[element];
 				modelPart.modelData.indices.push_back(vertexIndex);
 			}
@@ -313,7 +313,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			aiVector3D scale, translate;
 			aiQuaternion rotate;
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
-			Matrix4x4 bindPoseMatrix = MakeAffineMatrix({ scale.x, scale.y, scale.z }, Normalize({ -rotate.x, rotate.y, rotate.z, rotate.w }), { -translate.x, translate.y, -translate.z });
+			Matrix4x4 bindPoseMatrix = MakeAffineMatrix({ scale.x, scale.y, scale.z }, Normalize({ rotate.x, -rotate.y, -rotate.z, rotate.w }), { -translate.x, translate.y, translate.z });
 			jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
 
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; weightIndex++) {
@@ -370,9 +370,9 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 			for (uint32_t keyIndex = 0; keyIndex < scene->mAnimations[animationIndex]->mChannels[channelIndex]->mNumPositionKeys; keyIndex++) {
 				Keyframe<Vector3> pos;
 				pos.time = static_cast<float>(scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mTime / scene->mAnimations[animationIndex]->mTicksPerSecond);
-				pos.value.x = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.x;
+				pos.value.x = -scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.x;
 				pos.value.y = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.y;
-				pos.value.z = -scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.z;
+				pos.value.z = scene->mAnimations[animationIndex]->mChannels[channelIndex]->mPositionKeys[keyIndex].mValue.z;
 				animationInfo.position.keyframes.push_back(pos);
 			}
 			//回転に関係する情報の格納場所

@@ -59,22 +59,27 @@ void InGameScene::Initialize() {
 	yukariModelInfo_.Initialize();
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 
-	groundModel_ = Model::Create("planeGltf", "plane.gltf");
-	groundModelInfo_.Initialize();
-	groundModelInfo_.materialInfo_.material_->enableLightint = true;
-
-
 	//cubeModel_ = Model::Create("multiCube", "multiCube.gltf");
 	cubeModel_ = Model::Create("AnimatedCube", "AnimatedCube.gltf");
 	cubeModelInfo_.Initialize();
 	cubeModelInfo_.animation_.SetModel(cubeModel_.get());
 	cubeModelInfo_.animation_.SetAnimation(cubeModel_->GetAnimationData());
 
-	//testModel_ = Model::Create("human", "sneakWalk.gltf");
-	testModel_ = Model::Create("human", "walk.gltf");
-	testModelInfo_.Initialize();
-	testModelInfo_.animation_.SetModel(testModel_.get());
-	testModelInfo_.animation_.SetAnimation(testModel_->GetAnimationData());
+	walkModel_ = Model::Create("human", "walk.gltf");
+	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
+	simpleSkinModel_ = Model::Create("simpleSkin", "simpleSkin.gltf");
+
+	walkModelInfo_.Initialize();
+	walkModelInfo_.animation_.SetModel(walkModel_.get());
+	walkModelInfo_.animation_.SetAnimation(walkModel_->GetAnimationData());
+
+	sneakWalkModelInfo_.Initialize();
+	sneakWalkModelInfo_.animation_.SetModel(sneakWalkModel_.get());
+	sneakWalkModelInfo_.animation_.SetAnimation(sneakWalkModel_->GetAnimationData());
+
+	simpleSkinModelInfo_.Initialize();
+	simpleSkinModelInfo_.animation_.SetModel(simpleSkinModel_.get());
+	simpleSkinModelInfo_.animation_.SetAnimation(simpleSkinModel_->GetAnimationData());
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -116,22 +121,6 @@ void InGameScene::Update() {
 		ImGui::SliderFloat("shininess", &yukariModelInfo_.materialInfo_.material_->shininess, 0, 100);
 		ImGui::EndTabItem();
 	}
-	if (ImGui::BeginTabItem("groundModel")) {
-		ImGui::SliderFloat3("pos", &groundModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &groundModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &groundModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-		ImGui::SliderFloat("shininess", &groundModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		bool b = 0;
-		if (groundModelInfo_.materialInfo_.material_->isSpecularReflection == 0) {
-			b = false;
-		}
-		else {
-			b = true;
-		}
-		ImGui::Checkbox("isSpecularReflection", &b);
-		groundModelInfo_.materialInfo_.material_->isSpecularReflection = b;
-		ImGui::EndTabItem();
-	}
 	if (ImGui::BeginTabItem("cubeModel")) {
 		ImGui::SliderFloat3("pos", &cubeModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
 		ImGui::SliderFloat3("rotate", &cubeModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
@@ -147,12 +136,42 @@ void InGameScene::Update() {
 
 		ImGui::EndTabItem();
 	}
-	if (ImGui::BeginTabItem("humanModel")) {
-		ImGui::SliderFloat3("pos", &testModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &testModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &testModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+	if (ImGui::BeginTabItem("walkHumanModel")) {
+		ImGui::SliderFloat3("pos", &walkModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &walkModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &walkModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 
-		for (auto it = testModelInfo_.animation_.infos.begin(); it != testModelInfo_.animation_.infos.end(); it++) {
+		for (auto it = walkModelInfo_.animation_.infos.begin(); it != walkModelInfo_.animation_.infos.end(); it++) {
+			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
+			std::string animationSpeed = it->data.name + ": speed";
+			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
+			std::string animationLoop = it->data.name + ": loop";
+			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
+		}
+
+		ImGui::EndTabItem();
+	}
+	if (ImGui::BeginTabItem("sneakWalkHumanModel")) {
+		ImGui::SliderFloat3("pos", &sneakWalkModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &sneakWalkModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &sneakWalkModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+
+		for (auto it = sneakWalkModelInfo_.animation_.infos.begin(); it != sneakWalkModelInfo_.animation_.infos.end(); it++) {
+			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
+			std::string animationSpeed = it->data.name + ": speed";
+			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
+			std::string animationLoop = it->data.name + ": loop";
+			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
+		}
+
+		ImGui::EndTabItem();
+	}
+	if (ImGui::BeginTabItem("simpleSkinModel")) {
+		ImGui::SliderFloat3("pos", &simpleSkinModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &simpleSkinModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &simpleSkinModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
+
+		for (auto it = simpleSkinModelInfo_.animation_.infos.begin(); it != simpleSkinModelInfo_.animation_.infos.end(); it++) {
 			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
 			std::string animationSpeed = it->data.name + ": speed";
 			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
@@ -185,10 +204,7 @@ void InGameScene::Update() {
 	ImGui::BeginTabBar("PostEffectState");
 	if (ImGui::BeginTabItem("Smoothing")) {
 		int kernelSize = postEffectManager_->GetKernelSize();
-		ImGui::SliderInt("size", &kernelSize, 3, 9);
-		if (kernelSize % 2 == 0) {
-			kernelSize--;
-		}
+		ImGui::SliderInt("size", &kernelSize, 1, 5);
 		postEffectManager_->SetKernelSize(kernelSize);
 		ImGui::EndTabItem();
 	}
@@ -199,9 +215,10 @@ void InGameScene::Update() {
 #endif // _DEBUG
 
 	yukariModelInfo_.Update();
-	groundModelInfo_.Update();
 	cubeModelInfo_.Update();
-	testModelInfo_.Update();
+	walkModelInfo_.Update();
+	sneakWalkModelInfo_.Update();
+	simpleSkinModelInfo_.Update();
 	spriteInfo_.Update();
 }
 
@@ -229,10 +246,11 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	//yukariModel_->Draw(yukariModelInfo_);
-	//groundModel_->Draw(groundModelInfo_, uvCheckerHandle_);
+	yukariModel_->Draw(yukariModelInfo_);
 	cubeModel_->Draw(cubeModelInfo_);
-	testModel_->Draw(testModelInfo_);
+	walkModel_->Draw(walkModelInfo_);
+	sneakWalkModel_->Draw(sneakWalkModelInfo_);
+	simpleSkinModel_->Draw(simpleSkinModelInfo_);
 
 	///オブジェクトの描画終了
 

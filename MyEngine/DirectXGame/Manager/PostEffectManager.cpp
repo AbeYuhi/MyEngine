@@ -21,7 +21,7 @@ void PostEffectManager::Initialize() {
 	//Respourceの確保
 	kernelSizeResource_ = CreateBufferResource(sizeof(KernelSize));
 	kernelSizeResource_->Map(0, nullptr, reinterpret_cast<void**>(&kernelSize_));
-	kernelSize_->size = 3;
+	kernelSize_->size = 1;
 }
 
 void PostEffectManager::PreDraw() {
