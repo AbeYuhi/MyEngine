@@ -70,14 +70,22 @@ void InGameScene::Initialize() {
 	simpleSkinModel_ = Model::Create("simpleSkin", "simpleSkin.gltf");
 
 	walkModelInfo_.Initialize();
+	walkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
 	walkModelInfo_.animation_.SetModel(walkModel_.get());
 	walkModelInfo_.animation_.SetAnimation(walkModel_->GetAnimationData());
 
+	walkModelInfo1_.Initialize();
+	walkModelInfo1_.worldTransform_.data_.rotate_.y += M_PI;
+	walkModelInfo1_.animation_.SetModel(walkModel_.get());
+	walkModelInfo1_.animation_.SetAnimation(walkModel_->GetAnimationData());
+
 	sneakWalkModelInfo_.Initialize();
+	sneakWalkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
 	sneakWalkModelInfo_.animation_.SetModel(sneakWalkModel_.get());
 	sneakWalkModelInfo_.animation_.SetAnimation(sneakWalkModel_->GetAnimationData());
 
 	simpleSkinModelInfo_.Initialize();
+	simpleSkinModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
 	simpleSkinModelInfo_.animation_.SetModel(simpleSkinModel_.get());
 	simpleSkinModelInfo_.animation_.SetAnimation(simpleSkinModel_->GetAnimationData());
 
@@ -129,7 +137,7 @@ void InGameScene::Update() {
 		for (auto it = cubeModelInfo_.animation_.infos.begin(); it != cubeModelInfo_.animation_.infos.end(); it++) {
 			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
 			std::string animationSpeed = it->data.name + ": speed";
-			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, 0.0f, 5.0f);
+			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
 			std::string animationLoop = it->data.name + ": loop";
 			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
 		}
@@ -142,6 +150,21 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("scale", &walkModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 
 		for (auto it = walkModelInfo_.animation_.infos.begin(); it != walkModelInfo_.animation_.infos.end(); it++) {
+			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
+			std::string animationSpeed = it->data.name + ": speed";
+			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
+			std::string animationLoop = it->data.name + ": loop";
+			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
+		}
+
+		ImGui::EndTabItem();
+	}
+	if (ImGui::BeginTabItem("walkHumanModel1")) {
+		ImGui::SliderFloat3("pos", &walkModelInfo1_.worldTransform_.data_.translate_.x, -10, 10);
+		ImGui::SliderFloat3("rotate", &walkModelInfo1_.worldTransform_.data_.rotate_.x, -10, 10);
+		ImGui::SliderFloat3("scale", &walkModelInfo1_.worldTransform_.data_.scale_.x, -10, 10);
+
+		for (auto it = walkModelInfo1_.animation_.infos.begin(); it != walkModelInfo1_.animation_.infos.end(); it++) {
 			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
 			std::string animationSpeed = it->data.name + ": speed";
 			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
@@ -217,6 +240,7 @@ void InGameScene::Update() {
 	yukariModelInfo_.Update();
 	cubeModelInfo_.Update();
 	walkModelInfo_.Update();
+	walkModelInfo1_.Update();
 	sneakWalkModelInfo_.Update();
 	simpleSkinModelInfo_.Update();
 	spriteInfo_.Update();
@@ -249,6 +273,7 @@ void InGameScene::Draw() {
 	yukariModel_->Draw(yukariModelInfo_);
 	cubeModel_->Draw(cubeModelInfo_);
 	walkModel_->Draw(walkModelInfo_);
+	walkModel_->Draw(walkModelInfo1_);
 	sneakWalkModel_->Draw(sneakWalkModelInfo_);
 	simpleSkinModel_->Draw(simpleSkinModelInfo_);
 

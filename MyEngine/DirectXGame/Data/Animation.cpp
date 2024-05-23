@@ -33,7 +33,7 @@ void Animation::Update() {
 			else {
 				it->animationTime += 1.0f / 60.0f * it->animationSpeed;
 				if (it->animationTime > it->data.duration) {
-					it->animationTime = 0.0f;
+					it->animationTime = 0;
 					if (!it->isLoop) {
 						it->isAnimation = false;
 					}

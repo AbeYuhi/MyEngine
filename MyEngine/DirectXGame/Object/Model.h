@@ -77,4 +77,5 @@ private: //メンバ変数
 
 	bool isGltf_;
 	bool isBone_;
+	bool haveSkininng_;
 };

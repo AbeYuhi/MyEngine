@@ -74,6 +74,7 @@ private:
 	std::shared_ptr<Model> sneakWalkModel_;
 	std::shared_ptr<Model> simpleSkinModel_;
 	RenderItem walkModelInfo_;
+	RenderItem walkModelInfo1_;
 	RenderItem sneakWalkModelInfo_;
 	RenderItem simpleSkinModelInfo_;
 

@@ -71,7 +71,7 @@ void Model::Draw(RenderItem& renderItem) {
 			renderItem.UpdateGltf(mesh, meshIndex);
 		}
 
-		if (renderItem.animation_.skinClusters.size() > 0) {
+		if (haveSkininng_) {
 			//パイプラインステートの設定
 			dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kSkinning));
 			//ルートシグネチャの設定
@@ -139,7 +139,7 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 			renderItem.UpdateGltf(mesh, meshIndex);
 		}
 
-		if (renderItem.animation_.skinClusters.size() > 0) {
+		if (haveSkininng_) {
 			//パイプラインステートの設定
 			dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kSkinning));
 			//ルートシグネチャの設定
@@ -399,6 +399,19 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 		}
 
 		animations_.push_back(animation);
+	}
+
+	haveSkininng_ = false;
+	for (auto& animation : animations_) {
+		for (auto& nodeAnimation : animation.nodeAnimations) {
+			if (!nodeAnimation.isMeshNode) {
+				haveSkininng_ = true;
+				break;
+			}
+		}
+		if (haveSkininng_) {
+			break;
+		}
 	}
 
 	//Nodeの解析
