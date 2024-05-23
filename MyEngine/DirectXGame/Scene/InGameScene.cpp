@@ -71,6 +71,7 @@ void InGameScene::Initialize() {
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
+	walkModelInfo_.materialInfo_.material_->enableLightint = true;
 	walkModelInfo_.animation_.SetModel(walkModel_.get());
 	walkModelInfo_.animation_.SetAnimation(walkModel_->GetAnimationData());
 
