@@ -54,8 +54,9 @@ void InGameScene::Initialize() {
 	//ゲームオブジェクト
 	testParticle1_ = std::make_unique<TestParticle>();
 	testParticle1_->Initialize();
-
-	yukariModel_ = Model::Create("yukari", "yukari.obj");
+	
+	//yukariModel_ = Model::Create("yukari", "yukari.obj");
+	yukariModel_ = Model::Create("yukariGLTF", "yukariGLTF.gltf");
 	yukariModelInfo_.Initialize();
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 
