@@ -58,13 +58,14 @@ void InGameScene::Initialize() {
 	//yukariModel_ = Model::Create("yukari", "yukari.obj");
 	yukariModel_ = Model::Create("yukariGLTF", "yukariGLTF.gltf");
 	yukariModelInfo_.Initialize();
+	yukariModelInfo_.SetModel(yukariModel_.get());
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 
 	//cubeModel_ = Model::Create("multiCube", "multiCube.gltf");
 	cubeModel_ = Model::Create("AnimatedCube", "AnimatedCube.gltf");
 	cubeModelInfo_.Initialize();
-	cubeModelInfo_.animation_.SetModel(cubeModel_.get());
-	cubeModelInfo_.animation_.SetAnimation(cubeModel_->GetAnimationData());
+	cubeModelInfo_.SetModel(cubeModel_.get());
+	cubeModelInfo_.SetAnimation(cubeModel_->GetAnimationData());
 
 	walkModel_ = Model::Create("human", "walk.gltf");
 	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
@@ -73,23 +74,23 @@ void InGameScene::Initialize() {
 	walkModelInfo_.Initialize();
 	walkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;
-	walkModelInfo_.animation_.SetModel(walkModel_.get());
-	walkModelInfo_.animation_.SetAnimation(walkModel_->GetAnimationData());
+	walkModelInfo_.SetModel(walkModel_.get());
+	walkModelInfo_.SetAnimation(walkModel_->GetAnimationData());
 
 	walkModelInfo1_.Initialize();
 	walkModelInfo1_.worldTransform_.data_.rotate_.y += M_PI;
-	walkModelInfo1_.animation_.SetModel(walkModel_.get());
-	walkModelInfo1_.animation_.SetAnimation(walkModel_->GetAnimationData());
+	walkModelInfo1_.SetModel(walkModel_.get());
+	walkModelInfo1_.SetAnimation(walkModel_->GetAnimationData());
 
 	sneakWalkModelInfo_.Initialize();
 	sneakWalkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
-	sneakWalkModelInfo_.animation_.SetModel(sneakWalkModel_.get());
-	sneakWalkModelInfo_.animation_.SetAnimation(sneakWalkModel_->GetAnimationData());
+	sneakWalkModelInfo_.SetModel(sneakWalkModel_.get());
+	sneakWalkModelInfo_.SetAnimation(sneakWalkModel_->GetAnimationData());
 
 	simpleSkinModelInfo_.Initialize();
 	simpleSkinModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
-	simpleSkinModelInfo_.animation_.SetModel(simpleSkinModel_.get());
-	simpleSkinModelInfo_.animation_.SetAnimation(simpleSkinModel_->GetAnimationData());
+	simpleSkinModelInfo_.SetModel(simpleSkinModel_.get());
+	simpleSkinModelInfo_.SetAnimation(simpleSkinModel_->GetAnimationData());
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -273,11 +274,11 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	yukariModel_->Draw(yukariModelInfo_);
-	cubeModel_->Draw(cubeModelInfo_);
-	walkModel_->Draw(walkModelInfo_);
-	walkModel_->Draw(walkModelInfo1_);
-	sneakWalkModel_->Draw(sneakWalkModelInfo_);
-	simpleSkinModel_->Draw(simpleSkinModelInfo_);
+	//cubeModel_->Draw(cubeModelInfo_);
+	//walkModel_->Draw(walkModelInfo_);
+	//walkModel_->Draw(walkModelInfo1_);
+	//sneakWalkModel_->Draw(sneakWalkModelInfo_);
+	//simpleSkinModel_->Draw(simpleSkinModelInfo_);
 
 	///オブジェクトの描画終了
 
