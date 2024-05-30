@@ -1,6 +1,7 @@
 #pragma once
 #include "DirectXGame/Base/WinApp/WinApp.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
+#include "SrvManager.h"
 #include "External/imgui/imgui.h"
 #include "External/imgui/imgui_impl_dx12.h"
 #include "External/imgui/imgui_impl_win32.h"

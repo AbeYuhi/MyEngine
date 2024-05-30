@@ -73,7 +73,7 @@ void PostEffectManager::NormalPreDraw() {
 	directX->ClearRenderTarget({ 0.1f, 0.25f, 0.5f, 1.0f }, rtvHandle);
 
 	//描画用DescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
+	ID3D12DescriptorHeap* descriptorHeaps[] = { SrvManager::GetInstance()->GetSrvDescriptorHeap() };
 	directX->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
 }
 
@@ -106,7 +106,7 @@ void PostEffectManager::RenderPreDraw() {
 	directX->ClearDepthStencilBuffer();
 
 	//描画用DescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { DirectXCommon::GetInstance()->GetSrvDescriptorHeap() };
+	ID3D12DescriptorHeap* descriptorHeaps[] = { SrvManager::GetInstance()->GetSrvDescriptorHeap() };
 	directX->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
 }
 
@@ -132,7 +132,7 @@ void PostEffectManager::RenderPostDraw() {
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 	directX->GetCommandList()->SetPipelineState(graphicsPipelineState_[postEffect_]->Get());
 	directX->GetCommandList()->SetGraphicsRootSignature(rootSignature_[postEffect_].Get());
-	directX->GetCommandList()->SetGraphicsRootDescriptorTable(0, directX->GetGPUDescriptorHandle(kSRVIndex));
+	directX->GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUDescriptorHandle(srvIndex_));
 	//CBufferで送る場合
 	switch (postEffect_)
 	{
@@ -168,12 +168,13 @@ void PostEffectManager::CreateRenderTexture() {
 	directXCommon->GetDevice()->CreateRenderTargetView(renderTextureResource_.Get(), &rtvDesc, rtvHandle);
 
 	//SRVの生成
+	srvIndex_ = SrvManager::GetInstance()->Allocate();
 	D3D12_SHADER_RESOURCE_VIEW_DESC renderTextureSrvDesc{};
 	renderTextureSrvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	renderTextureSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	renderTextureSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	renderTextureSrvDesc.Texture2D.MipLevels = 1;
-	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = directXCommon->GetCPUDescriptorHandle(kSRVIndex);
+	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = SrvManager::GetInstance()->GetCPUDescriptorHandle(srvIndex_);
 	directXCommon->GetDevice()->CreateShaderResourceView(renderTextureResource_.Get(), &renderTextureSrvDesc, handleCPU);
 }
 

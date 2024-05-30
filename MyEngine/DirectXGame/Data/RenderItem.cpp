@@ -3,9 +3,7 @@
 
 RenderItem::~RenderItem() {
 	for (auto& skinCluster : animation_.skinClusters) {
-		if (SkinCluster::isAlive[skinCluster.second.index]) {
-			ClearSkinCluster(skinCluster.second);
-		}
+		ClearSkinCluster(skinCluster.second);
 	}
 }
 

@@ -16,6 +16,8 @@
 
 using namespace Microsoft::WRL;
 
+class SrvManager;
+
 class DirectXCommon {
 public: //静的関数
 	static DirectXCommon* GetInstance();
@@ -81,8 +83,6 @@ public: //ゲッターセッター
 
 	inline ID3D12DescriptorHeap* GetRtvDescriptorHeap() { return rtvDescriptorHeap_.Get(); }
 
-	inline ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); }
-
 	inline ID3D12DescriptorHeap* GetDsvDescriptorHeap() { return dsvDescriptorHeap_.Get(); }
 
 	inline D3D12_RENDER_TARGET_VIEW_DESC GetRtvDesc() { return rtvDesc_; }
@@ -105,10 +105,6 @@ public: //ゲッターセッター
 	/// <returns></returns>
 	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle(int index);
 
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(int index);
-
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(int index);
-
 private: //メンバ関数
 	DirectXCommon() = default;
 	~DirectXCommon() = default;
@@ -121,13 +117,6 @@ private: //メンバ関数
 
 	void CreateRenderTargetView();
 
-	/// <summary>
-	/// 0 : ImGuiManager
-	/// 1～1000 : Texture
-	/// 1001～2000 : Particle
-	/// 2001～3000 : Palette
-	/// 3001 : RenderTexture
-	/// </summary>
 	void CreateShaderResourceView();
 
 	void CreateDepthStencilView();
@@ -146,10 +135,10 @@ private: //メンバ変数
 	ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
-	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr;
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_;
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc_;
+	SrvManager* srvManager_;
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 	ComPtr<ID3D12Fence> fence_ = nullptr;
 	ComPtr<IDxcUtils> dxcUtils_ = nullptr;

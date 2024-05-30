@@ -181,6 +181,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Manager\PostEffectManager.cpp" />
     <ClCompile Include="DirectXGame\Data\SkinCluster.cpp" />
     <ClCompile Include="DirectXGame\Data\RenderItem.cpp" />
+    <ClCompile Include="DirectXGame\Manager\SrvManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Data\AnimationData.h" />
@@ -276,6 +277,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Manager\PostEffectManager.h" />
     <ClInclude Include="DirectXGame\Data\SkinCluster.h" />
     <ClInclude Include="DirectXGame\Data\KernelSize.h" />
+    <ClInclude Include="DirectXGame\Manager\SrvManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

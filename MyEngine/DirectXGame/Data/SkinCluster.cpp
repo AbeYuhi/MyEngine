@@ -1,29 +1,19 @@
 #include "SkinCluster.h"
 
-int SkinCluster::sSkinClusterNum = 0;
-std::map<int, bool> SkinCluster::isAlive;
-
 SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modeldata) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	SkinCluster::sSkinClusterNum++;
 	SkinCluster skinCluster;
-	for (int i = 0; i < SkinCluster::kSkinClusterMaxNum; i++) {
-		if (!SkinCluster::isAlive[i]) {
-			SkinCluster::isAlive[i] = true;
-			skinCluster.index = i;
-			break;
-		}
-		if (i == SkinCluster::kSkinClusterMaxNum - 1) {
-			assert(false);
-		}
-	}
+
+	uint32_t srvIndex = SrvManager::GetInstance()->Allocate();
+
 	//palette用のResource確保
 	skinCluster.paletteResource = CreateBufferResource(sizeof(WellForGPU) * skeleton.joints.size());
 	WellForGPU* mappedPalette = nullptr;
 	skinCluster.paletteResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
 	skinCluster.mappedPalette = { mappedPalette, skeleton.joints.size() };
-	skinCluster.paletteSrvHandle.first = dxCommon->GetCPUDescriptorHandle(2001 + skinCluster.index);
-	skinCluster.paletteSrvHandle.second = dxCommon->GetGPUDescriptorHandle(2001 + skinCluster.index);
+	skinCluster.paletteSrvHandle.first = SrvManager::GetInstance()->GetCPUDescriptorHandle(srvIndex);
+	skinCluster.paletteSrvHandle.second = SrvManager::GetInstance()->GetGPUDescriptorHandle(srvIndex);
+	skinCluster.srvIndex = srvIndex;
 
 	//palette用のsrvを作成
 	D3D12_SHADER_RESOURCE_VIEW_DESC	paletteSrvDesc{};
@@ -78,7 +68,6 @@ SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modelda
 }
 
 void ClearSkinCluster(SkinCluster& skinCluster) {
-	SkinCluster::sSkinClusterNum--;
-	SkinCluster::isAlive[skinCluster.index] = false;
+	SrvManager::GetInstance()->UnLoadResource(skinCluster.srvIndex);
 	skinCluster.paletteResource.Reset();
 }

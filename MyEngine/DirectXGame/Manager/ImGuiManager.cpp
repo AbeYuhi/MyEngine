@@ -10,6 +10,8 @@ ImGuiManager* ImGuiManager::GetInstance() {
 void ImGuiManager::Initialize() {
 	WinApp* winApp = WinApp::GetInstance();
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	SrvManager* srvManager = SrvManager::GetInstance();
+	uint32_t index = srvManager->Allocate();
 	DXGI_SWAP_CHAIN_DESC1 swapChain;
 	dxCommon->GetSwapShain()->GetDesc1(&swapChain);
 	IMGUI_CHECKVERSION();
@@ -19,9 +21,9 @@ void ImGuiManager::Initialize() {
 	ImGui_ImplDX12_Init(dxCommon->GetDevice(),
 		swapChain.BufferCount,
 		dxCommon->GetRtvDesc().Format,
-		dxCommon->GetSrvDescriptorHeap(),
-		dxCommon->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart(),
-		dxCommon->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
+		srvManager->GetSrvDescriptorHeap(),
+		srvManager->GetCPUDescriptorHandle(index),
+		srvManager->GetGPUDescriptorHandle(index));
 }
 
 void ImGuiManager::Begin() {

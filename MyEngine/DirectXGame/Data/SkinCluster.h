@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <WRL/client.h>
 #include "Base/DirectXCommon/DirectXCommon.h"
+#include "Manager/SrvManager.h"
 #include "Math/Matrix4x4.h"
 #include "Math/Math.h"
 #include "Data/Skeleton.h"
@@ -25,9 +26,6 @@ struct WellForGPU {
 };
 
 struct SkinCluster {
-	static int sSkinClusterNum;
-	static const int kSkinClusterMaxNum = 1000;
-	static std::map<int, bool> isAlive;
 	std::vector<Matrix4x4> inverseBindPoseMatrices;
 	ComPtr<ID3D12Resource> influenceResource;
 	D3D12_VERTEX_BUFFER_VIEW influenceBufferView;
@@ -35,7 +33,7 @@ struct SkinCluster {
 	ComPtr<ID3D12Resource> paletteResource;
 	std::span<WellForGPU> mappedPalette;
 	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
-	int index;
+	int srvIndex;
 };
 
 SkinCluster CreateSkinCluster(const Skeleton& skeleton, const ModelData& modeldata);

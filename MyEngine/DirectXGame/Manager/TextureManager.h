@@ -5,6 +5,7 @@
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
 #include "DirectXGame/Base/CreateResource/CreateResource.h"
 #include "DirectXGame/Data/TextureData.h"
+#include "DirectXGame/Manager/SrvManager.h"
 #include "External/DirectXTex/DirectXTex.h"
 #include "External/DirectXTex/d3dx12.h"
 

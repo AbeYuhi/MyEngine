@@ -138,9 +138,11 @@ void TextureManager::CreateShaderResourceView(const std::string& textureName) {
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
+	uint32_t srvIndex = SrvManager::GetInstance()->Allocate();
+
 	//SRVを作成するDescriptorの場所を決める
-	textureDatas_[textureName].textureSrvHandleCPU = dxCommon->GetCPUDescriptorHandle(sTextureNum_);
-	textureDatas_[textureName].textureSrvHandleGPU = dxCommon->GetGPUDescriptorHandle(sTextureNum_);
+	textureDatas_[textureName].textureSrvHandleCPU = SrvManager::GetInstance()->GetCPUDescriptorHandle(srvIndex);
+	textureDatas_[textureName].textureSrvHandleGPU = SrvManager::GetInstance()->GetGPUDescriptorHandle(srvIndex);
 	//SRVの生成
 	dxCommon->GetDevice()->CreateShaderResourceView(textureDatas_[textureName].textureResource.Get(), &srvDesc, textureDatas_[textureName].textureSrvHandleCPU);
 }

@@ -1,4 +1,5 @@
 #include "DirectXCommon.h"
+#include "Manager/SrvManager.h"
 #include "Manager/GraphicsPipelineManager.h"
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -430,8 +431,10 @@ void DirectXCommon::CreateRenderTargetView() {
 }
 
 void DirectXCommon::CreateShaderResourceView() {
-	//ディスクリプターヒープの生成
-	srvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 4096, true);
+
+	srvManager_ = SrvManager::GetInstance();
+	srvManager_->Initialize();
+
 }
 
 void DirectXCommon::CreateDepthStencilView() {
@@ -519,16 +522,4 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetRtvHandle(int index) {
 		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
 	return rtvHandle;
-}
-
-D3D12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetCPUDescriptorHandle(int index) {
-	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = srvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
-	handleCPU.ptr += device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * index;
-	return handleCPU;
-}
-
-D3D12_GPU_DESCRIPTOR_HANDLE DirectXCommon::GetGPUDescriptorHandle(int index) {
-	D3D12_GPU_DESCRIPTOR_HANDLE handleGPU = srvDescriptorHeap_->GetGPUDescriptorHandleForHeapStart();
-	handleGPU.ptr += device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * index;
-	return handleGPU;
 }

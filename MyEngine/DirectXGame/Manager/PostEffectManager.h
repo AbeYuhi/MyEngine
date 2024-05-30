@@ -2,6 +2,7 @@
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Base/CreateResource/CreateResource.h"
 #include "GraphicsPipelineManager.h"
+#include "SrvManager.h"
 #include "Data/KernelSize.h"
 #include "ImGuiManager.h"
 
@@ -60,7 +61,7 @@ private: //メンバ変数
 	ComPtr<ID3D12PipelineState> graphicsPipelineState_[PostEffect::kCountOfPostEffect][BlendMode::kCountOfBlendMode];
 	PostEffect postEffect_;
 	const int kRTVIndex = 2;
-	const int kSRVIndex = 3001;
+	uint32_t srvIndex_;
 
 	//各ポストエフェクトにおける必要なResourceなど
 	//Smoothing
