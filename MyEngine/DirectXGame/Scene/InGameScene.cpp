@@ -284,6 +284,7 @@ void InGameScene::Draw() {
 
 	///パーティクルの描画
 
+	//testParticle1_->Draw();
 
 	///パーティクルの描画終了
 }

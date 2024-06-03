@@ -10,6 +10,8 @@
 #include <cassert>
 #include <map>
 
+using namespace Microsoft::WRL;
+
 class DirectXCommon;
 
 class SrvManager
@@ -39,7 +41,7 @@ private:
 	DirectXCommon* dxCommon_;
 	static const uint32_t kMaxCount_;
 	uint32_t descriptorSize_;
-	ComPtr<ID3D12DescriptorHeap> descriptorHeap_ = nullptr;
+	ComPtr<ID3D12DescriptorHeap> descriptorHeap_;
 	std::map<uint32_t, bool> isUseIndex_;
 };
 

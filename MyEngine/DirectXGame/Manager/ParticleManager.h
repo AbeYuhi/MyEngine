@@ -2,6 +2,7 @@
 #include <map>
 #include <format>
 #include <numbers>
+#include "SrvManager.h"
 #include "DirectXGame/Data/RenderItem.h"
 #include "DirectXGame/Data/ResourceHandles.h"
 #include "DirectXGame/Data/ParticleDrawInfo.h"
@@ -31,12 +32,6 @@ struct Emitter {
 
 class ParticleManager
 {
-private:
-	//現在のパーティクルの生成数
-	static int sEmittersCount_;
-	static const int kEmittersMaxCount_ = 1000;
-	static std::map<int, bool> isDrawing_;
-
 public: //メンバ関数
 	ParticleManager(int maxParticleCount);
 	~ParticleManager();
@@ -82,7 +77,7 @@ protected: //メンバ変数
 
 	//リソース
 	ComPtr<ID3D12Resource> resource_;
-	int index_;
+	int srvIndex_;
 	//Resourceハンドル
 	ResourceHandles srvHandle_;
 	//エミッターの情報

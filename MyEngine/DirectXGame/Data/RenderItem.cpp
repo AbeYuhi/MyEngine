@@ -23,6 +23,7 @@ void RenderItem::Update() {
 }
 
 void RenderItem::UpdateGltf(Mesh mesh, int index) {
+	meshWorldTransforms_[index].data_ = worldTransform_.data_;
 	meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;
 	if (FindMatix(animation_.rootNode, mesh.name)) {
 		meshWorldTransforms_[index].NodeUpdate(*FindMatix(animation_.rootNode, mesh.name));

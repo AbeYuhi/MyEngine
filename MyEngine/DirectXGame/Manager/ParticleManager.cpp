@@ -5,18 +5,9 @@ ParticleManager::ParticleManager(int maxParticleCount) : kMaxParticleCount_(maxP
 ParticleManager::~ParticleManager(){
 	UnloadParticle();
 }
-
-int ParticleManager::sEmittersCount_ = 0;
-std::map<int, bool> ParticleManager::isDrawing_;
 void ParticleManager::Initialize() {
 	//インスタンスの取得
 	randomManager_ = RandomManager::GetInstance();
-	//現在生成されているパーティクル数をインクリメント
-	sEmittersCount_++;
-	if (sEmittersCount_ > 1000) {
-		Log(ConvertString(std::format(L"1000個以上パーティクルは生成できません\n")));
-		assert(false);
-	}
 
 	//リソースの作成
 	resource_ = CreateBufferResource(sizeof(ParticleForGPU) * kMaxParticleCount_);
@@ -156,13 +147,14 @@ void ParticleManager::PopParticle() {
 }
 
 void ParticleManager::UnloadParticle() {
-	sEmittersCount_--;
-	isDrawing_[index_] = false;
+	SrvManager* srvManager = SrvManager::GetInstance();
+	srvManager->UnLoadResource(srvIndex_);
 	resource_.Reset();
 }
 
 void ParticleManager::CreateSRV() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	SrvManager* srvManager = SrvManager::GetInstance();
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -172,18 +164,9 @@ void ParticleManager::CreateSRV() {
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	srvDesc.Buffer.NumElements = kMaxParticleCount_;
 	srvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
-	for (int i = 0; i < kEmittersMaxCount_; i++) {
-		if (!isDrawing_[i]) {
-			srvHandle_.CPUHandle = dxCommon->GetCPUDescriptorHandle(1001 + i);
-			srvHandle_.GPUHandle = dxCommon->GetGPUDescriptorHandle(1001 + i);
-			isDrawing_[i] = true;
-			index_ = i;
-			break;
-		}
-		if (i == kEmittersMaxCount_ - 1) {
-			assert(false);
-		}
-	}
+	srvIndex_ = srvManager->Allocate();
+	srvHandle_.CPUHandle = srvManager->GetCPUDescriptorHandle(srvIndex_);
+	srvHandle_.GPUHandle = srvManager->GetGPUDescriptorHandle(srvIndex_);
 	dxCommon->GetDevice()->CreateShaderResourceView(resource_.Get(), &srvDesc, srvHandle_.CPUHandle);
 }
 
