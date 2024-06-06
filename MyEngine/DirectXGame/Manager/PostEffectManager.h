@@ -3,7 +3,7 @@
 #include "Base/CreateResource/CreateResource.h"
 #include "GraphicsPipelineManager.h"
 #include "SrvManager.h"
-#include "Data/KernelSize.h"
+#include "Data/SmoothingInfo.h"
 #include "ImGuiManager.h"
 
 enum PostEffect {
@@ -34,8 +34,12 @@ public: //ゲッターセッター
 	inline PostEffect GetPostEffect() { return postEffect_; }
 	inline void SetPostEffect(PostEffect postEffect) { postEffect_ = postEffect; }
 
-	inline int GetKernelSize() { return kernelSize_->size; }
-	inline void SetKernelSize(int kernelSize) { kernelSize_->size = kernelSize; }
+	inline int32_t GetKernelSize() { return smoothingInfo_->kernelSize; }
+	inline void SetKernelSize(int32_t kernelSize) { smoothingInfo_->kernelSize = kernelSize; }
+	inline int32_t GetSmoothingType() { return smoothingInfo_->type; }
+	inline void SetSmoothingType(int32_t type) { smoothingInfo_->type = type; }
+	inline float GetBlurStrength() { return smoothingInfo_->blurStrength; }
+	inline void SetBlurStrength(float blurStrength) { smoothingInfo_->blurStrength = blurStrength; }
 
 private:
 	PostEffectManager() = default;
@@ -65,7 +69,7 @@ private: //メンバ変数
 
 	//各ポストエフェクトにおける必要なResourceなど
 	//Smoothing
-	ComPtr<ID3D12Resource> kernelSizeResource_ = nullptr;
-	KernelSize* kernelSize_;
+	ComPtr<ID3D12Resource> smoothingInfoResource_ = nullptr;
+	SmoothingInfo* smoothingInfo_;
 };
 

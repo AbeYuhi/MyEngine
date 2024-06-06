@@ -19,9 +19,11 @@ void PostEffectManager::Initialize() {
 	CreatePSO();
 
 	//Respourceの確保
-	kernelSizeResource_ = CreateBufferResource(sizeof(KernelSize));
-	kernelSizeResource_->Map(0, nullptr, reinterpret_cast<void**>(&kernelSize_));
-	kernelSize_->size = 1;
+	smoothingInfoResource_ = CreateBufferResource(sizeof(SmoothingInfo));
+	smoothingInfoResource_->Map(0, nullptr, reinterpret_cast<void**>(&smoothingInfo_));
+	smoothingInfo_->kernelSize = 1;
+	smoothingInfo_->type = 0;
+	smoothingInfo_->blurStrength = 2.0f;
 }
 
 void PostEffectManager::PreDraw() {
@@ -149,7 +151,7 @@ void PostEffectManager::RenderPostDraw() {
 
 		break;
 	case kSmoothing:
-		directX->GetCommandList()->SetGraphicsRootConstantBufferView(1, kernelSizeResource_->GetGPUVirtualAddress());
+		directX->GetCommandList()->SetGraphicsRootConstantBufferView(1, smoothingInfoResource_->GetGPUVirtualAddress());
 		break;
 	default:
 		break;
@@ -410,7 +412,7 @@ void PostEffectManager::CreatePSO() {
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/FullScreen.VS.hlsl", L"vs_6_0");
 			assert(vertexShaderBlob[shaderPack] != nullptr);
 			//ピクセルシェーダー
-			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/BoxFilter.PS.hlsl", L"ps_6_0");
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/Smoothing.PS.hlsl", L"ps_6_0");
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 		}

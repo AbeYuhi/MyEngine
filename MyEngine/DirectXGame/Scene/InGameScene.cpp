@@ -229,10 +229,19 @@ void InGameScene::Update() {
 
 	ImGui::BeginTabBar("PostEffectState");
 	if (ImGui::BeginTabItem("Smoothing")) {
-		int kernelSize = postEffectManager_->GetKernelSize();
+		int32_t kernelSize = postEffectManager_->GetKernelSize();
 		ImGui::SliderInt("size", &kernelSize, 1, 5);
 		postEffectManager_->SetKernelSize(kernelSize);
+
+		const char* types[] = {"Box", "Gauss"};
+		int32_t type = postEffectManager_->GetSmoothingType();
+		ImGui::Combo("SmoothingType", &type, types, IM_ARRAYSIZE(types));
+		postEffectManager_->SetSmoothingType(type);
 		ImGui::EndTabItem();
+
+		float strength = postEffectManager_->GetBlurStrength();
+		ImGui::SliderFloat("Strength", &strength, 1.0f, 5.0f);
+		postEffectManager_->SetBlurStrength(strength);
 	}
 	ImGui::EndTabBar();
 

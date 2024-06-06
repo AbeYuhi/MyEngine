@@ -276,7 +276,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Object\Line.h" />
     <ClInclude Include="DirectXGame\Manager\PostEffectManager.h" />
     <ClInclude Include="DirectXGame\Data\SkinCluster.h" />
-    <ClInclude Include="DirectXGame\Data\KernelSize.h" />
+    <ClInclude Include="DirectXGame\Data\SmoothingInfo.h" />
     <ClInclude Include="DirectXGame\Manager\SrvManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -304,7 +304,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\PostEffect\BoxFilter.PS.hlsl">
+    <FxCompile Include="Resources\Shaders\PostEffect\Smoothing.PS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
