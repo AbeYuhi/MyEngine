@@ -327,9 +327,6 @@
     <ClCompile Include="DirectXGame\Data\Node.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Data\Bone.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Data\Animation.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>

@@ -113,7 +113,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Base\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="DirectXGame\Data\Animation.cpp" />
-    <ClCompile Include="DirectXGame\Data\Bone.cpp" />
     <ClCompile Include="DirectXGame\Data\Collider.cpp" />
     <ClCompile Include="DirectXGame\Data\Material.cpp" />
     <ClCompile Include="DirectXGame\Data\MaterialInfo.cpp" />
