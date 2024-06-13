@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
+#include <optional>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -10,12 +12,27 @@
 #include "Data/Transform.h"
 #include "Data/AnimationData.h"
 
+//struct Node {
+//	QuaternionTransformData transform;
+//	Matrix4x4 localMatrix;
+//	std::string name;
+//	std::vector<Node> children;
+//	bool isMove;
+//};
+
 struct Node {
 	QuaternionTransformData transform;
 	Matrix4x4 localMatrix;
 	std::string name;
-	std::vector<Node> children;
+	std::vector<int32_t> children;
+	int32_t index;
+	std::optional<int32_t> parent;
 	bool isMove;
+};
+
+struct RootNode {
+	std::vector<Node> nodes;
+	std::map<std::string, uint32_t> nodeMap;
 };
 
 Node ReadNode(aiNode* node);
