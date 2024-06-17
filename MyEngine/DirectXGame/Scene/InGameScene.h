@@ -70,9 +70,6 @@ private:
 	std::shared_ptr<Model> walkModel_;
 	std::shared_ptr<Model> sneakWalkModel_;
 	RenderItem walkModelInfo_;
-	RenderItem sneakWalkModelInfo_;
-	bool isSneak;
-	float animationSpeed_;
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;

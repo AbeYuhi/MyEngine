@@ -69,13 +69,6 @@ void InGameScene::Initialize() {
 	walkModelInfo_.SetModel(walkModel_.get());
 	walkModelInfo_.SetAnimation(walkModel_->GetAnimationData());
 
-	sneakWalkModelInfo_.Initialize();
-	sneakWalkModelInfo_.materialInfo_.material_->enableLightint = true;
-	sneakWalkModelInfo_.SetModel(sneakWalkModel_.get());
-	sneakWalkModelInfo_.SetAnimation(sneakWalkModel_->GetAnimationData());
-
-	animationSpeed_ = 1.0f;
-
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 }
@@ -106,56 +99,6 @@ void InGameScene::Update() {
 
 	//パーティクルの更新
 	testParticle1_->Update();
-
-	if (input_->IsControllerConnected()) {
-
-		if (input_->IsPushGamePadbutton(XINPUT_GAMEPAD_B)) {
-			animationSpeed_ = 2.0f;
-		}
-		else {
-			animationSpeed_ = 1.0f;
-		}
-
-		if (input_->IsPushGamePadbutton(XINPUT_GAMEPAD_A)) {
-
-			if (-0.1f <= input_->GetGamePadLStick().x && input_->GetGamePadLStick().x <= 0.1f) {
-				sneakWalkModelInfo_.animation_.infos[1].isAnimation = false;
-				sneakWalkModelInfo_.animation_.infos[1].animationTime = 0.0f;
-			}
-			else {
-				sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
-				sneakWalkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_ * std::abs(input_->GetGamePadLStick().x);
-				sneakWalkModelInfo_.worldTransform_.data_.translate_.x += 0.5f * (1.0f / 60.0f) * input_->GetGamePadLStick().x;
-				if (input_->GetGamePadLStick().x < 0.0f) {
-					sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
-				}
-				else {
-					sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
-				}
-			}
-			walkModelInfo_.worldTransform_.data_ = sneakWalkModelInfo_.worldTransform_.data_;
-			isSneak = true;
-		}
-		else {
-			if (-0.1f <= input_->GetGamePadLStick().x && input_->GetGamePadLStick().x <= 0.1f) {
-				walkModelInfo_.animation_.infos[1].isAnimation = false;
-				walkModelInfo_.animation_.infos[1].animationTime = 0.0f;
-			}
-			else {
-				walkModelInfo_.animation_.infos[1].isAnimation = true;
-				walkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_ * std::abs(input_->GetGamePadLStick().x);
-				walkModelInfo_.worldTransform_.data_.translate_.x += 1.0f * (1.0f / 60.0f) * input_->GetGamePadLStick().x;
-				if (input_->GetGamePadLStick().x < 0.0f) {
-					walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
-				}
-				else {
-					walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
-				}
-			}
-			sneakWalkModelInfo_.worldTransform_.data_ = walkModelInfo_.worldTransform_.data_;
-			isSneak = false;
-		}
-	}
 
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
@@ -219,7 +162,6 @@ void InGameScene::Update() {
 
 	yukariModelInfo_.Update();
 	walkModelInfo_.Update();
-	sneakWalkModelInfo_.Update();
 	spriteInfo_.Update();
 }
 
@@ -248,12 +190,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//yukariModel_->Draw(yukariModelInfo_);
-	if (isSneak) {
-		sneakWalkModel_->Draw(sneakWalkModelInfo_);
-	}
-	else {
-		walkModel_->Draw(walkModelInfo_);
-	}
+	walkModel_->Draw(walkModelInfo_);
 
 	///オブジェクトの描画終了
 
