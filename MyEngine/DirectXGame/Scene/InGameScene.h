@@ -67,16 +67,12 @@ private:
 	std::shared_ptr<Model> yukariModel_;
 	RenderItem yukariModelInfo_;
 
-	std::shared_ptr<Model> cubeModel_;
-	RenderItem cubeModelInfo_;
-
 	std::shared_ptr<Model> walkModel_;
 	std::shared_ptr<Model> sneakWalkModel_;
-	std::shared_ptr<Model> simpleSkinModel_;
 	RenderItem walkModelInfo_;
-	RenderItem walkModelInfo1_;
 	RenderItem sneakWalkModelInfo_;
-	RenderItem simpleSkinModelInfo_;
+	bool isSneak;
+	float animationSpeed_;
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;

@@ -117,7 +117,6 @@ void Animation::SkeletonDraw() {
 }
 
 void Animation::SetAnimation(std::list<AnimationData> datas) {
-
 	for (auto it = datas.begin(); it != datas.end(); it++) {
 		AnimationData data = *it;
 		

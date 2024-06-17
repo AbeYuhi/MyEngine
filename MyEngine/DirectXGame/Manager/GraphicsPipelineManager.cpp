@@ -47,7 +47,6 @@ void GraphicsPipelineManager::CreateRootSignature() {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
-		case PipelineState::kWireFrame:
 		default:
 #pragma region 通常のシェーダー
 		{
@@ -107,7 +106,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			assert(SUCCEEDED(hr));
 		}
 #pragma endregion
-			break;
+		break;
 		case PipelineState::kParticle:
 #pragma region パーティクルシェーダー
 		{
@@ -162,71 +161,125 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			assert(SUCCEEDED(hr));
 		}
 #pragma endregion
-			break;
+		break;
+		case PipelineState::kWireFrame:
+#pragma region ワイヤフレーム
+		{
+			//DescriptorRangeの設定
+			D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
+			descriptorRange[0].BaseShaderRegister = 0;
+			descriptorRange[0].NumDescriptors = 1;
+			descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+			descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+			//RootSignature生成
+			D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
+			descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+			//RootParameter作成。
+			D3D12_ROOT_PARAMETER rootParameters[3] = {};
+			rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[0].Descriptor.ShaderRegister = 0;
+			rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+			rootParameters[1].Descriptor.ShaderRegister = 0;
+			rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+			rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRange;
+			rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
+			descriptionRootSignature.pParameters = rootParameters;
+			descriptionRootSignature.NumParameters = _countof(rootParameters);
+
+			//Sampler
+			D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
+			staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+			staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+			staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+			staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+			staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+			staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX;
+			staticSamplers[0].ShaderRegister = 0;
+			staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			descriptionRootSignature.pStaticSamplers = staticSamplers;
+			descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
+
+			//シリアライズしてバイナリする
+			LRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob[shaderPack], &errorBlob[shaderPack]);
+			if (FAILED(hr)) {
+				Log(reinterpret_cast<char*>(errorBlob[shaderPack]->GetBufferPointer()));
+				assert(false);
+			}
+			//バイナリをもとに生成
+			hr = directXCommon->GetDevice()->CreateRootSignature(0, signatureBlob[shaderPack]->GetBufferPointer(), signatureBlob[shaderPack]->GetBufferSize(), IID_PPV_ARGS(&rootSignature_[shaderPack]));
+			assert(SUCCEEDED(hr));
+		}
+#pragma endregion
+		break;
 		case PipelineState::kSkinning:
 #pragma region スキニング用シェーダー
-			{
-				//DescriptorRangeの設定
-				D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
-				descriptorRange[0].BaseShaderRegister = 0;
-				descriptorRange[0].NumDescriptors = 1;
-				descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-				descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+		{
+			//DescriptorRangeの設定
+			D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
+			descriptorRange[0].BaseShaderRegister = 0;
+			descriptorRange[0].NumDescriptors = 1;
+			descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+			descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-				//RootSignature生成
-				D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
-				descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+			//RootSignature生成
+			D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
+			descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
-				//RootParameter作成。
-				D3D12_ROOT_PARAMETER rootParameters[6] = {};
-				rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-				rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-				rootParameters[0].Descriptor.ShaderRegister = 0;
-				rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-				rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
-				rootParameters[1].Descriptor.ShaderRegister = 0;
-				rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-				rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-				rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRange;
-				rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
-				rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-				rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-				rootParameters[3].Descriptor.ShaderRegister = 1;
-				rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-				rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-				rootParameters[4].Descriptor.ShaderRegister = 2;
-				rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-				rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
-				rootParameters[5].DescriptorTable.pDescriptorRanges = descriptorRange;
-				rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
-				descriptionRootSignature.pParameters = rootParameters;
-				descriptionRootSignature.NumParameters = _countof(rootParameters);
+			//RootParameter作成。
+			D3D12_ROOT_PARAMETER rootParameters[6] = {};
+			rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[0].Descriptor.ShaderRegister = 0;
+			rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+			rootParameters[1].Descriptor.ShaderRegister = 0;
+			rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+			rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRange;
+			rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
+			rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[3].Descriptor.ShaderRegister = 1;
+			rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+			rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			rootParameters[4].Descriptor.ShaderRegister = 2;
+			rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+			rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+			rootParameters[5].DescriptorTable.pDescriptorRanges = descriptorRange;
+			rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
+			descriptionRootSignature.pParameters = rootParameters;
+			descriptionRootSignature.NumParameters = _countof(rootParameters);
 
-				//Sampler
-				D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
-				staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-				staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-				staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-				staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-				staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-				staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX;
-				staticSamplers[0].ShaderRegister = 0;
-				staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-				descriptionRootSignature.pStaticSamplers = staticSamplers;
-				descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
+			//Sampler
+			D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
+			staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+			staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+			staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+			staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+			staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+			staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX;
+			staticSamplers[0].ShaderRegister = 0;
+			staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			descriptionRootSignature.pStaticSamplers = staticSamplers;
+			descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
 
-				//シリアライズしてバイナリする
-				LRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob[shaderPack], &errorBlob[shaderPack]);
-				if (FAILED(hr)) {
-					Log(reinterpret_cast<char*>(errorBlob[shaderPack]->GetBufferPointer()));
-					assert(false);
-				}
-				//バイナリをもとに生成
-				hr = directXCommon->GetDevice()->CreateRootSignature(0, signatureBlob[shaderPack]->GetBufferPointer(), signatureBlob[shaderPack]->GetBufferSize(), IID_PPV_ARGS(&rootSignature_[shaderPack]));
-				assert(SUCCEEDED(hr));
+			//シリアライズしてバイナリする
+			LRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob[shaderPack], &errorBlob[shaderPack]);
+			if (FAILED(hr)) {
+				Log(reinterpret_cast<char*>(errorBlob[shaderPack]->GetBufferPointer()));
+				assert(false);
 			}
+			//バイナリをもとに生成
+			hr = directXCommon->GetDevice()->CreateRootSignature(0, signatureBlob[shaderPack]->GetBufferPointer(), signatureBlob[shaderPack]->GetBufferSize(), IID_PPV_ARGS(&rootSignature_[shaderPack]));
+			assert(SUCCEEDED(hr));
+		}
 #pragma endregion
-			break;
+		break;
 		}
 	}
 }
@@ -236,61 +289,63 @@ void GraphicsPipelineManager::CreatePSO() {
 
 	//InputLayoutの設定
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc[PipelineState::kCountOfPipelineState] = {0};
+	D3D12_INPUT_ELEMENT_DESC normalInputElementDescs[3] = { 0 };
+	normalInputElementDescs[0].SemanticName = "POSITION";
+	normalInputElementDescs[0].SemanticIndex = 0;
+	normalInputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	normalInputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	normalInputElementDescs[1].SemanticName = "TEXCOORD";
+	normalInputElementDescs[1].SemanticIndex = 0;
+	normalInputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	normalInputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	normalInputElementDescs[2].SemanticName = "NORMAL";
+	normalInputElementDescs[2].SemanticIndex = 0;
+	normalInputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	normalInputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
+	D3D12_INPUT_ELEMENT_DESC skiningInputElementDescs[5] = { 0 };
+	skiningInputElementDescs[0].SemanticName = "POSITION";
+	skiningInputElementDescs[0].SemanticIndex = 0;
+	skiningInputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	skiningInputElementDescs[0].InputSlot = 0;
+	skiningInputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	skiningInputElementDescs[1].SemanticName = "TEXCOORD";
+	skiningInputElementDescs[1].SemanticIndex = 0;
+	skiningInputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	skiningInputElementDescs[1].InputSlot = 0;
+	skiningInputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	skiningInputElementDescs[2].SemanticName = "NORMAL";
+	skiningInputElementDescs[2].SemanticIndex = 0;
+	skiningInputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	skiningInputElementDescs[2].InputSlot = 0;
+	skiningInputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	skiningInputElementDescs[3].SemanticName = "WEIGHT";
+	skiningInputElementDescs[3].SemanticIndex = 0;
+	skiningInputElementDescs[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	skiningInputElementDescs[3].InputSlot = 1;
+	skiningInputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	skiningInputElementDescs[4].SemanticName = "INDEX";
+	skiningInputElementDescs[4].SemanticIndex = 0;
+	skiningInputElementDescs[4].Format = DXGI_FORMAT_R32G32B32A32_SINT;
+	skiningInputElementDescs[4].InputSlot = 1;
+	skiningInputElementDescs[4].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
 		case PipelineState::kParticle:
 		case PipelineState::kWireFrame:
-		default:
 		{
-			D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {0};
-			inputElementDescs[0].SemanticName = "POSITION";
-			inputElementDescs[0].SemanticIndex = 0;
-			inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[1].SemanticName = "TEXCOORD";
-			inputElementDescs[1].SemanticIndex = 0;
-			inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-			inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[2].SemanticName = "NORMAL";
-			inputElementDescs[2].SemanticIndex = 0;
-			inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
-			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
+			inputLayoutDesc[shaderPack].pInputElementDescs = normalInputElementDescs;
+			inputLayoutDesc[shaderPack].NumElements = _countof(normalInputElementDescs);
 		}
 		break;
 		case PipelineState::kSkinning:
-			D3D12_INPUT_ELEMENT_DESC inputElementDescs[5] = {0};
-			inputElementDescs[0].SemanticName = "POSITION";
-			inputElementDescs[0].SemanticIndex = 0;
-			inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			inputElementDescs[0].InputSlot = 0;
-			inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[1].SemanticName = "TEXCOORD";
-			inputElementDescs[1].SemanticIndex = 0;
-			inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-			inputElementDescs[1].InputSlot = 0;
-			inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[2].SemanticName = "NORMAL";
-			inputElementDescs[2].SemanticIndex = 0;
-			inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			inputElementDescs[2].InputSlot = 0;
-			inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[3].SemanticName = "WEIGHT";
-			inputElementDescs[3].SemanticIndex = 0;
-			inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			inputElementDescs[3].InputSlot = 1;
-			inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputElementDescs[4].SemanticName = "INDEX";
-			inputElementDescs[4].SemanticIndex = 0;
-			inputElementDescs[4].Format = DXGI_FORMAT_R32G32B32A32_SINT;
-			inputElementDescs[4].InputSlot = 1;
-			inputElementDescs[4].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-			inputLayoutDesc[shaderPack].pInputElementDescs = inputElementDescs;
-			inputLayoutDesc[shaderPack].NumElements = _countof(inputElementDescs);
-			break;
+		{
+			inputLayoutDesc[shaderPack].pInputElementDescs = skiningInputElementDescs;
+			inputLayoutDesc[shaderPack].NumElements = _countof(skiningInputElementDescs);
+		}
+		break;
 		}
 	}
 
@@ -365,13 +420,12 @@ void GraphicsPipelineManager::CreatePSO() {
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
 	//Shaderのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob[PipelineState::kCountOfPipelineState]{0};
-	ComPtr<IDxcBlob> pixelShaderBlob[PipelineState::kCountOfPipelineState]{0};
+	ComPtr<IDxcBlob> vertexShaderBlob[PipelineState::kCountOfPipelineState] = {0};
+	ComPtr<IDxcBlob> pixelShaderBlob[PipelineState::kCountOfPipelineState] = {0};
 	for (int shaderPack = 0; shaderPack < PipelineState::kCountOfPipelineState; shaderPack++) {
 		switch (shaderPack)
 		{
 		case PipelineState::kDefault:
-		case PipelineState::kWireFrame:
 		default:
 			//頂点シェーダー
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Object3D.VS.hlsl", L"vs_6_0");
@@ -388,7 +442,15 @@ void GraphicsPipelineManager::CreatePSO() {
 			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/Particle.PS.hlsl", L"ps_6_0");
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
-			case PipelineState::kSkinning:
+		case PipelineState::kWireFrame:
+			//頂点シェーダー
+			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/WireFrame.VS.hlsl", L"vs_6_0");
+			assert(vertexShaderBlob[shaderPack] != nullptr);
+			//ピクセルシェーダー
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/WireFrame.PS.hlsl", L"ps_6_0");
+			assert(pixelShaderBlob[shaderPack] != nullptr);
+			break;
+		case PipelineState::kSkinning:
 			//頂点シェーダー
 			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/SkinningObject3d.VS.hlsl", L"vs_6_0");
 			assert(vertexShaderBlob[shaderPack] != nullptr);
@@ -406,6 +468,7 @@ void GraphicsPipelineManager::CreatePSO() {
 		{
 		case PipelineState::kDefault:
 		case PipelineState::kWireFrame:
+		case PipelineState::kSkinning:
 		default:
 			depthStencilDesc[shaderPack].DepthEnable = true;
 			depthStencilDesc[shaderPack].DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;

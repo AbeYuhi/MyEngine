@@ -32,7 +32,6 @@ void MainCamera::Draw() {
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 	//パイプラインステートの設定
 	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
-	//ルートシグネチャの設定
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, cameraResorce_->GetGPUVirtualAddress());
 }

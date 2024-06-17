@@ -133,6 +133,9 @@
     <Filter Include="Shader\Skinning">
       <UniqueIdentifier>{2defe5a4-cfdc-4c77-9780-8e7596e4c654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\WireFrame">
+      <UniqueIdentifier>{5627d61b-7e1a-4ab2-aa4d-8cd2cde9206f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -655,6 +658,9 @@
     <None Include="Resources\Shaders\PostEffect\FullScreen.hlsli">
       <Filter>Shader\PostEffect</Filter>
     </None>
+    <None Include="Resources\Shaders\WireFrame.hlsli">
+      <Filter>Shader\WireFrame</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="External\imgui\LICENSE.txt">
@@ -694,6 +700,12 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\SkinningObject3d.VS.hlsl">
       <Filter>Shader\Skinning</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\WireFrame.PS.hlsl">
+      <Filter>Shader\WireFrame</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\WireFrame.VS.hlsl">
+      <Filter>Shader\WireFrame</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

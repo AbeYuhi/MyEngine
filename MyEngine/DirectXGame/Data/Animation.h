@@ -14,7 +14,7 @@ class Model;
 
 struct Animation {
 	//アニメーションのローカル情報
-	std::list<AnimationInfo> infos;
+	std::vector<AnimationInfo> infos;
 	//Node情報
 	Node rootNode;
 	//初期モデルのNode

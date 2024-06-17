@@ -61,15 +61,8 @@ void InGameScene::Initialize() {
 	yukariModelInfo_.SetModel(yukariModel_.get());
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 
-	//cubeModel_ = Model::Create("multiCube", "multiCube.gltf");
-	cubeModel_ = Model::Create("AnimatedCube", "AnimatedCube.gltf");
-	cubeModelInfo_.Initialize();
-	cubeModelInfo_.SetModel(cubeModel_.get());
-	cubeModelInfo_.SetAnimation(cubeModel_->GetAnimationData());
-
 	walkModel_ = Model::Create("human", "walk.gltf");
 	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
-	simpleSkinModel_ = Model::Create("simpleSkin", "simpleSkin.gltf");
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
@@ -77,20 +70,11 @@ void InGameScene::Initialize() {
 	walkModelInfo_.SetModel(walkModel_.get());
 	walkModelInfo_.SetAnimation(walkModel_->GetAnimationData());
 
-	walkModelInfo1_.Initialize();
-	walkModelInfo1_.worldTransform_.data_.rotate_.y += M_PI;
-	walkModelInfo1_.SetModel(walkModel_.get());
-	walkModelInfo1_.SetAnimation(walkModel_->GetAnimationData());
-
 	sneakWalkModelInfo_.Initialize();
 	sneakWalkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
+	sneakWalkModelInfo_.materialInfo_.material_->enableLightint = true;
 	sneakWalkModelInfo_.SetModel(sneakWalkModel_.get());
 	sneakWalkModelInfo_.SetAnimation(sneakWalkModel_->GetAnimationData());
-
-	simpleSkinModelInfo_.Initialize();
-	simpleSkinModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
-	simpleSkinModelInfo_.SetModel(simpleSkinModel_.get());
-	simpleSkinModelInfo_.SetAnimation(simpleSkinModel_->GetAnimationData());
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -123,6 +107,42 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
+	if (input_->IsPushKey(DIK_C)) {
+		if (input_->IsPushKey(DIK_A)) {
+			sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
+			sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
+			sneakWalkModelInfo_.worldTransform_.data_.translate_.x -= 0.5f * (1.0f / 60.0f);
+		}
+		if (input_->IsPushKey(DIK_D)) {
+			sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
+			sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
+			sneakWalkModelInfo_.worldTransform_.data_.translate_.x += 0.5f * (1.0f / 60.0f);
+		}
+		if ((input_->IsPushKey(DIK_A) && input_->IsPushKey(DIK_D)) || (!input_->IsPushKey(DIK_A) && !input_->IsPushKey(DIK_D))) {
+			sneakWalkModelInfo_.animation_.infos[1].isAnimation = false;
+		}
+
+		walkModelInfo_.worldTransform_.data_ = sneakWalkModelInfo_.worldTransform_.data_;
+		isSneak = true;
+	}
+	else {
+		if (input_->IsPushKey(DIK_A)) {
+			walkModelInfo_.animation_.infos[1].isAnimation = true;
+			walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
+			walkModelInfo_.worldTransform_.data_.translate_.x -= 1.0f * (1.0f / 60.0f);
+		}
+		if (input_->IsPushKey(DIK_D)) {
+			walkModelInfo_.animation_.infos[1].isAnimation = true;
+			walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
+			walkModelInfo_.worldTransform_.data_.translate_.x += 1.0f * (1.0f / 60.0f);
+		}
+		if ((input_->IsPushKey(DIK_A) && input_->IsPushKey(DIK_D)) || (!input_->IsPushKey(DIK_A) && !input_->IsPushKey(DIK_D))) {
+			walkModelInfo_.animation_.infos[1].isAnimation = false;
+		}
+		sneakWalkModelInfo_.worldTransform_.data_ = walkModelInfo_.worldTransform_.data_;
+		isSneak = false;
+	}
+
 #ifdef _DEBUG
 	ImGui::BeginTabBar("RenderItemInfo");
 	if (ImGui::BeginTabItem("YukariModel")) {
@@ -130,21 +150,6 @@ void InGameScene::Update() {
 		ImGui::SliderFloat3("rotate", &yukariModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("scale", &yukariModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &yukariModelInfo_.materialInfo_.material_->shininess, 0, 100);
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("cubeModel")) {
-		ImGui::SliderFloat3("pos", &cubeModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &cubeModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &cubeModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-
-		for (auto it = cubeModelInfo_.animation_.infos.begin(); it != cubeModelInfo_.animation_.infos.end(); it++) {
-			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
-			std::string animationSpeed = it->data.name + ": speed";
-			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
-			std::string animationLoop = it->data.name + ": loop";
-			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
-		}
-
 		ImGui::EndTabItem();
 	}
 	if (ImGui::BeginTabItem("walkHumanModel")) {
@@ -160,57 +165,6 @@ void InGameScene::Update() {
 			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
 		}
 
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("walkHumanModel1")) {
-		ImGui::SliderFloat3("pos", &walkModelInfo1_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &walkModelInfo1_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &walkModelInfo1_.worldTransform_.data_.scale_.x, -10, 10);
-
-		for (auto it = walkModelInfo1_.animation_.infos.begin(); it != walkModelInfo1_.animation_.infos.end(); it++) {
-			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
-			std::string animationSpeed = it->data.name + ": speed";
-			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
-			std::string animationLoop = it->data.name + ": loop";
-			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
-		}
-
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("sneakWalkHumanModel")) {
-		ImGui::SliderFloat3("pos", &sneakWalkModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &sneakWalkModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &sneakWalkModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-
-		for (auto it = sneakWalkModelInfo_.animation_.infos.begin(); it != sneakWalkModelInfo_.animation_.infos.end(); it++) {
-			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
-			std::string animationSpeed = it->data.name + ": speed";
-			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
-			std::string animationLoop = it->data.name + ": loop";
-			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
-		}
-
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("simpleSkinModel")) {
-		ImGui::SliderFloat3("pos", &simpleSkinModelInfo_.worldTransform_.data_.translate_.x, -10, 10);
-		ImGui::SliderFloat3("rotate", &simpleSkinModelInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &simpleSkinModelInfo_.worldTransform_.data_.scale_.x, -10, 10);
-
-		for (auto it = simpleSkinModelInfo_.animation_.infos.begin(); it != simpleSkinModelInfo_.animation_.infos.end(); it++) {
-			ImGui::Checkbox(it->data.name.c_str(), &it->isAnimation);
-			std::string animationSpeed = it->data.name + ": speed";
-			ImGui::SliderFloat(animationSpeed.c_str(), &it->animationSpeed, -5.0f, 5.0f);
-			std::string animationLoop = it->data.name + ": loop";
-			ImGui::Checkbox(animationLoop.c_str(), &it->isLoop);
-		}
-
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("sprite")) {
-		ImGui::SliderFloat3("pos", &spriteInfo_.worldTransform_.data_.translate_.x, 0, 1280);
-		ImGui::SliderFloat3("rotate", &spriteInfo_.worldTransform_.data_.rotate_.x, -10, 10);
-		ImGui::SliderFloat3("scale", &spriteInfo_.worldTransform_.data_.scale_.x, -10, 10);
 		ImGui::EndTabItem();
 	}
 	ImGui::EndTabBar();
@@ -250,11 +204,8 @@ void InGameScene::Update() {
 #endif // _DEBUG
 
 	yukariModelInfo_.Update();
-	cubeModelInfo_.Update();
 	walkModelInfo_.Update();
-	walkModelInfo1_.Update();
 	sneakWalkModelInfo_.Update();
-	simpleSkinModelInfo_.Update();
 	spriteInfo_.Update();
 }
 
@@ -282,12 +233,13 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	yukariModel_->Draw(yukariModelInfo_);
-	//cubeModel_->Draw(cubeModelInfo_);
-	//walkModel_->Draw(walkModelInfo_);
-	//walkModel_->Draw(walkModelInfo1_);
-	//sneakWalkModel_->Draw(sneakWalkModelInfo_);
-	//simpleSkinModel_->Draw(simpleSkinModelInfo_);
+	//yukariModel_->Draw(yukariModelInfo_);
+	if (isSneak) {
+		sneakWalkModel_->Draw(sneakWalkModelInfo_);
+	}
+	else {
+		walkModel_->Draw(walkModelInfo_);
+	}
 
 	///オブジェクトの描画終了
 
