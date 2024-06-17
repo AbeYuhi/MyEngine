@@ -65,13 +65,11 @@ void InGameScene::Initialize() {
 	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
 
 	walkModelInfo_.Initialize();
-	walkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;
 	walkModelInfo_.SetModel(walkModel_.get());
 	walkModelInfo_.SetAnimation(walkModel_->GetAnimationData());
 
 	sneakWalkModelInfo_.Initialize();
-	sneakWalkModelInfo_.worldTransform_.data_.rotate_.y += M_PI;
 	sneakWalkModelInfo_.materialInfo_.material_->enableLightint = true;
 	sneakWalkModelInfo_.SetModel(sneakWalkModel_.get());
 	sneakWalkModelInfo_.SetAnimation(sneakWalkModel_->GetAnimationData());
@@ -120,7 +118,7 @@ void InGameScene::Update() {
 
 		if (input_->IsPushGamePadbutton(XINPUT_GAMEPAD_A)) {
 
-			if (input_->GetGamePadLStick().x == 0.0f) {
+			if (-0.1f <= input_->GetGamePadLStick().x && input_->GetGamePadLStick().x <= 0.1f) {
 				sneakWalkModelInfo_.animation_.infos[1].isAnimation = false;
 				sneakWalkModelInfo_.animation_.infos[1].animationTime = 0.0f;
 			}
@@ -139,7 +137,7 @@ void InGameScene::Update() {
 			isSneak = true;
 		}
 		else {
-			if (input_->GetGamePadLStick().x == 0.0f) {
+			if (-0.1f <= input_->GetGamePadLStick().x && input_->GetGamePadLStick().x <= 0.1f) {
 				walkModelInfo_.animation_.infos[1].isAnimation = false;
 				walkModelInfo_.animation_.infos[1].animationTime = 0.0f;
 			}

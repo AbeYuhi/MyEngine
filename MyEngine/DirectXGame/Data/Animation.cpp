@@ -58,6 +58,7 @@ void Animation::Update() {
 	if (!isAnimation) {
 		rootNode = initialNode;
 		skeleton = CreateSkeleton(initialNode);
+		SkinClusterUpdate();
 	}
 
 	//変更がなかったNodeを初期ポジに戻す
