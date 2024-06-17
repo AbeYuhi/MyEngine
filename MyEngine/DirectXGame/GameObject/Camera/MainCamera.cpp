@@ -34,4 +34,8 @@ void MainCamera::Draw() {
 	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, cameraResorce_->GetGPUVirtualAddress());
+
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kSkinning));
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(kSkinning));
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, cameraResorce_->GetGPUVirtualAddress());
 }

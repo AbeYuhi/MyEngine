@@ -76,6 +76,8 @@ void InGameScene::Initialize() {
 	sneakWalkModelInfo_.SetModel(sneakWalkModel_.get());
 	sneakWalkModelInfo_.SetAnimation(sneakWalkModel_->GetAnimationData());
 
+	animationSpeed_ = 1.0f;
+
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 }
@@ -107,14 +109,23 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
+	if (input_->IsTriggerKey(DIK_1)) {
+		animationSpeed_ = 1.0f;
+	}
+	if (input_->IsTriggerKey(DIK_2)) {
+		animationSpeed_ = 2.0f;
+	}
+
 	if (input_->IsPushKey(DIK_C)) {
 		if (input_->IsPushKey(DIK_A)) {
 			sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
+			sneakWalkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
 			sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
 			sneakWalkModelInfo_.worldTransform_.data_.translate_.x -= 0.5f * (1.0f / 60.0f);
 		}
 		if (input_->IsPushKey(DIK_D)) {
 			sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
+			sneakWalkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
 			sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
 			sneakWalkModelInfo_.worldTransform_.data_.translate_.x += 0.5f * (1.0f / 60.0f);
 		}
@@ -128,11 +139,13 @@ void InGameScene::Update() {
 	else {
 		if (input_->IsPushKey(DIK_A)) {
 			walkModelInfo_.animation_.infos[1].isAnimation = true;
+			walkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
 			walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
 			walkModelInfo_.worldTransform_.data_.translate_.x -= 1.0f * (1.0f / 60.0f);
 		}
 		if (input_->IsPushKey(DIK_D)) {
 			walkModelInfo_.animation_.infos[1].isAnimation = true;
+			walkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
 			walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
 			walkModelInfo_.worldTransform_.data_.translate_.x += 1.0f * (1.0f / 60.0f);
 		}
