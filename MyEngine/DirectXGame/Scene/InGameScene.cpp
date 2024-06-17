@@ -109,51 +109,54 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
-	if (input_->IsTriggerKey(DIK_1)) {
-		animationSpeed_ = 1.0f;
-	}
-	if (input_->IsTriggerKey(DIK_2)) {
-		animationSpeed_ = 2.0f;
-	}
+	if (input_->IsControllerConnected()) {
 
-	if (input_->IsPushKey(DIK_C)) {
-		if (input_->IsPushKey(DIK_A)) {
-			sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
-			sneakWalkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
-			sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
-			sneakWalkModelInfo_.worldTransform_.data_.translate_.x -= 0.5f * (1.0f / 60.0f);
+		if (input_->IsPushGamePadbutton(XINPUT_GAMEPAD_B)) {
+			animationSpeed_ = 2.0f;
 		}
-		if (input_->IsPushKey(DIK_D)) {
-			sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
-			sneakWalkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
-			sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
-			sneakWalkModelInfo_.worldTransform_.data_.translate_.x += 0.5f * (1.0f / 60.0f);
-		}
-		if ((input_->IsPushKey(DIK_A) && input_->IsPushKey(DIK_D)) || (!input_->IsPushKey(DIK_A) && !input_->IsPushKey(DIK_D))) {
-			sneakWalkModelInfo_.animation_.infos[1].isAnimation = false;
+		else {
+			animationSpeed_ = 1.0f;
 		}
 
-		walkModelInfo_.worldTransform_.data_ = sneakWalkModelInfo_.worldTransform_.data_;
-		isSneak = true;
-	}
-	else {
-		if (input_->IsPushKey(DIK_A)) {
-			walkModelInfo_.animation_.infos[1].isAnimation = true;
-			walkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
-			walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
-			walkModelInfo_.worldTransform_.data_.translate_.x -= 1.0f * (1.0f / 60.0f);
+		if (input_->IsPushGamePadbutton(XINPUT_GAMEPAD_A)) {
+
+			if (input_->GetGamePadLStick().x == 0.0f) {
+				sneakWalkModelInfo_.animation_.infos[1].isAnimation = false;
+				sneakWalkModelInfo_.animation_.infos[1].animationTime = 0.0f;
+			}
+			else {
+				sneakWalkModelInfo_.animation_.infos[1].isAnimation = true;
+				sneakWalkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_ * std::abs(input_->GetGamePadLStick().x);
+				sneakWalkModelInfo_.worldTransform_.data_.translate_.x += 0.5f * (1.0f / 60.0f) * input_->GetGamePadLStick().x;
+				if (input_->GetGamePadLStick().x < 0.0f) {
+					sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
+				}
+				else {
+					sneakWalkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
+				}
+			}
+			walkModelInfo_.worldTransform_.data_ = sneakWalkModelInfo_.worldTransform_.data_;
+			isSneak = true;
 		}
-		if (input_->IsPushKey(DIK_D)) {
-			walkModelInfo_.animation_.infos[1].isAnimation = true;
-			walkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_;
-			walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
-			walkModelInfo_.worldTransform_.data_.translate_.x += 1.0f * (1.0f / 60.0f);
+		else {
+			if (input_->GetGamePadLStick().x == 0.0f) {
+				walkModelInfo_.animation_.infos[1].isAnimation = false;
+				walkModelInfo_.animation_.infos[1].animationTime = 0.0f;
+			}
+			else {
+				walkModelInfo_.animation_.infos[1].isAnimation = true;
+				walkModelInfo_.animation_.infos[1].animationSpeed = animationSpeed_ * std::abs(input_->GetGamePadLStick().x);
+				walkModelInfo_.worldTransform_.data_.translate_.x += 1.0f * (1.0f / 60.0f) * input_->GetGamePadLStick().x;
+				if (input_->GetGamePadLStick().x < 0.0f) {
+					walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f * 3.0f;
+				}
+				else {
+					walkModelInfo_.worldTransform_.data_.rotate_.y = 3.14f / 2.0f;
+				}
+			}
+			sneakWalkModelInfo_.worldTransform_.data_ = walkModelInfo_.worldTransform_.data_;
+			isSneak = false;
 		}
-		if ((input_->IsPushKey(DIK_A) && input_->IsPushKey(DIK_D)) || (!input_->IsPushKey(DIK_A) && !input_->IsPushKey(DIK_D))) {
-			walkModelInfo_.animation_.infos[1].isAnimation = false;
-		}
-		sneakWalkModelInfo_.worldTransform_.data_ = walkModelInfo_.worldTransform_.data_;
-		isSneak = false;
 	}
 
 #ifdef _DEBUG
