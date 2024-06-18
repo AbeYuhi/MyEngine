@@ -56,6 +56,7 @@ void DirectXCommon::PostDraw() {
 	D3D12_RESOURCE_BARRIER barrier{};
 	//今回のバリアの種類
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 	barrier.Transition.pResource = backBuffers[backBufferIndex].Get();
 	//遷移前のResourceState
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
@@ -339,7 +340,7 @@ void DirectXCommon::InitializeDxgiDevice() {
 #ifdef _DEBUG
 	ComPtr<ID3D12InfoQueue> infoQueue = nullptr;
 	if (SUCCEEDED(device_->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
-		bool isStop = false;
+		bool isStop = true;
 		//やばいエラー時に止める
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, isStop);
 		//エラー時に止める

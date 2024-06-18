@@ -62,7 +62,7 @@ void InGameScene::Initialize() {
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 
 	walkModel_ = Model::Create("human", "walk.gltf");
-	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
+	//sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;

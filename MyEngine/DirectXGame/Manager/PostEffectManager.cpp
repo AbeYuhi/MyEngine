@@ -59,6 +59,7 @@ void PostEffectManager::NormalPreDraw() {
 	D3D12_RESOURCE_BARRIER barrier{};
 	//今回のバリアの種類
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 	barrier.Transition.pResource = directX->GetBackBuffer(backBufferIndex);
 	//遷移前のResourceState
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
@@ -89,6 +90,7 @@ void PostEffectManager::RenderPreDraw() {
 	D3D12_RESOURCE_BARRIER barrier{};
 	//今回のバリアの種類
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 	barrier.Transition.pResource = renderTextureResource_.Get();
 	//遷移前のResourceState
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
