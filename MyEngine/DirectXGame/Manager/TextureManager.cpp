@@ -10,6 +10,12 @@ TextureManager* TextureManager::GetInstance() {
 /// </summary>
 UINT TextureManager::sTextureNum_ = 0;
 
+TextureManager::~TextureManager() {
+	for (auto& textureData : textureDatas_) {
+		textureData.second.textureResource.Reset();
+	}
+}
+
 uint32_t TextureManager::Load(const std::string& textureName) {
 	return GetInstance()->LoadInternal(textureName, textureName);
 }

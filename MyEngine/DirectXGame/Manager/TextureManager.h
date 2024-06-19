@@ -42,7 +42,7 @@ private: //メンバ関数
 
 private:
 	TextureManager() = default;
-	~TextureManager() = default;
+	~TextureManager();
 
 	std::map<std::string, TextureData> textureDatas_;
 	std::map<uint32_t, std::string> textureHandles_;
