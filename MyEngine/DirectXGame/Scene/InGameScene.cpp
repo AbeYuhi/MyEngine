@@ -58,11 +58,11 @@ void InGameScene::Initialize() {
 	//yukariModel_ = Model::Create("yukari", "yukari.obj");
 	yukariModel_ = Model::Create("yukariGLTF", "yukariGLTF.gltf");
 	yukariModelInfo_.Initialize();
-	yukariModelInfo_.SetModel(yukariModel_.get());
+	//yukariModelInfo_.SetModel(yukariModel_.get());
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 
 	walkModel_ = Model::Create("human", "walk.gltf");
-	//sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
+	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;
@@ -190,7 +190,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//yukariModel_->Draw(yukariModelInfo_);
-	walkModel_->Draw(walkModelInfo_);
+	//walkModel_->Draw(walkModelInfo_);
 
 	///オブジェクトの描画終了
 
