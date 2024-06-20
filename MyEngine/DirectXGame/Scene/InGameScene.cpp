@@ -37,8 +37,8 @@ void InGameScene::Initialize() {
 	spriteCamera_->Initialize();
 
 	//平行光源
-	lightObj_ = std::make_unique<LightObject>();
-	lightObj_->Initialize();
+	lightObj_ = LightObjectManager::GetInstance();
+	lightObj_->InitData();
 
 	//影
 	shadow_ = std::make_unique<Shadow>();
@@ -58,7 +58,7 @@ void InGameScene::Initialize() {
 	//yukariModel_ = Model::Create("yukari", "yukari.obj");
 	yukariModel_ = Model::Create("yukariGLTF", "yukariGLTF.gltf");
 	yukariModelInfo_.Initialize();
-	//yukariModelInfo_.SetModel(yukariModel_.get());
+	yukariModelInfo_.SetModel(yukariModel_.get());
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
 
 	walkModel_ = Model::Create("human", "walk.gltf");
@@ -166,12 +166,6 @@ void InGameScene::Update() {
 }
 
 void InGameScene::Draw() {
-	//カメラの転送
-	mainCamera_->Draw();
-	//ライティングの転送
-	lightObj_->Draw();
-	//シャドウの転送
-	shadow_->Draw();
 
 	///背景スプライトの描画開始 
 
@@ -189,8 +183,8 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	//yukariModel_->Draw(yukariModelInfo_);
-	//walkModel_->Draw(walkModelInfo_);
+	yukariModel_->Draw(yukariModelInfo_);
+	walkModel_->Draw(walkModelInfo_);
 
 	///オブジェクトの描画終了
 

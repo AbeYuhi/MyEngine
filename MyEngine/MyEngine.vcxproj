@@ -142,7 +142,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Camera\MainCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\testParticle.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp" />
+    <ClCompile Include="DirectXGame\Manager\LightObjectManager.cpp" />
     <ClCompile Include="DirectXGame\Base\Framework\Framework.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\GameClearCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\GameOverCamera.cpp" />
@@ -256,7 +256,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Scene\IScene.h" />
     <ClInclude Include="DirectXGame\Scene\MenuScene.h" />
     <ClInclude Include="DirectXGame\Scene\TitleScene.h" />
-    <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h" />
+    <ClInclude Include="DirectXGame\Manager\LightObjectManager.h" />
     <ClInclude Include="DirectXGame\Manager\RandomManager.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\Base3DCamera.h" />

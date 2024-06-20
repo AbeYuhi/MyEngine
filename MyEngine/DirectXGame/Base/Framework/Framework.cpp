@@ -48,6 +48,9 @@ void Framework::Initialize() {
 	postEffectManager_ = PostEffectManager::GetInstance();
 	postEffectManager_->Initialize();
 
+	lightObjectManager_ = LightObjectManager::GetInstance();
+	lightObjectManager_->Initialize();
+
 #pragma endregion
 
 }

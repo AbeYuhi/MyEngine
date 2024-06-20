@@ -8,13 +8,13 @@
 #include "Manager/ParticleManager.h"
 #include "Manager/PostEffectManager.h"
 #include "Manager/RandomManager.h"
+#include "Manager/LightObjectManager.h"
 #include "Object/Sprite.h"
 #include "Object/Model.h"
 #include "GameObject/Camera/MainCamera.h"
 #include "GameObject/Camera/InGameCamera.h"
 #include "GameObject/Camera/DebugCamera.h"
 #include "GameObject/Camera/SpriteCamera.h"
-#include "GameObject/Light/LightObject.h"
 #include "GameObject/Shadow/Shadow.h"
 #include "GameObject/Particle/testParticle.h"
 #include "GameObject/Particle/Object/PlaneParticle.h"
@@ -44,13 +44,13 @@ private:
 	PostEffectManager* postEffectManager_;
 	MainCamera* mainCamera_;
 	SpriteCamera* spriteCamera_;
+	//ライト
+	LightObjectManager* lightObj_;
 	//ゲームカメラ
 	std::unique_ptr<InGameCamera> gameCamera_;
 	//デバッグカメラ
 	std::unique_ptr<DebugCamera> debugCamera_;
 	bool isDebugCamera_;
-	//ライト
-	std::unique_ptr<LightObject> lightObj_;
 	//シャドウ
 	std::unique_ptr<Shadow> shadow_;
 

@@ -249,7 +249,7 @@
     <ClCompile Include="DirectXGame\Manager\AudioManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp">
+    <ClCompile Include="DirectXGame\Manager\LightObjectManager.cpp">
       <Filter>ソース ファイル\GameObject\Light</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp">
@@ -512,7 +512,7 @@
     <ClInclude Include="DirectXGame\Data\SpotLight.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h">
+    <ClInclude Include="DirectXGame\Manager\LightObjectManager.h">
       <Filter>ヘッダー ファイル\GameObject\Light</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\DebugSytem\DebugLog.h">

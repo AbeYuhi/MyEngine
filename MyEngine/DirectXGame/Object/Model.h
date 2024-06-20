@@ -28,6 +28,8 @@
 #include "DirectXGame/Data/Bone.h"
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
+#include "DirectXGame/Manager/LightObjectManager.h"
+#include "GameObject/Camera/MainCamera.h"
 
 struct RenderItem;
 

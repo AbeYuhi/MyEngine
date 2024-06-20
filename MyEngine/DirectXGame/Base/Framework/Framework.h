@@ -13,6 +13,7 @@
 #include "Manager/RandomManager.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/InputManager.h"
+#include "Manager/LightObjectManager.h"
 
 class Framework
 {
@@ -39,5 +40,6 @@ protected:
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	PostEffectManager* postEffectManager_ = nullptr;
 	GlobalVariables* globalVariables_ = nullptr;
+	LightObjectManager* lightObjectManager_ = nullptr;
 };
 
