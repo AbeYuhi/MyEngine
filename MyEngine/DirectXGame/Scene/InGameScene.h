@@ -69,7 +69,9 @@ private:
 
 	std::shared_ptr<Model> walkModel_;
 	std::shared_ptr<Model> sneakWalkModel_;
+	std::shared_ptr<Model> boxModel_;
 	RenderItem walkModelInfo_;
+	RenderItem boxModelInfo_;
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;

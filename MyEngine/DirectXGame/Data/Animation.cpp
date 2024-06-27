@@ -8,7 +8,14 @@ void Animation::Initialize() {
 void Animation::Update() {
 
 	//rootNodeの初期化
-	rootNode = InitializeNode(rootNode);
+	for (int index = 0; index < meshNames.size(); index++) {
+		auto it = rootNode.nodeMap.find(meshNames[index]);
+		if (it != rootNode.nodeMap.end()) {
+			Node& node = rootNode.nodes[rootNode.nodeMap[meshNames[index]]];
+			node.isMove = false;
+			node.localMatrix = MakeIdentity4x4();
+		}
+	}
 
 	//アニメーションの更新
 	bool isAnimation = false;
@@ -57,20 +64,33 @@ void Animation::Update() {
 	}
 	if (!isAnimation) {
 		rootNode = initialNode;
-		skeleton = CreateSkeleton(initialNode);
+		skeleton = initialSkeleton;
 		SkinClusterUpdate();
 	}
 
 	//変更がなかったNodeを初期ポジに戻す
-	rootNode = InitializeNode(rootNode, initialNode);
+	for (int index = 0; index < meshNames.size(); index++) {
+		auto it = rootNode.nodeMap.find(meshNames[index]);
+		if (it != rootNode.nodeMap.end()) {
+			Node& node = rootNode.nodes[rootNode.nodeMap[meshNames[index]]];
+			if (!node.isMove) {
+				node.localMatrix = initialNode.nodes[rootNode.nodeMap[meshNames[index]]].localMatrix;
+			}
+		}
+	}
 }
 
 void Animation::NodeUpdate(AnimationInfo& info) {
 
 	for (uint32_t channelIndex = 0; channelIndex < info.data.nodeAnimations.size(); channelIndex++) {
-
 		if (info.data.nodeAnimations[channelIndex].isMeshNode) {
-			rootNode = UpdateNode(rootNode, info.data.nodeAnimations[channelIndex], info.animationTime);
+			for (int index = 0; index < meshNames.size(); index++) {
+				auto it = rootNode.nodeMap.find(meshNames[index]);
+				if (it != rootNode.nodeMap.end()) {
+					Node& node = rootNode.nodes[rootNode.nodeMap[meshNames[index]]];
+					node = UpdateNode(node, info.data.nodeAnimations[channelIndex], info.animationTime);
+				}
+			}
 		}
 	}
 }
@@ -134,9 +154,12 @@ void Animation::SetAnimation(std::list<AnimationData> datas) {
 
 void Animation::SetModel(Model* model) {
 	initialNode = model->GetInialNode();
-	skeleton = CreateSkeleton(initialNode);
+	initialSkeleton = CreateSkeleton(initialNode);
+	rootNode = initialNode;
+	skeleton = initialSkeleton;
 	for (auto& mesh : model->GetMeshs()) {
 		skinClusters[mesh.name] = CreateSkinCluster(skeleton, mesh.modelData);
+		meshNames.push_back(mesh.name);
 	}
 	SkinClusterUpdate();
 }

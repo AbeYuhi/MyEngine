@@ -421,7 +421,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	}
 
 	//Nodeの解析
-	rootNode_ = ReadNode(scene->mRootNode);
+	rootNode_ = CreateRootNode(scene->mRootNode);
 
 	importer.FreeScene();
 }

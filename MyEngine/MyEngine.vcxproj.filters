@@ -136,6 +136,9 @@
     <Filter Include="Shader\WireFrame">
       <UniqueIdentifier>{5627d61b-7e1a-4ab2-aa4d-8cd2cde9206f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\Object2d">
+      <UniqueIdentifier>{13081d4f-5fc3-40ad-a222-723043789000}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -661,6 +664,9 @@
     <None Include="Resources\Shaders\WireFrame.hlsli">
       <Filter>Shader\WireFrame</Filter>
     </None>
+    <None Include="Resources\Shaders\Object2d.hlsli">
+      <Filter>Shader\Object2d</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="External\imgui\LICENSE.txt">
@@ -706,6 +712,12 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\WireFrame.VS.hlsl">
       <Filter>Shader\WireFrame</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Object2d.VS.hlsl">
+      <Filter>Shader\Object2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Object2d.PS.hlsl">
+      <Filter>Shader\Object2d</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
