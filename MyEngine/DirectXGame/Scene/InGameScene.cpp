@@ -113,7 +113,6 @@ void InGameScene::Update() {
 	ImGuiManager::GetInstance()->SpriteItemDebug("sprite", spriteInfo_);
 	ImGui::EndTabBar();
 
-
 	ImGui::Begin("BlendMode");
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };
 	ImGui::Combo("blendMode", &blendMode_, modes, IM_ARRAYSIZE(modes));
