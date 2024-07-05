@@ -309,13 +309,7 @@
     <ClCompile Include="DirectXGame\LoadFile\LoadCSV.cpp">
       <Filter>ソース ファイル\LoadFile</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Entity\Player.cpp">
-      <Filter>ソース ファイル\GameObject\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\GameObject\Map\CreateStage.cpp">
-      <Filter>ソース ファイル\GameObject\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Map\Stage.cpp">
       <Filter>ソース ファイル\GameObject\Map</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Data\Collider.cpp">
@@ -587,13 +581,7 @@
     <ClInclude Include="DirectXGame\Data\Mesh.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Entity\Player.h">
-      <Filter>ヘッダー ファイル\GameObject\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\GameObject\Map\CreateStage.h">
-      <Filter>ヘッダー ファイル\GameObject\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Map\Stage.h">
       <Filter>ヘッダー ファイル\GameObject\Map</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\Collider.h">

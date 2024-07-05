@@ -71,6 +71,9 @@ private:
 	std::shared_ptr<Model> sneakWalkModel_;
 	RenderItem walkModelInfo_;
 
+	std::shared_ptr<Model> sphereModel_;
+	std::vector<RenderItem> jointInfos_;
+
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;
 

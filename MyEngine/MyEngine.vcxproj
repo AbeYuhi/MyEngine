@@ -121,9 +121,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Data\TextureData.cpp" />
     <ClCompile Include="DirectXGame\Data\Transform.cpp" />
     <ClCompile Include="DirectXGame\DebugSytem\DebugLog.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Entity\Player.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Map\CreateStage.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Map\Stage.cpp" />
     <ClCompile Include="DirectXGame\LoadFile\GlobalVariables.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.cpp" />
@@ -190,9 +188,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Data\Node.h" />
     <ClInclude Include="DirectXGame\Data\SpriteData.h" />
     <ClInclude Include="DirectXGame\Data\StageBlock.h" />
-    <ClInclude Include="DirectXGame\GameObject\Entity\Player.h" />
     <ClInclude Include="DirectXGame\GameObject\Map\CreateStage.h" />
-    <ClInclude Include="DirectXGame\GameObject\Map\Stage.h" />
     <ClInclude Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.h" />
     <ClInclude Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.h" />
     <ClInclude Include="DirectXGame\Manager\CollisionManager.h" />

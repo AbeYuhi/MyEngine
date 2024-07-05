@@ -63,6 +63,7 @@ void InGameScene::Initialize() {
 
 	walkModel_ = Model::Create("human", "walk.gltf");
 	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
+	sphereModel_ = Model::Create("sphere", "sphere.obj");
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;
@@ -81,7 +82,7 @@ void InGameScene::Update() {
 	ImGui::Checkbox("UseDebugCamera", &isDebugCamera_);
 	ImGui::End();
 #endif // _DEBUG
-	
+
 	if (isDebugCamera_) {
 		debugCamera_->Update();
 		mainCamera_->Update(debugCamera_->GetWorldMatrix(), debugCamera_->GetProjectionMatrix());
@@ -144,7 +145,7 @@ void InGameScene::Update() {
 		ImGui::SliderInt("size", &kernelSize, 1, 5);
 		postEffectManager_->SetKernelSize(kernelSize);
 
-		const char* types[] = {"Box", "Gauss"};
+		const char* types[] = { "Box", "Gauss" };
 		int32_t type = postEffectManager_->GetSmoothingType();
 		ImGui::Combo("SmoothingType", &type, types, IM_ARRAYSIZE(types));
 		postEffectManager_->SetSmoothingType(type);
@@ -163,6 +164,7 @@ void InGameScene::Update() {
 	yukariModelInfo_.Update();
 	walkModelInfo_.Update();
 	spriteInfo_.Update();
+
 }
 
 void InGameScene::Draw() {
@@ -190,7 +192,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//yukariModel_->Draw(yukariModelInfo_);
-	//walkModel_->Draw(walkModelInfo_);
+	walkModel_->Draw(walkModelInfo_);
 
 	///オブジェクトの描画終了
 
