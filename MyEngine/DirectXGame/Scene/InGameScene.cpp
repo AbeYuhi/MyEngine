@@ -108,11 +108,13 @@ void InGameScene::Update() {
 
 #ifdef _DEBUG
 
+	ImGui::Begin("RenderItemInfo");
 	ImGui::BeginTabBar("RenderItemInfo");
 	ImGuiManager::GetInstance()->RenderItemDebug("yukariModel", yukariModelInfo_);
 	ImGuiManager::GetInstance()->RenderItemDebug("humanModel", walkModelInfo_);
 	ImGuiManager::GetInstance()->SpriteItemDebug("sprite", spriteInfo_);
 	ImGui::EndTabBar();
+	ImGui::End();
 
 	ImGui::Begin("BlendMode");
 	const char* modes[] = { "None", "Normal", "Add", "SubTract", "MultiPly", "Screen" };
