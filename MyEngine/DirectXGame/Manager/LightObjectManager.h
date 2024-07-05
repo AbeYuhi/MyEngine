@@ -15,11 +15,15 @@ struct LightData {
 };
 
 
-class LightObject
+class LightObjectManager
 {
 public:
 
+	static LightObjectManager* GetInstance();
+
 	void Initialize();
+
+	void InitData();
 
 	void Update();
 
@@ -35,6 +39,9 @@ public: //ゲッターセッター
 	void SetSpotLightData(int index, SpotLightData lightData) { lightData_->spotLight[index] = lightData; }
 
 private:
+	LightObjectManager() = default;
+	~LightObjectManager() = default;
+
 	ComPtr<ID3D12Resource> lightResource_;
 	LightData* lightData_;
 };

@@ -31,11 +31,5 @@ void MainCamera::Draw() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 	//パイプラインステートの設定
-	/*dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kDefault));
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(kDefault));
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, cameraResorce_->GetGPUVirtualAddress());*/
-
-	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kSkinning));
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(kSkinning));
 	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, cameraResorce_->GetGPUVirtualAddress());
 }

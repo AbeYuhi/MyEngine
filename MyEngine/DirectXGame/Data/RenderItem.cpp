@@ -25,8 +25,10 @@ void RenderItem::Update() {
 void RenderItem::UpdateGltf(Mesh mesh, int index) {
 	meshWorldTransforms_[index].data_ = worldTransform_.data_;
 	meshWorldTransforms_[index].worldMatrix_ = worldTransform_.worldMatrix_;
-	if (FindMatix(animation_.rootNode, mesh.name)) {
-		meshWorldTransforms_[index].NodeUpdate(*FindMatix(animation_.rootNode, mesh.name));
+
+	auto it = animation_.rootNode.nodeMap.find(mesh.name);
+	if (it != animation_.rootNode.nodeMap.end()) {
+		meshWorldTransforms_[index].NodeUpdate(animation_.rootNode.nodes[animation_.rootNode.nodeMap[mesh.name]].localMatrix);
 	}
 	else {
 		meshWorldTransforms_[index].UpdateWorld();

@@ -134,6 +134,11 @@ void PostEffectManager::RenderPostDraw() {
 
 	//描画処理の記入
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
+	//ViewPortの設定
+	directX->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
+	//Scirssorの設定
+	directX->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
+	directX->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	directX->GetCommandList()->SetPipelineState(graphicsPipelineState_[postEffect_]->Get());
 	directX->GetCommandList()->SetGraphicsRootSignature(rootSignature_[postEffect_].Get());
 	directX->GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUDescriptorHandle(srvIndex_));

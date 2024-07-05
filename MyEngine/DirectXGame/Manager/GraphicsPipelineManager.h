@@ -23,6 +23,8 @@ enum BlendMode{
 enum PipelineState {
 	//通常用
 	kDefault,
+	//スプライト用
+	kSprite,
 	//パーティクル用
 	kParticle,
 	//ワイヤフレーム用

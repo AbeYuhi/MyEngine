@@ -96,6 +96,9 @@ void Model::Draw(RenderItem& renderItem) {
 			dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
 		}
 
+		//Lightの設定
+		LightObjectManager::GetInstance()->Draw();
+		MainCamera::GetInstance()->Draw();
 		//IBVの設定
 		dxCommon->GetCommandList()->IASetIndexBuffer(&mesh.indexBufferView);
 		//マテリアルCBufferの場所を設定
@@ -163,6 +166,9 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 			dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
 		}
 
+		//Lightの設定
+		LightObjectManager::GetInstance()->Draw();
+		MainCamera::GetInstance()->Draw();
 		//IBVの設定
 		dxCommon->GetCommandList()->IASetIndexBuffer(&mesh.indexBufferView);
 		//マテリアルCBufferの場所を設定
@@ -415,7 +421,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	}
 
 	//Nodeの解析
-	rootNode_ = ReadNode(scene->mRootNode);
+	rootNode_ = CreateRootNode(scene->mRootNode);
 
 	importer.FreeScene();
 }

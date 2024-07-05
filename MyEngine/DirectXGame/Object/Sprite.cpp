@@ -67,11 +67,6 @@ void Sprite::TransferVertices(SpriteData spriteData) {
 	vertexData_[2].position = { right, bot, 0.0f, 1.0f }; //右下
 	vertexData_[3].position = { right, top, 0.0f, 1.0f }; //右上
 
-	/*float uvLeft = (0.0f - baseUvPos_.x);
-	float uvRight = (1.0f - baseUvPos_.x);
-	float uvTop = (0.0f - baseUvPos_.y);
-	float uvBot = (1.0f - baseUvPos_.y);*/
-
 	float uvLeft = spriteData.baseUvPos_.x;
 	float uvRight = spriteData.baseUvPos_.x + spriteData.texSize_.x;
 	float uvTop = spriteData.baseUvPos_.y;
@@ -99,9 +94,9 @@ void Sprite::Draw(SpriteItem& spriteItem) {
 	//Scirssorの設定
 	dxCommon->GetCommandList()->RSSetScissorRects(1, psoManager->GetScissorRect());
 	//パイプラインステートの設定
-	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO());
+	dxCommon->GetCommandList()->SetPipelineState(psoManager->GetPSO(kSprite));
 	//ルートシグネチャの設定
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature());
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(psoManager->GetRootSignature(kSprite));
 	//プリミティブ形状を設定
 	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//VBVの設定

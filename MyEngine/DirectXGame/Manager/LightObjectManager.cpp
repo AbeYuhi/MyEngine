@@ -1,6 +1,11 @@
-#include "LightObject.h"
+#include "LightObjectManager.h"
 
-void LightObject::Initialize() {
+LightObjectManager* LightObjectManager::GetInstance() {
+	static LightObjectManager instance;
+	return &instance;
+}
+
+void LightObjectManager::Initialize() {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	//transformationMatrixResourceの生成
@@ -38,7 +43,37 @@ void LightObject::Initialize() {
 	}
 }
 
-void LightObject::Update() {
+void LightObjectManager::InitData() {
+	for (int index = 0; index < kDirectionLightNum; index++) {
+		lightData_->directionalLight[index].type = 2;
+		lightData_->directionalLight[index].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		lightData_->directionalLight[index].direction = { 0.0f, -1.0f, 0.0f };
+		lightData_->directionalLight[index].intensity = 1.0f;
+	}
+
+	for (int index = 0; index < kPointLightNum; index++) {
+		lightData_->pointLight[index].type = 0;
+		lightData_->pointLight[index].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		lightData_->pointLight[index].position = { 0.0f, 0.0f, 0.0f };
+		lightData_->pointLight[index].intensity = 1.0f;
+		lightData_->pointLight[index].radius = 100;
+		lightData_->pointLight[index].decay = 0.0f;
+	}
+
+	for (int index = 0; index < kSpotLightNum; index++) {
+		lightData_->spotLight[index].lightingType = 0;
+		lightData_->spotLight[index].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		lightData_->spotLight[index].position = { 0, 2, -5 };
+		lightData_->spotLight[index].intensity = 5.0f;
+		lightData_->spotLight[index].direction = { 0, 0, 1.0f };
+		lightData_->spotLight[index].distance = 10.0f;
+		lightData_->spotLight[index].decay = 5.0f;
+		lightData_->spotLight[index].cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
+		lightData_->spotLight[index].falloffStart = 1.0f;
+	}
+}
+
+void LightObjectManager::Update() {
 
 #ifdef _DEBUG
 
@@ -109,13 +144,7 @@ void LightObject::Update() {
 #endif // _DEBUG
 }
 
-void LightObject::Draw() {
+void LightObjectManager::Draw() {
 	//パイプラインステートの設定
-	/*DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(GraphicsPipelineManager::GetInstance()->GetPSO(kDefault));
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(GraphicsPipelineManager::GetInstance()->GetRootSignature(kDefault));
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(4, lightResource_->GetGPUVirtualAddress());*/
-
-	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(GraphicsPipelineManager::GetInstance()->GetPSO(kSkinning));
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(GraphicsPipelineManager::GetInstance()->GetRootSignature(kSkinning));
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(4, lightResource_->GetGPUVirtualAddress());
 }

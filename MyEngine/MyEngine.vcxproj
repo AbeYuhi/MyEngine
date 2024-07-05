@@ -140,7 +140,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Camera\MainCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\SpriteCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\testParticle.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Light\LightObject.cpp" />
+    <ClCompile Include="DirectXGame\Manager\LightObjectManager.cpp" />
     <ClCompile Include="DirectXGame\Base\Framework\Framework.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\GameClearCamera.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Camera\GameOverCamera.cpp" />
@@ -252,7 +252,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Scene\IScene.h" />
     <ClInclude Include="DirectXGame\Scene\MenuScene.h" />
     <ClInclude Include="DirectXGame\Scene\TitleScene.h" />
-    <ClInclude Include="DirectXGame\GameObject\Light\LightObject.h" />
+    <ClInclude Include="DirectXGame\Manager\LightObjectManager.h" />
     <ClInclude Include="DirectXGame\Manager\RandomManager.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\TitleCamera.h" />
     <ClInclude Include="DirectXGame\GameObject\Camera\Base3DCamera.h" />
@@ -277,6 +277,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
     <None Include="External\imgui\imgui.vcxproj.filters" />
+    <None Include="Resources\Shaders\Object2d.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="Resources\Shaders\PostEffect\FullScreen.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -303,6 +307,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Resources\Shaders\Object2d.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Object2d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffect\Smoothing.PS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

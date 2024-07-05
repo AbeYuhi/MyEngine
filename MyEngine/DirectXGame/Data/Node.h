@@ -16,31 +16,19 @@ struct Node {
 	QuaternionTransformData transform;
 	Matrix4x4 localMatrix;
 	std::string name;
-	std::vector<Node> children;
+	std::vector<int32_t> children;
+	int32_t index;
 	bool isMove;
 };
 
-//struct Node {
-//	QuaternionTransformData transform;
-//	Matrix4x4 localMatrix;
-//	std::string name;
-//	std::vector<int32_t> children;
-//	int32_t index;
-//	std::optional<int32_t> parent;
-//	bool isMove;
-//};
+struct RootNode {
+	int32_t rootNode;
+	std::vector<Node> nodes;
+	std::map<std::string, uint32_t> nodeMap;
+};
 
-//struct RootNode {
-//	std::vector<Node> nodes;
-//	std::map<std::string, uint32_t> nodeMap;
-//};
+int32_t ReadNode(aiNode* node, std::vector<Node>& nodes);
 
-Node ReadNode(aiNode* node);
-
-Node InitializeNode(Node node);
-
-Node InitializeNode(Node node, Node InitNode);
+RootNode CreateRootNode(aiNode* node);
 
 Node UpdateNode(Node node, NodeAnimation info, float time);
-
-Matrix4x4* FindMatix(Node node, std::string meshName);

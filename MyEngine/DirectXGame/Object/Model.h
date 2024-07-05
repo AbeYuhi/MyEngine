@@ -10,7 +10,6 @@
 #include <assimp/material.h>
 #include "DirectXGame/Base/CreateResource/CreateResource.h"
 #include "DirectXGame/Base/DirectXCommon/DirectXCommon.h"
-#include "DirectXGame/Manager/ImGuiManager.h"
 #include "DirectXGame/Math/Vector2.h"
 #include "DirectXGame/Math/Vector3.h"
 #include "DirectXGame/Math/Vector4.h"
@@ -28,6 +27,8 @@
 #include "DirectXGame/Data/Bone.h"
 #include "DirectXGame/Manager/TextureManager.h"
 #include "DirectXGame/Manager/GraphicsPipelineManager.h"
+#include "DirectXGame/Manager/LightObjectManager.h"
+#include "GameObject/Camera/MainCamera.h"
 
 struct RenderItem;
 
@@ -57,7 +58,7 @@ public: //ゲッター
 
 	inline const std::list<AnimationData> GetAnimationData() { return animations_; }
 
-	inline const Node GetInialNode() { return rootNode_; }
+	inline const RootNode GetInialNode() { return rootNode_; }
 
 	inline const Skeleton GetSkeleton() { return skeleton_; }
 
@@ -72,7 +73,7 @@ private: //メンバ変数
 	std::string filePath_;
 	std::list<Mesh> meshs_;
 	std::list<AnimationData> animations_;
-	Node rootNode_;
+	RootNode rootNode_;
 	Skeleton skeleton_;
 
 	bool isGltf_;
