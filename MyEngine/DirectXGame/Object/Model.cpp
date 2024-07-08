@@ -131,6 +131,8 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 		return;
 	}
 
+	renderItem.Update();
+
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
@@ -339,7 +341,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 		//もしテクスチャが見つからなかった場合は白い画像を入れる
 		if (!textureName.empty()) {
-			modelPart.textureHandle = TextureManager::Load(textureName, modelPart.modelData.material.textureFilePath);
+			modelPart.textureHandle = TextureManager::Load(modelPart.modelData.material.textureFilePath, textureName);
 		}
 		else {
 			modelPart.textureHandle = TextureManager::Load("whiteTexture2x2.png");

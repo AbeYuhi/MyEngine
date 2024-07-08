@@ -124,6 +124,7 @@ void Sprite::Draw(ParticleDrawInfo drawInfo, SpriteData spriteData) {
 	if (drawInfo.materialInfo_->isInvisible_) {
 		return;
 	}
+
 	TransferVertices(spriteData);
 
 	//ViewPortの設定

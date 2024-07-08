@@ -20,11 +20,11 @@ uint32_t TextureManager::Load(const std::string& textureName) {
 	return GetInstance()->LoadInternal(textureName, textureName);
 }
 
-uint32_t TextureManager::Load(const std::string& textureName, const std::string& filePath) {
-	return GetInstance()->LoadInternal(textureName, filePath);
+uint32_t TextureManager::Load(const std::string& filePath, const std::string& textureName) {
+	return GetInstance()->LoadInternal(filePath, textureName);
 }
 
-uint32_t TextureManager::LoadInternal(const std::string& textureName, const std::string& filePath) {
+uint32_t TextureManager::LoadInternal(const std::string& filePath, const std::string& textureName) {
 	if (textureDatas_.find(textureName) == textureDatas_.end()) {
 		sTextureNum_++;
 		if (sTextureNum_ > kMaxTextureNum_) {
@@ -45,7 +45,7 @@ uint32_t TextureManager::LoadInternal(const std::string& textureName, const std:
 	}
 }
 
-void TextureManager::TransferTexture(const std::string& textureName, const std::string& filePath) {
+void TextureManager::TransferTexture(const std::string& filePath, const std::string& textureName) {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//画像の読み込み
