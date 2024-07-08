@@ -2,10 +2,17 @@
 #include "Object/Model.h"
 
 void Animation::Initialize() {
-
+	preTime = std::chrono::high_resolution_clock::now();
 }
 
 void Animation::Update() {
+
+	// フレーム終了時刻を取得
+	auto frameEnd = std::chrono::high_resolution_clock::now();
+	// フレームごとの時間を計算
+	std::chrono::duration<double> frameDuration = frameEnd - preTime;
+	preTime = std::chrono::high_resolution_clock::now();
+	auto deltaTime = frameDuration.count();
 
 	//rootNodeの初期化
 	for (int index = 0; index < meshNames.size(); index++) {
@@ -16,7 +23,6 @@ void Animation::Update() {
 			node.localMatrix = MakeIdentity4x4();
 		}
 	}
-
 	//アニメーションの更新
 	bool isAnimation = false;
 	for (auto it = infos.begin(); it != infos.end(); it++) {
@@ -25,11 +31,11 @@ void Animation::Update() {
 			it->animationTime = 0;
 		}
 
-		if (it->isAnimation && it->data.name != "None") {
+		if (it->isAnimation) {
 			isAnimation = true;
 			//アニメーションの時間を進める
 			if (it->animationSpeed < 0.0f) {
-				it->animationTime += 1.0f / 60.0f * it->animationSpeed;
+				it->animationTime += (float)deltaTime * it->animationSpeed;
 				if (it->animationTime < 0.0f) {
 					it->animationTime = it->data.duration;
 					if (!it->isLoop) {
@@ -38,7 +44,7 @@ void Animation::Update() {
 				}
 			}
 			else {
-				it->animationTime += 1.0f / 60.0f * it->animationSpeed;
+				it->animationTime += (float)deltaTime * it->animationSpeed;
 				if (it->animationTime > it->data.duration) {
 					it->animationTime = 0;
 					if (!it->isLoop) {

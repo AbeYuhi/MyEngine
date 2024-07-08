@@ -3,6 +3,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <chrono>
 #include "Math/Math.h"
 #include "AnimationData.h"
 #include "Node.h"
@@ -24,6 +25,7 @@ struct Animation {
 	//SkinCluster情報
 	std::map<std::string , SkinCluster> skinClusters;
 	std::vector<std::string> meshNames;
+	std::chrono::steady_clock::time_point preTime;
 
 	void Initialize();
 

@@ -87,6 +87,9 @@ void Sprite::Draw(SpriteItem& spriteItem) {
 	if (spriteItem.materialInfo_.isInvisible_) {
 		return;
 	}
+
+	spriteItem.Update();
+
 	TransferVertices(spriteItem.spriteData_);
 
 	//ViewPortの設定

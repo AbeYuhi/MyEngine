@@ -58,6 +58,8 @@ void Model::Draw(RenderItem& renderItem) {
 		return;
 	}
 
+	renderItem.Update();
+
 	//ViewPortの設定
 	dxCommon->GetCommandList()->RSSetViewports(1, psoManager->GetViewPort());
 	//Scirssorの設定
@@ -349,11 +351,6 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 	}
 
 	//アニメーションの読み込み
-	//Noneの作成
-	AnimationData noneAnimation;
-	noneAnimation.name = "None";
-	animations_.push_back(noneAnimation);
-
 	//GLTFからの読み込み
 	for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
 		std::string animationName = scene->mAnimations[animationIndex]->mName.C_Str();

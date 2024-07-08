@@ -61,6 +61,8 @@ void WorldTransform::NodeUpdate(Matrix4x4 localMatrix) {
 }
 
 Vector3 WorldTransform::GetWorldPos() {
+	//ワールド位置を更新してから
+	UpdateWorld();
 	Vector3 pos;
 	pos.x = worldMatrix_.m[3][0];
 	pos.y = worldMatrix_.m[3][1];

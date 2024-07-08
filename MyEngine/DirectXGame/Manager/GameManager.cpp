@@ -53,7 +53,10 @@ int GameManager::Run() {
 		}
 
 		//フレームの開始時刻を取得
+#ifdef _DEBUG
 		auto frameStart = std::chrono::high_resolution_clock::now();
+#endif // _DEBUG
+
 		///更新処理
 		//入力受付
 		inputManager_->Update();
@@ -91,6 +94,7 @@ int GameManager::Run() {
 		//描画終了
 		directXCommon_->PostDraw();
 
+#ifdef _DEBUG
 		// フレーム終了時刻を取得
 		auto frameEnd = std::chrono::high_resolution_clock::now();
 
@@ -106,6 +110,8 @@ int GameManager::Run() {
 			frameCount_ = 0;
 			totalTime_ = 0;
 		}
+#endif // _DEBUG
+
 	}
 
 	//ゲーム終了処理

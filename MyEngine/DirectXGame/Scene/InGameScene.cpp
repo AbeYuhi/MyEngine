@@ -149,12 +149,6 @@ void InGameScene::Update() {
 	ImGui::End();
 
 #endif // _DEBUG
-
-	yukariModelInfo_.Update();
-	walkModelInfo_.Update();
-	boxModelInfo_.Update();
-	spriteInfo_.Update();
-
 }
 
 void InGameScene::Draw() {
