@@ -341,7 +341,7 @@ void Model::LoadModelFile(const std::string& filepath, const std::string& filena
 
 		//もしテクスチャが見つからなかった場合は白い画像を入れる
 		if (!textureName.empty()) {
-			modelPart.textureHandle = TextureManager::Load(modelPart.modelData.material.textureFilePath, textureName);
+			modelPart.textureHandle = TextureManager::Load(filepath, textureName);
 		}
 		else {
 			modelPart.textureHandle = TextureManager::Load("whiteTexture2x2.png");

@@ -29,16 +29,16 @@ private: //メンバ関数
 
 	uint32_t LoadInternal(const std::string& filePath, const std::string& textureName);
 
-	void TransferTexture(const std::string& filePath, const std::string& textureName);
+	void TransferTexture(const std::string& filePath);
 
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
 
 	ComPtr<ID3D12Resource> CreateTextureResource(DirectX::TexMetadata metadata);
 
 	[[nodiscard]]
-	ComPtr<ID3D12Resource> UploadTextureData(const std::string& textureName);
+	ComPtr<ID3D12Resource> UploadTextureData(const std::string& filePath);
 
-	void CreateShaderResourceView(const std::string& textureName);
+	void CreateShaderResourceView(const std::string& filePath);
 
 private:
 	TextureManager() = default;
