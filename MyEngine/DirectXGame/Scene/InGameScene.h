@@ -11,6 +11,7 @@
 #include "Manager/LightObjectManager.h"
 #include "Object/Sprite.h"
 #include "Object/Model.h"
+#include "Object/SkyBox.h"
 #include "GameObject/Camera/MainCamera.h"
 #include "GameObject/Camera/InGameCamera.h"
 #include "GameObject/Camera/DebugCamera.h"
@@ -73,8 +74,8 @@ private:
 	RenderItem walkModelInfo_;
 	RenderItem boxModelInfo_;
 
-	std::shared_ptr<Model> sphereModel_;
-	std::vector<RenderItem> jointInfos_;
+	std::shared_ptr<SkyBox> skybox_;
+	RenderItem skyboxInfo_;
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;

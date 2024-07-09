@@ -25,6 +25,8 @@ enum PipelineState {
 	kDefault,
 	//スプライト用
 	kSprite,
+	//スカイボックス用
+	kSkyBox,
 	//パーティクル用
 	kParticle,
 	//ワイヤフレーム用

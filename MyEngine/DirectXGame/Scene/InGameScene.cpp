@@ -64,7 +64,6 @@ void InGameScene::Initialize() {
 	walkModel_ = Model::Create("human", "walk.gltf");
 	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
 	boxModel_ = Model::Create("AnimatedCube", "AnimatedCube.gltf");
-	sphereModel_ = Model::Create("sphere", "sphere.obj");
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;
@@ -74,6 +73,10 @@ void InGameScene::Initialize() {
 	boxModelInfo_.Initialize();
 	boxModelInfo_.SetModel(boxModel_.get());
 	boxModelInfo_.SetAnimation(boxModel_->GetAnimationData());
+
+	skybox_ = SkyBox::Create("rostock_laage_airport_4k.dds");
+	skyboxInfo_.Initialize();
+	skyboxInfo_.worldTransform_.data_.scale_ *= 100;
 
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
@@ -112,6 +115,7 @@ void InGameScene::Update() {
 	ImGui::BeginTabBar("RenderItemInfo");
 	ImGuiManager::GetInstance()->RenderItemDebug("yukariModel", yukariModelInfo_);
 	ImGuiManager::GetInstance()->RenderItemDebug("humanModel", walkModelInfo_);
+	ImGuiManager::GetInstance()->RenderItemDebug("skybox", skyboxInfo_);
 	ImGuiManager::GetInstance()->SpriteItemDebug("sprite", spriteInfo_);
 	ImGui::EndTabBar();
 	ImGui::End();
@@ -172,6 +176,7 @@ void InGameScene::Draw() {
 	yukariModel_->Draw(yukariModelInfo_);
 	walkModel_->Draw(walkModelInfo_);
 	//boxModel_->Draw(boxModelInfo_);
+	skybox_->Draw(skyboxInfo_);
 
 	///オブジェクトの描画終了
 

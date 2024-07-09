@@ -139,11 +139,8 @@
     <Filter Include="Shader\Object2d">
       <UniqueIdentifier>{13081d4f-5fc3-40ad-a222-723043789000}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\GameObject\Entity\SkyBox">
-      <UniqueIdentifier>{a5d7b123-2397-434f-b1cc-2a9642e63840}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\GameObject\Entity\SkyBox">
-      <UniqueIdentifier>{8a351da0-462e-49f8-88e1-506497ce19aa}</UniqueIdentifier>
+    <Filter Include="Shader\Skybox">
+      <UniqueIdentifier>{1943997b-66c7-4e2f-888d-c101cedb432d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -360,8 +357,8 @@
     <ClCompile Include="DirectXGame\Manager\SrvManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\GameObject\Entity\SkyBox\SkyBox.cpp">
-      <Filter>ソース ファイル\GameObject\Entity\SkyBox</Filter>
+    <ClCompile Include="DirectXGame\Object\SkyBox.cpp">
+      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -641,8 +638,8 @@
     <ClInclude Include="DirectXGame\Manager\SrvManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\GameObject\Entity\SkyBox\SkyBox.h">
-      <Filter>ヘッダー ファイル\GameObject\Entity\SkyBox</Filter>
+    <ClInclude Include="DirectXGame\Object\SkyBox.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -666,6 +663,9 @@
     </None>
     <None Include="Resources\Shaders\Object2d.hlsli">
       <Filter>Shader\Object2d</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox.hlsli">
+      <Filter>Shader\Skybox</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -718,6 +718,12 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Object2d.PS.hlsl">
       <Filter>Shader\Object2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Skybox.PS.hlsl">
+      <Filter>Shader\Skybox</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Skybox.VS.hlsl">
+      <Filter>Shader\Skybox</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

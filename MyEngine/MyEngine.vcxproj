@@ -179,7 +179,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Data\SkinCluster.cpp" />
     <ClCompile Include="DirectXGame\Data\RenderItem.cpp" />
     <ClCompile Include="DirectXGame\Manager\SrvManager.cpp" />
-    <ClCompile Include="DirectXGame\GameObject\Entity\SkyBox\SkyBox.cpp" />
+    <ClCompile Include="DirectXGame\Object\SkyBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Data\AnimationData.h" />
@@ -274,7 +274,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Data\SkinCluster.h" />
     <ClInclude Include="DirectXGame\Data\SmoothingInfo.h" />
     <ClInclude Include="DirectXGame\Manager\SrvManager.h" />
-    <ClInclude Include="DirectXGame\GameObject\Entity\SkyBox\SkyBox.h" />
+    <ClInclude Include="DirectXGame\Object\SkyBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />
@@ -292,6 +292,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="Resources\Shaders\Particle.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Resources\Shaders\Skybox.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
@@ -358,6 +362,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\SkinningObject3d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Skybox.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Skybox.VS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
