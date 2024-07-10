@@ -127,12 +127,18 @@ void InGameScene::Update() {
 	ImGui::End();
 
 	ImGui::Begin("PostEffect");
-	const char* postEffects[] = { "None", "Copy", "GrayScale", "SepiaScale", "Vignette", "Smoothing" };
+	const char* postEffects[] = { "None", "Copy", "HSVFilter", "GrayScale", "SepiaScale", "Vignette", "Smoothing"};
 	int postEffect = postEffectManager_->GetPostEffect();
 	ImGui::Combo("postEffect", &postEffect, postEffects, IM_ARRAYSIZE(postEffects));
 	postEffectManager_->SetPostEffect(static_cast<PostEffect>(postEffect));
 
 	ImGui::BeginTabBar("PostEffectState");
+	if (ImGui::BeginTabItem("HSVFilter")) {
+		ImGui::SliderFloat("hue", &postEffectManager_->GetHSVMaterial()->hue, -1.0f, 1.0f);
+		ImGui::SliderFloat("saturation", &postEffectManager_->GetHSVMaterial()->saturation, -1.0f, 1.0f);
+		ImGui::SliderFloat("value", &postEffectManager_->GetHSVMaterial()->value, -1.0f, 1.0f);
+		ImGui::EndTabItem();
+	}
 	if (ImGui::BeginTabItem("Smoothing")) {
 		int32_t kernelSize = postEffectManager_->GetKernelSize();
 		ImGui::SliderInt("size", &kernelSize, 1, 5);
@@ -142,11 +148,11 @@ void InGameScene::Update() {
 		int32_t type = postEffectManager_->GetSmoothingType();
 		ImGui::Combo("SmoothingType", &type, types, IM_ARRAYSIZE(types));
 		postEffectManager_->SetSmoothingType(type);
-		ImGui::EndTabItem();
 
 		float strength = postEffectManager_->GetBlurStrength();
 		ImGui::SliderFloat("Strength", &strength, 1.0f, 5.0f);
 		postEffectManager_->SetBlurStrength(strength);
+		ImGui::EndTabItem();
 	}
 	ImGui::EndTabBar();
 

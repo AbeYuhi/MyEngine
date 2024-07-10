@@ -4,11 +4,13 @@
 #include "GraphicsPipelineManager.h"
 #include "SrvManager.h"
 #include "Data/SmoothingInfo.h"
+#include "Data/HSVMaterial.h"
 #include "ImGuiManager.h"
 
 enum PostEffect {
 	kNone,
 	kCopy,
+	kHSVFilter,
 	kGrayScale,
 	kSepiaScale,
 	kVignette,
@@ -41,6 +43,8 @@ public: //ゲッターセッター
 	inline float GetBlurStrength() { return smoothingInfo_->blurStrength; }
 	inline void SetBlurStrength(float blurStrength) { smoothingInfo_->blurStrength = blurStrength; }
 
+	inline HSVMaterial* GetHSVMaterial() { return hsvMaterial_; }
+
 private:
 	PostEffectManager() = default;
 	~PostEffectManager() = default;
@@ -68,6 +72,9 @@ private: //メンバ変数
 	uint32_t srvIndex_;
 
 	//各ポストエフェクトにおける必要なResourceなど
+	//HSVFilter 
+	ComPtr<ID3D12Resource> hsvMaterialResource_ = nullptr;
+	HSVMaterial* hsvMaterial_;
 	//Smoothing
 	ComPtr<ID3D12Resource> smoothingInfoResource_ = nullptr;
 	SmoothingInfo* smoothingInfo_;

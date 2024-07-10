@@ -19,6 +19,13 @@ void PostEffectManager::Initialize() {
 	CreatePSO();
 
 	//Respourceの確保
+	//HSVMaterial
+	hsvMaterialResource_ = CreateBufferResource(sizeof(HSVMaterial));
+	hsvMaterialResource_->Map(0, nullptr, reinterpret_cast<void**>(&hsvMaterial_));
+	hsvMaterial_->hue = 0.0f;
+	hsvMaterial_->saturation = 0.0f;
+	hsvMaterial_->value = 0.0f;
+	//smoothing
 	smoothingInfoResource_ = CreateBufferResource(sizeof(SmoothingInfo));
 	smoothingInfoResource_->Map(0, nullptr, reinterpret_cast<void**>(&smoothingInfo_));
 	smoothingInfo_->kernelSize = 1;
@@ -148,6 +155,9 @@ void PostEffectManager::RenderPostDraw() {
 	case kCopy:
 
 		break;
+	case kHSVFilter:
+		directX->GetCommandList()->SetGraphicsRootConstantBufferView(1, hsvMaterialResource_->GetGPUVirtualAddress());
+		break;
 	case kGrayScale:
 
 		break;
@@ -197,6 +207,7 @@ void PostEffectManager::CreateRootSignature() {
 	for (int shaderPack = 0; shaderPack < PostEffect::kCountOfPostEffect; shaderPack++) {
 		switch (shaderPack)
 		{
+		case PostEffect::kHSVFilter:
 		case PostEffect::kSmoothing:
 		{
 			//DescriptorRangeの設定
@@ -388,6 +399,14 @@ void PostEffectManager::CreatePSO() {
 			assert(vertexShaderBlob[shaderPack] != nullptr);
 			//ピクセルシェーダー
 			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/CopyImage.PS.hlsl", L"ps_6_0");
+			assert(pixelShaderBlob[shaderPack] != nullptr);
+			break;
+		case PostEffect::kHSVFilter:
+			//頂点シェーダー
+			vertexShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/FullScreen.VS.hlsl", L"vs_6_0");
+			assert(vertexShaderBlob[shaderPack] != nullptr);
+			//ピクセルシェーダー
+			pixelShaderBlob[shaderPack] = directXCommon->CompilerShader(L"Resources/Shaders/PostEffect/HSVFilter.PS.hlsl", L"ps_6_0");
 			assert(pixelShaderBlob[shaderPack] != nullptr);
 			break;
 		case PostEffect::kGrayScale:

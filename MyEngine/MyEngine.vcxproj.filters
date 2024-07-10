@@ -641,6 +641,9 @@
     <ClInclude Include="DirectXGame\Object\SkyBox.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Data\HSVMaterial.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj">
@@ -724,6 +727,9 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Skybox.VS.hlsl">
       <Filter>Shader\Skybox</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffect\HSVFilter.PS.hlsl">
+      <Filter>Shader\PostEffect</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
