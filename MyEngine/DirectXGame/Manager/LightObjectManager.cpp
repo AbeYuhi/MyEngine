@@ -146,5 +146,5 @@ void LightObjectManager::Update() {
 
 void LightObjectManager::Draw() {
 	//パイプラインステートの設定
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(4, lightResource_->GetGPUVirtualAddress());
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(5, lightResource_->GetGPUVirtualAddress());
 }

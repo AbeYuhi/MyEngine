@@ -58,6 +58,7 @@ void ImGuiManager::RenderItemDebug(std::string name, RenderItem& renderItem) {
 		ImGui::SliderFloat3("UvRotate", &renderItem.materialInfo_.uvTransform_.rotate_.x, -10, 10);
 		ImGui::SliderFloat3("UvScale", &renderItem.materialInfo_.uvTransform_.scale_.x, -10, 10);
 		ImGui::SliderFloat("shininess", &renderItem.materialInfo_.material_->shininess, 0, 100);
+		ImGui::SliderFloat("environmentCoefficient", &renderItem.materialInfo_.material_->environmentCoefficient, 0, 1.0f);
 
 		bool enableLightint = renderItem.materialInfo_.material_->enableLightint;
 		ImGui::Checkbox("enableLight", &enableLightint);
@@ -66,6 +67,10 @@ void ImGuiManager::RenderItemDebug(std::string name, RenderItem& renderItem) {
 		bool isSpecularReflection = renderItem.materialInfo_.material_->isSpecularReflection;
 		ImGui::Checkbox("isSpecularReflection", &isSpecularReflection);
 		renderItem.materialInfo_.material_->isSpecularReflection = isSpecularReflection;
+
+		bool isEnvironment = renderItem.materialInfo_.material_->isEnvironment;
+		ImGui::Checkbox("isEnvironment", &isEnvironment);
+		renderItem.materialInfo_.material_->isEnvironment = isEnvironment;
 
 		ImGui::ColorEdit4("color", &renderItem.materialInfo_.material_->color.x);
 		ImGui::ColorEdit3("shinessColor", &renderItem.materialInfo_.material_->shininessColor.x);

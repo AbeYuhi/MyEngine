@@ -12,6 +12,8 @@ struct MaterialData
     float32_t4x4 uvTransform;
     float shininess;
     float32_t3 shininessColor;
+    int32_t isEnvironment;
+    float environmentCoefficient;
 };
 ConstantBuffer<MaterialData> gMaterialData : register(b0);
 
@@ -65,6 +67,7 @@ struct PixelShaderOutput
     float32_t4 color : SV_TARGET0;
 };
 Texture2D<float32_t4> gTexture : register(t0);
+TextureCube<float32_t4> gEnvironmentTexture : register(t1);
 SamplerState gSampler : register(s0);
 PixelShaderOutput main(VertexShaderOutput input)
 {
@@ -219,6 +222,14 @@ PixelShaderOutput main(VertexShaderOutput input)
     else
     {
         output.color = gMaterialData.color * textureColor;
+    }
+    
+    if (gMaterialData.isEnvironment)
+    {
+        float32_t3 cameraToPosition = normalize(input.worldPosition - gCamera.worldPosition);
+        float32_t3 reflectedVector = reflect(cameraToPosition, normalize(input.normal));
+        float32_t4 environmentColor = gEnvironmentTexture.Sample(gSampler, reflectedVector);
+        output.color.rgb += environmentColor.rgb * gMaterialData.environmentCoefficient;
     }
     
     if (output.color.a == 0.0)

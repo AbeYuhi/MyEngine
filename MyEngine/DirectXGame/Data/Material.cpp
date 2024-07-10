@@ -8,6 +8,8 @@ void Material::Initialize() {
 	uvTransform = MakeIdentity4x4();
 	shininess = 50.0f;
 	shininessColor = { 1.0f, 1.0f, 1.0f };
+	isEnvironment = false;
+	environmentCoefficient = 1.0f;
 }
 
 void ParticleMaterial::Initialize() {

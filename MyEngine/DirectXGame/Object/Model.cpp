@@ -87,7 +87,7 @@ void Model::Draw(RenderItem& renderItem) {
 			//VBVの設定
 			dxCommon->GetCommandList()->IASetVertexBuffers(0, 2, vbvs);
 
-			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(5, renderItem.animation_.skinClusters[mesh.name].paletteSrvHandle.second);
+			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(6, renderItem.animation_.skinClusters[mesh.name].paletteSrvHandle.second);
 		}
 		else {
 			//パイプラインステートの設定
@@ -99,8 +99,9 @@ void Model::Draw(RenderItem& renderItem) {
 		}
 
 		//Lightの設定
-		LightObjectManager::GetInstance()->Draw();
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(3, textureManager->GetTextureHandleGPU(16));
 		MainCamera::GetInstance()->Draw();
+		LightObjectManager::GetInstance()->Draw();
 		//IBVの設定
 		dxCommon->GetCommandList()->IASetIndexBuffer(&mesh.indexBufferView);
 		//マテリアルCBufferの場所を設定
@@ -159,7 +160,7 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 
 			//VBVの設定
 			dxCommon->GetCommandList()->IASetVertexBuffers(0, 2, vbvs);
-			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(5, renderItem.animation_.skinClusters[mesh.name].paletteSrvHandle.second);
+			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(6, renderItem.animation_.skinClusters[mesh.name].paletteSrvHandle.second);
 		}
 		else {
 			//パイプラインステートの設定
@@ -171,8 +172,9 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 		}
 
 		//Lightの設定
-		LightObjectManager::GetInstance()->Draw();
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(3, textureManager->GetTextureHandleGPU(16));
 		MainCamera::GetInstance()->Draw();
+		LightObjectManager::GetInstance()->Draw();
 		//IBVの設定
 		dxCommon->GetCommandList()->IASetIndexBuffer(&mesh.indexBufferView);
 		//マテリアルCBufferの場所を設定

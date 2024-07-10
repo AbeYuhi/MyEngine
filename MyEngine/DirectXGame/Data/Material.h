@@ -12,6 +12,9 @@ struct Material {
 	Matrix4x4 uvTransform;
 	float shininess;
 	Vector3 shininessColor;
+	int32_t isEnvironment;
+	float padding[3];
+	float environmentCoefficient;
 
 	void Initialize();
 };
