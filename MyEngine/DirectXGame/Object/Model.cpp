@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "DirectXGame/Data/RenderItem.h"
+#include "Object/SkyBox.h"
 
 Model::Model() {}
 Model::~Model() {}

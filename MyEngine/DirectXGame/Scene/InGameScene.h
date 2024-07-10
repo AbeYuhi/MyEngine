@@ -61,6 +61,7 @@ private:
 	//テクスチャハンドル
 	uint32_t monsterBallHandle_;
 	uint32_t fenceHandle_;
+	uint32_t skyboxHandle_;
 
 	//描画モデル
 	std::unique_ptr<TestParticle> testParticle1_;

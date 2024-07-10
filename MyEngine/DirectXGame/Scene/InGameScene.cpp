@@ -50,6 +50,7 @@ void InGameScene::Initialize() {
 	//画像読み込み
 	monsterBallHandle_ = TextureManager::Load("monsterBall.png");
 	fenceHandle_ = TextureManager::Load("fence.png");
+	skyboxHandle_ = TextureManager::Load("rostock_laage_airport_4k.dds");
 
 	//ゲームオブジェクト
 	testParticle1_ = std::make_unique<TestParticle>();
@@ -74,7 +75,7 @@ void InGameScene::Initialize() {
 	boxModelInfo_.SetModel(boxModel_.get());
 	boxModelInfo_.SetAnimation(boxModel_->GetAnimationData());
 
-	skybox_ = SkyBox::Create("rostock_laage_airport_4k.dds");
+	skybox_ = SkyBox::Create(skyboxHandle_);
 	skyboxInfo_.Initialize();
 	skyboxInfo_.worldTransform_.data_.scale_ *= 100;
 

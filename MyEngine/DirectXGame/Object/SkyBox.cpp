@@ -1,27 +1,16 @@
 #include "SkyBox.h"
 
-SkyBox::SkyBox()
-{
+SkyBox* SkyBox::GetInstance() {
+	static SkyBox instance;
+	return &instance;
 }
 
-SkyBox::~SkyBox()
-{
-}
-
-std::shared_ptr<SkyBox> SkyBox::Create(std::string filePath) {
-
-	std::shared_ptr<SkyBox> skybox = std::make_shared<SkyBox>();
-	skybox->Initialize(filePath);
-
-	return skybox;
-}
-
-void SkyBox::Initialize(std::string filePath) {
+void SkyBox::Initialize(uint32_t textureHandle) {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//テクスチャの読み込み
-	textureHandle_ = TextureManager::GetInstance()->Load(filePath);
+	textureHandle_ = textureHandle;
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);

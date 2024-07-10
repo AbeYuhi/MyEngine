@@ -31,6 +31,7 @@
 #include "GameObject/Camera/MainCamera.h"
 
 struct RenderItem;
+class SkyBox;
 
 class Model
 {
