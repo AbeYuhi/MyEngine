@@ -19,14 +19,17 @@
 
 class SkyBox
 {
-public: //静的メンバ関数
-	static SkyBox* GetInstance();
+public: //制的メンバ関数
+
+	static std::shared_ptr<SkyBox> Create(uint32_t textureHandle);
 
 private: //静的メンバ変数
 	const static UINT kVertexNumber = 24;
 	const static UINT kIndexNumber = 36;
 
 public: //メンバ関数
+	SkyBox();
+	~SkyBox();
 
 	void Initialize(uint32_t textureHandle);
 
@@ -36,8 +39,6 @@ public: //メンバ関数
 	inline uint32_t GetSkyBoxTextureHandle() { return textureHandle_; }
 
 private: //メンバ変数
-	SkyBox() = default;
-	~SkyBox() = default;
 	//オブジェクト情報のResource
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
 	ComPtr<ID3D12Resource> indexResource_ = nullptr;

@@ -9,10 +9,10 @@ struct MaterialData
     float32_t4 color;
     int32_t enableLighting;
     int32_t isSpecularReflection;
+    int32_t isEnvironment;
     float32_t4x4 uvTransform;
     float shininess;
     float32_t3 shininessColor;
-    int32_t isEnvironment;
     float environmentCoefficient;
 };
 ConstantBuffer<MaterialData> gMaterialData : register(b0);

@@ -61,6 +61,7 @@ void InGameScene::Initialize() {
 	yukariModelInfo_.Initialize();
 	yukariModelInfo_.SetModel(yukariModel_.get());
 	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
+	yukariModelInfo_.materialInfo_.environmentTextureHandle_ = skyboxHandle_;
 
 	walkModel_ = Model::Create("human", "walk.gltf");
 	sneakWalkModel_ = Model::Create("human", "sneakWalk.gltf");
@@ -68,10 +69,12 @@ void InGameScene::Initialize() {
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;
+	walkModelInfo_.materialInfo_.environmentTextureHandle_ = skyboxHandle_;
 	walkModelInfo_.SetModel(walkModel_.get());
 	walkModelInfo_.SetAnimation(walkModel_->GetAnimationData());
 
 	boxModelInfo_.Initialize();
+	boxModelInfo_.materialInfo_.environmentTextureHandle_ = skyboxHandle_;
 	boxModelInfo_.SetModel(boxModel_.get());
 	boxModelInfo_.SetAnimation(boxModel_->GetAnimationData());
 
@@ -115,7 +118,8 @@ void InGameScene::Update() {
 	ImGui::Begin("RenderItemInfo");
 	ImGui::BeginTabBar("RenderItemInfo");
 	ImGuiManager::GetInstance()->RenderItemDebug("yukariModel", yukariModelInfo_);
-	ImGuiManager::GetInstance()->RenderItemDebug("humanModel", walkModelInfo_);
+	ImGuiManager::GetInstance()->RenderItemDebug("human", walkModelInfo_);
+	ImGuiManager::GetInstance()->RenderItemDebug("boxModel", boxModelInfo_);
 	ImGuiManager::GetInstance()->RenderItemDebug("skybox", skyboxInfo_);
 	ImGuiManager::GetInstance()->SpriteItemDebug("sprite", spriteInfo_);
 	ImGui::EndTabBar();
@@ -182,7 +186,7 @@ void InGameScene::Draw() {
 
 	yukariModel_->Draw(yukariModelInfo_);
 	walkModel_->Draw(walkModelInfo_);
-	//boxModel_->Draw(boxModelInfo_);
+	boxModel_->Draw(boxModelInfo_);
 	skybox_->Draw(skyboxInfo_);
 
 	///オブジェクトの描画終了

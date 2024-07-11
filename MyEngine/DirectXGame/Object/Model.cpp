@@ -100,7 +100,7 @@ void Model::Draw(RenderItem& renderItem) {
 		}
 
 		//Lightの設定
-		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(3, textureManager->GetTextureHandleGPU(16));
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(3, textureManager->GetTextureHandleGPU(renderItem.materialInfo_.environmentTextureHandle_));
 		MainCamera::GetInstance()->Draw();
 		LightObjectManager::GetInstance()->Draw();
 		//IBVの設定
@@ -173,7 +173,7 @@ void Model::Draw(RenderItem& renderItem, uint32_t textureHandle) {
 		}
 
 		//Lightの設定
-		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(3, textureManager->GetTextureHandleGPU(16));
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(3, textureManager->GetTextureHandleGPU(renderItem.materialInfo_.environmentTextureHandle_));
 		MainCamera::GetInstance()->Draw();
 		LightObjectManager::GetInstance()->Draw();
 		//IBVの設定

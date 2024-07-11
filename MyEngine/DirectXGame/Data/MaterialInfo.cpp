@@ -8,6 +8,8 @@ void MaterialInfo::Initialize() {
 	uvTransform_.Initialize();
 	isInvisible_ = false;
 
+	environmentTextureHandle_ = 0;
+
 	UpdateMatrix();
 }
 

@@ -14,6 +14,8 @@ struct MaterialInfo {
 	Material* material_;
 	//非表示かどうか
 	bool isInvisible_;
+	//環境マッピングのテクスチャハンドル
+	uint32_t environmentTextureHandle_;
 
 	/// <summary>
 	/// 初期化

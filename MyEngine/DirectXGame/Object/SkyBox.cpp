@@ -1,8 +1,12 @@
 #include "SkyBox.h"
 
-SkyBox* SkyBox::GetInstance() {
-	static SkyBox instance;
-	return &instance;
+SkyBox::SkyBox(){}
+SkyBox::~SkyBox(){}
+
+std::shared_ptr<SkyBox> SkyBox::Create(uint32_t textureHandle) {
+	std::shared_ptr<SkyBox> object = std::make_shared<SkyBox>();
+	object->Initialize(textureHandle);
+	return object;
 }
 
 void SkyBox::Initialize(uint32_t textureHandle) {
