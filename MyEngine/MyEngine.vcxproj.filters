@@ -360,6 +360,9 @@
     <ClCompile Include="DirectXGame\Object\SkyBox.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\LoadFile\LoadLevelData.cpp">
+      <Filter>ソース ファイル\LoadFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">
@@ -642,6 +645,12 @@
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\HSVMaterial.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\LoadFile\LoadLevelData.h">
+      <Filter>ヘッダー ファイル\LoadFile</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Data\LevelData.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>

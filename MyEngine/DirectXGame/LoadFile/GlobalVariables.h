@@ -80,6 +80,6 @@ private:
 	GlobalVariables& operator=(const GlobalVariables&) = delete;
 
 	//グローバル変数の保存先ファイルパス
-	const std::string kDirectoryPath = "Resources/GlobalVariables/";
+	const std::string kDirectoryPath = "Resources/ScriptFiles/GlobalVariables/";
 };
 
