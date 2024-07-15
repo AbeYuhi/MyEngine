@@ -125,7 +125,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\LoadFile\GlobalVariables.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.cpp" />
     <ClCompile Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.cpp" />
-    <ClCompile Include="DirectXGame\LoadFile\LoadLevelData.cpp" />
+    <ClCompile Include="DirectXGame\LoadFile\LevelScene.cpp" />
     <ClCompile Include="DirectXGame\Manager\CollisionManager.cpp" />
     <ClCompile Include="DirectXGame\Math\Quaternion.cpp" />
     <ClCompile Include="DirectXGame\Object\WireFrameSpriteBox.cpp" />
@@ -193,7 +193,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\GameObject\Map\CreateStage.h" />
     <ClInclude Include="DirectXGame\GameObject\Particle\Object\PlaneParticle.h" />
     <ClInclude Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.h" />
-    <ClInclude Include="DirectXGame\LoadFile\LoadLevelData.h" />
+    <ClInclude Include="DirectXGame\LoadFile\LevelScene.h" />
     <ClInclude Include="DirectXGame\Manager\CollisionManager.h" />
     <ClInclude Include="DirectXGame\Math\AABB.h" />
     <ClInclude Include="DirectXGame\Data\AccelerationField.h" />
