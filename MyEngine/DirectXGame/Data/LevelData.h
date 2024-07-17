@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include <memory>
+#include <list>
+#include <vector>
 #include "Math/Vector3.h"
 #include "Data/Transform.h"
 
@@ -15,8 +18,8 @@ struct LevelData {
 		Vector3 scaling;
 		
 		std::string fileName;
-		ObjectCollider collider;
-		std::list<ObjectData> childrens;
+		std::unique_ptr<ObjectCollider> collider;
+		std::vector<ObjectData> childrens;
 	};
 
 	std::vector<ObjectData> objects;

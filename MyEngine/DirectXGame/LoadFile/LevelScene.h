@@ -8,8 +8,10 @@
 #include "External/nlohmann/json.hpp"
 #include "DirectXGame/Math/Vector3.h"
 #include "DirectXGame/Manager/ImGuiManager.h"
+#include "DirectXGame/Manager/CollisionManager.h"
 #include "Object/Model.h"
 #include "Data/LevelData.h"
+#include "Data/Collider.h"
 
 using json = nlohmann::json;
 
@@ -29,7 +31,7 @@ private: //メンバ関数
 
 	void LoadFile(std::string fileName);
 
-	void ScanChildData(LevelData* levelData, json childrens, LevelData::ObjectData* parent);
+	void ScanChildData(LevelData* levelData, json& childrens, LevelData::ObjectData* parent);
 
 	void LevelCreate();
 
@@ -41,6 +43,7 @@ private: //メンバ変数
 	struct LevelObject {
 		std::shared_ptr<Model> model_;
 		RenderItem renderItem;
+		Collider collider;
 	};
 
 	std::list<LevelObject> levelObjects;

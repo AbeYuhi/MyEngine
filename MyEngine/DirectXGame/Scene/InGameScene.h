@@ -20,6 +20,7 @@
 #include "GameObject/Particle/testParticle.h"
 #include "GameObject/Particle/Object/PlaneParticle.h"
 #include "GameObject/Particle/Sprite/SpriteParticle.h"
+#include "LoadFile/LevelScene.h"
 #include "Scene/IScene.h"
 
 class InGameScene : public IScene {
@@ -83,4 +84,6 @@ private:
 
 	//サウンド
 	uint32_t soundHandle_;
+
+	LevelScene levelScene_;
 };
