@@ -6,6 +6,7 @@ void LevelScene::Initialize(std::string fileName) {
 	LoadFile(fileName);
 
 	//ステージの生成
+	LevelCreate();
 
 }
 
@@ -14,6 +15,10 @@ void LevelScene::Update() {
 }
 
 void LevelScene::Draw() {
+
+	for (auto& levelObject : levelObjects) {
+		levelObject.model_->Draw(levelObject.renderItem);
+	}
 
 }
 
@@ -161,12 +166,10 @@ void LevelScene::ScanChildData(LevelData* levelData, json childrens, LevelData::
 				objectData.collider.size.z = collider["size"][1];
 			}
 
-			//親をセット
-			objectData.parent = parent;
-
 			if (object.contains("children")) {
 				ScanChildData(levelData, object["children"], &objectData);
 			}
+			parent->childrens.push_back(objectData);
 		}
 	}
 }
@@ -175,11 +178,17 @@ void LevelScene::LevelCreate() {
 
 	//レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData_->objects) {
-		RenderItem renderItem;
-		renderItem.Initialize();
+		LevelObject levelObject;
+		levelObject.renderItem.Initialize();
+		levelObject.renderItem.worldTransform_.data_.translate_ = objectData.translation;
+		levelObject.renderItem.worldTransform_.data_.rotate_ = objectData.rotation;
+		levelObject.renderItem.worldTransform_.data_.scale_ = objectData.scaling;
+		
+		for()
 
+		levelObject.model_ = Model::Create(objectData.fileName);
 
-
+		levelObjects.push_back(levelObject);
 	}
 
 }

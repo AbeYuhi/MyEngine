@@ -16,7 +16,7 @@ struct LevelData {
 		
 		std::string fileName;
 		ObjectCollider collider;
-		ObjectData* parent;
+		std::list<ObjectData> childrens;
 	};
 
 	std::vector<ObjectData> objects;

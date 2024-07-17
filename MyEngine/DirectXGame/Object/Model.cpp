@@ -7,6 +7,17 @@ Model::~Model() {}
 
 std::map<std::string, std::shared_ptr<Model>> Model::sModels_;
 
+std::shared_ptr<Model> Model::Create(const std::string filename) {
+	std::string filepath = filename.substr(0, filename.find_last_of("."));
+	std::string filePath = filepath + "/" + filename;
+	if (sModels_.find(filePath) == sModels_.end()) {
+		sModels_[filePath] = std::make_shared<Model>();
+		sModels_[filePath]->Initialize(filepath, filename);
+	}
+
+	return sModels_[filePath];
+}
+
 std::shared_ptr<Model> Model::Create(const std::string& filepath, const std::string filename) {
 	std::string filePath = filepath + "/" + filename;
 	if (sModels_.find(filePath) == sModels_.end()) {

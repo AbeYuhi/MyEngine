@@ -2,12 +2,14 @@
 #include <variant>
 #include <map>
 #include <string>
+#include <memory>
 #include <iostream>
 #include <fstream>
+#include "External/nlohmann/json.hpp"
 #include "DirectXGame/Math/Vector3.h"
 #include "DirectXGame/Manager/ImGuiManager.h"
+#include "Object/Model.h"
 #include "Data/LevelData.h"
-#include "External/nlohmann/json.hpp"
 
 using json = nlohmann::json;
 
@@ -36,7 +38,11 @@ private: //メンバ変数
 	const std::string kDirectoryPath = "Resources/ScriptFilles/";
 	std::unique_ptr<LevelData> levelData_;
 
-	std::shared_ptr<Model> model_;
-	std::list<RenderItem> renderItems_;
+	struct LevelObject {
+		std::shared_ptr<Model> model_;
+		RenderItem renderItem;
+	};
+
+	std::list<LevelObject> levelObjects;
 };
 
