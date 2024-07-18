@@ -468,7 +468,7 @@ Matrix4x4 MakeRotateMatrix(const Vector3& rotate) {
 	Matrix4x4 rotateYMatrix = MakeRotateYMatrix(rotate.y);
 	Matrix4x4 rotateZMatrix = MakeRotateZMatrix(rotate.z);
 
-	return MakeRotateXYZMatrix(rotateXMatrix, rotateYMatrix, rotateZMatrix);
+	return MakeRotateXYZMatrix(rotateXMatrix, rotateZMatrix, rotateYMatrix);
 }
 
 Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {

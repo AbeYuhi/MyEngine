@@ -95,9 +95,9 @@ void LevelScene::LoadFile(std::string fileName) {
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
 			//回転角
-			objectData.rotation.x = (float)transform["rotation"][0];
-			objectData.rotation.y = (float)transform["rotation"][2];
-			objectData.rotation.z = (float)transform["rotation"][1];
+			objectData.rotation.x = -(float)transform["rotation"][0] * (3.14f / 180.0f);
+			objectData.rotation.y = -(float)transform["rotation"][2] * (3.14f / 180.0f);
+			objectData.rotation.z = -(float)transform["rotation"][1] * (3.14f / 180.0f);
 			//スケーリング
 			objectData.scaling.x = (float)transform["scaling"][0];
 			objectData.scaling.y = (float)transform["scaling"][2];
@@ -165,9 +165,9 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, int32_t pa
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
 			//回転角
-			objectData.rotation.x = (float)transform["rotation"][0];
-			objectData.rotation.y = (float)transform["rotation"][2];
-			objectData.rotation.z = (float)transform["rotation"][1];
+			objectData.rotation.x = -(float)transform["rotation"][0] * (3.14f / 180.0f);
+			objectData.rotation.y = -(float)transform["rotation"][2] * (3.14f / 180.0f);
+			objectData.rotation.z = -(float)transform["rotation"][1] * (3.14f / 180.0f);
 			//スケーリング
 			objectData.scaling.x = (float)transform["scaling"][0];
 			objectData.scaling.y = (float)transform["scaling"][2];
