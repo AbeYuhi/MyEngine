@@ -12,12 +12,22 @@ void LevelScene::Initialize(std::string fileName) {
 
 void LevelScene::Update() {
 
+#ifdef _DEBUG
+	ImGui::Begin("levelObjInfo");
+	ImGui::BeginTabBar("levelObjInfo");
+	for (auto& levelObject : levelObjects_) {
+		ImGuiManager::GetInstance()->RenderItemDebug(levelObject->objName + "info", levelObject->renderItem);
+	}
+	ImGui::EndTabBar();
+	ImGui::End();
+#endif // _DEBUG
+
 }
 
 void LevelScene::Draw() {
 
-	for (auto& levelObject : levelObjects) {
-		levelObject.model_->Draw(levelObject.renderItem);
+	for (auto& levelObject : levelObjects_) {
+		levelObject->model->Draw(levelObject->renderItem);
 	}
 
 }
@@ -70,6 +80,10 @@ void LevelScene::LoadFile(std::string fileName) {
 			//今追加した要素の参照を得る
 			LevelData::ObjectData& objectData = levelData_->objects.back();
 
+			if (object.contains("name")) {
+				objectData.objName = object["name"];
+			}
+
 			if (object.contains("file_name")) {
 				objectData.fileName = object["file_name"];
 			}
@@ -91,22 +105,23 @@ void LevelScene::LoadFile(std::string fileName) {
 
 			if (object.contains("collider")) {
 				json& collider = object["collider"];
-
-				objectData.collider = std::make_unique<LevelData::ObjectCollider>();
 				//コライダータイプ
-				objectData.collider->type = collider["type"];
+				LevelData::ObjectCollider colliderData;
+				colliderData.type = collider["type"];
 				//ポジション
-				objectData.collider->centerPos.x = collider["center"][0];
-				objectData.collider->centerPos.y = collider["center"][2];
-				objectData.collider->centerPos.z = collider["center"][1];
+				colliderData.centerPos.x = collider["center"][0];
+				colliderData.centerPos.y = collider["center"][2];
+				colliderData.centerPos.z = collider["center"][1];
 				//サイズ
-				objectData.collider->size.x = collider["size"][0];
-				objectData.collider->size.y = collider["size"][2];
-				objectData.collider->size.z = collider["size"][1];
+				colliderData.size.x = collider["size"][0];
+				colliderData.size.y = collider["size"][2];
+				colliderData.size.z = collider["size"][1];
+
+				objectData.collider = colliderData;
 			}
 
 			if (object.contains("children")) {
-				ScanChildData(levelData_.get(), object, &objectData);
+				ScanChildData(levelData_.get(), object, static_cast<int32_t>(levelData_->objects.size()) - 1);
 			}
 		}
 
@@ -119,7 +134,7 @@ void LevelScene::LoadFile(std::string fileName) {
 	}
 }
 
-void LevelScene::ScanChildData(LevelData* levelData, json& childrens, LevelData::ObjectData* parent) {
+void LevelScene::ScanChildData(LevelData* levelData, json& childrens, int32_t parent) {
 	for (auto& object : childrens["children"]) {
 		assert(object.contains("type"));
 
@@ -131,9 +146,13 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, LevelData:
 		//Mesh
 		if (type.compare("MESH") == 0) {
 			//要素追加
-			parent->childrens.emplace_back(LevelData::ObjectData{});
+			levelData_->objects.emplace_back(LevelData::ObjectData{});
 			//今追加した要素の参照を得る
-			LevelData::ObjectData& objectData = parent->childrens.back();
+			LevelData::ObjectData& objectData = levelData_->objects.back();
+
+			if (object.contains("name")) {
+				objectData.objName = object["name"];
+			}
 
 			if (object.contains("file_name")) {
 				objectData.fileName = object["file_name"];
@@ -154,24 +173,27 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, LevelData:
 			objectData.scaling.y = (float)transform["scaling"][2];
 			objectData.scaling.z = (float)transform["scaling"][1];
 
+			objectData.parent = parent;
+
 			if (object.contains("collider")) {
 				json& collider = object["collider"];
-
-				objectData.collider = std::make_unique<LevelData::ObjectCollider>();
 				//コライダータイプ
-				objectData.collider->type = collider["type"];
+				LevelData::ObjectCollider colliderData;
+				colliderData.type = collider["type"];
 				//ポジション
-				objectData.collider->centerPos.x = collider["center"][0];
-				objectData.collider->centerPos.y = collider["center"][2];
-				objectData.collider->centerPos.z = collider["center"][1];
+				colliderData.centerPos.x = collider["center"][0];
+				colliderData.centerPos.y = collider["center"][2];
+				colliderData.centerPos.z = collider["center"][1];
 				//サイズ
-				objectData.collider->size.x = collider["size"][0];
-				objectData.collider->size.y = collider["size"][2];
-				objectData.collider->size.z = collider["size"][1];
+				colliderData.size.x = collider["size"][0];
+				colliderData.size.y = collider["size"][2];
+				colliderData.size.z = collider["size"][1];
+
+				objectData.collider = colliderData;
 			}
 
 			if (object.contains("children")) {
-				ScanChildData(levelData, object["children"], &objectData);
+				ScanChildData(levelData, object["children"], static_cast<int32_t>(levelData_->objects.size()) - 1);
 			}
 		}
 	}
@@ -181,34 +203,24 @@ void LevelScene::LevelCreate() {
 
 	//レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData_->objects) {
-		LevelObject levelObject;
-		levelObject.renderItem.Initialize();
-		levelObject.renderItem.worldTransform_.data_.translate_ = objectData.translation;
-		levelObject.renderItem.worldTransform_.data_.rotate_ = objectData.rotation;
-		levelObject.renderItem.worldTransform_.data_.scale_ = objectData.scaling;
-		levelObject.model_ = Model::Create(objectData.fileName);
+		std::unique_ptr<LevelObject> levelObject = std::make_unique<LevelObject>();
+		levelObject->renderItem.Initialize();
+		levelObject->renderItem.worldTransform_.data_.translate_ = objectData.translation;
+		levelObject->renderItem.worldTransform_.data_.rotate_ = objectData.rotation;
+		levelObject->renderItem.worldTransform_.data_.scale_ = objectData.scaling;
+		levelObject->model = Model::Create(objectData.fileName);
+		levelObject->objName = objectData.objName;
 
 		if (objectData.collider) {
-			levelObject.collider.Initialize(&levelObject.renderItem.worldTransform_.data_.translate_, objectData.collider->size, WALL, false);
-			CollisionManager::GetInstance()->AddCollider(&levelObject.collider);
+			levelObject->collider.Initialize(levelObject->renderItem.worldTransform_.GetPWorldPos(), objectData.collider->size, WALL, false);
+			CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 		}
 
-		for (auto& children : objectData.childrens) {
-			LevelObject childrenObj;
-			childrenObj.model_ = Model::Create(children.fileName);
-			childrenObj.renderItem.Initialize();
-			childrenObj.renderItem.worldTransform_.data_.translate_ = children.translation;
-			childrenObj.renderItem.worldTransform_.data_.rotate_ = children.rotation;
-			childrenObj.renderItem.worldTransform_.data_.scale_ = children.scaling;
-			childrenObj.renderItem.worldTransform_.parent_ = &levelObject.renderItem.worldTransform_;
-			if (children.collider) {
-				childrenObj.collider.Initialize(&childrenObj.renderItem.worldTransform_.data_.translate_, childrenObj.renderItem.worldTransform_.data_.scale_, WALL, false);
-				CollisionManager::GetInstance()->AddCollider(&childrenObj.collider);
-			}
-			levelObjects.push_back(std::move(childrenObj));
+		if (objectData.parent) {
+			levelObject->renderItem.worldTransform_.parent_ = &levelObjects_[*objectData.parent]->renderItem.worldTransform_;
 		}
 
-		levelObjects.push_back(std::move(levelObject));
+		levelObjects_.push_back(std::move(levelObject));
 	}
 
 }

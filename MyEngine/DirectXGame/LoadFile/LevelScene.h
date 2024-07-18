@@ -31,7 +31,7 @@ private: //メンバ関数
 
 	void LoadFile(std::string fileName);
 
-	void ScanChildData(LevelData* levelData, json& childrens, LevelData::ObjectData* parent);
+	void ScanChildData(LevelData* levelData, json& childrens, int32_t parent);
 
 	void LevelCreate();
 
@@ -41,11 +41,12 @@ private: //メンバ変数
 	std::unique_ptr<LevelData> levelData_;
 
 	struct LevelObject {
-		std::shared_ptr<Model> model_;
+		std::string objName;
+		std::shared_ptr<Model> model;
 		RenderItem renderItem;
 		Collider collider;
 	};
 
-	std::list<LevelObject> levelObjects;
+	std::vector<std::unique_ptr<LevelObject>> levelObjects_;
 };
 

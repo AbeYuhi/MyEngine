@@ -9,6 +9,7 @@
 #include "Manager/PostEffectManager.h"
 #include "Manager/RandomManager.h"
 #include "Manager/LightObjectManager.h"
+#include "Manager/CollisionManager.h"
 #include "Object/Sprite.h"
 #include "Object/Model.h"
 #include "Object/SkyBox.h"
@@ -44,6 +45,7 @@ private:
 	AudioManager* audioManager_;
 	RandomManager* randomManager_;
 	PostEffectManager* postEffectManager_;
+	CollisionManager* collisionManager_;
 	MainCamera* mainCamera_;
 	SpriteCamera* spriteCamera_;
 	//ライト

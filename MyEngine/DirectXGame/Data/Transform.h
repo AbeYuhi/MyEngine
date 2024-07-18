@@ -35,6 +35,8 @@ struct WorldTransform {
 	EulerTransformData data_;
 	//ワールドMatrix
 	Matrix4x4 worldMatrix_;
+	//ワールド座標のポジション
+	Vector3 worldPos_;
 	//Matrix転送済みデータ
 	TransformMatrix* matrix_;
 	//親のワールドポインタ
@@ -66,6 +68,8 @@ struct WorldTransform {
 	/// ワールドポジションの取得
 	/// </summary>
 	Vector3 GetWorldPos();
+
+	Vector3* GetPWorldPos();
 
 private:
 	/// <summary>

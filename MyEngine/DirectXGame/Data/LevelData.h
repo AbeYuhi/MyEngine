@@ -17,9 +17,10 @@ struct LevelData {
 		Vector3 rotation;
 		Vector3 scaling;
 		
+		std::string objName;
 		std::string fileName;
-		std::unique_ptr<ObjectCollider> collider;
-		std::vector<ObjectData> childrens;
+		std::optional<ObjectCollider> collider;
+		std::optional<int32_t> parent;
 	};
 
 	std::vector<ObjectData> objects;

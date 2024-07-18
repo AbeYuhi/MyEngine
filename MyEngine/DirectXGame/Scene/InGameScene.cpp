@@ -20,6 +20,7 @@ void InGameScene::Initialize() {
 	audioManager_ = AudioManager::GetInstance();
 	randomManager_ = RandomManager::GetInstance();
 	postEffectManager_ = PostEffectManager::GetInstance();
+	collisionManager_ = CollisionManager::GetInstance();
 	mainCamera_ = MainCamera::GetInstance();
 	spriteCamera_ = SpriteCamera::GetInstance();
 
@@ -43,6 +44,9 @@ void InGameScene::Initialize() {
 	//影
 	shadow_ = std::make_unique<Shadow>();
 	shadow_->Initialize();
+
+	//コリジョンマネージャー
+	collisionManager_->Initialize();
 
 	//ブレンドモード
 	blendMode_ = kBlendModeNormal;
@@ -115,6 +119,9 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
+	levelScene_.Update();
+
+	collisionManager_->Update();
 #ifdef _DEBUG
 
 	ImGui::Begin("RenderItemInfo");
@@ -192,6 +199,8 @@ void InGameScene::Draw() {
 	skybox_->Draw(skyboxInfo_);*/
 
 	levelScene_.Draw();
+
+	collisionManager_->Draw();
 
 	///オブジェクトの描画終了
 

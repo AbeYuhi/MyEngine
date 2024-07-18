@@ -277,8 +277,6 @@ void CollisionManager::Draw() {
 		if (collider->isDrawCollider_) {
 			collider->renderItem_.worldTransform_.data_.translate_ = *collider->translate_;
 			collider->renderItem_.worldTransform_.data_.scale_ = collider->colliderScale_;
-			collider->renderItem_.Update();
-
 			wireFrame_->Draw(collider->renderItem_);
 		}
 	}

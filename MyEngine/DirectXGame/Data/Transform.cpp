@@ -45,6 +45,12 @@ void WorldTransform::UpdateWorld() {
 		worldMatrix_ = Multiply(worldMatrix_, parent_->worldMatrix_);
 	}
 
+	worldPos_ = {
+		worldMatrix_.m[3][0],
+		worldMatrix_.m[3][1],
+		worldMatrix_.m[3][2]
+	};
+
 	TransferMatrix();
 }
 
@@ -68,4 +74,11 @@ Vector3 WorldTransform::GetWorldPos() {
 	pos.y = worldMatrix_.m[3][1];
 	pos.z = worldMatrix_.m[3][2];
 	return pos;
+}
+
+Vector3* WorldTransform::GetPWorldPos() {
+	//ワールド位置を更新してから
+	UpdateWorld();
+
+	return &worldPos_;
 }
