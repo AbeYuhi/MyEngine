@@ -212,7 +212,7 @@ void LevelScene::LevelCreate() {
 		levelObject->objName = objectData.objName;
 
 		if (objectData.collider) {
-			levelObject->collider.Initialize(levelObject->renderItem.worldTransform_.GetPWorldPos(), objectData.collider->size, WALL, false);
+			levelObject->collider.Initialize(levelObject->renderItem.worldTransform_.GetPWorldPos(), objectData.scaling, objectData.collider->size, WALL, false);
 			CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 		}
 

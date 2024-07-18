@@ -57,6 +57,6 @@ struct Collider {
 
 	bool isCollisionCheck_;
 
-	void Initialize(Vector3* translate, Vector3 colliderScale, ColliderTag tag, bool isCollisionCheck, Vector3* velocity = nullptr, bool isDrawCollider = true);
+	void Initialize(Vector3* translate, Vector3 objectScale, Vector3 colliderScale, ColliderTag tag, bool isCollisionCheck, Vector3* velocity = nullptr, bool isDrawCollider = true);
 	void Update();
 };
