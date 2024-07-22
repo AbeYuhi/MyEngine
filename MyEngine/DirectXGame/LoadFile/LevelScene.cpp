@@ -112,6 +112,10 @@ void LevelScene::LoadFile(std::string fileName) {
 				colliderData.centerPos.x = collider["center"][0];
 				colliderData.centerPos.y = collider["center"][2];
 				colliderData.centerPos.z = collider["center"][1];
+				//回転
+				colliderData.rotate.x = collider["rotate"][0];
+				colliderData.rotate.y = collider["rotate"][2];
+				colliderData.rotate.z = collider["rotate"][1];
 				//サイズ
 				colliderData.size.x = collider["size"][0];
 				colliderData.size.y = collider["size"][2];
@@ -184,6 +188,10 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, int32_t pa
 				colliderData.centerPos.x = collider["center"][0];
 				colliderData.centerPos.y = collider["center"][2];
 				colliderData.centerPos.z = collider["center"][1];
+				//回転
+				colliderData.rotate.x = collider["rotate"][0];
+				colliderData.rotate.y = collider["rotate"][2];
+				colliderData.rotate.z = collider["rotate"][1];
 				//サイズ
 				colliderData.size.x = collider["size"][0];
 				colliderData.size.y = collider["size"][2];
@@ -212,7 +220,9 @@ void LevelScene::LevelCreate() {
 		levelObject->objName = objectData.objName;
 
 		if (objectData.collider) {
-			levelObject->collider.Initialize(levelObject->renderItem.worldTransform_.GetPWorldPos(), objectData.scaling, objectData.collider->size, WALL, false);
+
+
+			levelObject->collider.Initialize(levelObject->renderItem.worldTransform_.GetPWorldPos(), &objectData.collider->rotate, objectData.scaling, objectData.collider->size, WALL, false);
 			CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 		}
 

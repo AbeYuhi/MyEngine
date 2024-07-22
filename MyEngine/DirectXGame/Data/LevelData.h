@@ -10,6 +10,7 @@ struct LevelData {
 	struct ObjectCollider {
 		std::string type;
 		Vector3 centerPos;
+		Vector3 rotate;
 		Vector3 size;
 	};
 	struct ObjectData {

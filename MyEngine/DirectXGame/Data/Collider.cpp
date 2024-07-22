@@ -1,9 +1,12 @@
 #include "Collider.h"
 
-void Collider::Initialize(Vector3* translate, Vector3 objectScale, Vector3 colliderScale, ColliderTag tag, bool isCollisionCheck, Vector3* velocity, bool isDrawCollider) {
-	translate_ = translate;
-	colliderScale_ = objectScale * colliderScale;
+void Collider::Initialize(EulerTransformData* objData, EulerTransformData colliderData, ColliderTag tag, ColliderType type, bool isCollisionCheck, Vector3* velocity, bool isDrawCollider) {
+	objData_ = objData;
+	colliderData_ = colliderData;
+	worldMatrix_ = MakeAffineMatrix(colliderData_);
+	worldMatrix_ = Multiply(worldMatrix_, MakeAffineMatrix(*objData_));
 	tag_ = tag;
+	type_ = type;
 	velocity_ = velocity;
 	isDrawCollider_ = isDrawCollider;
 	isCollisionCheck_ = isCollisionCheck;
@@ -13,36 +16,38 @@ void Collider::Initialize(Vector3* translate, Vector3 objectScale, Vector3 colli
 	renderItem_.Initialize();
 #endif // _DEBUG
 	for (int i = 0; i < kNumColliderTag; i++) {
-		collision_[i].isContact_ = false;
-		collision_[i].isUnderHit_ = false;
-		collision_[i].isTopHit_ = false;
-		collision_[i].isLeftHit_ = false;
-		collision_[i].isRightHit_ = false;
-		collision_[i].isFrontHit_ = false;
-		collision_[i].isBackHit_ = false;
-
-		collision_[i].isTopLeftFrontHit_ = false;
-		collision_[i].isTopRightFrontHit_ = false;
-		collision_[i].isUnderLeftFrontHit_ = false;
-		collision_[i].isUnderRightFrontHit_ = false;
-		collision_[i].isTopLeftBackHit_ = false;
-		collision_[i].isTopRightBackHit_ = false;
-		collision_[i].isUnderLeftBackHit_ = false;
-		collision_[i].isUnderRightBackHit_ = false;
+		isContact_[i] = false;
 	}
 	isDelete_ = false;
 	isPush_ = false;
 }
 
 void Collider::Update() {
+	// 合成された位置
+	Vector3 combinedPosition = objData_->translate_ + objData_->rotate_ * colliderData_.translate_;
+	// 合成された回転
+	Vector3 combinedRotation = objData_->rotate_ * colliderData_.rotate_;
+	// 合成された大きさ
+	Vector3 combinedScale = objData_->scale_ * colliderData_.scale_;
 
-	aabb_.min.x = translate_->x - (colliderScale_.x / 2.0f);
-	aabb_.min.y = translate_->y - (colliderScale_.y / 2.0f);
-	aabb_.min.z = translate_->z - (colliderScale_.z / 2.0f);
+	switch (type_)
+	{
+	case kAABB:
+		aabb_.min.x = combinedPosition.x - (scale_.x / 2.0f);
+		aabb_.min.y = combinedPosition.y - (scale_.y / 2.0f);
+		aabb_.min.z = combinedPosition.z - (scale_.z / 2.0f);
 
-	aabb_.max.x = translate_->x + (colliderScale_.x / 2.0f);
-	aabb_.max.y = translate_->y + (colliderScale_.y / 2.0f);
-	aabb_.max.z = translate_->z + (colliderScale_.z / 2.0f);
+		aabb_.max.x = combinedPosition.x + (scale_.x / 2.0f);
+		aabb_.max.y = combinedPosition.y + (scale_.y / 2.0f);
+		aabb_.max.z = combinedPosition.z + (scale_.z / 2.0f);
 
-	ControlMinMax(aabb_);
+		ControlMinMax(aabb_);
+		break;
+	case kOBB:
+		break;
+	case kSPHERE:
+		break;
+	default:
+		break;
+	}
 }

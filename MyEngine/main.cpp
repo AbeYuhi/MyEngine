@@ -4,6 +4,7 @@
 
 //エントリーポイント
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
+
 	//リソースリークチェック
 	static D3DResoruceLeakCheaker resourceLeakCheker{};
 	
