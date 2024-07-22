@@ -363,6 +363,12 @@
     <ClCompile Include="DirectXGame\LoadFile\LevelScene.cpp">
       <Filter>ソース ファイル\LoadFile</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Math\OBB.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Math\Sphere.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">
@@ -548,9 +554,6 @@
     <ClInclude Include="DirectXGame\Data\AccelerationField.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Math\AABB.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Base\Framework\Framework.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
@@ -652,6 +655,15 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Data\LevelData.h">
       <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Math\OBB.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Math\Sphere.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Math\AABB.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

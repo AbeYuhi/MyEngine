@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -127,7 +127,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.cpp" />
     <ClCompile Include="DirectXGame\LoadFile\LevelScene.cpp" />
     <ClCompile Include="DirectXGame\Manager\CollisionManager.cpp" />
+    <ClCompile Include="DirectXGame\Math\OBB.cpp" />
     <ClCompile Include="DirectXGame\Math\Quaternion.cpp" />
+    <ClCompile Include="DirectXGame\Math\Sphere.cpp" />
     <ClCompile Include="DirectXGame\Object\WireFrameSpriteBox.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />
@@ -195,7 +197,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.h" />
     <ClInclude Include="DirectXGame\LoadFile\LevelScene.h" />
     <ClInclude Include="DirectXGame\Manager\CollisionManager.h" />
-    <ClInclude Include="DirectXGame\Math\AABB.h" />
     <ClInclude Include="DirectXGame\Data\AccelerationField.h" />
     <ClInclude Include="DirectXGame\Base\CreateResource\CreateResource.h" />
     <ClInclude Include="DirectXGame\Base\DirectXCommon\DirectXCommon.h" />
@@ -216,7 +217,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\DebugSytem\DebugLog.h" />
     <ClInclude Include="DirectXGame\LoadFile\GlobalVariables.h" />
     <ClInclude Include="DirectXGame\DebugSytem\ReleseCheck.h" />
+    <ClInclude Include="DirectXGame\Math\AABB.h" />
+    <ClInclude Include="DirectXGame\Math\OBB.h" />
     <ClInclude Include="DirectXGame\Math\Quaternion.h" />
+    <ClInclude Include="DirectXGame\Math\Sphere.h" />
     <ClInclude Include="DirectXGame\Object\WireFrameSpriteBox.h" />
     <ClInclude Include="External\imgui\imconfig.h" />
     <ClInclude Include="External\imgui\imgui.h" />
