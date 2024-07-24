@@ -113,9 +113,9 @@ void LevelScene::LoadFile(std::string fileName) {
 				colliderData.centerPos.y = collider["center"][2];
 				colliderData.centerPos.z = collider["center"][1];
 				//回転
-				colliderData.rotate.x = collider["rotate"][0];
-				colliderData.rotate.y = collider["rotate"][2];
-				colliderData.rotate.z = collider["rotate"][1];
+				colliderData.rotate.x = collider["rotate"][0] * (3.14f / 180.0f);
+				colliderData.rotate.y = collider["rotate"][2] * (3.14f / 180.0f);
+				colliderData.rotate.z = collider["rotate"][1] * (3.14f / 180.0f);
 				//サイズ
 				colliderData.size.x = collider["size"][0];
 				colliderData.size.y = collider["size"][2];
@@ -189,9 +189,9 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, int32_t pa
 				colliderData.centerPos.y = collider["center"][2];
 				colliderData.centerPos.z = collider["center"][1];
 				//回転
-				colliderData.rotate.x = collider["rotate"][0];
-				colliderData.rotate.y = collider["rotate"][2];
-				colliderData.rotate.z = collider["rotate"][1];
+				colliderData.rotate.x = collider["rotate"][0] * (3.14f / 180.0f);
+				colliderData.rotate.y = collider["rotate"][2] * (3.14f / 180.0f);
+				colliderData.rotate.z = collider["rotate"][1] * (3.14f / 180.0f);
 				//サイズ
 				colliderData.size.x = collider["size"][0];
 				colliderData.size.y = collider["size"][2];
