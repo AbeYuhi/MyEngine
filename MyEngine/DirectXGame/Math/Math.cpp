@@ -608,3 +608,54 @@ bool IsCollision(const AABB& aabb, const Vector3& point) {
 	}
 	return false;
 }
+
+EulerTransformData ExtractTransform(const Matrix4x4& matrix) {
+	EulerTransformData data;
+
+	Vector3 position;
+	Vector3 rotation;
+	Vector3 scale;
+
+	// 位置の抽出
+	position.x = matrix.m[3][0];
+	position.y = matrix.m[3][1];
+	position.z = matrix.m[3][2];
+
+	// スケールの抽出
+	scale.x = std::sqrt(matrix.m[0][0] * matrix.m[0][0] + matrix.m[1][0] * matrix.m[1][0] + matrix.m[2][0] * matrix.m[2][0]);
+	scale.y = std::sqrt(matrix.m[0][1] * matrix.m[0][1] + matrix.m[1][1] * matrix.m[1][1] + matrix.m[2][1] * matrix.m[2][1]);
+	scale.z = std::sqrt(matrix.m[0][2] * matrix.m[0][2] + matrix.m[1][2] * matrix.m[1][2] + matrix.m[2][2] * matrix.m[2][2]);
+
+	// スケールを除去して回転成分を取り出す
+	Matrix4x4 rotationMatrix = matrix;
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			if (i == 0) {
+				rotationMatrix.m[j][i] /= scale.x;
+			}
+			else if (i == 1) {
+				rotationMatrix.m[j][i] /= scale.y;
+			}
+			else {
+				rotationMatrix.m[j][i] /= scale.z;
+			}
+		}
+	}
+
+	// 回転行列からオイラー角を計算する
+	rotation.y = std::asin(-rotationMatrix.m[0][2]);
+	if (std::cos(rotation.y) > 0.0001) {
+		rotation.x = std::atan2(rotationMatrix.m[1][2], rotationMatrix.m[2][2]);
+		rotation.z = std::atan2(rotationMatrix.m[0][1], rotationMatrix.m[0][0]);
+	}
+	else {
+		rotation.x = std::atan2(-rotationMatrix.m[2][1], rotationMatrix.m[1][1]);
+		rotation.z = 0;
+	}
+
+	data.translate_ = position;
+	data.rotate_ = rotation;
+	data.scale_ = scale;
+
+	return data;
+}

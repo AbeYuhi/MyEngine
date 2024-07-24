@@ -22,6 +22,15 @@ void LevelScene::Update() {
 	ImGui::End();
 #endif // _DEBUG
 
+	for (auto& levelObject : levelObjects_) {
+		if (levelObject->collider.isContact_[WALL]) {
+			levelObject->renderItem.materialInfo_.material_->color = { 1.0f, 0.0f, 0.0f, 1.0f };
+		}
+		else {
+			levelObject->renderItem.materialInfo_.material_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		}
+	}
+
 }
 
 void LevelScene::Draw() {
@@ -235,7 +244,7 @@ void LevelScene::LevelCreate() {
 				{ .scale_ = objectData.collider->size, .rotate_ = objectData.collider->rotate, .translate_ = objectData.collider->centerPos },
 				WALL,
 				type,
-				false);
+				true);
 			CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 		}
 

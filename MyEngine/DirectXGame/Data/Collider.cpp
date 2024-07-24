@@ -38,12 +38,41 @@ void Collider::Initialize(EulerTransformData* objData, EulerTransformData collid
 }
 
 void Collider::Update() {
+	Matrix4x4 objMatrix = MakeAffineMatrix(*objData_);
+	Matrix4x4 colliderMatrix = MakeAffineMatrix(colliderData_);
+	// スケール成分を分離するため、位置と回転のみを考慮した行列を作成
+	Matrix4x4 objRotationTranslationMatrix = objMatrix;
+	Matrix4x4 colliderRotationTranslationMatrix = colliderMatrix;
+
+	// スケールを考慮して正しい回転行列を作成
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			if (i == 0) {
+				objRotationTranslationMatrix.m[i][j] = objMatrix.m[i][j] / objData_->scale_.x;
+				colliderRotationTranslationMatrix.m[i][j] = colliderMatrix.m[i][j] / colliderData_.scale_.x;
+			}
+			else if (i == 1) {
+				objRotationTranslationMatrix.m[i][j] = objMatrix.m[i][j] / objData_->scale_.y;
+				colliderRotationTranslationMatrix.m[i][j] = colliderMatrix.m[i][j] / colliderData_.scale_.y;
+			}
+			else{
+				objRotationTranslationMatrix.m[i][j] = objMatrix.m[i][j] / objData_->scale_.z;
+				colliderRotationTranslationMatrix.m[i][j] = colliderMatrix.m[i][j] / colliderData_.scale_.z;
+			}
+		}
+	}
+
+	Matrix4x4 combinedMatrix = Multiply(objRotationTranslationMatrix, colliderRotationTranslationMatrix);
+
+	EulerTransformData combinedData = ExtractTransform(combinedMatrix);
+
 	// 合成された位置
-	combinedPosition = objData_->translate_ + objData_->rotate_ * colliderData_.translate_;
+	combinedPosition = combinedData.translate_;
 	// 合成された回転
-	combinedRotation = objData_->rotate_ * colliderData_.rotate_;
-	// 合成された大きさ
-	combinedScale = objData_->scale_ * colliderData_.scale_;
+	combinedRotation = combinedData.rotate_;
+	// 合成されたスケールは別途計算
+	combinedScale = Vector3(objData_->scale_.x * colliderData_.scale_.x, objData_->scale_.y * colliderData_.scale_.y, objData_->scale_.z * colliderData_.scale_.z);
+
 
 	std::visit([&](auto& shape) {
 		using T = std::decay_t<decltype(shape)>;

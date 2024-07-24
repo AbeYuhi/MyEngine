@@ -29,13 +29,16 @@ void CollisionManager::Update() {
 			}
 			for (auto& collider1 : colliders_) {
 
-				std::visit([&](auto& shape0) {
-					std::visit([&](auto& shape1) {
-						if (IsCollision(shape0, shape1)) {
-							collider0->isContact_[collider1->tag_] = true;
-						}
-						}, collider1->colliderShape_);
-				}, collider0->colliderShape_);
+				if (collider0 != collider1) {
+					std::visit([&](auto& shape0) {
+						std::visit([&](auto& shape1) {
+							if (IsCollision(shape0, shape1)) {
+								collider0->isContact_[collider1->tag_] = true;
+							}
+							}, collider1->colliderShape_);
+						}, collider0->colliderShape_);
+				}
+
 			}
 		}
 	}
