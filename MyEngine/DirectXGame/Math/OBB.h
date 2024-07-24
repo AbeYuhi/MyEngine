@@ -13,5 +13,11 @@ struct OBB
 
 bool IsCollision(const OBB& obb, const Sphere& sphere);
 
+bool IsCollision(const Sphere& sphere, const OBB& obb);
+
 bool IsCollision(const OBB& obb1, const OBB& obb2);
+
+bool IsCollision(const OBB& obb, const AABB& aabb);
+
+bool IsCollision(const AABB& aabb, const OBB& obb);
 

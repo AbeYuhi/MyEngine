@@ -199,7 +199,6 @@ void InGameScene::Draw() {
 	skybox_->Draw(skyboxInfo_);*/
 
 	levelScene_.Draw();
-
 	collisionManager_->Draw();
 
 	///オブジェクトの描画終了

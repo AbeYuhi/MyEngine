@@ -40,7 +40,7 @@ void RenderItem::SetModel(Model* model) {
 	for (int index = 0; index < model->GetMeshs().size(); index++) {
 		WorldTransform transform;
 		transform.Initialize(false);
-		meshWorldTransforms_.push_back(transform);
+		meshWorldTransforms_.push_back(std::move(transform));
 	}
 
 	animation_.SetModel(model);

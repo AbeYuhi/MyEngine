@@ -23,7 +23,7 @@
             },
             "file_name": "cube.obj",
             "collider": {
-                "type": "Box",
+                "type": "AABB",
                 "center": [
                     0.0,
                     0.0,
@@ -80,12 +80,12 @@
         },
         {
             "type": "MESH",
-            "name": "Icosphere",
+            "name": "Cube.001",
             "transform": {
                 "translation": [
-                    3.024664878845215,
-                    -0.1451728343963623,
-                    0.11387268453836441
+                    2.8775134086608887,
+                    0.0,
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -98,9 +98,9 @@
                     1.0
                 ]
             },
-            "file_name": "sphere.obj",
+            "file_name": "cube.obj",
             "collider": {
-                "type": "Box",
+                "type": "OBB",
                 "center": [
                     0.0,
                     0.0,
@@ -111,44 +111,7 @@
                     2.0,
                     2.0
                 ]
-            },
-            "children": [
-                {
-                    "type": "MESH",
-                    "name": "Icosphere.001",
-                    "transform": {
-                        "translation": [
-                            2.791560649871826,
-                            -1.341703176498413,
-                            2.4149303436279297
-                        ],
-                        "rotation": [
-                            0.0,
-                            -0.0,
-                            0.0
-                        ],
-                        "scaling": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ]
-                    },
-                    "file_name": "sphere.obj",
-                    "collider": {
-                        "type": "Box",
-                        "center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "size": [
-                            2.0,
-                            2.0,
-                            2.0
-                        ]
-                    }
-                }
-            ]
+            }
         }
     ]
 }

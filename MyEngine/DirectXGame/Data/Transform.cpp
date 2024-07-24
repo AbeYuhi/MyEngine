@@ -82,3 +82,7 @@ Vector3* WorldTransform::GetPWorldPos() {
 
 	return &worldPos_;
 }
+
+EulerTransformData* WorldTransform::GetPEulerTransformData() {
+	return &data_;
+}

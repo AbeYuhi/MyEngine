@@ -55,6 +55,8 @@ struct WorldTransform {
 
 	Vector3* GetPWorldPos();
 
+	EulerTransformData* GetPEulerTransformData();
+
 private:
 	/// <summary>
 	/// リソースの生成

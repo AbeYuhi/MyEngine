@@ -220,9 +220,22 @@ void LevelScene::LevelCreate() {
 		levelObject->objName = objectData.objName;
 
 		if (objectData.collider) {
-
-
-			levelObject->collider.Initialize(levelObject->renderItem.worldTransform_.GetPWorldPos(), &objectData.collider->rotate, objectData.scaling, objectData.collider->size, WALL, false);
+			ColliderType type;
+			if (objectData.collider->type == "OBB") {
+				type = kOBB;
+			}
+			else if (objectData.collider->type == "Sphere") {
+				type = kSPHERE;
+			}
+			else {
+				type = kAABB;
+			}
+			levelObject->collider.Initialize(
+				levelObject->renderItem.worldTransform_.GetPEulerTransformData(),
+				{ .scale_ = objectData.collider->size, .rotate_ = objectData.collider->rotate, .translate_ = objectData.collider->centerPos },
+				WALL,
+				type,
+				false);
 			CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 		}
 

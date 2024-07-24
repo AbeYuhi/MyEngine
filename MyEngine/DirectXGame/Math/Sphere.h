@@ -15,3 +15,5 @@ struct Sphere {
 bool IsCollision(const Sphere& s1, const Sphere& s2);
 
 bool IsCollision(const Sphere& sphere, const AABB& aabb);
+
+bool IsCollision(const AABB& aabb, const Sphere& sphere);
