@@ -243,7 +243,7 @@ void LevelScene::LevelCreate() {
 				levelObject->renderItem.worldTransform_.GetPEulerTransformData(),
 				{ .scale_ = objectData.collider->size, .rotate_ = objectData.collider->rotate, .translate_ = objectData.collider->centerPos },
 				WALL,
-				type,
+				kOBB,
 				true);
 			CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 		}
