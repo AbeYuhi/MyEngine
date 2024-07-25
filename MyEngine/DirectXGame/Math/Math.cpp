@@ -631,13 +631,13 @@ EulerTransformData ExtractTransform(const Matrix4x4& matrix) {
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
 			if (i == 0) {
-				rotationMatrix.m[j][i] /= scale.x;
+				rotationMatrix.m[i][j] /= scale.x;
 			}
 			else if (i == 1) {
-				rotationMatrix.m[j][i] /= scale.y;
+				rotationMatrix.m[i][j] /= scale.y;
 			}
 			else {
-				rotationMatrix.m[j][i] /= scale.z;
+				rotationMatrix.m[i][j] /= scale.z;
 			}
 		}
 	}

@@ -40,7 +40,7 @@ void Collider::Initialize(EulerTransformData* objData, EulerTransformData collid
 void Collider::Update() {
 	Matrix4x4 objMatrix = MakeAffineMatrix(*objData_);
 	Matrix4x4 colliderMatrix = MakeAffineMatrix(colliderData_);
-	Matrix4x4 combinedMatrix = Multiply(objMatrix, colliderMatrix);
+	Matrix4x4 combinedMatrix = Multiply(colliderMatrix, objMatrix);
 
 	EulerTransformData combinedData = ExtractTransform(combinedMatrix);
 
@@ -54,12 +54,12 @@ void Collider::Update() {
 	std::visit([&](auto& shape) {
 		using T = std::decay_t<decltype(shape)>;
 		if constexpr (std::is_same_v<T, AABB>) {
-			shape.min.x = combinedPosition.x - (scale_.x / 2.0f);
-			shape.min.y = combinedPosition.y - (scale_.y / 2.0f);
-			shape.min.z = combinedPosition.z - (scale_.z / 2.0f);
-			shape.max.x = combinedPosition.x + (scale_.x / 2.0f);
-			shape.max.y = combinedPosition.y + (scale_.y / 2.0f);
-			shape.max.z = combinedPosition.z + (scale_.z / 2.0f);
+			shape.min.x = combinedPosition.x - (combinedScale.x / 2.0f);
+			shape.min.y = combinedPosition.y - (combinedScale.y / 2.0f);
+			shape.min.z = combinedPosition.z - (combinedScale.z / 2.0f);
+			shape.max.x = combinedPosition.x + (combinedScale.x / 2.0f);
+			shape.max.y = combinedPosition.y + (combinedScale.y / 2.0f);
+			shape.max.z = combinedPosition.z + (combinedScale.z / 2.0f);
 			ControlMinMax(shape);
 		}
 		else if constexpr (std::is_same_v<T, OBB>) {
@@ -80,7 +80,7 @@ void Collider::Update() {
 		}
 		else if constexpr (std::is_same_v<T, Sphere>) {
 			shape.center = combinedPosition;
-			shape.radius = combinedScale.x;
+			shape.radius = combinedScale.x / 2.0f;
 		}
 	}, colliderShape_);
 

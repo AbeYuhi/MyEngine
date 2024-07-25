@@ -15,6 +15,8 @@ bool IsCollision(const OBB& obb, const Sphere& sphere);
 
 bool IsCollision(const Sphere& sphere, const OBB& obb);
 
+bool OverlapOnAxis(const OBB& obb1, const OBB& obb2, const Vector3& axis);
+
 bool IsCollision(const OBB& obb1, const OBB& obb2);
 
 bool IsCollision(const OBB& obb, const AABB& aabb);
