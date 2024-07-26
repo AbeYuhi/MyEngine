@@ -183,6 +183,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Data\RenderItem.cpp" />
     <ClCompile Include="DirectXGame\Manager\SrvManager.cpp" />
     <ClCompile Include="DirectXGame\Object\SkyBox.cpp" />
+    <ClCompile Include="DirectXGame\Object\WireFrameSphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Data\AnimationData.h" />
@@ -283,6 +284,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Object\SkyBox.h" />
     <ClInclude Include="DirectXGame\Data\HSVMaterial.h" />
     <ClInclude Include="DirectXGame\Data\LevelData.h" />
+    <ClInclude Include="DirectXGame\Object\WireFrameSphere.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\imgui\imgui.vcxproj" />

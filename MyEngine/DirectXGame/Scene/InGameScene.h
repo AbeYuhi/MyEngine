@@ -13,6 +13,7 @@
 #include "Object/Sprite.h"
 #include "Object/Model.h"
 #include "Object/SkyBox.h"
+#include "Object/WireFrameSphere.h"
 #include "GameObject/Camera/MainCamera.h"
 #include "GameObject/Camera/InGameCamera.h"
 #include "GameObject/Camera/DebugCamera.h"
@@ -83,6 +84,9 @@ private:
 
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;
+
+	std::shared_ptr<WireFrameSphere> sphere_;
+	RenderItem sphereInfo_;
 
 	//サウンド
 	uint32_t soundHandle_;

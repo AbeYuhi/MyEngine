@@ -369,6 +369,9 @@
     <ClCompile Include="DirectXGame\Math\Sphere.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Object\WireFrameSphere.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Math\Math.h">
@@ -664,6 +667,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Math\AABB.h">
       <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Object\WireFrameSphere.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
