@@ -16,30 +16,12 @@
                     0.0
                 ],
                 "scaling": [
-                    1.0,
-                    1.0,
+                    50.0,
+                    50.0,
                     1.0
                 ]
             },
-            "file_name": "cube.obj",
-            "collider": {
-                "type": "OBB",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotate": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "cube.obj"
         },
         {
             "type": "LIGHT",
@@ -85,83 +67,12 @@
         },
         {
             "type": "MESH",
-            "name": "ICO球",
+            "name": "Cube.001",
             "transform": {
                 "translation": [
-                    3.0,
+                    -10.0,
                     0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "sphere.obj",
-            "collider": {
-                "type": "SPHERE",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "radius": 1.0
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "立方体",
-            "transform": {
-                "translation": [
-                    -3.0,
-                    0.0,
-                    5.724706172943115
-                ],
-                "rotation": [
-                    45.0,
-                    45.0,
-                    -3.284046101725835e-08
-                ],
-                "scaling": [
-                    0.9999999403953552,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "cube.obj",
-            "collider": {
-                "type": "OBB",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotate": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
                     2.0
-                ]
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "bunny",
-            "transform": {
-                "translation": [
-                    -6.0,
-                    0.0,
-                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -169,34 +80,56 @@
                     0.0
                 ],
                 "scaling": [
+                    6.0,
                     1.0,
-                    1.0,
-                    1.0
+                    10.0
                 ]
             },
-            "file_name": "bunny.obj"
+            "file_name": "cube.obj"
         },
         {
             "type": "MESH",
-            "name": "bunny.001",
+            "name": "Cube.002",
             "transform": {
                 "translation": [
-                    -9.256902694702148,
+                    14.658170700073242,
                     0.0,
-                    0.0
+                    2.0
                 ],
                 "rotation": [
-                    -0.0,
-                    89.99999237060547,
-                    0.0
+                    40.000003814697266,
+                    -1.0728292636486003e-06,
+                    51.0
                 ],
                 "scaling": [
+                    6.0,
                     1.0,
-                    1.0,
-                    1.0
+                    10.0
                 ]
             },
-            "file_name": "bunny.obj"
+            "file_name": "cube.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.003",
+            "transform": {
+                "translation": [
+                    -18.996814727783203,
+                    -21.44376564025879,
+                    2.0
+                ],
+                "rotation": [
+                    -46.999996185302734,
+                    46.000003814697266,
+                    60.00000762939453
+                ],
+                "scaling": [
+                    6.0,
+                    1.0,
+                    10.0
+                ]
+            },
+            "file_name": "cube.obj"
         }
     ]
 }

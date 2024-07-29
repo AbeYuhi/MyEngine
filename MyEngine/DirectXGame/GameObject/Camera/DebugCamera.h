@@ -30,6 +30,8 @@ public:
 	inline float GetFovY() { return fovY_; }
 	inline bool IsMove() { return isMove_; }
 	inline void SetMove(bool isMove) { isMove_ = isMove; }
+	inline void SetPos(Vector3 pos) { transform_.translate_ = pos; }
+	inline void SetRotate(Vector3 rotate) { transform_.rotate_ = rotate; }
 
 private:
 	
