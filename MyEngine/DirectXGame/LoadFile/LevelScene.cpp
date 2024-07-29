@@ -298,7 +298,7 @@ void LevelScene::LevelCreate() {
 					{ .scale_ = objectData.collider->size, .rotate_ = objectData.collider->rotate, .translate_ = objectData.collider->centerPos },
 					WALL,
 					type,
-					true);
+					false);
 				CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 			}
 			else {
