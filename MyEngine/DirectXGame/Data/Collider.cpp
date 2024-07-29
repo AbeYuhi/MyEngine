@@ -80,7 +80,16 @@ void Collider::Update() {
 		}
 		else if constexpr (std::is_same_v<T, Sphere>) {
 			shape.center = combinedPosition;
-			shape.radius = combinedScale.x / 2.0f;
+			combinedScale /= 2.0f;
+			if (combinedScale.x >= combinedScale.y && combinedScale.x >= combinedScale.z) {
+				shape.radius = combinedScale.x;
+			}
+			else if (combinedScale.y >= combinedScale.z) {
+				shape.radius = combinedScale.y;
+			}
+			else {
+				shape.radius = combinedScale.z;
+			}
 		}
 	}, colliderShape_);
 

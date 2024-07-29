@@ -5,6 +5,7 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include <optional>
 #include "External/nlohmann/json.hpp"
 #include "DirectXGame/Math/Vector3.h"
 #include "DirectXGame/Manager/ImGuiManager.h"
@@ -44,6 +45,7 @@ private: //メンバ変数
 		std::string objName;
 		std::shared_ptr<Model> model;
 		RenderItem renderItem;
+		bool haveCollider;
 		Collider collider;
 	};
 

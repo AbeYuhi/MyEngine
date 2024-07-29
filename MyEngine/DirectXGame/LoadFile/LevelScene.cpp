@@ -23,13 +23,15 @@ void LevelScene::Update() {
 #endif // _DEBUG
 
 	for (auto& levelObject : levelObjects_) {
-		if (levelObject->collider.isContact_[WALL]) {
-			levelObject->renderItem.materialInfo_.material_->color = { 1.0f, 0.0f, 0.0f, 1.0f };
-			levelObject->collider.renderItem_.materialInfo_.material_->color = { 1.0f, 0.0f, 0.0f, 1.0f };
-		}
-		else {
-			levelObject->renderItem.materialInfo_.material_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
-			levelObject->collider.renderItem_.materialInfo_.material_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		if (levelObject->haveCollider) {
+			if (levelObject->collider.isContact_[WALL]) {
+				levelObject->renderItem.materialInfo_.material_->color = { 1.0f, 0.0f, 0.0f, 1.0f };
+				levelObject->collider.renderItem_.materialInfo_.material_->color = { 1.0f, 0.0f, 0.0f, 1.0f };
+			}
+			else {
+				levelObject->renderItem.materialInfo_.material_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+				levelObject->collider.renderItem_.materialInfo_.material_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			}
 		}
 	}
 
@@ -119,19 +121,43 @@ void LevelScene::LoadFile(std::string fileName) {
 				//コライダータイプ
 				LevelData::ObjectCollider colliderData;
 				colliderData.type = collider["type"];
-				//ポジション
-				colliderData.centerPos.x = collider["center"][0];
-				colliderData.centerPos.y = collider["center"][2];
-				colliderData.centerPos.z = collider["center"][1];
-				//回転
-				colliderData.rotate.x = collider["rotate"][0] * (3.14f / 180.0f);
-				colliderData.rotate.y = collider["rotate"][2] * (3.14f / 180.0f);
-				colliderData.rotate.z = collider["rotate"][1] * (3.14f / 180.0f);
-				//サイズ
-				colliderData.size.x = collider["size"][0];
-				colliderData.size.y = collider["size"][2];
-				colliderData.size.z = collider["size"][1];
+				if (colliderData.type == "AABB") {
+					//ポジション
+					colliderData.centerPos.x = collider["center"][0];
+					colliderData.centerPos.y = collider["center"][2];
+					colliderData.centerPos.z = collider["center"][1];
+					//回転
+					colliderData.rotate.x = 0.0f;
+					colliderData.rotate.y = 0.0f;
+					colliderData.rotate.z = 0.0f;
+					//サイズ
+					colliderData.size.x = collider["size"][0];
+					colliderData.size.y = collider["size"][2];
+					colliderData.size.z = collider["size"][1];
+				}
+				else if (colliderData.type == "OBB") {
+					//ポジション
+					colliderData.centerPos.x = collider["center"][0];
+					colliderData.centerPos.y = collider["center"][2];
+					colliderData.centerPos.z = collider["center"][1];
+					//回転
+					colliderData.rotate.x = -1 * collider["rotate"][0] * (3.14f / 180.0f);
+					colliderData.rotate.y = -1 * collider["rotate"][2] * (3.14f / 180.0f);
+					colliderData.rotate.z = -1 * collider["rotate"][1] * (3.14f / 180.0f);
+					//サイズ
+					colliderData.size.x = collider["size"][0];
+					colliderData.size.y = collider["size"][2];
+					colliderData.size.z = collider["size"][1];
+				}
+				else if (colliderData.type == "Sphere") {
 
+					//ポジション
+					colliderData.centerPos.x = collider["center"][0];
+					colliderData.centerPos.y = collider["center"][2];
+					colliderData.centerPos.z = collider["center"][1];
+					//サイズ
+					colliderData.radius = collider["radius"];
+				}
 				objectData.collider = colliderData;
 			}
 
@@ -195,19 +221,43 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, int32_t pa
 				//コライダータイプ
 				LevelData::ObjectCollider colliderData;
 				colliderData.type = collider["type"];
-				//ポジション
-				colliderData.centerPos.x = collider["center"][0];
-				colliderData.centerPos.y = collider["center"][2];
-				colliderData.centerPos.z = collider["center"][1];
-				//回転
-				colliderData.rotate.x = collider["rotate"][0] * (3.14f / 180.0f);
-				colliderData.rotate.y = collider["rotate"][2] * (3.14f / 180.0f);
-				colliderData.rotate.z = collider["rotate"][1] * (3.14f / 180.0f);
-				//サイズ
-				colliderData.size.x = collider["size"][0];
-				colliderData.size.y = collider["size"][2];
-				colliderData.size.z = collider["size"][1];
+				if (colliderData.type == "AABB") {
+					//ポジション
+					colliderData.centerPos.x = collider["center"][0];
+					colliderData.centerPos.y = collider["center"][2];
+					colliderData.centerPos.z = collider["center"][1];
+					//回転
+					colliderData.rotate.x = 0.0f;
+					colliderData.rotate.y = 0.0f;
+					colliderData.rotate.z = 0.0f;
+					//サイズ
+					colliderData.size.x = collider["size"][0];
+					colliderData.size.y = collider["size"][2];
+					colliderData.size.z = collider["size"][1];
+				}
+				else if (colliderData.type == "OBB") {
+					//ポジション
+					colliderData.centerPos.x = collider["center"][0];
+					colliderData.centerPos.y = collider["center"][2];
+					colliderData.centerPos.z = collider["center"][1];
+					//回転
+					colliderData.rotate.x = -1 * collider["rotate"][0] * (3.14f / 180.0f);
+					colliderData.rotate.y = -1 * collider["rotate"][2] * (3.14f / 180.0f);
+					colliderData.rotate.z = -1 * collider["rotate"][1] * (3.14f / 180.0f);
+					//サイズ
+					colliderData.size.x = collider["size"][0];
+					colliderData.size.y = collider["size"][2];
+					colliderData.size.z = collider["size"][1];
+				}
+				else if (colliderData.type == "Sphere") {
 
+					//ポジション
+					colliderData.centerPos.x = collider["center"][0];
+					colliderData.centerPos.y = collider["center"][2];
+					colliderData.centerPos.z = collider["center"][1];
+					//サイズ
+					colliderData.radius = collider["radius"];
+				}
 				objectData.collider = colliderData;
 			}
 
@@ -231,23 +281,29 @@ void LevelScene::LevelCreate() {
 		levelObject->objName = objectData.objName;
 
 		if (objectData.collider) {
-			ColliderType type;
-			if (objectData.collider->type == "OBB") {
-				type = kOBB;
-			}
-			else if (objectData.collider->type == "Sphere") {
-				type = kSPHERE;
+			ColliderType type = kAABB;
+			if (objectData.collider->type != "NONE") {
+				levelObject->haveCollider = true;
+				if (objectData.collider->type == "AABB") {
+					type = kAABB;
+				}
+				else if (objectData.collider->type == "OBB") {
+					type = kOBB;
+				}
+				else if (objectData.collider->type == "SPHERE") {
+					type = kSPHERE;
+				}
+				levelObject->collider.Initialize(
+					levelObject->renderItem.worldTransform_.GetPEulerTransformData(),
+					{ .scale_ = objectData.collider->size, .rotate_ = objectData.collider->rotate, .translate_ = objectData.collider->centerPos },
+					WALL,
+					type,
+					true);
+				CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 			}
 			else {
-				type = kAABB;
+				levelObject->haveCollider = false;
 			}
-			levelObject->collider.Initialize(
-				levelObject->renderItem.worldTransform_.GetPEulerTransformData(),
-				{ .scale_ = objectData.collider->size, .rotate_ = objectData.collider->rotate, .translate_ = objectData.collider->centerPos },
-				WALL,
-				type,
-				true);
-			CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 		}
 
 		if (objectData.parent) {

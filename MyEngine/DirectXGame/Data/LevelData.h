@@ -12,6 +12,7 @@ struct LevelData {
 		Vector3 centerPos;
 		Vector3 rotate;
 		Vector3 size;
+		float radius;
 	};
 	struct ObjectData {
 		Vector3 translation;

@@ -8,7 +8,8 @@ CollisionManager* CollisionManager::GetInstance() {
 void CollisionManager::Initialize() {
 	colliders_.clear();
 
-	wireFrame_ = WireFrameBox::Create();
+	wireFrameBox_ = WireFrameBox::Create();
+	wireFrameSphere_ = WireFrameSphere::Create();
 }
 
 void CollisionManager::Update() {
@@ -53,7 +54,12 @@ void CollisionManager::Draw() {
 			collider->renderItem_.worldTransform_.data_.translate_ = collider->combinedPosition;
 			collider->renderItem_.worldTransform_.data_.rotate_ = collider->combinedRotation;
 			collider->renderItem_.worldTransform_.data_.scale_ = collider->combinedScale;
-			wireFrame_->Draw(collider->renderItem_);
+			if (collider->type_ == kSPHERE) {
+				wireFrameSphere_->Draw(collider->renderItem_);
+			}
+			else {
+				wireFrameBox_->Draw(collider->renderItem_);
+			}
 		}
 	}
 #endif // _DEBUG

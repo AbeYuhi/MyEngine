@@ -85,9 +85,6 @@ private:
 	std::shared_ptr<Sprite> sprite_;
 	SpriteItem spriteInfo_;
 
-	std::shared_ptr<WireFrameSphere> sphere_;
-	RenderItem sphereInfo_;
-
 	//サウンド
 	uint32_t soundHandle_;
 

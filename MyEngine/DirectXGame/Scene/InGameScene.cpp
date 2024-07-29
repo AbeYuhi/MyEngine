@@ -89,10 +89,7 @@ void InGameScene::Initialize() {
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 
-	sphere_ = WireFrameSphere::Create();
-	sphereInfo_.Initialize();
-
-	levelScene_.Initialize("level.json");
+	levelScene_.Initialize("test.json");
 }
 
 void InGameScene::Update() {
@@ -200,8 +197,6 @@ void InGameScene::Draw() {
 	walkModel_->Draw(walkModelInfo_);
 	boxModel_->Draw(boxModelInfo_);
 	skybox_->Draw(skyboxInfo_);*/
-
-	sphere_->Draw(sphereInfo_);
 
 	levelScene_.Draw();
 	collisionManager_->Draw();

@@ -23,8 +23,8 @@ public: //静的メンバ関数
 	static std::shared_ptr<WireFrameSphere> Create();
 
 private: //静的メンバ変数
-	const static UINT kVertexNumber = 257;
-	const static UINT kIndexNumber = 992;
+	const static UINT kVertexNumber = 768;
+	const static UINT kIndexNumber = 1024;
 	const static UINT kLatitudeCount = 16;
 	const static UINT kLongitudeCount = 16;
 	static std::shared_ptr<WireFrameSphere> sWireFrameSphere_;
