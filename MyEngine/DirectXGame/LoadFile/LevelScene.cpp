@@ -158,6 +158,8 @@ void LevelScene::LoadFile(std::string fileName) {
 					//サイズ
 					colliderData.radius = collider["radius"];
 				}
+				colliderData.collisionCheck = collider["collision_check"];
+				colliderData.tag = collider["tag"];
 				objectData.collider = colliderData;
 			}
 
@@ -258,6 +260,8 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, int32_t pa
 					//サイズ
 					colliderData.radius = collider["radius"];
 				}
+				colliderData.collisionCheck = collider["collision_check"];
+				colliderData.tag = collider["tag"];
 				objectData.collider = colliderData;
 			}
 
@@ -282,6 +286,7 @@ void LevelScene::LevelCreate() {
 
 		if (objectData.collider) {
 			ColliderType type = kAABB;
+			ColliderTag tag = WALL;
 			if (objectData.collider->type != "NONE") {
 				levelObject->haveCollider = true;
 				if (objectData.collider->type == "AABB") {
@@ -293,12 +298,26 @@ void LevelScene::LevelCreate() {
 				else if (objectData.collider->type == "SPHERE") {
 					type = kSPHERE;
 				}
+
+				if (objectData.collider->tag == "WALL") {
+					tag = WALL;
+				}
+				else if (objectData.collider->tag == "BUTTON") {
+					tag = BUTTON;
+				}
+				else if (objectData.collider->tag == "LDOOR") {
+					tag = LDOOR;
+				}
+				else if (objectData.collider->tag == "RDOOR") {
+					tag = RDOOR;
+				}
+
 				levelObject->collider.Initialize(
 					levelObject->renderItem.worldTransform_.GetPEulerTransformData(),
 					{ .scale_ = objectData.collider->size, .rotate_ = objectData.collider->rotate, .translate_ = objectData.collider->centerPos },
-					WALL,
+					tag,
 					type,
-					false);
+					objectData.collider->collisionCheck);
 				CollisionManager::GetInstance()->AddCollider(&levelObject->collider);
 			}
 			else {
@@ -313,4 +332,10 @@ void LevelScene::LevelCreate() {
 		levelObjects_.push_back(std::move(levelObject));
 	}
 
+
+	for (auto& levelObject : levelObjects_) {
+		if (levelObject->collider.tag_ == BUTTON) {
+
+		}
+	}
 }

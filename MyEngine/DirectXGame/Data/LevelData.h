@@ -9,10 +9,12 @@
 struct LevelData {
 	struct ObjectCollider {
 		std::string type;
+		std::string tag;
 		Vector3 centerPos;
 		Vector3 rotate;
 		Vector3 size;
 		float radius;
+		bool collisionCheck;
 	};
 	struct ObjectData {
 		Vector3 translation;

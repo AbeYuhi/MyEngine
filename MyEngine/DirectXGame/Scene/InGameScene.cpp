@@ -89,7 +89,7 @@ void InGameScene::Initialize() {
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 
-	levelScene_.Initialize("TL.json");
+	levelScene_.Initialize("test.json");
 }
 
 void InGameScene::Update() {
