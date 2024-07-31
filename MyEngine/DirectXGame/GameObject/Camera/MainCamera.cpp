@@ -9,6 +9,8 @@ void MainCamera::Initialize() {
 	//dxCommonのインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
+	transform_.Initialize();
+
 	viewProjectionMatrix_ = MakeIdentity4x4();
 
 	//Resourceの生成
@@ -19,7 +21,8 @@ void MainCamera::Initialize() {
 	cameraData_->worldPosition = {0};
 }
 
-void MainCamera::Update(Matrix4x4 worldMatrix, Matrix4x4 projectionMatrix) {
+void MainCamera::Update(EulerTransformData transform, Matrix4x4 worldMatrix, Matrix4x4 projectionMatrix) {
+	transform_ = transform;
 	worldMatrix_ = worldMatrix;
 	viewMatrix_ = Inverse(worldMatrix_);
 	projectionMatrix_ = projectionMatrix;
@@ -31,5 +34,5 @@ void MainCamera::Draw() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	GraphicsPipelineManager* psoManager = GraphicsPipelineManager::GetInstance();
 	//パイプラインステートの設定
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraResorce_->GetGPUVirtualAddress());
+	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, cameraResorce_->GetGPUVirtualAddress());
 }

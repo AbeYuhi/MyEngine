@@ -89,7 +89,7 @@ void InGameScene::Initialize() {
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 
-	levelScene_.Initialize("test.json");
+	levelScene_.Initialize("a.json");
 }
 
 void InGameScene::Update() {
@@ -103,11 +103,11 @@ void InGameScene::Update() {
 
 	if (isDebugCamera_) {
 		debugCamera_->Update();
-		mainCamera_->Update(debugCamera_->GetWorldMatrix(), debugCamera_->GetProjectionMatrix());
+		mainCamera_->Update(debugCamera_->GetWorldTransrom(), debugCamera_->GetWorldMatrix(), debugCamera_->GetProjectionMatrix());
 	}
 	else {
 		gameCamera_->Update();
-		mainCamera_->Update(gameCamera_->GetWorldMatrix(), gameCamera_->GetProjectionMatrix());
+		mainCamera_->Update(gameCamera_->GetWorldTransrom(), gameCamera_->GetWorldMatrix(), gameCamera_->GetProjectionMatrix());
 	}
 	//スプライトカメラの更新
 	spriteCamera_->Update();
