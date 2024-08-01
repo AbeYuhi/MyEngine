@@ -611,9 +611,7 @@ bool IsCollision(const AABB& aabb, const Vector3& point) {
 
 bool CalculateNormal(const AABB& a, const AABB& b) {
 
-	Vector3 aCenter = { a.max.x + a.min.x / 2.0f, a.max.y + a.min.y / 2.0f , a.max.z + a.min.z / 2.0f };
-	Vector3 bCenter = { b.max.x + b.min.x / 2.0f, b.max.y + b.min.y / 2.0f , b.max.z + b.min.z / 2.0f };
-	Vector3 d = bCenter - aCenter;
+	
 
 }
 
