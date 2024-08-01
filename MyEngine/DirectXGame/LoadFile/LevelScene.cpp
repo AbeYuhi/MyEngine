@@ -101,6 +101,13 @@ void LevelScene::LoadFile(std::string fileName) {
 				objectData.fileName = object["file_name"];
 			}
 
+			if (object.contains("draw_check")) {
+				objectData.drawCheck = object["draw_check"];
+			}
+			else {
+				objectData.drawCheck = true;
+			}
+
 			//トランスフォーム
 			json& transform = object["transform"];
 			//平行移動
@@ -201,6 +208,10 @@ void LevelScene::ScanChildData(LevelData* levelData, json& childrens, int32_t pa
 				objectData.fileName = object["file_name"];
 			}
 
+			if (object.contains("draw_check")) {
+				objectData.drawCheck = object["draw_check"];
+			}
+
 			//トランスフォーム
 			json& transform = object["transform"];
 			//平行移動
@@ -276,6 +287,7 @@ void LevelScene::LevelCreate() {
 
 	//レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData_->objects) {
+
 		std::unique_ptr<LevelObject> levelObject = std::make_unique<LevelObject>();
 		levelObject->renderItem.Initialize();
 		levelObject->renderItem.worldTransform_.data_.translate_ = objectData.translation;
@@ -283,6 +295,13 @@ void LevelScene::LevelCreate() {
 		levelObject->renderItem.worldTransform_.data_.scale_ = objectData.scaling;
 		levelObject->model = Model::Create(objectData.fileName);
 		levelObject->objName = objectData.objName;
+
+		if (objectData.drawCheck) {
+			levelObject->renderItem.materialInfo_.isInvisible_ = false;
+		}
+		else {
+			levelObject->renderItem.materialInfo_.isInvisible_ = true;
+		}
 
 		if (objectData.collider) {
 			ColliderType type = kAABB;

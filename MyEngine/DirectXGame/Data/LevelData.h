@@ -23,6 +23,7 @@ struct LevelData {
 		
 		std::string objName;
 		std::string fileName;
+		bool drawCheck;
 		std::optional<ObjectCollider> collider;
 		std::optional<int32_t> parent;
 	};

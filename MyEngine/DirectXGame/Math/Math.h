@@ -4,6 +4,8 @@
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 #include "AABB.h"
+#include "OBB.h"
+#include "Sphere.h"
 
 struct EulerTransformData {
 	Vector3 scale_;
@@ -149,5 +151,10 @@ void ControlMinMax(AABB& a);
 bool IsCollision(const AABB& a, const AABB& b);
 
 bool IsCollision(const AABB& aabb, const Vector3& point);
+
+bool CalculateNormal(const AABB& a, const AABB& b);
+bool CalculateNormal(const OBB& a, const OBB& b);
+bool CalculateNormal(const Sphere& a, const Sphere& b);
+
 
 EulerTransformData ExtractTransform(const Matrix4x4& matrix);
