@@ -127,9 +127,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\GameObject\Particle\Sprite\SpriteParticle.cpp" />
     <ClCompile Include="DirectXGame\LoadFile\LevelScene.cpp" />
     <ClCompile Include="DirectXGame\Manager\CollisionManager.cpp" />
-    <ClCompile Include="DirectXGame\Math\OBB.cpp" />
     <ClCompile Include="DirectXGame\Math\Quaternion.cpp" />
-    <ClCompile Include="DirectXGame\Math\Sphere.cpp" />
     <ClCompile Include="DirectXGame\Object\WireFrameSpriteBox.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />

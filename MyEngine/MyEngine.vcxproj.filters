@@ -363,12 +363,6 @@
     <ClCompile Include="DirectXGame\LoadFile\LevelScene.cpp">
       <Filter>ソース ファイル\LoadFile</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Math\OBB.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Math\Sphere.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Object\WireFrameSphere.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>

@@ -89,7 +89,7 @@ void InGameScene::Initialize() {
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 
-	levelScene_.Initialize("test.json");
+	//levelScene_.Initialize("test.json");
 }
 
 void InGameScene::Update() {
@@ -119,7 +119,7 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
-	levelScene_.Update();
+	//levelScene_.Update();
 
 	collisionManager_->Update();
 #ifdef _DEBUG
@@ -193,13 +193,13 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	/*yukariModel_->Draw(yukariModelInfo_);
+	//yukariModel_->Draw(yukariModelInfo_);
 	walkModel_->Draw(walkModelInfo_);
-	boxModel_->Draw(boxModelInfo_);
-	skybox_->Draw(skyboxInfo_);*/
+	//boxModel_->Draw(boxModelInfo_);
+	skybox_->Draw(skyboxInfo_);
 
-	levelScene_.Draw();
-	collisionManager_->Draw();
+	//levelScene_.Draw();
+	//collisionManager_->Draw();
 
 	///オブジェクトの描画終了
 

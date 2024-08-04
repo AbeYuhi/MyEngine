@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include <algorithm>
 #include "Vector3.h"
 #include "Matrix4x4.h"
 #include "Quaternion.h"
@@ -146,15 +147,42 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 
 #pragma endregion
 
+#pragma region OBB
+
+bool IsCollision(const OBB& obb, const Sphere& sphere);
+
+bool IsCollision(const Sphere& sphere, const OBB& obb);
+
+bool OverlapOnAxis(const OBB& obb1, const OBB& obb2, const Vector3& axis);
+
+bool IsCollision(const OBB& obb1, const OBB& obb2);
+
+bool IsCollision(const OBB& obb, const AABB& aabb);
+
+bool IsCollision(const AABB& aabb, const OBB& obb);
+
+#pragma endregion
+
+#pragma region Sphere
+
+bool IsCollision(const Sphere& s1, const Sphere& s2);
+
+bool IsCollision(const Sphere& sphere, const AABB& aabb);
+
+bool IsCollision(const AABB& aabb, const Sphere& sphere);
+
+#pragma endregion
+
 void ControlMinMax(AABB& a);
 
 bool IsCollision(const AABB& a, const AABB& b);
 
 bool IsCollision(const AABB& aabb, const Vector3& point);
 
-bool CalculateNormal(const AABB& a, const AABB& b);
-bool CalculateNormal(const OBB& a, const OBB& b);
-bool CalculateNormal(const Sphere& a, const Sphere& b);
+Vector3 CalculateNormal(const AABB& a, const AABB& b);
 
+Vector3 CalculateNormal(const OBB& a, const OBB& b);
+
+Vector3 CalculateNormal(const Sphere& a, const Sphere& b);
 
 EulerTransformData ExtractTransform(const Matrix4x4& matrix);
