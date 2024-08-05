@@ -732,7 +732,7 @@ bool IsCollision(const AABB& aabb, const OBB& obb1) {
 
 #pragma endregion
 
-#pragma region
+#pragma region Sphere
 
 bool IsCollision(const Sphere& s1, const Sphere& s2) {
 	auto distance = Length(s2.center - s1.center);
