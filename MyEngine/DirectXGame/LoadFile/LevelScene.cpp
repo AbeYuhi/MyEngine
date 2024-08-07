@@ -20,6 +20,16 @@ void LevelScene::Update() {
 	}
 	ImGui::EndTabBar();
 	ImGui::End();
+
+	ImGui::Begin("test");
+	for (auto& levelObject : levelObjects_) {
+		if (levelObject->haveCollider) {
+			std::string normal = levelObject->objName + "Nomal : %f, %f, %f";
+			ImGui::Text(normal.c_str(), levelObject->collider.normal.x, levelObject->collider.normal.y, levelObject->collider.normal.z);
+		}
+	}
+	ImGui::End();
+
 #endif // _DEBUG
 
 	for (auto& levelObject : levelObjects_) {

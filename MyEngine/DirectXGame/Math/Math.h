@@ -180,9 +180,15 @@ bool IsCollision(const AABB& a, const AABB& b);
 bool IsCollision(const AABB& aabb, const Vector3& point);
 
 Vector3 CalculateNormal(const AABB& a, const AABB& b);
+Vector3 CalculateNormal(const AABB& a, const OBB& b);
+Vector3 CalculateNormal(const AABB& a, const Sphere& b);
 
 Vector3 CalculateNormal(const OBB& a, const OBB& b);
+Vector3 CalculateNormal(const OBB& a, const AABB& b);
+Vector3 CalculateNormal(const OBB& a, const Sphere& b);
 
 Vector3 CalculateNormal(const Sphere& a, const Sphere& b);
+Vector3 CalculateNormal(const Sphere& a, const AABB& b);
+Vector3 CalculateNormal(const Sphere& a, const OBB& b);
 
 EulerTransformData ExtractTransform(const Matrix4x4& matrix);

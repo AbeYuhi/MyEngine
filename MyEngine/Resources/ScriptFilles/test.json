@@ -3,12 +3,12 @@
     "objects": [
         {
             "type": "MESH",
-            "name": "Cube",
+            "name": "OBB1",
             "transform": {
                 "translation": [
+                    3.0,
                     0.0,
-                    0.0,
-                    0.0
+                    3.0
                 ],
                 "rotation": [
                     0.0,
@@ -22,12 +22,16 @@
                 ]
             },
             "file_name": "cube.obj",
-            "draw_check": true,
             "collider": {
-                "type": "AABB",
+                "type": "OBB",
                 "tag": "WALL",
-                "collision_check": false,
+                "collision_check": true,
                 "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotate": [
                     0.0,
                     0.0,
                     0.0
@@ -85,10 +89,126 @@
         },
         {
             "type": "MESH",
-            "name": "ICO球",
+            "name": "AABB1",
             "transform": {
                 "translation": [
-                    5.0,
+                    3.0,
+                    0.0,
+                    6.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cube.obj",
+            "collider": {
+                "type": "AABB",
+                "tag": "WALL",
+                "collision_check": true,
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "AABB0",
+            "transform": {
+                "translation": [
+                    -3.0,
+                    0.0,
+                    6.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cube.obj",
+            "collider": {
+                "type": "AABB",
+                "tag": "WALL",
+                "collision_check": true,
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "OBB",
+            "transform": {
+                "translation": [
+                    -3.0,
+                    0.0,
+                    3.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cube.obj",
+            "collider": {
+                "type": "OBB",
+                "tag": "WALL",
+                "collision_check": true,
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotate": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Sphere0",
+            "transform": {
+                "translation": [
+                    -3.0,
                     0.0,
                     0.0
                 ],
@@ -104,11 +224,43 @@
                 ]
             },
             "file_name": "sphere.obj",
-            "draw_check": false,
             "collider": {
                 "type": "SPHERE",
                 "tag": "WALL",
-                "collision_check": false,
+                "collision_check": true,
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "radius": 1.0
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Sphere1",
+            "transform": {
+                "translation": [
+                    3.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere.obj",
+            "collider": {
+                "type": "SPHERE",
+                "tag": "WALL",
+                "collision_check": true,
                 "center": [
                     0.0,
                     0.0,

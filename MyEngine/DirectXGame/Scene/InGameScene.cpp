@@ -73,6 +73,7 @@ void InGameScene::Initialize() {
 
 	walkModelInfo_.Initialize();
 	walkModelInfo_.materialInfo_.material_->enableLightint = true;
+	walkModelInfo_.materialInfo_.material_->isEnvironment = true;
 	walkModelInfo_.materialInfo_.environmentTextureHandle_ = skyboxHandle_;
 	walkModelInfo_.SetModel(walkModel_.get());
 	walkModelInfo_.SetAnimation(walkModel_->GetAnimationData());
@@ -89,7 +90,7 @@ void InGameScene::Initialize() {
 	sprite_ = Sprite::Create();
 	spriteInfo_.Initialize(uvCheckerHandle_);
 
-	//levelScene_.Initialize("test.json");
+	levelScene_.Initialize("test.json");
 }
 
 void InGameScene::Update() {
@@ -119,7 +120,7 @@ void InGameScene::Update() {
 	//パーティクルの更新
 	testParticle1_->Update();
 
-	//levelScene_.Update();
+	levelScene_.Update();
 
 	collisionManager_->Update();
 #ifdef _DEBUG
@@ -194,11 +195,11 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	//yukariModel_->Draw(yukariModelInfo_);
-	walkModel_->Draw(walkModelInfo_);
+	//walkModel_->Draw(walkModelInfo_);
 	//boxModel_->Draw(boxModelInfo_);
-	skybox_->Draw(skyboxInfo_);
+	//skybox_->Draw(skyboxInfo_);
 
-	//levelScene_.Draw();
+	levelScene_.Draw();
 	//collisionManager_->Draw();
 
 	///オブジェクトの描画終了

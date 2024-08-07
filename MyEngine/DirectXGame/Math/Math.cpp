@@ -789,6 +789,42 @@ void ControlMinMax(AABB& a) {
 	a.max.z = (std::max)(a.min.z, a.max.z);
 }
 
+Vector3 ClosestPointOnOBB(const OBB& obb, const Vector3& point) {
+	Vector3 d = point - obb.center;
+	Vector3 closest = obb.center;
+
+	// Project point onto each axis of the OBB and clamp to the OBB's size
+	float distances[3] = {
+		Dot(d, obb.orientations[0]),
+		Dot(d, obb.orientations[1]),
+		Dot(d, obb.orientations[2])
+	};
+
+	for (int i = 0; i < 3; ++i) {
+		float halfSize = 0.0f;
+		if (i == 0) {
+			halfSize = obb.size.x / 2.0f;
+		}
+		else if (i == 1) {
+			halfSize = obb.size.y / 2.0f;
+		}
+		else if (i == 2) {
+			halfSize = obb.size.z / 2.0f;
+		}
+
+		if (distances[i] > halfSize) {
+			distances[i] = halfSize; 
+		}
+		else if (distances[i] < -halfSize){
+			distances[i] = -halfSize;
+		}
+
+		closest = closest + obb.orientations[i] * distances[i];
+	}
+
+	return closest;
+}
+
 bool IsCollision(const AABB& a, const AABB& b) {
 	if (a.min.x <= b.max.x && a.max.x >= b.min.x &&
 		a.min.y <= b.max.y && a.max.y >= b.min.y &&
@@ -808,8 +844,85 @@ bool IsCollision(const AABB& aabb, const Vector3& point) {
 }
 
 Vector3 CalculateNormal(const AABB& a, const AABB& b) {
+
+	if (!IsCollision(a, b)) {
+		return Vector3{ 0, 0, 0 };
+	}
+
 	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+
+	Vector3 aCenter = { (a.min.x + a.max.x) / 2.0f, (a.min.y + a.max.y) / 2.0f, (a.min.z + a.max.z) / 2.0f };
+	Vector3 bCenter = { (b.min.x + b.max.x) / 2.0f, (b.min.y + b.max.y) / 2.0f, (b.min.z + b.max.z) / 2.0f };
+	Vector3 aSize = { a.max.x - a.min.x, a.max.y - a.min.y , a.max.z - a.min.z };
+	Vector3 bSize = { b.max.x - b.min.x, b.max.y - b.min.y , b.max.z - b.min.z };
 	
+	Vector3 delta = bCenter - aCenter;
+	Vector3 halfSize1 = aSize * 0.5f;
+	Vector3 halfSize2 = bSize * 0.5f;
+
+	float overlapX = halfSize1.x + halfSize2.x - abs(delta.x);
+	float overlapY = halfSize1.y + halfSize2.y - abs(delta.y);
+	float overlapZ = halfSize1.z + halfSize2.z - abs(delta.z);
+
+	if (overlapX < overlapY && overlapX < overlapZ) {
+		if (delta.x > 0) {
+			normal = { 1.0f, 0.0f, 0.0f };
+		}
+		else {
+			normal = { -1.0f, 0.0f, 0.0f };
+		}
+	}
+	else if (overlapY < overlapX && overlapY < overlapZ) {
+		if (delta.y > 0) {
+			normal = { 0.0f, 1.0f, 0.0f };
+		}
+		else {
+			normal = { 0.0f, -1.0f, 0.0f };
+		}
+	}
+	else {
+		if (delta.z > 0) {
+			normal = { 0.0f, 0.0f, 1.0f };
+		}
+		else {
+			normal = { 0.0f, 0.0f, -1.0f };
+		}
+	}
+
+	normal = Normalize(normal);
+	return normal;
+}
+
+Vector3 CalculateNormal(const AABB& a, const OBB& b) {
+	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+
+	Vector3 aabbCenter = { (a.min.x + a.max.x) / 2.0f, (a.min.y + a.max.y) / 2.0f, (a.min.z + a.max.z) / 2.0f };
+
+	OBB obb;
+	obb.center = aabbCenter;
+	Matrix4x4 rotateMatrix = MakeRotateMatrix(Vector3{ 0, 0, 0 });
+	obb.orientations[0].x = rotateMatrix.m[0][0];
+	obb.orientations[0].y = rotateMatrix.m[0][1];
+	obb.orientations[0].z = rotateMatrix.m[0][2];
+
+	obb.orientations[1].x = rotateMatrix.m[1][0];
+	obb.orientations[1].y = rotateMatrix.m[1][1];
+	obb.orientations[1].z = rotateMatrix.m[1][2];
+
+	obb.orientations[2].x = rotateMatrix.m[2][0];
+	obb.orientations[2].y = rotateMatrix.m[2][1];
+	obb.orientations[2].z = rotateMatrix.m[2][2];
+
+	obb.size = { a.max.x - a.min.x, a.max.y - a.min.y , a.max.z - a.min.z };
+
+	normal = CalculateNormal(obb, b);
+
+	return normal;
+}
+
+Vector3 CalculateNormal(const AABB& a, const Sphere& b) {
+	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+
 	return normal;
 }
 
@@ -819,8 +932,66 @@ Vector3 CalculateNormal(const OBB& a, const OBB& b) {
 	return normal;
 }
 
-Vector3 CalculateNormal(const Sphere& a, const Sphere& b) {
+Vector3 CalculateNormal(const OBB& a, const AABB& b) {
 	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+
+	Vector3 aabbCenter = { (b.min.x + b.max.x) / 2.0f, (b.min.y + b.max.y) / 2.0f, (b.min.z + b.max.z) / 2.0f };
+
+	OBB obb;
+	obb.center = aabbCenter;
+	Matrix4x4 rotateMatrix = MakeRotateMatrix(Vector3{ 0, 0, 0 });
+	obb.orientations[0].x = rotateMatrix.m[0][0];
+	obb.orientations[0].y = rotateMatrix.m[0][1];
+	obb.orientations[0].z = rotateMatrix.m[0][2];
+
+	obb.orientations[1].x = rotateMatrix.m[1][0];
+	obb.orientations[1].y = rotateMatrix.m[1][1];
+	obb.orientations[1].z = rotateMatrix.m[1][2];
+
+	obb.orientations[2].x = rotateMatrix.m[2][0];
+	obb.orientations[2].y = rotateMatrix.m[2][1];
+	obb.orientations[2].z = rotateMatrix.m[2][2];
+
+	obb.size = { b.max.x - b.min.x, b.max.y - b.min.y , b.max.z - b.min.z };
+
+	normal = CalculateNormal(a, obb);
+
+	return normal;
+}
+
+Vector3 CalculateNormal(const OBB& a, const Sphere& b) {
+	if (IsCollision(a, b)) {
+		Vector3 closestPoint = ClosestPointOnOBB(a, b.center);
+		Vector3 normal = b.center - closestPoint;
+		return Normalize(normal);
+	}
+	return Vector3(0, 0, 0); // No collision, return zero vector
+}
+
+Vector3 CalculateNormal(const Sphere& a, const Sphere& b) {
+	if (IsCollision(a, b)) {
+		Vector3 normal = b.center - a.center;
+		return Normalize(normal);
+	}
+	return Vector3(0, 0, 0);
+}
+
+Vector3 CalculateNormal(const Sphere& a, const AABB& b) {
+	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+
+	return normal;
+}
+
+Vector3 CalculateNormal(const Sphere& a, const OBB& b) {
+	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+
+	if (IsCollision(b, a)) {
+		Vector3 closestPoint = ClosestPointOnOBB(b, a.center);
+		Vector3 normal = a.center - closestPoint;
+		normal *= -1;
+		return Normalize(normal);
+	}
+	return Vector3(0, 0, 0); // No collision, return zero vector
 
 	return normal;
 }
