@@ -921,9 +921,31 @@ Vector3 CalculateNormal(const AABB& a, const OBB& b) {
 }
 
 Vector3 CalculateNormal(const AABB& a, const Sphere& b) {
-	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+	Vector3 aabbCenter = { (a.min.x + a.max.x) / 2.0f, (a.min.y + a.max.y) / 2.0f, (a.min.z + a.max.z) / 2.0f };
 
-	return normal;
+	OBB obb;
+	obb.center = aabbCenter;
+	Matrix4x4 rotateMatrix = MakeRotateMatrix(Vector3{ 0, 0, 0 });
+	obb.orientations[0].x = rotateMatrix.m[0][0];
+	obb.orientations[0].y = rotateMatrix.m[0][1];
+	obb.orientations[0].z = rotateMatrix.m[0][2];
+
+	obb.orientations[1].x = rotateMatrix.m[1][0];
+	obb.orientations[1].y = rotateMatrix.m[1][1];
+	obb.orientations[1].z = rotateMatrix.m[1][2];
+
+	obb.orientations[2].x = rotateMatrix.m[2][0];
+	obb.orientations[2].y = rotateMatrix.m[2][1];
+	obb.orientations[2].z = rotateMatrix.m[2][2];
+
+	obb.size = { a.max.x - a.min.x, a.max.y - a.min.y , a.max.z - a.min.z };
+
+	if (IsCollision(b, a)) {
+		Vector3 closestPoint = ClosestPointOnOBB(obb, b.center);
+		Vector3 normal = b.center - closestPoint;
+		return Normalize(normal);
+	}
+	return Vector3(0, 0, 0); // No collision, return zero vector
 }
 
 Vector3 CalculateNormal(const OBB& a, const OBB& b) {
@@ -977,14 +999,35 @@ Vector3 CalculateNormal(const Sphere& a, const Sphere& b) {
 }
 
 Vector3 CalculateNormal(const Sphere& a, const AABB& b) {
-	Vector3 normal = { 0.0f, 0.0f, 0.0f };
+	Vector3 aabbCenter = { (b.min.x + b.max.x) / 2.0f, (b.min.y + b.max.y) / 2.0f, (b.min.z + b.max.z) / 2.0f };
 
-	return normal;
+	OBB obb;
+	obb.center = aabbCenter;
+	Matrix4x4 rotateMatrix = MakeRotateMatrix(Vector3{ 0, 0, 0 });
+	obb.orientations[0].x = rotateMatrix.m[0][0];
+	obb.orientations[0].y = rotateMatrix.m[0][1];
+	obb.orientations[0].z = rotateMatrix.m[0][2];
+
+	obb.orientations[1].x = rotateMatrix.m[1][0];
+	obb.orientations[1].y = rotateMatrix.m[1][1];
+	obb.orientations[1].z = rotateMatrix.m[1][2];
+
+	obb.orientations[2].x = rotateMatrix.m[2][0];
+	obb.orientations[2].y = rotateMatrix.m[2][1];
+	obb.orientations[2].z = rotateMatrix.m[2][2];
+
+	obb.size = { b.max.x - b.min.x, b.max.y - b.min.y , b.max.z - b.min.z };
+
+	if (IsCollision(b, a)) {
+		Vector3 closestPoint = ClosestPointOnOBB(obb, a.center);
+		Vector3 normal = a.center - closestPoint;
+		normal *= -1;
+		return Normalize(normal);
+	}
+	return Vector3(0, 0, 0); // No collision, return zero vector
 }
 
 Vector3 CalculateNormal(const Sphere& a, const OBB& b) {
-	Vector3 normal = { 0.0f, 0.0f, 0.0f };
-
 	if (IsCollision(b, a)) {
 		Vector3 closestPoint = ClosestPointOnOBB(b, a.center);
 		Vector3 normal = a.center - closestPoint;
@@ -992,8 +1035,6 @@ Vector3 CalculateNormal(const Sphere& a, const OBB& b) {
 		return Normalize(normal);
 	}
 	return Vector3(0, 0, 0); // No collision, return zero vector
-
-	return normal;
 }
 
 EulerTransformData ExtractTransform(const Matrix4x4& matrix) {

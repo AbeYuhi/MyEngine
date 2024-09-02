@@ -64,7 +64,7 @@ void InGameScene::Initialize() {
 	yukariModel_ = Model::Create("yukariGLTF", "yukariGLTF.gltf");
 	yukariModelInfo_.Initialize();
 	yukariModelInfo_.SetModel(yukariModel_.get());
-	yukariModelInfo_.materialInfo_.material_->enableLightint = false;
+	yukariModelInfo_.materialInfo_.material_->enableLightint = true;
 	yukariModelInfo_.materialInfo_.environmentTextureHandle_ = skyboxHandle_;
 
 	walkModel_ = Model::Create("human", "walk.gltf");
@@ -194,12 +194,12 @@ void InGameScene::Draw() {
 
 	///オブジェクトの描画開始
 
-	//yukariModel_->Draw(yukariModelInfo_);
+	yukariModel_->Draw(yukariModelInfo_);
 	//walkModel_->Draw(walkModelInfo_);
 	//boxModel_->Draw(boxModelInfo_);
 	//skybox_->Draw(skyboxInfo_);
 
-	levelScene_.Draw();
+	//levelScene_.Draw();
 	//collisionManager_->Draw();
 
 	///オブジェクトの描画終了
