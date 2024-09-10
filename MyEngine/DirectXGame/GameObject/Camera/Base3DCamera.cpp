@@ -34,5 +34,6 @@ void Base3DCamera::Update() {
 	worldMatrix_ = MakeAffineMatrix(transform_.scale_, transform_.rotate_, transform_.translate_);
 	viewMatrix_ = Inverse(worldMatrix_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, (float)WinApp::kWindowWidth / (float)WinApp::kWindowHeight, nearClip_, farClip_);
+	//projectionMatrix_ = MakeOrthographicMatrix(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kWindowHeight, nearClip_, farClip_);
 	viewProjectionMatrix_ = Multiply(viewMatrix_, projectionMatrix_);
 }
