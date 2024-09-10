@@ -51,7 +51,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 #pragma region 通常のシェーダー
 		{
 			//DescriptorRangeの設定
-			/*D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
+			D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
 			descriptorRange[0].BaseShaderRegister = 0;
 			descriptorRange[0].NumDescriptors = 1;
 			descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
@@ -59,18 +59,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			descriptorRange[1].BaseShaderRegister = 1;
 			descriptorRange[1].NumDescriptors = 1;
 			descriptorRange[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-			descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;*/
-
-			D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
-			descriptorRange[0].BaseShaderRegister = 0;
-			descriptorRange[0].NumDescriptors = 1;
-			descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-			descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-			D3D12_DESCRIPTOR_RANGE test[1] = {};
-			test[0].BaseShaderRegister = 1;
-			test[0].NumDescriptors = 1;
-			test[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-			test[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+			descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 			//RootSignature生成
 			D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
@@ -86,12 +75,12 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			rootParameters[1].Descriptor.ShaderRegister = 0;
 			rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 			rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-			rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRange;
-			rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
+			rootParameters[2].DescriptorTable.pDescriptorRanges = &descriptorRange[0];
+			rootParameters[2].DescriptorTable.NumDescriptorRanges = descriptorRange[0].NumDescriptors;
 			rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 			rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-			rootParameters[3].DescriptorTable.pDescriptorRanges = test;
-			rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(test);
+			rootParameters[3].DescriptorTable.pDescriptorRanges = &descriptorRange[1];
+			rootParameters[3].DescriptorTable.NumDescriptorRanges = descriptorRange[1].NumDescriptors;
 			rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[4].Descriptor.ShaderRegister = 1;
@@ -346,8 +335,9 @@ void GraphicsPipelineManager::CreateRootSignature() {
 		case PipelineState::kSkinning:
 #pragma region スキニング用シェーダー
 		{
+			
 			//DescriptorRangeの設定
-			/*D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
+			D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
 			descriptorRange[0].BaseShaderRegister = 0;
 			descriptorRange[0].NumDescriptors = 1;
 			descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
@@ -355,18 +345,7 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			descriptorRange[1].BaseShaderRegister = 1;
 			descriptorRange[1].NumDescriptors = 1;
 			descriptorRange[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-			descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;*/
-
-			D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
-			descriptorRange[0].BaseShaderRegister = 0;
-			descriptorRange[0].NumDescriptors = 1;
-			descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-			descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-			D3D12_DESCRIPTOR_RANGE test[1] = {};
-			test[0].BaseShaderRegister = 1;
-			test[0].NumDescriptors = 1;
-			test[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-			test[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+			descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 			//RootSignature生成
 			D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
@@ -382,12 +361,12 @@ void GraphicsPipelineManager::CreateRootSignature() {
 			rootParameters[1].Descriptor.ShaderRegister = 0;
 			rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 			rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-			rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRange;
-			rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
+			rootParameters[2].DescriptorTable.pDescriptorRanges = &descriptorRange[0];
+			rootParameters[2].DescriptorTable.NumDescriptorRanges = descriptorRange[0].NumDescriptors;
 			rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 			rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-			rootParameters[3].DescriptorTable.pDescriptorRanges = test;
-			rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(test);
+			rootParameters[3].DescriptorTable.pDescriptorRanges = &descriptorRange[1];
+			rootParameters[3].DescriptorTable.NumDescriptorRanges = descriptorRange[1].NumDescriptors;
 			rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			rootParameters[4].Descriptor.ShaderRegister = 1;

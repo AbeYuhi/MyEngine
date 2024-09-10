@@ -44,9 +44,10 @@ struct Collider {
 	// 合成された大きさ
 	Vector3 combinedScale;
 
-#ifdef _DEBUG
+	//衝突した場合の衝突した面の法線
+	Vector3 normal;
+
 	RenderItem renderItem_;
-#endif // _DEBUG
 
 	bool isContact_[kNumColliderTag];
 
