@@ -21,7 +21,7 @@ void Base3DCamera::Initialize() {
 }
 
 void Base3DCamera::Update() {
-	InputManager* input = InputManager::GetInstance();
+	//InputManager* input = InputManager::GetInstance();
 
 #ifdef _DEBUG
 	std::string cameraObjName = "Camera" + cameraName_;

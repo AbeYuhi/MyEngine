@@ -30,7 +30,6 @@ std::shared_ptr<Model> Model::Create(const std::string& filepath, const std::str
 
 void Model::Initialize(const std::string& filepath, const std::string filename) {
 	//dxCommonのインスタンスの取得
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//モデル読み込み
 	LoadModelFile(filepath, filename);

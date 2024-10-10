@@ -29,6 +29,6 @@ struct RootNode {
 
 int32_t ReadNode(aiNode* node, std::vector<Node>& nodes);
 
-RootNode CreateRootNode(aiNode* node);
+RootNode CreateRootNode(aiNode* aiNode);
 
 Node UpdateNode(Node node, NodeAnimation info, float time);

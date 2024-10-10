@@ -24,9 +24,9 @@ int32_t ReadNode(aiNode* node, std::vector<Node>& nodes) {
 	return result.index;
 }
 
-RootNode CreateRootNode(aiNode* node) {
+RootNode CreateRootNode(aiNode* aiNode) {
 	RootNode rootNode;
-	rootNode.rootNode = ReadNode(node, rootNode.nodes);
+	rootNode.rootNode = ReadNode(aiNode, rootNode.nodes);
 
 	//名前とindexのマッピングを行いアクセスしやすくする
 	for (const Node& node : rootNode.nodes) {
