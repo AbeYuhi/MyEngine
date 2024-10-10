@@ -1,12 +1,8 @@
 #include "InGameScene.h"
 
-InGameScene::InGameScene() {
+InGameScene::InGameScene() {}
 
-}
-
-InGameScene::~InGameScene() {
-
-}
+InGameScene::~InGameScene() {}
 
 void InGameScene::Finalize() {}
 
