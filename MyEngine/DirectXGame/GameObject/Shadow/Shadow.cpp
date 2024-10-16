@@ -2,7 +2,6 @@
 
 void Shadow::Initialize() {
 	//dxCommonのインスタンスの取得
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//Resourceの生成
 	shadowResorce_ = CreateBufferResource(sizeof(Matrix4x4));

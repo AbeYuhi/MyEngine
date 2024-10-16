@@ -21,8 +21,9 @@ void InGameCamera::Initialize() {
 	fovY_ = 0.45f;
 }
 
+//
 void InGameCamera::Update() {
-	InputManager* input = InputManager::GetInstance();
+	//InputManager* input = InputManager::GetInstance();
 
 
 

@@ -21,7 +21,6 @@ std::shared_ptr<WireFrameBox> WireFrameBox::Create() {
 
 void WireFrameBox::Initialize() {
 	//dxCommonのインスタンスの取得
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);

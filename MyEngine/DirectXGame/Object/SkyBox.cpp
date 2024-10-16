@@ -11,7 +11,6 @@ std::shared_ptr<SkyBox> SkyBox::Create(uint32_t textureHandle) {
 
 void SkyBox::Initialize(uint32_t textureHandle) {
 	//dxCommonのインスタンスの取得
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//テクスチャの読み込み
 	textureHandle_ = textureHandle;

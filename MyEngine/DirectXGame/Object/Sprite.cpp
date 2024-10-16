@@ -15,8 +15,6 @@ std::shared_ptr<Sprite> Sprite::Create() {
 }
 
 void Sprite::Initialize() {
-	//dxCommonのインスタンスの取得
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);

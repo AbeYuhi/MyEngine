@@ -46,7 +46,6 @@ void PostEffectManager::PreDraw() {
 }
 
 void PostEffectManager::PostDraw() {
-	DirectXCommon* directX = DirectXCommon::GetInstance();
 
 	if (postEffect_ != PostEffect::kNone) {
 		RenderPostDraw();

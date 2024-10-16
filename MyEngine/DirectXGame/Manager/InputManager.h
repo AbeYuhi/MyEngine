@@ -184,8 +184,8 @@ public: //メンバ関数
 	/// <param name="rightVib">Min:0, Max:65535</param>
 	inline void SetVibration(int leftVib, int rightVib) {
 		ZeroMemory(&gamePadVibration_, sizeof(XINPUT_VIBRATION));
-		gamePadVibration_.wLeftMotorSpeed = leftVib;
-		gamePadVibration_.wRightMotorSpeed = rightVib;
+		gamePadVibration_.wLeftMotorSpeed = static_cast<unsigned short>(leftVib);
+		gamePadVibration_.wRightMotorSpeed = static_cast<unsigned short>(rightVib);
 		XInputSetState(0, &gamePadVibration_);
 	}
 	/// <summary>

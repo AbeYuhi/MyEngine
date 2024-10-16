@@ -471,7 +471,6 @@ void DirectXCommon::InitializeDXC() {
 }
 
 void DirectXCommon::InitializeFixFPS() {
-	WinApp* winApp = WinApp::GetInstance();
 	//現在時間を記録する
 	reference_ = std::chrono::steady_clock::now();
 }

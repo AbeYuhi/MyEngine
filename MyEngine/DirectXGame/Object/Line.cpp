@@ -16,7 +16,7 @@ std::shared_ptr<LineObj> LineObj::Create() {
 
 void LineObj::Initialize() {
 	//dxCommonのインスタンスの取得
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	//DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	//VertexResourceの生成
 	vertexResource_ = CreateBufferResource(sizeof(VertexData) * kVertexNumber);

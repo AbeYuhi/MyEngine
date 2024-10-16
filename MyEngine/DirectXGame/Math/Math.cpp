@@ -948,7 +948,9 @@ Vector3 CalculateNormal(const AABB& a, const Sphere& b) {
 	return Vector3(0, 0, 0); // No collision, return zero vector
 }
 
-Vector3 CalculateNormal(const OBB& a, const OBB& b) {
+Vector3 CalculateNormal(
+	[[maybe_unused]] const OBB& a,
+	[[maybe_unused]] const OBB& b) {
 	Vector3 normal = { 0.0f, 0.0f, 0.0f };
 
 	return normal;
