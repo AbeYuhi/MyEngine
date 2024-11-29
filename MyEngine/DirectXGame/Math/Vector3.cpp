@@ -53,9 +53,9 @@ Vector3 operator*(const Vector3& num1, const Vector3& num2) {
 Vector3 operator/(const Vector3& num1, const float num2) {
 	Vector3 num3;
 
-	num3.x = num1.x * num2;
-	num3.y = num1.y * num2;
-	num3.z = num1.z * num2;
+	num3.x = num1.x / num2;
+	num3.y = num1.y / num2;
+	num3.z = num1.z / num2;
 
 	return num3;
 }
