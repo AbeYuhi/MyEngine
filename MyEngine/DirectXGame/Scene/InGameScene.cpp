@@ -191,7 +191,7 @@ void InGameScene::Draw() {
 	///オブジェクトの描画開始
 
 	yukariModel_->Draw(yukariModelInfo_);
-	//walkModel_->Draw(walkModelInfo_);
+	walkModel_->Draw(walkModelInfo_);
 	//boxModel_->Draw(boxModelInfo_);
 	//skybox_->Draw(skyboxInfo_);
 
